@@ -1,0 +1,67 @@
+<div class="pm-homepage">
+  <section class="pm-spotlight">
+    <div class="pm-section-head pm-reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="pm-serif">{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="pm-spotlight-grid">
+      {%- for block in section.blocks -%}
+        {%- assign product = block.settings.product -%}
+        <a href="{{ product.url | default: '#' }}" class="pm-spotlight-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 120 }}ms" {{ block.shopify_attributes }}>
+          <div class="pm-spotlight-media">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
+            {%- else -%}
+              {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+            {%- endif -%}
+          </div>
+          <p class="pm-serif pm-spotlight-title">{{ product.title | default: block.settings.fallback_label }}</p>
+          {%- if product.price -%}
+            <span class="pm-spotlight-price">
+              {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
+            </span>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.link_label != blank -%}
+      <div class="pm-spotlight-footer">
+        <a href="{{ section.settings.link_url | default: routes.all_products_collection_url }}" class="pm-link">{{ section.settings.link_label }}</a>
+      </div>
+    {%- endif -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Spotlight products",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "In Focus" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Signature Pieces" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Explore the Full Collection" },
+    { "type": "url", "id": "link_url", "label": "Link" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "text", "id": "fallback_label", "label": "Fallback label (if no product selected)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PM: Spotlight products",
+      "blocks": [
+        { "type": "product", "settings": {} },
+        { "type": "product", "settings": {} },
+        { "type": "product", "settings": {} }
+      ]
+    }
+  ]
+}
+{% endschema %}

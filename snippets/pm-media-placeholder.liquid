@@ -1,0 +1,6 @@
+{%- comment -%}
+  Usage: {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+{%- endcomment -%}
+<div class="pm-placeholder{% if hover %} pm-placeholder--hover{% endif %}" role="img" aria-label="{{ label }} placeholder">
+  {{ label }}
+</div>

@@ -1,0 +1,37 @@
+<div class="pm-homepage">
+  <section class="pm-newsletter pm-reveal">
+    {%- if section.settings.eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h2 class="pm-serif">{{ section.settings.heading }}</h2>
+
+    {%- form 'customer', class: 'pm-newsletter-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label for="PmNewsletterEmail-{{ section.id }}" class="pm-visually-hidden">Email address</label>
+      <input
+        id="PmNewsletterEmail-{{ section.id }}"
+        type="email"
+        name="contact[email]"
+        class="pm-newsletter-input pm-serif"
+        placeholder="Your email address"
+        required
+      >
+      <button type="submit" class="pm-newsletter-submit">Subscribe</button>
+
+      {%- if form.posted_successfully? -%}
+        <p class="pm-newsletter-message">Thank you for subscribing</p>
+      {%- elsif form.errors -%}
+        <p class="pm-newsletter-message pm-newsletter-message--error">Please enter a valid email</p>
+      {%- endif -%}
+    {%- endform -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Correspondence" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Stay close to the maison" }
+  ],
+  "presets": [{ "name": "PM: Newsletter" }]
+}
+{% endschema %}

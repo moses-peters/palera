@@ -1,0 +1,43 @@
+<div class="pm-homepage">
+  <section class="pm-duo">
+    <div class="pm-duo-grid">
+      <div class="pm-duo-image pm-duo-image--a pm-reveal">
+        {%- if section.settings.image_a -%}
+          <img src="{{ section.settings.image_a | image_url: width: 1200 }}" alt="{{ section.settings.image_a.alt | escape }}" loading="lazy">
+        {%- else -%}
+          {% render 'pm-media-placeholder', label: 'Photo' %}
+        {%- endif -%}
+      </div>
+      <div class="pm-duo-image pm-duo-image--b pm-reveal" style="transition-delay: 150ms">
+        {%- if section.settings.image_b -%}
+          <img src="{{ section.settings.image_b | image_url: width: 900 }}" alt="{{ section.settings.image_b.alt | escape }}" loading="lazy">
+        {%- else -%}
+          {% render 'pm-media-placeholder', label: 'Photo' %}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="pm-duo-caption pm-reveal" style="transition-delay: 300ms">
+      <span class="pm-eyebrow">{{ section.settings.tag }}</span>
+      <p class="pm-serif">{{ section.settings.copy }}</p>
+      {%- if section.settings.link_label != blank -%}
+        <a href="{{ section.settings.link_url }}" class="pm-link" style="margin-top: 16px;">{{ section.settings.link_label }}</a>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Editorial duo",
+  "settings": [
+    { "type": "image_picker", "id": "image_a", "label": "Large image" },
+    { "type": "image_picker", "id": "image_b", "label": "Small offset image" },
+    { "type": "text", "id": "tag", "label": "Tag", "default": "Made By Hand" },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "Every crystal is set individually, so no two pieces catch the light the same way." },
+    { "type": "text", "id": "link_label", "label": "Link label" },
+    { "type": "url", "id": "link_url", "label": "Link" }
+  ],
+  "presets": [{ "name": "PM: Editorial duo" }]
+}
+{% endschema %}

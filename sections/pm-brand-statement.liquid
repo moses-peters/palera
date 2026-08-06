@@ -1,0 +1,27 @@
+<div class="pm-homepage">
+  <section class="pm-statement pm-reveal">
+    {%- if section.settings.mark != blank -%}<p class="pm-statement-mark">{{ section.settings.mark }}</p>{%- endif -%}
+    <p class="pm-serif pm-statement-quote">{{ section.settings.quote }}</p>
+    {%- if section.settings.link_label != blank -%}
+      <a href="{{ section.settings.link_url }}" class="pm-link">{{ section.settings.link_label }}</a>
+    {%- endif -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Brand statement",
+  "settings": [
+    { "type": "text", "id": "mark", "label": "Mark", "default": "P M" },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Statement",
+      "default": "Enter the world of Palera Milano — born on the Sicilian coast, where sunlight on water first inspired a bag made to hold that same glow. Every piece is still finished by artisan hands, in Italy, today."
+    },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Our Story" },
+    { "type": "url", "id": "link_url", "label": "Link" }
+  ],
+  "presets": [{ "name": "PM: Brand statement" }]
+}
+{% endschema %}

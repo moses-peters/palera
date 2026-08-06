@@ -1,0 +1,30 @@
+<div class="pm-homepage">
+  <section class="pm-cinema">
+    <div class="pm-cinema-media pm-reveal">
+      {%- if section.settings.video_url != blank -%}
+        <video autoplay muted loop playsinline poster="{% if section.settings.image %}{{ section.settings.image | image_url: width: 1800 }}{% endif %}">
+          <source src="{{ section.settings.video_url }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.image -%}
+        <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.caption }}" loading="lazy">
+      {%- else -%}
+        {% render 'pm-media-placeholder', label: 'Video' %}
+      {%- endif -%}
+    </div>
+    {%- if section.settings.caption != blank -%}
+      <p class="pm-eyebrow pm-cinema-caption">{{ section.settings.caption }}</p>
+    {%- endif -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Full-bleed media",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
+    { "type": "text", "id": "caption", "label": "Caption", "default": "Identity 1, 2026" }
+  ],
+  "presets": [{ "name": "PM: Full-bleed media" }]
+}
+{% endschema %}

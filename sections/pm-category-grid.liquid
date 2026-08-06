@@ -1,0 +1,64 @@
+<div class="pm-homepage">
+  <section class="pm-categories">
+    <div class="pm-section-head pm-reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="pm-serif">{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="pm-category-grid">
+      {%- for block in section.blocks -%}
+        {%- assign col = block.settings.collection -%}
+        {%- assign tile_image = block.settings.image | default: col.featured_image -%}
+        {%- assign tile_label = block.settings.label | default: col.title -%}
+        <a
+          href="{{ col.url | default: '#' }}"
+          class="pm-category-tile pm-reveal{% if block.settings.tall %} pm-category-tile--tall{% endif %}"
+          style="transition-delay: {{ forloop.index0 | modulo: 4 | times: 90 }}ms"
+          {{ block.shopify_attributes }}
+        >
+          <div class="pm-category-tile-media">
+            {%- if tile_image -%}
+              <img src="{{ tile_image | image_url: width: 700 }}" alt="{{ tile_image.alt | escape | default: tile_label }}" loading="lazy">
+            {%- else -%}
+              {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+            {%- endif -%}
+          </div>
+          <p class="pm-category-tile-label">{{ tile_label }}</p>
+        </a>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Category grid",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Discover" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Palera World" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Label override", "info": "Defaults to the collection title" },
+        { "type": "image_picker", "id": "image", "label": "Image override", "info": "Defaults to the collection's featured image" },
+        { "type": "checkbox", "id": "tall", "label": "Tall tile", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PM: Category grid",
+      "blocks": [
+        { "type": "category", "settings": { "tall": true } },
+        { "type": "category", "settings": {} },
+        { "type": "category", "settings": {} },
+        { "type": "category", "settings": {} }
+      ]
+    }
+  ]
+}
+{% endschema %}
