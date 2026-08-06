@@ -20,17 +20,23 @@
     {%- if collection.products.size == 0 -%}
       <p class="pm-collection-empty">{{ section.settings.empty_label }}</p>
     {%- else -%}
+      {%- comment -%}
+        Same mosaic rhythm as the Shop family grid (see pm-shop-families.liquid):
+        repeats every 15 tiles — 1 big, 4 small (2x2), 8 small (two rows of 4),
+        2 big side by side — via CSS Grid dense auto-placement.
+      {%- endcomment -%}
       <div class="pm-collection-grid">
         {%- for product in collection.products -%}
-          <a href="{{ product.url }}" class="pm-product-tile pm-reveal" style="transition-delay: {{ forloop.index0 | modulo: 4 | times: 70 }}ms">
-            <div class="pm-product-media">
-              {%- if product.featured_image -%}
-                <img src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
-              {%- else -%}
-                {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
-              {%- endif -%}
-            </div>
-            <div class="pm-product-info">
+          {%- assign pos = forloop.index0 | modulo: 15 -%}
+          {%- assign is_big = false -%}
+          {%- if pos == 0 or pos == 13 or pos == 14 -%}{%- assign is_big = true -%}{%- endif -%}
+          <a href="{{ product.url }}" class="pm-product-tile pm-reveal{% if is_big %} pm-product-tile--big{% endif %}" style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms">
+            {%- if product.featured_image -%}
+              <img class="pm-product-image" src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
+            {%- else -%}
+              {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+            {%- endif -%}
+            <div class="pm-product-caption">
               <span class="pm-product-title">{{ product.title }}</span>
               <span class="pm-product-price">
                 {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
