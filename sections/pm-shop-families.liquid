@@ -25,9 +25,16 @@
         {%- assign pos = forloop.index0 | modulo: 15 -%}
         {%- assign is_big = false -%}
         {%- if pos == 0 or pos == 13 or pos == 14 -%}{%- assign is_big = true -%}{%- endif -%}
-        <a
-          href="{{ tile_url | default: '#' }}"
-          class="pm-family-tile pm-reveal{% if is_big %} pm-family-tile--big{% endif %}"
+        {%- comment -%}
+          No collection assigned yet and no fallback link set: render as a
+          non-clickable tile instead of a dead href="#" link (which just
+          does nothing when clicked). Assign a real collection in the
+          theme editor to make it link through.
+        {%- endcomment -%}
+        {%- assign is_linkable = false -%}
+        {%- if tile_url != blank -%}{%- assign is_linkable = true -%}{%- endif -%}
+        <{% if is_linkable %}a href="{{ tile_url }}"{% else %}div{% endif %}
+          class="pm-family-tile pm-reveal{% if is_big %} pm-family-tile--big{% endif %}{% unless is_linkable %} pm-family-tile--soon{% endunless %}"
           style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms"
           {{ block.shopify_attributes }}
         >
@@ -37,6 +44,7 @@
             {% render 'pm-media-placeholder', label: 'Family', hover: true %}
           {%- endif -%}
           {%- if block.settings.line_label != blank -%}<span class="pm-family-tile-line">{{ block.settings.line_label }}</span>{%- endif -%}
+          {%- unless is_linkable -%}<span class="pm-family-tile-soon">Coming Soon</span>{%- endunless -%}
           <div class="pm-family-tile-caption">
             <span class="pm-serif pm-family-tile-name">{{ tile_label }}</span>
             {%- if is_big -%}
@@ -45,7 +53,7 @@
               </span>
             {%- endif -%}
           </div>
-        </a>
+        </{% if is_linkable %}a{% else %}div{% endif %}>
       {%- endfor -%}
     </div>
   </div>
