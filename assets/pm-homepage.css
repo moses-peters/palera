@@ -253,7 +253,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-footer-newsletter { text-align: center; max-width: 480px; margin: 0 auto clamp(56px, 8vw, 88px); }
 .pm-footer-newsletter h2 { margin-top: 12px; font-size: clamp(24px, 3.4vw, 34px); color: #fff; }
 .pm-footer-newsletter-text { margin-top: 12px; font-size: 14px; color: rgba(255, 255, 255, 0.6); }
-.pm-footer-newsletter-form { margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+.pm-footer-newsletter-form { margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .pm-footer-newsletter-input {
   border: none; border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   background: transparent; color: #fff;
@@ -264,7 +264,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-footer-newsletter-submit { border-bottom: 1px solid rgba(255, 255, 255, 0.4); padding: 10px 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #fff; transition: opacity 0.2s var(--pm-ease); }
 .pm-footer-newsletter-submit:hover { opacity: 0.6; }
 .pm-footer-newsletter-message { margin-top: 10px; font-size: 12px; color: rgba(255, 255, 255, 0.6); }
-@media (min-width: 640px) { .pm-footer-newsletter-form { flex-direction: row; align-items: flex-end; gap: 10px; } .pm-footer-newsletter-input { text-align: left; } }
+@media (min-width: 640px) { .pm-footer-newsletter-form { flex-direction: row; justify-content: center; align-items: flex-end; gap: 10px; } }
 
 .pm-footer-cols {
   display: grid; grid-template-columns: repeat(2, 1fr);
@@ -273,7 +273,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   padding-top: clamp(40px, 6vw, 64px);
 }
-.pm-footer-col h4 { margin-bottom: 20px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: #fff; }
+.pm-footer-col h4 { margin-bottom: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: #fff; }
+.pm-footer-col ul { list-style: none; margin: 0; padding: 0; }
 .pm-footer-col li { margin-bottom: 12px; font-size: 13px; }
 .pm-footer-col a { transition: opacity 0.2s var(--pm-ease); }
 .pm-footer-col a:hover { opacity: 0.6; }
