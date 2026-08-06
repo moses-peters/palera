@@ -1,0 +1,68 @@
+body {
+  top: 0 !important;
+}
+body .transcy-switcher-container.transcy-switcher-position__floating.transcy-switcher-position__top_right {
+  top: 0;
+}
+.hero.hero--natural .flickity-viewport .flickity-slider .slideshow__slide .hero__text-wrap .hero__text-content  .hero__text-shadow h2.hero__title  .animation-cropper{
+  overflow:unset;
+}
+.slideshow__slide .hero__text-wrap .hero__text-content.vertical-bottom .hero__text-shadow h2.hero__title .animation-cropper{
+    overflow: unset;
+}
+
+
+   .grid__item-image-wrapper .grid-product__image-mask .kg-grid-product__secondary-image,
+    .grid__item-image-wrapper .grid-product__image-mask .kg-home-collection.kg-image-wrap{
+        display: block;
+    }
+   .grid__item-image-wrapper .grid-product__image-mask .kg-grid-product__secondary-image,
+    .grid__item-image-wrapper .grid-product__image-mask .kg-custom-collection.kg-mobile-image-view{
+        display: none;
+    }
+
+
+
+
+@media only screen and (max-width: 768px) {
+  .grid__item-image-wrapper .grid-product__image-mask .grid-product__secondary-image{
+        display: block !important;
+    }
+    .grid__item-image-wrapper .grid-product__link:after{
+        display: none;
+    } 
+
+}
+
+   .grid__item-image-wrapper .grid-product__image-mask .kg-mobile-image-view{
+        display: none;
+    }
+    .grid__item-image-wrapper .grid-product__image-mask .kg-grid-product__secondary-image,
+    .grid__item-image-wrapper .grid-product__image-mask .kg-image-wrap{
+        display: block;
+    }
+    @media screen and (max-width:768px) {
+        .grid__item-image-wrapper .grid-product__image-mask .kg-mobile-image-view {
+            display: block;
+        }
+        .grid__item-image-wrapper .grid-product__image-mask .kg-grid-product__secondary-image,
+        .grid__item-image-wrapper .grid-product__image-mask .kg-image-wrap{
+            display: none;
+        }
+        .grid__item-image-wrapper .grid-product__image-mask .kg-mobile-image-view .owl-dots {
+            bottom: 0px;
+            height: 35px;
+            position: absolute;
+            width: 100%;
+        }
+        .grid__item-image-wrapper .grid-product__image-mask .kg-mobile-image-view .owl-dots .owl-dot span{
+            width: 6px;
+            height: 6px;
+            margin: 3px;
+        }
+        .grid__item-image-wrapper .grid-product__image-mask .kg-mobile-image-view .owl-dots .owl-dot.active span, 
+        .grid__item-image-wrapper .grid-product__image-mask .kg-mobile-image-view .owl-dots .owl-dot:hover span {
+            background: #000000;
+        }
+    }
+

@@ -1,0 +1,478 @@
+{% comment %}
+Arguments
+- product: product object
+- [per_row]: number of items per row
+- [quick_shop_enable]: boolean
+- [collection]: collection object
+{% endcomment %}
+
+{%- liquid
+  unless per_row
+    assign per_row = 4
+  endunless
+
+  capture gridView
+    render 'products_per_row', products_per_row: per_row, style: 'fractions'
+  endcapture
+
+  # These assignments have no effect if a sizes parameter is passed in
+  assign sizeVariable = gridView
+  if fallback != blank
+    assign fallback = fallback
+  else
+    assign fallback = 'variable'
+  endif
+
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign product_tags = product.tags | join: ','
+  assign has_custom_label = false
+  if product.metafields.theme.label and product.metafields.theme.label != blank
+    assign has_custom_label = true
+    assign custom_label = product.metafields.theme.label.value
+  elsif product_tags contains '_label_'
+    for tag in product.tags
+      if tag contains '_label_'
+        assign tag_starts_with = tag | slice: 0
+        if tag_starts_with == '_'
+          assign has_custom_label = true
+          assign custom_label = tag | replace: '_label_', ''
+        endif
+      endif
+    endfor
+  endif
+
+  # --- NEW: detect whether this product has a color option, matching the option name EXACTLY (not "contains")
+  #     so options like "Chain Color" or "Hardware Color" don't get mistaken for the main "Color" option ---
+  assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+  assign is_color_product = false
+  assign color_option_index = -1
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name == swatch_trigger
+      assign is_color_product = true
+      assign color_option_index = forloop.index0
+    elsif swatch_trigger == 'color' and option_name == 'colour'
+      assign is_color_product = true
+      assign color_option_index = forloop.index0
+    endif
+  endfor
+-%}
+  {% if product.product.id == 9231359869275 or product.product.id == 9231356395867 %}
+ {% else %}
+{%- assign seen_color_values = '' -%}
+{%- for variant in product.variants -%}
+  {%- liquid
+    assign render_this_tile = false
+    if is_color_product
+      assign tile_value = variant.options[color_option_index]
+      assign tile_value_downcased = tile_value | downcase
+      unless seen_color_values contains tile_value
+        assign render_this_tile = true
+        assign seen_color_values = seen_color_values | append: tile_value | append: '|'
+      endunless
+    else
+      if forloop.first
+        assign render_this_tile = true
+      endif
+    endif
+
+    assign tile_image = variant.featured_image | default: product.featured_media.preview_image
+    assign tile_url = variant.url
+  -%}
+  {%- if render_this_tile -%}
+<div class="grid__item grid-product {{ gridView }} {% if quick_shop_enable %} grid-product__has-quick-shop{% endif %}" data-aos="row-of-{{ per_row }}" data-product-handle="{{ product.handle }}" data-product-id="{{ product.id }}" data-variant-id="{{ variant.id }}">
+  <div class="grid-product__content">
+    {%- if has_custom_label -%}
+      <div class="grid-product__tag grid-product__tag--custom">
+        {{ custom_label }}
+      </div>
+    {%- else -%}
+      {%- unless product.available -%}
+        <div class="grid-product__tag grid-product__tag--sold-out">
+          {{ 'products.product.sold_out' | t }}
+        </div>
+      {%- endunless -%}
+      {%- if on_sale and product.available -%}
+        <div class="grid-product__tag grid-product__tag--sale">
+          {{ 'products.general.sale' | t }}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- liquid
+      assign imageRatio = settings.product_grid_image_size
+      assign fixed_aspect_ratio = false
+      unless imageRatio == 'natural'
+        assign fixed_aspect_ratio = true
+      endunless
+
+      if image_style == 'circle'
+        assign fixed_aspect_ratio = true
+        assign imageRatio = 'square'
+      endif
+
+      assign preview_image = tile_image
+       assign product_title = product.title
+    -%}
+
+    <div class="grid__item-image-wrapper">
+      {% if template == 'index' %}
+       <a href="{{ tile_url }}" class="grid-product__link">
+         {% endif %}
+      <div class="grid-product__image-mask">
+        {%- if fixed_aspect_ratio -%}
+          <div
+            class="grid__image-ratio grid__image-ratio--{% if image_style == 'circle' %}square{% else %}{{ settings.product_grid_image_size }}{% endif %}">
+            {%- capture image_classes -%}
+              {% unless settings.product_grid_image_fill %} grid__image-contain{% endunless %} image-style--{{ image_style }}
+            {%- endcapture -%}
+            {%  assign product_title = product.title %}
+            {%- if preview_image != blank -%}
+              {%- render 'image-element',
+                img: preview_image,
+                classes: image_classes,
+                sizes: sizes,
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+                widths: '360, 540, 720, 900, 1080',
+                 alt: product_title
+              -%}
+            {%- else -%}
+              {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+              <div class="product-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="{% if template.name == 'index' %} kg-home-collection {% endif %} kg-image-wrap image-wrap"
+            {% if preview_image != blank %}
+              style="height: 0; padding-bottom: {{ 100 | divided_by: preview_image.aspect_ratio }}%;"
+            {% endif %}
+          >
+            {%- if preview_image != blank -%}
+              {%- capture image_classes -%}
+                grid-product__image image-style--{{ image_style }}
+              {%- endcapture -%}
+              {%- render 'image-element',
+                img: preview_image,
+                classes: image_classes,
+                sizes: sizes,
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+                widths: '360, 540, 720, 900, 1080',
+                 alt: product_title,
+              
+              -%}
+            {%- else -%}
+              {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+              <div class="product-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if settings.product_hover_image -%}
+          {% if template != 'index'  %}
+          {%- liquid
+            assign second_color_image = blank
+            assign color_match_count = 0
+            if is_color_product
+              for media in product.media
+                assign media_alt_downcased = media.alt | downcase
+                if media_alt_downcased contains tile_value_downcased
+                  assign color_match_count = color_match_count | plus: 1
+                  if color_match_count == 2
+                    assign second_color_image = media.preview_image
+                  endif
+                endif
+              endfor
+            else
+              if product.media.size > 1
+                assign second_color_image = product.media[1].preview_image
+              endif
+            endif
+          -%}
+          {%- if second_color_image != blank -%}
+          <div class="kg-grid-product__secondary-image grid-product__secondary-image small--hide">
+            {%- capture image_classes -%}
+              image-style--{{ image_style }}
+            {%- endcapture -%}
+            {%- render 'image-element',
+              img: second_color_image,
+              classes: image_classes,
+              sizes: sizes,
+              sizeVariable: sizeVariable,
+              fallback: fallback,
+              widths: '360, 540, 720, 1000',
+                  alt: product_title,
+            -%}
+          </div>
+        {%- endif -%}
+            {%- endif -%}
+        {%- endif -%}
+
+
+
+        
+          <!-- mobileview product image slider  -->
+         <div class="{% if template.name == 'index' %} kg-custom-collection {% endif %} kg-mobile-image-view">
+         <a href="{{ tile_url }}">
+        <div class="kg-product-image-slider owl-carousel owl-theme">
+         
+         {%- for media in product.media  -%}
+           {%- liquid
+             assign show_this_media = true
+             if is_color_product
+               assign show_this_media = false
+               assign media_alt_downcased = media.alt | downcase
+               if media_alt_downcased contains tile_value_downcased
+                 assign show_this_media = true
+               endif
+             endif
+           -%}
+           {%- if show_this_media -%}
+                 {%- render 'image-element',
+              img: media,
+              classes: image_classes,
+              sizes: sizes,
+              sizeVariable: sizeVariable,
+              fallback: fallback,
+              widths: '360, 540, 720, 1000',
+                  alt: product_title,
+            -%}
+          {%- endif -%}
+          {%- endfor -%}
+        
+        </div>
+             </a>
+           </div>
+             
+        
+
+        {%- if settings.enable_swatches -%}
+          {%- assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase -%}
+          {%- for option in product.options_with_values -%}
+            {%- liquid
+              assign option_name = option.name | downcase
+              assign is_color = false
+              if option_name contains swatch_trigger
+                assign is_color = true
+              elsif swatch_trigger == 'color' and option_name contains 'colour'
+                assign is_color = true
+              endif
+            -%}
+            {%- if is_color -%}
+              {%- assign option_index = forloop.index0 -%}
+              {%- assign values = '' -%}
+              {%- for color_image_variant in product.variants -%}
+                {%- assign value = color_image_variant.options[option_index] %}
+                {%- unless values contains value -%}
+                  {%- liquid
+                    assign values = values | join: ',' | append: ',' | append: value | split: ','
+                  -%}
+
+                  {%- if color_image_variant.image -%}
+                    <div
+                      class="grid-product__color-image grid-product__color-image--{{ color_image_variant.id }} small--hide">
+                    </div>
+                  {%- endif -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- if quick_shop_enable and type == blank -%}
+          <button class="quick-product__btn quick-product__btn--not-ready js-modal-open-quick-modal-{{ product.id }} small--hide">
+            {{ settings.quick_shop_text }}
+          </button>
+        {%- endif -%}
+      </div>
+               {% if template == 'index' %}
+       </a>
+         {% endif %}
+
+      <a href="{{ tile_url }}" class="grid-product__link">
+{% render 'wishlisthero-collection-product' with product: product %}
+        <div class="grid-product__meta">
+          <div class="grid-product__title grid-product__title--{{ settings.type_product_style }} notranslate">{{ product.title }}</div>
+          {%- if settings.vendor_enable -%}
+            <div class="grid-product__vendor">{{ product.vendor }}</div>
+          {%- endif -%}
+          <div class="grid-product__price">
+            {%- if on_sale -%}
+              <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+              <span class="grid-product__price--original">{{ product.compare_at_price | money }}</span>
+              <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+            {%- endif -%}
+            {%- if product.price_varies -%}
+              {%- assign price = product.price_min | money -%}
+              {{ 'products.general.from_text_html' | t: price: price }}
+            {%- else -%}
+              {{ product.price | money }}
+            {%- endif -%}
+            {%- if on_sale -%}
+              {%- if settings.product_save_amount -%}
+                {%- if settings.product_save_type == 'dollar' -%}
+                  {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money }}{%- endcapture -%}
+                {%- else -%}
+                  {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
+                {%- endif -%}
+                <span class="grid-product__price--savings">
+                  {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                </span>
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- assign product_variant = product.selected_or_first_available_variant -%}
+            {%- if product_variant.unit_price_measurement -%}
+              <div class="product__unit-price">
+                {%- capture unit_price_base_unit -%}
+                  {%- if product_variant.unit_price_measurement -%}
+                    {%- if product_variant.unit_price_measurement.reference_value != 1 -%}
+                      {{ product_variant.unit_price_measurement.reference_value }}
+                    {%- endif -%}
+                    {{ product_variant.unit_price_measurement.reference_unit }}
+                  {%- endif -%}
+                {%- endcapture -%}
+
+                {{ product_variant.unit_price | money }}/{{ unit_price_base_unit }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- if settings.enable_swatches and type == 'horizontal' -%}
+            {%- liquid
+              assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+              assign swatch_file_extension = 'png'
+              assign color_count = 0
+            -%}
+
+            {%- for option in product.options_with_values -%}
+              {%- liquid
+                assign option_name = option.name | downcase
+                assign is_color = false
+                if option_name contains swatch_trigger
+                  assign is_color = true
+                elsif swatch_trigger == 'color' and option_name contains 'colour'
+                  assign is_color = true
+                endif
+              -%}
+              {%- if is_color -%}
+                {%- assign option_index = forloop.index0 -%}
+                {%- assign values = '' -%}
+                <div class="grid-product__colors grid-product__colors--{{ product.id }}">
+                  {%- for swatch_variant in product.variants -%}
+                    {%- assign value = swatch_variant.options[option_index] %}
+                    {%- unless values contains value -%}
+                      {%- liquid
+                        assign values = values | join: ',' | append: ',' | append: value | split: ','
+
+                        assign color_file_name = value | handle | append: '.' | append: swatch_file_extension
+                        assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                        assign color_swatch_fallback = value | split: ' ' | last | handle
+                        assign color_count = color_count | plus: 1
+                      -%}
+
+                      <span
+                        class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if swatch_variant.image %} color-swatch--with-image{% endif %}"
+                        {% if swatch_variant.image %}
+                          data-variant-id="{{ swatch_variant.id }}"
+                          data-variant-image="{{ swatch_variant.image | img_url: '400x' }}"
+                        {% endif %}
+                        aria-label="{{ product.title }} - {{ value }}"
+                        style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
+                        <span class="visually-hidden">{{ value }}</span>
+                      </span>
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </div>
+                {%- if color_count < 2 -%}
+                  {%- style -%}
+                    .grid-product__colors--{{ product.id }} {
+                      display: none;
+                    }
+                  {%- endstyle -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+
+          {%- if settings.enable_product_reviews and type == 'horizontal' -%}
+            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+          {%- endif -%}
+        </div>
+      </a>
+    </div>
+  </div>
+  {%- if settings.enable_swatches and type == blank -%}
+    {%- liquid
+      assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+      assign swatch_file_extension = 'png'
+      assign color_count = 0
+    -%}
+
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign option_name = option.name | downcase
+        assign is_color = false
+        if option_name contains swatch_trigger
+          assign is_color = true
+        elsif swatch_trigger == 'color' and option_name contains 'colour'
+          assign is_color = true
+        endif
+      -%}
+      {%- if is_color -%}
+        {%- assign option_index = forloop.index0 -%}
+        {%- assign values = '' -%}
+        <div class="grid-product__colors grid-product__colors--{{ product.id }}">
+          {%- for swatch_variant in product.variants -%}
+            {%- assign value = swatch_variant.options[option_index] %}
+            {%- unless values contains value -%}
+              {%- liquid
+                assign values = values | join: ',' | append: ',' | append: value | split: ','
+
+                assign color_file_name = value | handle | append: '.' | append: swatch_file_extension
+                assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                assign color_swatch_fallback = value | split: ' ' | last | handle
+                assign color_count = color_count | plus: 1
+              -%}
+
+              
+                href="{{ swatch_variant.url }}"
+                class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if swatch_variant.image %} color-swatch--with-image{% endif %}"
+                {% if swatch_variant.image %}
+                  data-variant-id="{{ swatch_variant.id }}"
+                  data-variant-image="{{ swatch_variant.image | img_url: '400x' }}"
+                {% endif %}
+                aria-label="{{ product.title }} - {{ value }}"
+                style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
+                <span class="visually-hidden">{{ value }}</span>
+              </a>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+        {%- if color_count < 2 -%}
+          {%- style -%}
+            .grid-product__colors--{{ product.id }} {
+              display: none;
+            }
+          {%- endstyle -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- if settings.enable_product_reviews and type == blank -%}
+    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+  {%- endif -%}
+
+  {%- if quick_shop_enable and type == blank -%}
+    {%- render 'quick-shop-modal', product: product -%}
+  {%- endif -%}
+</div>
+  {%- endif -%}
+{%- endfor -%}
+{% endif %}
