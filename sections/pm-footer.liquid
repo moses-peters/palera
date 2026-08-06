@@ -1,0 +1,119 @@
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage">
+  <footer class="pm-footer">
+    <div class="pm-footer-wordmark">
+      {%- if section.settings.logo -%}
+        <img src="{{ section.settings.logo | image_url: width: 240 }}" alt="{{ shop.name }}" loading="lazy" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}">
+      {%- else -%}
+        <span class="pm-footer-wordmark-text pm-serif">{{ shop.name }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_newsletter -%}
+      <div class="pm-footer-newsletter pm-reveal">
+        {%- if section.settings.newsletter_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.newsletter_eyebrow }}</span>{%- endif -%}
+        <h2 class="pm-serif">{{ section.settings.newsletter_heading }}</h2>
+        {%- if section.settings.newsletter_text != blank -%}<p class="pm-footer-newsletter-text">{{ section.settings.newsletter_text }}</p>{%- endif -%}
+
+        {%- form 'customer', class: 'pm-footer-newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label for="FooterNewsletterEmail-{{ section.id }}" class="pm-visually-hidden">Email address</label>
+          <input
+            id="FooterNewsletterEmail-{{ section.id }}"
+            type="email"
+            name="contact[email]"
+            class="pm-footer-newsletter-input pm-serif"
+            placeholder="Your email address"
+            required
+          >
+          <button type="submit" class="pm-footer-newsletter-submit">Subscribe</button>
+
+          {%- if form.posted_successfully? -%}
+            <p class="pm-footer-newsletter-message">Thank you for subscribing</p>
+          {%- elsif form.errors -%}
+            <p class="pm-footer-newsletter-message">Please enter a valid email</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+
+    <div class="pm-footer-cols">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'menu' -%}
+            {%- assign menu = linklists[block.settings.menu] -%}
+            {%- if menu.links.size > 0 -%}
+              <div class="pm-footer-col" {{ block.shopify_attributes }}>
+                <h4>{{ block.settings.title | default: menu.title }}</h4>
+                <ul>
+                  {%- for link in menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- when 'social' -%}
+            {%- if settings.social_instagram_link != blank or settings.social_pinterest_link != blank or settings.social_tiktok_link != blank or settings.social_youtube_link != blank or settings.social_facebook_link != blank -%}
+              <div class="pm-footer-col" {{ block.shopify_attributes }}>
+                <h4>{{ block.settings.title }}</h4>
+                <ul>
+                  {%- if settings.social_instagram_link != blank -%}<li><a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
+                  {%- if settings.social_pinterest_link != blank -%}<li><a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener">Pinterest</a></li>{%- endif -%}
+                  {%- if settings.social_tiktok_link != blank -%}<li><a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener">TikTok</a></li>{%- endif -%}
+                  {%- if settings.social_youtube_link != blank -%}<li><a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener">YouTube</a></li>{%- endif -%}
+                  {%- if settings.social_facebook_link != blank -%}<li><a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener">Facebook</a></li>{%- endif -%}
+                </ul>
+              </div>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="pm-footer-bottom">
+      <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+      <span>{{ section.settings.location_text }}</span>
+    </div>
+  </footer>
+</div>
+
+<script src="{{ 'pm-homepage.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "PM: Footer",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Footer logo" },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter signup", "default": true },
+    { "type": "text", "id": "newsletter_eyebrow", "label": "Newsletter eyebrow", "default": "Correspondence" },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join the Palera Community" },
+    { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "Subscribe and enjoy 10% off your first order." },
+    { "type": "text", "id": "location_text", "label": "Location text", "default": "Milano, Italia" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        { "type": "link_list", "id": "menu", "label": "Menu" },
+        { "type": "text", "id": "title", "label": "Column title override", "info": "Defaults to the menu's own title" }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Column title", "default": "Follow" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "menu", "settings": { "menu": "client-service" } },
+      { "type": "menu", "settings": { "menu": "footer" } },
+      { "type": "menu", "settings": { "menu": "contact-us" } },
+      { "type": "social", "settings": { "title": "Follow" } }
+    ]
+  }
+}
+{% endschema %}
