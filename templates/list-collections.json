@@ -1,21 +1,105 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "pm-shop-families",
       "blocks": {
-        "fam-1": { "type": "family", "settings": { "fallback_label": "Diamond Maxi Roma", "line_label": "Roma" } },
-        "fam-2": { "type": "family", "settings": { "fallback_label": "Diamond Mini Roma", "line_label": "Roma" } },
-        "fam-3": { "type": "family", "settings": { "fallback_label": "Mini Roma", "line_label": "Roma" } },
-        "fam-4": { "type": "family", "settings": { "fallback_label": "Maxi Roma", "line_label": "Roma" } },
-        "fam-5": { "type": "family", "settings": { "fallback_label": "Crystal Pouch", "line_label": "Pouch" } },
-        "fam-6": { "type": "family", "settings": { "fallback_label": "Crystal Pouch Long", "line_label": "Pouch" } },
-        "fam-7": { "type": "family", "settings": { "collection": "santorini", "fallback_label": "Santorini", "line_label": "Santorini" } },
-        "fam-8": { "type": "family", "settings": { "fallback_label": "Diamond Santorini", "line_label": "Santorini" } },
-        "fam-9": { "type": "family", "settings": { "fallback_label": "Clutch Edge Long", "line_label": "Clutch" } },
-        "fam-10": { "type": "family", "settings": { "fallback_label": "Jewelry & Accessories", "line_label": "Accessories" } }
+        "fam-1": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Diamond Maxi Roma",
+            "line_label": "Roma"
+          }
+        },
+        "fam-2": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Diamond Mini Roma",
+            "line_label": "Roma"
+          }
+        },
+        "fam-3": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Mini Roma",
+            "line_label": "Roma"
+          }
+        },
+        "fam-4": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Maxi Roma",
+            "line_label": "Roma"
+          }
+        },
+        "fam-5": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Crystal Pouch",
+            "line_label": "Pouch"
+          }
+        },
+        "fam-6": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Crystal Pouch Long",
+            "line_label": "Pouch"
+          }
+        },
+        "fam-7": {
+          "type": "family",
+          "settings": {
+            "collection": "santorini",
+            "fallback_label": "Santorini",
+            "line_label": "Santorini"
+          }
+        },
+        "fam-8": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Diamond Santorini",
+            "line_label": "Santorini"
+          }
+        },
+        "fam-9": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Clutch Edge Long",
+            "line_label": "Clutch"
+          }
+        },
+        "fam-10": {
+          "type": "family",
+          "settings": {
+            "fallback_label": "Jewelry & Accessories",
+            "line_label": "Accessories"
+          }
+        }
       },
-      "block_order": ["fam-1", "fam-2", "fam-3", "fam-4", "fam-5", "fam-6", "fam-7", "fam-8", "fam-9", "fam-10"]
+      "block_order": [
+        "fam-1",
+        "fam-2",
+        "fam-3",
+        "fam-4",
+        "fam-5",
+        "fam-6",
+        "fam-7",
+        "fam-8",
+        "fam-9",
+        "fam-10"
+      ],
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

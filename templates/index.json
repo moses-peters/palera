@@ -1,34 +1,117 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "pm-hero": {
-      "type": "pm-hero"
+      "type": "pm-hero",
+      "settings": {}
     },
     "pm-product-pair": {
       "type": "pm-product-pair",
       "blocks": {
-        "prod-1": { "type": "product", "settings": { "fallback_label": "Signature Clutch", "fallback_asset": "pm-drive-product-a.jpg" } },
-        "prod-2": { "type": "product", "settings": { "fallback_label": "Crystal Mini", "fallback_asset": "pm-drive-product-b.jpg" } }
+        "prod-1": {
+          "type": "product",
+          "settings": {
+            "fallback_label": "Signature Clutch",
+            "fallback_asset": "pm-drive-product-a.jpg"
+          }
+        },
+        "prod-2": {
+          "type": "product",
+          "settings": {
+            "fallback_label": "Crystal Mini",
+            "fallback_asset": "pm-drive-product-b.jpg"
+          }
+        }
       },
-      "block_order": ["prod-1", "prod-2"]
+      "block_order": [
+        "prod-1",
+        "prod-2"
+      ],
+      "settings": {}
     },
     "pm-full-bleed-media": {
       "type": "pm-full-bleed-media",
-      "settings": { "caption": "" }
+      "settings": {
+        "caption": ""
+      }
     },
     "pm-photo-grid": {
       "type": "pm-photo-grid",
       "blocks": {
-        "photo-1": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-1.jpg" } },
-        "photo-2": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-2.jpg" } },
-        "photo-3": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-3.jpg" } },
-        "photo-4": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-4.jpg" } },
-        "photo-5": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-5.jpg" } },
-        "photo-6": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-6.jpg" } },
-        "photo-7": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-7.jpg" } },
-        "photo-8": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-8.jpg" } }
+        "photo-1": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-1.jpg"
+          }
+        },
+        "photo-2": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-2.jpg"
+          }
+        },
+        "photo-3": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-3.jpg"
+          }
+        },
+        "photo-4": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-4.jpg"
+          }
+        },
+        "photo-5": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-5.jpg"
+          }
+        },
+        "photo-6": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-6.jpg"
+          }
+        },
+        "photo-7": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-7.jpg"
+          }
+        },
+        "photo-8": {
+          "type": "photo",
+          "settings": {
+            "fallback_asset": "pm-drive-grid-8.jpg"
+          }
+        }
       },
-      "block_order": ["photo-1", "photo-2", "photo-3", "photo-4", "photo-5", "photo-6", "photo-7", "photo-8"]
+      "block_order": [
+        "photo-1",
+        "photo-2",
+        "photo-3",
+        "photo-4",
+        "photo-5",
+        "photo-6",
+        "photo-7",
+        "photo-8"
+      ],
+      "settings": {}
     }
   },
-  "order": ["pm-hero", "pm-product-pair", "pm-full-bleed-media", "pm-photo-grid"]
+  "order": [
+    "pm-hero",
+    "pm-product-pair",
+    "pm-full-bleed-media",
+    "pm-photo-grid"
+  ]
 }
