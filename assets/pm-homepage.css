@@ -290,8 +290,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-footer { background: var(--pm-ink); color: rgba(255, 255, 255, 0.7); padding: clamp(48px, 7vw, 72px) var(--pm-pad) 32px; }
 
 .pm-footer-cols {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: clamp(28px, 4vw, 56px);
+  display: grid; grid-template-columns: 1fr;
+  gap: clamp(24px, 4vw, 40px);
   padding-bottom: clamp(40px, 6vw, 64px);
 }
 
@@ -329,15 +329,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-footer-col li { margin-bottom: 12px; font-size: 13px; }
 .pm-footer-col a { transition: opacity 0.2s var(--pm-ease); }
 .pm-footer-col a:hover { opacity: 0.6; }
-@media (min-width: 768px) { .pm-footer-cols { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 640px) { .pm-footer-cols { grid-template-columns: repeat(3, 1fr); } }
 
 .pm-footer-bottom {
-  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   margin-top: clamp(32px, 5vw, 48px);
   padding-top: 24px;
   font-size: 10px; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.4);
 }
+.pm-footer-socials { display: flex; gap: 16px; }
+.pm-footer-socials a { color: rgba(255, 255, 255, 0.4); transition: color 0.2s var(--pm-ease); }
+.pm-footer-socials a:hover { color: #fff; }
 
 /* ===== Product pair — two big square tiles, zero gap, "1 product + another product" ===== */
 .pm-product-pair { display: grid; grid-template-columns: 1fr; }

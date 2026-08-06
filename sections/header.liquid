@@ -76,10 +76,14 @@
 
 <style>
   /* PM: header polish */
-  /* Header shrunk ~35%: theme default is padding:7px 0 (mobile) / 20px 0 (>=769px) */
-  .site-header { padding: 5px 0 !important; }
+  /* Header ~20% smaller than theme default (padding:7px 0 mobile / 20px 0
+     desktop, and .site-header--stuck:10px 0 desktop) — a little taller
+     than the earlier 35%-reduced pass. */
+  .site-header,
+  .site-header.site-header--stuck { padding: 6px 0 !important; }
   @media only screen and (min-width: 769px) {
-    .site-header { padding: 13px 0 !important; }
+    .site-header,
+    .site-header.site-header--stuck { padding: 16px 0 !important; }
   }
   .site-header .site-nav__link {
     font-size: 11px !important;
@@ -90,8 +94,14 @@
     transition: opacity 0.2s ease;
   }
   .site-header .site-nav__link:hover { opacity: 1; }
-  .site-header__logo img { transition: opacity 0.2s ease; }
+  /* Force identical logo height regardless of which image is assigned to
+     the regular vs. inverted (light/dark) logo slot, so switching between
+     them (e.g. a dark logo over a light sticky header) never changes size. */
+  .site-header__logo img { height: 30px !important; width: auto !important; transition: opacity 0.2s ease; }
+  @media (max-width: 768px) { .site-header__logo img { height: 20px !important; } }
   .site-header__logo a:hover img { opacity: 0.75; }
+  .pm-header-nav { flex: 0 0 auto !important; margin: 0 clamp(16px, 2vw, 32px); }
+  .pm-header-nav .site-nav { margin: 0; }
   .site-header .icon { opacity: 0.92; transition: opacity 0.2s ease; }
   .site-header .header-item--icons a:hover .icon,
   .site-header .header-item--icons button:hover .icon { opacity: 1; }
@@ -188,16 +198,16 @@
               {%- endif -%}
             {%- endif -%}
 
+            {%- if section.settings.main_menu_alignment == 'center' -%}
+              <div class="header-item pm-header-nav">
+                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
+              </div>
+            {%- endif -%}
+
             <div class="header-item header-item--icons">
               {%- render 'header-icons', section: section -%}
             </div>
           </div>
-
-          {%- if section.settings.main_menu_alignment == 'center' -%}
-            <div class="text-center">
-              {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
-            </div>
-          {%- endif -%}
         </div>
         <div class="site-header__search-container">
           <div class="site-header__search">

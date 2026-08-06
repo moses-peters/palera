@@ -17,19 +17,6 @@
                 </ul>
               </div>
             {%- endif -%}
-          {%- when 'social' -%}
-            {%- if settings.social_instagram_link != blank or settings.social_pinterest_link != blank or settings.social_tiktok_link != blank or settings.social_youtube_link != blank or settings.social_facebook_link != blank -%}
-              <div class="pm-footer-col" {{ block.shopify_attributes }}>
-                <h4>{{ block.settings.title }}</h4>
-                <ul>
-                  {%- if settings.social_instagram_link != blank -%}<li><a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
-                  {%- if settings.social_pinterest_link != blank -%}<li><a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener">Pinterest</a></li>{%- endif -%}
-                  {%- if settings.social_tiktok_link != blank -%}<li><a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener">TikTok</a></li>{%- endif -%}
-                  {%- if settings.social_youtube_link != blank -%}<li><a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener">YouTube</a></li>{%- endif -%}
-                  {%- if settings.social_facebook_link != blank -%}<li><a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener">Facebook</a></li>{%- endif -%}
-                </ul>
-              </div>
-            {%- endif -%}
         {%- endcase -%}
       {%- endfor -%}
     </div>
@@ -63,6 +50,15 @@
 
     <div class="pm-footer-bottom">
       <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+      {%- if settings.social_instagram_link != blank or settings.social_pinterest_link != blank or settings.social_tiktok_link != blank or settings.social_youtube_link != blank or settings.social_facebook_link != blank -%}
+        <span class="pm-footer-socials">
+          {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+          {%- if settings.social_pinterest_link != blank -%}<a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener">Pinterest</a>{%- endif -%}
+          {%- if settings.social_tiktok_link != blank -%}<a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}
+          {%- if settings.social_youtube_link != blank -%}<a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener">YouTube</a>{%- endif -%}
+          {%- if settings.social_facebook_link != blank -%}<a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener">Facebook</a>{%- endif -%}
+        </span>
+      {%- endif -%}
       <span>{{ section.settings.location_text }}</span>
     </div>
   </footer>
@@ -88,21 +84,13 @@
         { "type": "link_list", "id": "menu", "label": "Menu" },
         { "type": "text", "id": "title", "label": "Column title override", "info": "Defaults to the menu's own title" }
       ]
-    },
-    {
-      "type": "social",
-      "name": "Social column",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Column title", "default": "Follow" }
-      ]
     }
   ],
   "default": {
     "blocks": [
       { "type": "menu", "settings": { "menu": "client-service" } },
       { "type": "menu", "settings": { "menu": "footer" } },
-      { "type": "menu", "settings": { "menu": "contact-us" } },
-      { "type": "social", "settings": { "title": "Follow" } }
+      { "type": "menu", "settings": { "menu": "contact-us" } }
     ]
   }
 }
