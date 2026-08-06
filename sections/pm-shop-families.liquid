@@ -8,33 +8,43 @@
   </section>
 
   <div class="pm-shop-wrap">
+    {%- comment -%}
+      Mosaic rhythm, repeating every 15 tiles (matches CSS Grid's dense
+      auto-placement so no manual row/column math is needed):
+        pos 0        -> 1 big tile  (2x2)
+        pos 1-4      -> 4 small tiles filling the 2x2 next to it
+        pos 5-12     -> 8 small tiles, two plain rows of 4
+        pos 13-14    -> 2 big tiles (2x2) side by side
+    {%- endcomment -%}
     <div class="pm-family-grid">
       {%- for block in section.blocks -%}
         {%- assign col = block.settings.collection -%}
         {%- assign tile_image = block.settings.image | default: col.featured_image -%}
         {%- assign tile_label = col.title | default: block.settings.fallback_label -%}
         {%- assign tile_url = col.url | default: block.settings.fallback_url -%}
+        {%- assign pos = forloop.index0 | modulo: 15 -%}
+        {%- assign is_big = false -%}
+        {%- if pos == 0 or pos == 13 or pos == 14 -%}{%- assign is_big = true -%}{%- endif -%}
         <a
           href="{{ tile_url | default: '#' }}"
-          class="pm-family-tile pm-reveal"
-          style="transition-delay: {{ forloop.index0 | modulo: 4 | times: 80 }}ms"
+          class="pm-family-tile pm-reveal{% if is_big %} pm-family-tile--big{% endif %}"
+          style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms"
           {{ block.shopify_attributes }}
         >
-          <div class="pm-family-tile-media">
-            {%- if tile_image -%}
-              <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: tile_label }}" loading="lazy">
-            {%- else -%}
-              {% render 'pm-media-placeholder', label: 'Family', hover: true %}
-            {%- endif -%}
-            {%- if block.settings.line_label != blank -%}<span class="pm-family-tile-line">{{ block.settings.line_label }}</span>{%- endif -%}
-          </div>
-          <div class="pm-family-tile-info">
+          {%- if tile_image -%}
+            <img class="pm-family-tile-image" src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: tile_label }}" loading="lazy">
+          {%- else -%}
+            {% render 'pm-media-placeholder', label: 'Family', hover: true %}
+          {%- endif -%}
+          {%- if block.settings.line_label != blank -%}<span class="pm-family-tile-line">{{ block.settings.line_label }}</span>{%- endif -%}
+          <div class="pm-family-tile-caption">
             <span class="pm-serif pm-family-tile-name">{{ tile_label }}</span>
-            <span class="pm-family-tile-count">
-              {%- if col -%}{{ col.products_count }} {% if col.products_count == 1 %}piece{% else %}pieces{% endif %}{%- else -%}Coming soon{%- endif -%}
-            </span>
+            {%- if is_big -%}
+              <span class="pm-family-tile-count">
+                {%- if col -%}{{ col.products_count }} {% if col.products_count == 1 %}piece{% else %}pieces{% endif %}{%- else -%}Coming soon{%- endif -%}
+              </span>
+            {%- endif -%}
           </div>
-          <span class="pm-link pm-family-tile-enter">Enter the Family</span>
         </a>
       {%- endfor -%}
     </div>
