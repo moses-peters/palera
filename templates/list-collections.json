@@ -1,1 +1,21 @@
-{"sections":{"main":{"type":"list-collections-template","settings":{}},"logo-list":{"type":"logo-list","blocks":{"logo1":{"type":"logo_image","settings":{}},"logo2":{"type":"logo_image","settings":{}},"logo3":{"type":"logo_image","settings":{}},"logo4":{"type":"logo_image","settings":{}},"logo5":{"type":"logo_image","settings":{}},"logo6":{"type":"logo_image","settings":{}}},"block_order":["logo1","logo2","logo3","logo4","logo5","logo6"],"settings":{"title":"Our brands"}}},"order":["main","logo-list"]}
+{
+  "sections": {
+    "main": {
+      "type": "pm-shop-families",
+      "blocks": {
+        "fam-1": { "type": "family", "settings": { "fallback_label": "Diamond Maxi Roma", "line_label": "Roma" } },
+        "fam-2": { "type": "family", "settings": { "fallback_label": "Diamond Mini Roma", "line_label": "Roma" } },
+        "fam-3": { "type": "family", "settings": { "fallback_label": "Mini Roma", "line_label": "Roma" } },
+        "fam-4": { "type": "family", "settings": { "fallback_label": "Maxi Roma", "line_label": "Roma" } },
+        "fam-5": { "type": "family", "settings": { "fallback_label": "Crystal Pouch", "line_label": "Pouch" } },
+        "fam-6": { "type": "family", "settings": { "fallback_label": "Crystal Pouch Long", "line_label": "Pouch" } },
+        "fam-7": { "type": "family", "settings": { "collection": "santorini", "fallback_label": "Santorini", "line_label": "Santorini" } },
+        "fam-8": { "type": "family", "settings": { "fallback_label": "Diamond Santorini", "line_label": "Santorini" } },
+        "fam-9": { "type": "family", "settings": { "fallback_label": "Clutch Edge Long", "line_label": "Clutch" } },
+        "fam-10": { "type": "family", "settings": { "fallback_label": "Jewelry & Accessories", "line_label": "Accessories" } }
+      },
+      "block_order": ["fam-1", "fam-2", "fam-3", "fam-4", "fam-5", "fam-6", "fam-7", "fam-8", "fam-9", "fam-10"]
+    }
+  },
+  "order": ["main"]
+}
