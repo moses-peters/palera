@@ -2,42 +2,6 @@
 
 <div class="pm-homepage">
   <footer class="pm-footer">
-    <div class="pm-footer-wordmark">
-      {%- if section.settings.logo -%}
-        <img src="{{ section.settings.logo | image_url: width: 240 }}" alt="{{ shop.name }}" loading="lazy" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}">
-      {%- else -%}
-        <span class="pm-footer-wordmark-text pm-serif">{{ shop.name }}</span>
-      {%- endif -%}
-    </div>
-
-    {%- if section.settings.show_newsletter -%}
-      <div class="pm-footer-newsletter pm-reveal">
-        {%- if section.settings.newsletter_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.newsletter_eyebrow }}</span>{%- endif -%}
-        <h2 class="pm-serif">{{ section.settings.newsletter_heading }}</h2>
-        {%- if section.settings.newsletter_text != blank -%}<p class="pm-footer-newsletter-text">{{ section.settings.newsletter_text }}</p>{%- endif -%}
-
-        {%- form 'customer', class: 'pm-footer-newsletter-form' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter">
-          <label for="FooterNewsletterEmail-{{ section.id }}" class="pm-visually-hidden">Email address</label>
-          <input
-            id="FooterNewsletterEmail-{{ section.id }}"
-            type="email"
-            name="contact[email]"
-            class="pm-footer-newsletter-input pm-serif"
-            placeholder="Your email address"
-            required
-          >
-          <button type="submit" class="pm-footer-newsletter-submit">Subscribe</button>
-
-          {%- if form.posted_successfully? -%}
-            <p class="pm-footer-newsletter-message">Thank you for subscribing</p>
-          {%- elsif form.errors -%}
-            <p class="pm-footer-newsletter-message">Please enter a valid email</p>
-          {%- endif -%}
-        {%- endform -%}
-      </div>
-    {%- endif -%}
-
     <div class="pm-footer-cols">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
@@ -70,6 +34,33 @@
       {%- endfor -%}
     </div>
 
+    {%- if section.settings.show_newsletter -%}
+      <div class="pm-footer-newsletter-compact pm-reveal">
+        {%- if section.settings.newsletter_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.newsletter_eyebrow }}</span>{%- endif -%}
+        <span class="pm-footer-newsletter-compact-heading">{{ section.settings.newsletter_heading }}</span>
+
+        {%- form 'customer', class: 'pm-footer-newsletter-form pm-footer-newsletter-form--compact' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label for="FooterNewsletterEmail-{{ section.id }}" class="pm-visually-hidden">Email address</label>
+          <input
+            id="FooterNewsletterEmail-{{ section.id }}"
+            type="email"
+            name="contact[email]"
+            class="pm-footer-newsletter-input pm-serif"
+            placeholder="Your email address"
+            required
+          >
+          <button type="submit" class="pm-footer-newsletter-submit">Subscribe</button>
+
+          {%- if form.posted_successfully? -%}
+            <p class="pm-footer-newsletter-message">Thank you for subscribing</p>
+          {%- elsif form.errors -%}
+            <p class="pm-footer-newsletter-message">Please enter a valid email</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+
     <div class="pm-footer-bottom">
       <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
       <span>{{ section.settings.location_text }}</span>
@@ -83,7 +74,6 @@
 {
   "name": "PM: Footer",
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Footer logo" },
     { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter signup", "default": true },
     { "type": "text", "id": "newsletter_eyebrow", "label": "Newsletter eyebrow" },
     { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join the Palera Community" },

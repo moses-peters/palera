@@ -76,7 +76,11 @@
 
 <style>
   /* PM: header polish */
-  .site-header .page-width { padding-top: 4px; padding-bottom: 4px; }
+  /* Header shrunk ~35%: theme default is padding:7px 0 (mobile) / 20px 0 (>=769px) */
+  .site-header { padding: 5px 0 !important; }
+  @media only screen and (min-width: 769px) {
+    .site-header { padding: 13px 0 !important; }
+  }
   .site-header .site-nav__link {
     font-size: 11px !important;
     font-weight: 400;
