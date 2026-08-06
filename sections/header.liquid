@@ -116,7 +116,7 @@
 
             {%- if logo_alignment == 'left' and section.settings.main_menu_alignment != 'left-drawer' -%}
               <div class="header-item header-item--navigation{% if section.settings.main_menu_alignment == 'left-center' %} text-center{% endif %}" {% unless disable_aria %}role="navigation" aria-label="Primary"{% endunless %}>
-                {%- render 'header-desktop-nav', main_menu: main_menu, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
+                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
               </div>
             {%- endif -%}
 
@@ -134,7 +134,7 @@
                 {%- endif -%}
 
                 {%- if section.settings.main_menu_alignment == 'center-left' -%}
-                  {%- render 'header-desktop-nav', main_menu: main_menu, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
+                  {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
                 {%- endif -%}
 
                 <div class="site-nav{% unless section.settings.main_menu_alignment == 'center-drawer' %} medium-up--hide{% endunless %}">
@@ -166,7 +166,7 @@
 
           {%- if section.settings.main_menu_alignment == 'center' -%}
             <div class="text-center">
-              {%- render 'header-desktop-nav', main_menu: main_menu, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
+              {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
             </div>
           {%- endif -%}
         </div>
@@ -191,6 +191,12 @@
       "id": "main_menu_link_list",
       "label": "t:sections.header.settings.main_menu_link_list.label",
       "default": "main-menu"
+    },
+    {
+      "type": "url",
+      "id": "about_us_url",
+      "label": "About Us link",
+      "info": "Nav is fixed to Home / Shop / About Us. Set where About Us points to."
     },
     {
       "type": "checkbox",
