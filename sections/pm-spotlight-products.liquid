@@ -10,13 +10,14 @@
         {%- assign product = block.settings.product -%}
         <a href="{{ product.url | default: '#' }}" class="pm-spotlight-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 120 }}ms" {{ block.shopify_attributes }}>
           <div class="pm-spotlight-media">
+            {%- if block.settings.badge_label != blank -%}<span class="pm-spotlight-badge">{{ block.settings.badge_label }}</span>{%- endif -%}
             {%- if product.featured_image -%}
               <img src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
             {%- else -%}
-              {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+              {% render 'pm-media-placeholder', label: 'Photo' %}
             {%- endif -%}
           </div>
-          <p class="pm-serif pm-spotlight-title">{{ product.title | default: block.settings.fallback_label }}</p>
+          <p class="pm-spotlight-title">{{ product.title | default: block.settings.fallback_label }}</p>
           {%- if product.price -%}
             <span class="pm-spotlight-price">
               {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
@@ -49,7 +50,8 @@
       "name": "Product",
       "settings": [
         { "type": "product", "id": "product", "label": "Product" },
-        { "type": "text", "id": "fallback_label", "label": "Fallback label (if no product selected)" }
+        { "type": "text", "id": "fallback_label", "label": "Fallback label (if no product selected)" },
+        { "type": "text", "id": "badge_label", "label": "Badge label", "default": "New", "info": "Leave blank to hide" }
       ]
     }
   ],
@@ -57,9 +59,9 @@
     {
       "name": "PM: Spotlight products",
       "blocks": [
-        { "type": "product", "settings": {} },
-        { "type": "product", "settings": {} },
-        { "type": "product", "settings": {} }
+        { "type": "product", "settings": { "badge_label": "New" } },
+        { "type": "product", "settings": { "badge_label": "New" } },
+        { "type": "product", "settings": { "badge_label": "New" } }
       ]
     }
   ]

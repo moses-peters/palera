@@ -1,0 +1,39 @@
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage">
+  <div class="pm-image-duo">
+    <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal">
+      {%- if section.settings.image_left -%}
+        <img src="{{ section.settings.image_left | image_url: width: 1400 }}" alt="{{ section.settings.image_left.alt | escape | default: section.settings.caption_left }}" loading="lazy">
+      {%- else -%}
+        {% render 'pm-media-placeholder', label: 'Photo' %}
+      {%- endif -%}
+      {%- if section.settings.caption_left != blank -%}<span class="pm-image-duo-caption">{{ section.settings.caption_left }}</span>{%- endif -%}
+    </a>
+    <a href="{{ section.settings.link_right | default: '#' }}" class="pm-image-duo-half pm-reveal" style="transition-delay: 120ms">
+      {%- if section.settings.image_right -%}
+        <img src="{{ section.settings.image_right | image_url: width: 1400 }}" alt="{{ section.settings.image_right.alt | escape | default: section.settings.caption_right }}" loading="lazy">
+      {%- else -%}
+        {% render 'pm-media-placeholder', label: 'Photo' %}
+      {%- endif -%}
+      {%- if section.settings.caption_right != blank -%}<span class="pm-image-duo-caption">{{ section.settings.caption_right }}</span>{%- endif -%}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Image duo",
+  "settings": [
+    { "type": "header", "content": "Left image" },
+    { "type": "image_picker", "id": "image_left", "label": "Image" },
+    { "type": "text", "id": "caption_left", "label": "Caption" },
+    { "type": "url", "id": "link_left", "label": "Link" },
+    { "type": "header", "content": "Right image" },
+    { "type": "image_picker", "id": "image_right", "label": "Image" },
+    { "type": "text", "id": "caption_right", "label": "Caption" },
+    { "type": "url", "id": "link_right", "label": "Link" }
+  ],
+  "presets": [{ "name": "PM: Image duo" }]
+}
+{% endschema %}

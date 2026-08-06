@@ -74,6 +74,31 @@
   {%- endif -%}
 </style>
 
+<style>
+  /* PM: header polish */
+  .site-header .page-width { padding-top: 4px; padding-bottom: 4px; }
+  .site-header .site-nav__link {
+    font-size: 11px !important;
+    font-weight: 400;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase;
+    opacity: 0.92;
+    transition: opacity 0.2s ease;
+  }
+  .site-header .site-nav__link:hover { opacity: 1; }
+  .site-header__logo img { transition: opacity 0.2s ease; }
+  .site-header__logo a:hover img { opacity: 0.75; }
+  .site-header .icon { opacity: 0.92; transition: opacity 0.2s ease; }
+  .site-header .header-item--icons a:hover .icon,
+  .site-header .header-item--icons button:hover .icon { opacity: 1; }
+  .announcement-bar,
+  .site-header ~ * .announcement-bar {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+</style>
+
 <div data-section-id="{{ section.id }}" data-section-type="header">
 
   {%- unless overlay_header -%}
