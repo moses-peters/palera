@@ -148,8 +148,13 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-spotlight-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--pm-line); margin-bottom: 56px; }
 .pm-spotlight-tile { background: var(--pm-sable); }
 .pm-spotlight-media { position: relative; aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; padding: clamp(24px, 4vw, 48px); }
-.pm-spotlight-media img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; transition: transform 0.6s var(--pm-ease); }
-.pm-spotlight-tile:hover .pm-spotlight-media img { transform: scale(1.03); }
+.pm-spotlight-media img {
+  max-width: 58%; max-height: 58%;
+  width: auto; height: auto;
+  object-fit: contain;
+  transition: transform 0.6s var(--pm-ease);
+}
+.pm-spotlight-tile:hover .pm-spotlight-media img { transform: scale(1.05); }
 .pm-spotlight-badge {
   position: absolute; top: clamp(14px, 2vw, 20px); left: clamp(14px, 2vw, 20px); z-index: 2;
   font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-muted);
