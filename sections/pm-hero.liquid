@@ -10,7 +10,7 @@
       {%- elsif section.settings.image -%}
         <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.heading }}" loading="eager">
       {%- else -%}
-        {% render 'pm-media-placeholder', label: 'Hero Video' %}
+        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ section.settings.heading }}" loading="eager">
       {%- endif -%}
     </div>
 

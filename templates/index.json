@@ -1,51 +1,34 @@
 {
   "sections": {
     "pm-hero": {
-      "type": "pm-hero",
-      "settings": { "image": "shopify://shop_images/Maxi_Roma_Lock_Azure.jpg" }
+      "type": "pm-hero"
     },
-    "pm-image-duo-1": {
-      "type": "pm-image-duo",
-      "settings": {
-        "image_left": "shopify://shop_images/Capri_Baby_Wood.jpg",
-        "image_right": "shopify://shop_images/Wood_Net_Hobo.jpg"
-      }
-    },
-    "pm-brand-statement": { "type": "pm-brand-statement" },
-    "pm-image-duo-2": {
-      "type": "pm-image-duo",
-      "settings": {
-        "image_left": "shopify://shop_images/015A6776a_df826d14-eb7e-40ef-a171-bf8b3946a64e.jpg",
-        "caption_left": "Santorini",
-        "link_left": "/collections/santorini",
-        "image_right": "shopify://shop_images/Maxi_Pouch_Wood.jpg",
-        "caption_right": "Crystal Pouch"
-      }
-    },
-    "pm-category-grid": {
-      "type": "pm-category-grid",
+    "pm-product-pair": {
+      "type": "pm-product-pair",
       "blocks": {
-        "cat-1": { "type": "category", "settings": { "collection": "all-handbags", "image": "shopify://shop_images/3U7A0196.jpg", "tall": true } },
-        "cat-2": { "type": "category", "settings": { "collection": "santorini", "image": "shopify://shop_images/Diamond_Roma_Belt_Silver_Blue_Gold.jpg" } },
-        "cat-3": { "type": "category", "settings": { "collection": "clutches", "image": "shopify://shop_images/Clutch_Mini_Blue_Silver.jpg" } },
-        "cat-4": { "type": "category", "settings": { "collection": "autumn-winter-2025", "image": "shopify://shop_images/3U7A0456.jpg" } }
+        "prod-1": { "type": "product", "settings": { "fallback_label": "Signature Clutch", "fallback_asset": "pm-drive-product-a.jpg" } },
+        "prod-2": { "type": "product", "settings": { "fallback_label": "Crystal Mini", "fallback_asset": "pm-drive-product-b.jpg" } }
       },
-      "block_order": ["cat-1", "cat-2", "cat-3", "cat-4"]
+      "block_order": ["prod-1", "prod-2"]
     },
     "pm-full-bleed-media": {
       "type": "pm-full-bleed-media",
-      "settings": { "image": "shopify://shop_images/Main_Page_MIni_V1.jpg" }
+      "settings": { "caption": "" }
     },
-    "pm-spotlight-products": {
-      "type": "pm-spotlight-products",
+    "pm-photo-grid": {
+      "type": "pm-photo-grid",
       "blocks": {
-        "prod-1": { "type": "product", "settings": { "product": "maxi-roma-lock-1", "badge_label": "New" } },
-        "prod-2": { "type": "product", "settings": { "product": "palera-clutch-mini", "badge_label": "New" } },
-        "prod-3": { "type": "product", "settings": { "product": "roma-belt-u-black", "badge_label": "New" } }
+        "photo-1": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-1.jpg" } },
+        "photo-2": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-2.jpg" } },
+        "photo-3": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-3.jpg" } },
+        "photo-4": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-4.jpg" } },
+        "photo-5": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-5.jpg" } },
+        "photo-6": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-6.jpg" } },
+        "photo-7": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-7.jpg" } },
+        "photo-8": { "type": "photo", "settings": { "fallback_asset": "pm-drive-grid-8.jpg" } }
       },
-      "block_order": ["prod-1", "prod-2", "prod-3"]
-    },
-    "pm-newsletter": { "type": "pm-newsletter" }
+      "block_order": ["photo-1", "photo-2", "photo-3", "photo-4", "photo-5", "photo-6", "photo-7", "photo-8"]
+    }
   },
-  "order": ["pm-hero", "pm-image-duo-1", "pm-brand-statement", "pm-image-duo-2", "pm-category-grid", "pm-full-bleed-media", "pm-spotlight-products", "pm-newsletter"]
+  "order": ["pm-hero", "pm-product-pair", "pm-full-bleed-media", "pm-photo-grid"]
 }

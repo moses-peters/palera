@@ -8,7 +8,7 @@
       {%- elsif section.settings.image -%}
         <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.caption }}" loading="lazy">
       {%- else -%}
-        {% render 'pm-media-placeholder', label: 'Video' %}
+        <img src="{{ 'pm-drive-horizontal.jpg' | asset_url }}" alt="{{ section.settings.caption }}" loading="lazy">
       {%- endif -%}
     </div>
     {%- if section.settings.caption != blank -%}
