@@ -1,15 +1,56 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "pm-about",
       "blocks": {
-        "value-1": { "type": "value", "settings": { "title": "Made in Italy", "text": "Every piece is cut, set, and finished within Italy, by the same small group of hands." } },
-        "value-2": { "type": "value", "settings": { "title": "Hand-Set Crystal", "text": "Each crystal is placed individually — no two pieces catch the light the same way." } },
-        "value-3": { "type": "value", "settings": { "title": "Made to Order", "text": "We build in small runs against real orders, not seasonal stock." } },
-        "value-4": { "type": "value", "settings": { "title": "Considered Design", "text": "Fewer, better pieces — built to be carried for years, not a season." } }
+        "value-1": {
+          "type": "value",
+          "settings": {
+            "title": "Made in Italy",
+            "text": "Every piece is cut, set, and finished within Italy, by the same small group of hands."
+          }
+        },
+        "value-2": {
+          "type": "value",
+          "settings": {
+            "title": "Hand-Set Crystal",
+            "text": "Each crystal is placed individually — no two pieces catch the light the same way."
+          }
+        },
+        "value-3": {
+          "type": "value",
+          "settings": {
+            "title": "Made to Order",
+            "text": "We build in small runs against real orders, not seasonal stock."
+          }
+        },
+        "value-4": {
+          "type": "value",
+          "settings": {
+            "title": "Considered Design",
+            "text": "Fewer, better pieces — built to be carried for years, not a season."
+          }
+        }
       },
-      "block_order": ["value-1", "value-2", "value-3", "value-4"]
+      "block_order": [
+        "value-1",
+        "value-2",
+        "value-3",
+        "value-4"
+      ],
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
