@@ -97,11 +97,14 @@
   /* Force identical logo height regardless of which image is assigned to
      the regular vs. inverted (light/dark) logo slot, so switching between
      them (e.g. a dark logo over a light sticky header) never changes size. */
-  .site-header__logo img { height: 30px !important; width: auto !important; transition: opacity 0.2s ease; }
-  @media (max-width: 768px) { .site-header__logo img { height: 20px !important; } }
+  .site-header__logo img { height: 38px !important; width: auto !important; transition: opacity 0.2s ease; }
+  @media (max-width: 768px) { .site-header__logo img { height: 26px !important; } }
   .site-header__logo a:hover img { opacity: 0.75; }
-  .pm-header-nav { flex: 0 0 auto !important; margin: 0 clamp(16px, 2vw, 32px); }
+  /* Sit right next to the search/cart icon cluster rather than centered
+     with even space on both sides. */
+  .pm-header-nav { flex: 0 0 auto !important; margin: 0 14px 0 clamp(16px, 2vw, 32px); }
   .pm-header-nav .site-nav { margin: 0; }
+  .header-item--icons { flex: 0 0 auto !important; }
   .site-header .icon { opacity: 0.92; transition: opacity 0.2s ease; }
   .site-header .header-item--icons a:hover .icon,
   .site-header .header-item--icons button:hover .icon { opacity: 1; }
