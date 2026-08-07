@@ -8,25 +8,11 @@
           <source src="{{ section.settings.video_url }}" type="video/mp4">
         </video>
       {%- elsif section.settings.image -%}
-        <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.heading }}" loading="eager">
+        <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ shop.name }}" loading="eager">
       {%- else -%}
-        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ section.settings.heading }}" loading="eager">
+        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ shop.name }}" loading="eager">
       {%- endif -%}
     </div>
-
-    {%- if section.settings.eyebrow != blank -%}
-      <span class="pm-hero-eyebrow pm-eyebrow">{{ section.settings.eyebrow }}</span>
-    {%- endif -%}
-
-    <h1 class="pm-hero-heading pm-serif">{{ section.settings.heading | newline_to_br }}</h1>
-
-    {%- if section.settings.button_label != blank -%}
-      <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="pm-hero-cta pm-link">{{ section.settings.button_label }}</a>
-    {%- endif -%}
-
-    {%- if section.settings.scroll_cue_text != blank -%}
-      <span class="pm-hero-scroll-cue">{{ section.settings.scroll_cue_text }}</span>
-    {%- endif -%}
   </section>
 </div>
 
@@ -36,11 +22,6 @@
 {
   "name": "PM: Hero",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
-    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Light,\ncaught in\ncrystal" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Discover the Collection" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "text", "id": "scroll_cue_text", "label": "Scroll cue text", "default": "Scroll" },
     { "type": "image_picker", "id": "image", "label": "Image" },
     { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." }
   ],

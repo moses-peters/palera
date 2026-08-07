@@ -53,34 +53,6 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 @media (min-width: 640px) { .pm-hero { min-height: 560px; } }
 .pm-hero-media { position: absolute; inset: 0; }
 .pm-hero-media img, .pm-hero-media video { width: 100%; height: 100%; object-fit: cover; }
-.pm-hero-eyebrow { position: absolute; top: clamp(20px, 4vw, 48px); left: var(--pm-pad); color: #fff; z-index: 2; }
-.pm-hero-eyebrow.pm-eyebrow { color: rgba(255, 255, 255, 0.75); }
-.pm-hero-heading {
-  position: absolute;
-  left: clamp(-8px, -1.4vw, -2px);
-  bottom: clamp(-14px, -2.6vw, -6px);
-  z-index: 2;
-  color: #fff;
-  font-size: clamp(64px, 13vw, 200px);
-  line-height: 0.86;
-  letter-spacing: -0.01em;
-  max-width: 96vw;
-  padding-left: clamp(12px, 2.4vw, 40px);
-  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.18);
-}
-.pm-hero-cta { position: absolute; right: var(--pm-pad); bottom: clamp(28px, 5vw, 56px); z-index: 2; color: #fff; }
-.pm-hero-scroll-cue {
-  position: absolute; left: var(--pm-pad); bottom: clamp(28px, 5vw, 56px); z-index: 2;
-  color: rgba(255, 255, 255, 0.75); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;
-  display: flex; align-items: center; gap: 10px;
-}
-.pm-hero-scroll-cue::after { content: ""; width: 1px; height: 34px; background: rgba(255, 255, 255, 0.5); animation: pm-scroll-line 2.2s var(--pm-ease) infinite; }
-@keyframes pm-scroll-line { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 50.01% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
-@media (max-width: 900px) {
-  .pm-hero-heading { position: static; padding: 0 var(--pm-pad); margin-top: clamp(48px, 30vh, 320px); font-size: clamp(40px, 15vw, 88px); }
-  .pm-hero-cta, .pm-hero-scroll-cue { position: absolute; bottom: 24px; }
-  .pm-hero-scroll-cue { display: none; }
-}
 
 /* ===== Editorial duo — Jacquemus-style asymmetric split with a floating caption card over the seam ===== */
 .pm-duo { position: relative; padding: clamp(80px, 11vw, 160px) var(--pm-pad); }
