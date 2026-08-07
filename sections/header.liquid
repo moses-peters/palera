@@ -97,12 +97,11 @@
   /* Force identical logo height regardless of which image is assigned to
      the regular vs. inverted (light/dark) logo slot, so switching between
      them (e.g. a dark logo over a light sticky header) never changes size. */
-  .site-header__logo img { height: 38px !important; width: auto !important; transition: opacity 0.2s ease; }
-  @media (max-width: 768px) { .site-header__logo img { height: 26px !important; } }
+  .site-header__logo img { height: 44px !important; width: auto !important; transition: opacity 0.2s ease; }
+  @media (max-width: 768px) { .site-header__logo img { height: 30px !important; } }
   .site-header__logo a:hover img { opacity: 0.75; }
-  /* Sit right next to the search/cart icon cluster rather than centered
-     with even space on both sides. */
-  .pm-header-nav { flex: 0 0 auto !important; margin: 0 14px 0 clamp(16px, 2vw, 32px); }
+  /* Nav sits on the left side of the header row, ahead of the logo. */
+  .pm-header-nav { flex: 0 0 auto !important; }
   .pm-header-nav .site-nav { margin: 0; }
   .header-item--icons { flex: 0 0 auto !important; }
   .site-header .icon { opacity: 0.92; transition: opacity 0.2s ease; }
@@ -163,7 +162,8 @@
             {%- endif -%}
 
             {%- if logo_alignment == 'center' -%}
-              <div class="header-item header-item--left header-item--navigation">
+              <div class="header-item header-item--left header-item--navigation pm-header-nav">
+                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
                 {%- if section.settings.main_menu_alignment == 'center' or section.settings.main_menu_alignment == 'center-split' -%}
                   {%- if settings.search_enable -%}
                     <div class="site-nav small--hide">
@@ -199,12 +199,6 @@
                   {%- render 'header-logo-block', section: section -%}
                 </div>
               {%- endif -%}
-            {%- endif -%}
-
-            {%- if section.settings.main_menu_alignment == 'center' -%}
-              <div class="header-item pm-header-nav">
-                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
-              </div>
             {%- endif -%}
 
             <div class="header-item header-item--icons">
