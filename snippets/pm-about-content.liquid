@@ -1,0 +1,69 @@
+{%- comment -%}
+  Editorial About Us layout, hardcoded (this is a one-off page, not a
+  reusable section) and shown automatically by main-page.liquid when
+  page.handle == 'about-us' — no manual template assignment needed.
+{%- endcomment -%}
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+{{ 'pm-about.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage">
+
+  <section class="pm-about-hero">
+    <img src="{{ 'pm-about-hero.jpg' | asset_url }}" alt="Our Story" loading="eager">
+    <div class="pm-about-hero-copy">
+      <span class="pm-eyebrow">Palera Milano</span>
+      <h1 class="pm-serif">Our Story</h1>
+    </div>
+  </section>
+
+  <section class="pm-statement pm-reveal">
+    <p class="pm-statement-mark">P M</p>
+    <p class="pm-serif pm-statement-quote">Palera Milano was born on the Sicilian coast, where sunlight on water first inspired a bag made to hold that same glow. What began as a single idea — that a handbag could catch the light the way the sea does — has grown into a maison built entirely on that instinct, and on the hands that carry it out, one crystal at a time.</p>
+  </section>
+
+  <section class="pm-about-spread">
+    <div class="pm-about-spread-image pm-reveal">
+      <img src="{{ 'pm-about-story.jpg' | asset_url }}" alt="Made By Hand" loading="lazy">
+    </div>
+    <div class="pm-about-spread-copy pm-reveal" style="transition-delay: 150ms">
+      <span class="pm-eyebrow">Made By Hand</span>
+      <h2 class="pm-serif">Every piece, considered</h2>
+      <div class="pm-about-spread-text">
+        <p>Every Palera piece is finished by artisan hands in Italy. Crystals are set one at a time, by eye, so no two pieces catch the light quite the same way — a deliberate imperfection we've never tried to engineer out.</p>
+        <p>We work in small runs, not seasons. A piece is made when it's ordered, not stocked in anticipation of a trend, which means what you carry was made with you already in mind.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-about-values">
+    <div class="pm-about-values-grid">
+      <div class="pm-about-value pm-reveal">
+        <span class="pm-about-value-index">01</span>
+        <h3 class="pm-serif">Made in Italy</h3>
+        <p>Every piece is cut, set, and finished within Italy, by the same small group of hands.</p>
+      </div>
+      <div class="pm-about-value pm-reveal" style="transition-delay: 100ms">
+        <span class="pm-about-value-index">02</span>
+        <h3 class="pm-serif">Hand-Set Crystal</h3>
+        <p>Each crystal is placed individually — no two pieces catch the light the same way.</p>
+      </div>
+      <div class="pm-about-value pm-reveal" style="transition-delay: 200ms">
+        <span class="pm-about-value-index">03</span>
+        <h3 class="pm-serif">Made to Order</h3>
+        <p>We build in small runs against real orders, not seasonal stock.</p>
+      </div>
+      <div class="pm-about-value pm-reveal" style="transition-delay: 300ms">
+        <span class="pm-about-value-index">04</span>
+        <h3 class="pm-serif">Considered Design</h3>
+        <p>Fewer, better pieces — built to be carried for years, not a season.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-about-closing pm-reveal">
+    <p class="pm-serif pm-about-closing-text">Made to order, in Italy — for the way you actually live.</p>
+    <a href="/collections" class="pm-link">Shop the Collection</a>
+  </section>
+</div>
+
+<script src="{{ 'pm-homepage.js' | asset_url }}" defer></script>

@@ -1,3 +1,6 @@
+{%- if page.handle == 'about-us' -%}
+  {%- render 'pm-about-content' -%}
+{%- else -%}
 <div class="page-width page-width--narrow page-content">
   {%- render 'breadcrumbs' -%}
   <header class="section-header">
@@ -7,6 +10,7 @@
     {{ page.content }}
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
