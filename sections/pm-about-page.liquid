@@ -1,0 +1,13 @@
+{%- comment -%}
+  Dedicated section for the "about" page template — renders the
+  editorial About Us layout unconditionally (no page.handle check),
+  so it doesn't depend on knowing the page's exact URL handle.
+{%- endcomment -%}
+{%- render 'pm-about-content' -%}
+
+{% schema %}
+{
+  "name": "PM: About page",
+  "tag": "section"
+}
+{% endschema %}
