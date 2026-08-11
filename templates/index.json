@@ -66,6 +66,7 @@
           "type": "photo",
           "settings": {
             "product": "",
+            "image": "shopify://shop_images/3U7A3063-2.jpg",
             "fallback_label": "",
             "fallback_asset": "",
             "link": ""
