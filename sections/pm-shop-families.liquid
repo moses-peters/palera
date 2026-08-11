@@ -49,7 +49,7 @@
             <span class="pm-serif pm-family-tile-name">{{ tile_label }}</span>
             {%- if is_big -%}
               <span class="pm-family-tile-count">
-                {%- if col -%}{{ col.products_count }} {% if col.products_count == 1 %}piece{% else %}pieces{% endif %}{%- else -%}Coming soon{%- endif -%}
+                {%- if col -%}{{ col.products_count }} {% if col.products_count == 1 %}piece{% else %}pieces{% endif %}{%- elsif is_linkable -%}Shop now{%- else -%}Coming soon{%- endif -%}
               </span>
             {%- endif -%}
           </div>
