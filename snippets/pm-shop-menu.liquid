@@ -8,6 +8,10 @@
 
   Family images/links pull live from the real products (by handle) so
   they always match Shopify, no manual image uploads to keep in sync.
+
+  Hovering a family (left link or grid tile) swaps the right-hand panel
+  from the AW27 campaign image to that family's color variants — see
+  the script at the bottom.
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
@@ -25,7 +29,7 @@
         {%- assign line_name = parts[0] -%}
         {%- assign line_product = all_products[parts[1]] -%}
         {%- if line_product != blank -%}
-          <a href="{{ line_product.url }}" class="pm-shop-menu-links-item">{{ line_name }}</a>
+          <a href="{{ line_product.url }}" class="pm-shop-menu-links-item" data-family="{{ line_name | handle }}">{{ line_name }}</a>
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -36,7 +40,7 @@
         {%- assign line_name = parts[0] -%}
         {%- assign line_product = all_products[parts[1]] -%}
         {%- if line_product != blank -%}
-          <a href="{{ line_product.url }}" class="pm-shop-menu-tile">
+          <a href="{{ line_product.url }}" class="pm-shop-menu-tile" data-family="{{ line_name | handle }}">
             {%- if line_product.featured_image -%}
               <img src="{{ line_product.featured_image | image_url: width: 260 }}" alt="{{ line_name }}" loading="lazy">
             {%- else -%}
@@ -48,13 +52,65 @@
       {%- endfor -%}
     </div>
 
-    <a href="/collections/aw27" class="pm-shop-menu-feature">
-      <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27">
-      <span class="pm-shop-menu-feature-copy">
-        <span class="pm-eyebrow">New Season</span>
-        <span class="pm-serif">AW27</span>
-        <span class="pm-link" style="margin-top:10px;">Discover the Collection</span>
-      </span>
-    </a>
+    <div class="pm-shop-menu-side">
+      <a href="/collections/aw27" class="pm-shop-menu-feature" data-shop-menu-default>
+        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27">
+        <span class="pm-shop-menu-feature-copy">
+          <span class="pm-eyebrow">New Season</span>
+          <span class="pm-serif">AW27</span>
+          <span class="pm-link" style="margin-top:10px;">Discover the Collection</span>
+        </span>
+      </a>
+
+      {%- for entry in families -%}
+        {%- assign parts = entry | split: '|' -%}
+        {%- assign line_name = parts[0] -%}
+        {%- assign line_product = all_products[parts[1]] -%}
+        {%- if line_product != blank -%}
+          <div class="pm-shop-menu-variants" data-shop-menu-variants data-family="{{ line_name | handle }}" hidden>
+            <span class="pm-eyebrow">{{ line_name }} — {{ line_product.variants.size }} {% if line_product.variants.size == 1 %}color{% else %}colors{% endif %}</span>
+            <div class="pm-shop-menu-variants-grid">
+              {%- for variant in line_product.variants -%}
+                <a href="{{ variant.url }}" class="pm-shop-menu-variant">
+                  {%- assign variant_image = variant.featured_image | default: line_product.featured_image -%}
+                  {%- if variant_image -%}
+                    <img src="{{ variant_image | image_url: width: 120 }}" alt="{{ variant.title }}" loading="lazy">
+                  {%- endif -%}
+                  <span>{{ variant.title }}</span>
+                </a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    document.addEventListener('mouseover', function (e) {
+      var trigger = e.target.closest('[data-family]');
+      if (!trigger) return;
+      var menu = trigger.closest('.pm-shop-menu');
+      if (!menu) return;
+      var match = menu.querySelector('[data-shop-menu-variants][data-family="' + trigger.getAttribute('data-family') + '"]');
+      if (!match) return;
+      var feature = menu.querySelector('[data-shop-menu-default]');
+      if (feature) feature.hidden = true;
+      menu.querySelectorAll('[data-shop-menu-variants]').forEach(function (panel) {
+        panel.hidden = (panel !== match);
+      });
+    });
+
+    document.querySelectorAll('.pm-shop-menu').forEach(function (menu) {
+      menu.addEventListener('mouseleave', function () {
+        menu.querySelectorAll('[data-shop-menu-variants]').forEach(function (panel) {
+          panel.hidden = true;
+        });
+        var feature = menu.querySelector('[data-shop-menu-default]');
+        if (feature) feature.hidden = false;
+      });
+    });
+  })();
+</script>
