@@ -53,22 +53,21 @@
     "pm-photo-grid": {
       "type": "pm-photo-grid",
       "blocks": {
-        "photo_HByhkb": {
-          "type": "photo",
-          "settings": {
-            "product": "",
-            "image": "shopify://shop_images/3U7A3063-2.jpg",
-            "fallback_label": "",
-            "fallback_asset": "",
-            "link": ""
-          }
-        },
         "photo-1": {
           "type": "photo",
           "settings": {
             "product": "",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-1.jpg",
+            "link": ""
+          }
+        },
+        "photo_xL8DkK": {
+          "type": "photo",
+          "settings": {
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "",
             "link": ""
           }
         },
@@ -117,12 +116,13 @@
             "link": ""
           }
         },
-        "photo-7": {
+        "photo_HByhkb": {
           "type": "photo",
           "settings": {
             "product": "",
+            "image": "shopify://shop_images/3U7A3063-2.jpg",
             "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-7.jpg",
+            "fallback_asset": "",
             "link": ""
           }
         },
@@ -137,14 +137,14 @@
         }
       },
       "block_order": [
-        "photo_HByhkb",
         "photo-1",
+        "photo_xL8DkK",
         "photo-2",
         "photo-3",
         "photo-4",
         "photo-5",
         "photo-6",
-        "photo-7",
+        "photo_HByhkb",
         "photo-8"
       ],
       "settings": {
