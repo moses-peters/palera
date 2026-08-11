@@ -1,15 +1,18 @@
 {%- comment -%}
-  Fixed 3-item nav (Home / Shop / About Us) — intentionally ignores the
-  store's main-menu link list. About Us URL comes from the header
-  section's "About Us link" setting (theme editor), since it can't be
-  known from theme code.
+  Fixed 4-item nav (Home / AW27 / Shop / About Us) — intentionally ignores
+  the store's main-menu link list. About Us / AW27 URLs come from the
+  header section's settings (theme editor), since they can't be known
+  from theme code.
 {%- endcomment -%}
 <ul class="site-nav site-navigation small--hide">
   <li class="site-nav__item site-nav__expanded-item">
-    <a href="/collections" class="site-nav__link site-nav__link--underline">Shop</a>
+    <a href="{{ routes.root_url }}" class="site-nav__link site-nav__link--underline">Home</a>
   </li>
   <li class="site-nav__item site-nav__expanded-item">
-    <a href="{{ routes.root_url }}" class="site-nav__link site-nav__link--underline">Home</a>
+    <a href="{{ aw27_url | default: '/collections/aw27' }}" class="site-nav__link site-nav__link--underline">AW27</a>
+  </li>
+  <li class="site-nav__item site-nav__expanded-item">
+    <a href="/collections" class="site-nav__link site-nav__link--underline">Shop</a>
   </li>
   <li class="site-nav__item site-nav__expanded-item">
     <a href="{{ about_us_url | default: '/pages/about-us' }}" class="site-nav__link site-nav__link--underline">About Us</a>

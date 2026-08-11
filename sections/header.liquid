@@ -180,7 +180,7 @@
 
             {%- if logo_alignment == 'left' and section.settings.main_menu_alignment != 'left-drawer' -%}
               <div class="header-item header-item--navigation{% if section.settings.main_menu_alignment == 'left-center' %} text-center{% endif %}" {% unless disable_aria %}role="navigation" aria-label="Primary"{% endunless %}>
-                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
+                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url -%}
               </div>
             {%- endif -%}
 
@@ -196,10 +196,10 @@
                     </div>
                   {%- endif -%}
                 {%- endif -%}
-                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
+                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url -%}
 
                 {%- if section.settings.main_menu_alignment == 'center-left' -%}
-                  {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url -%}
+                  {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url -%}
                 {%- endif -%}
 
                 <div class="site-nav{% unless section.settings.main_menu_alignment == 'center-drawer' %} medium-up--hide{% endunless %}">
@@ -255,7 +255,13 @@
       "type": "url",
       "id": "about_us_url",
       "label": "About Us link",
-      "info": "Nav is fixed to Home / Shop / About Us. Set where About Us points to."
+      "info": "Nav is fixed to Home / AW27 / Shop / About Us. Set where About Us points to."
+    },
+    {
+      "type": "url",
+      "id": "aw27_url",
+      "label": "AW27 link",
+      "info": "Defaults to /collections/aw27. Override if the AW27 collection ends up with a different handle."
     },
     {
       "type": "checkbox",
