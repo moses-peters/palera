@@ -22,10 +22,13 @@
     data-section-id="{{ product.id }}"
     data-subsection
     data-section-type="collection-grid"
-    class="index-section">
+    class="index-section pm-product-recs">
+    {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+    {{ 'pm-product.css' | asset_url | stylesheet_tag }}
     <div class="page-width">
       <header class="section-header">
-        <h3 class="section-header__title">
+        <span class="pm-eyebrow">Palera Milano</span>
+        <h3 class="section-header__title pm-serif">
           {{ section.settings.product_recommendations_heading }}
         </h3>
       </header>
