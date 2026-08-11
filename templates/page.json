@@ -50,12 +50,65 @@
         "full_width": false,
         "space_around": true
       }
+    },
+    "pm_about_Ch6rqK": {
+      "type": "pm-about",
+      "blocks": {
+        "value_Km4B8y": {
+          "type": "value",
+          "settings": {
+            "title": "Made in Italy",
+            "text": "Every piece is cut, set, and finished within Italy, by the same small group of hands."
+          }
+        },
+        "value_ELRjVn": {
+          "type": "value",
+          "settings": {
+            "title": "Hand-Set Crystal",
+            "text": "Each crystal is placed individually — no two pieces catch the light the same way."
+          }
+        },
+        "value_WjUnQq": {
+          "type": "value",
+          "settings": {
+            "title": "Made to Order",
+            "text": "We build in small runs against real orders, not seasonal stock."
+          }
+        },
+        "value_Em9rDR": {
+          "type": "value",
+          "settings": {
+            "title": "Considered Design",
+            "text": "Fewer, better pieces — built to be carried for years, not a season."
+          }
+        }
+      },
+      "block_order": [
+        "value_Km4B8y",
+        "value_ELRjVn",
+        "value_WjUnQq",
+        "value_Em9rDR"
+      ],
+      "name": "PM: About",
+      "settings": {
+        "hero_eyebrow": "Palera Milano",
+        "hero_heading": "Our Story",
+        "statement_mark": "P M",
+        "statement_text": "Palera Milano was born on the Sicilian coast, where sunlight on water first inspired a bag made to hold that same glow. What began as a single idea — that a handbag could catch the light the way the sea does — has grown into a maison built entirely on that instinct, and on the hands that carry it out, one crystal at a time.",
+        "story_eyebrow": "Made By Hand",
+        "story_heading": "Every piece, considered",
+        "story_text": "<p>Every Palera piece is finished by artisan hands in Italy. Crystals are set one at a time, by eye, so no two pieces catch the light quite the same way — a deliberate imperfection we've never tried to engineer out.</p><p>We work in small runs, not seasons. A piece is made when it's ordered, not stocked in anticipation of a trend, which means what you carry was made with you already in mind.</p>",
+        "closing_text": "Made to order, in Italy — for the way you actually live.",
+        "closing_link_label": "Shop the Collection",
+        "closing_link_url": ""
+      }
     }
   },
   "order": [
     "main",
     "1726698142b015c0cf",
     "1782813006baba11cb",
-    "17828139319027552a"
+    "17828139319027552a",
+    "pm_about_Ch6rqK"
   ]
 }
