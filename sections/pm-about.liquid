@@ -38,6 +38,30 @@
     </div>
   </section>
 
+  {%- comment -%} ===== Lifestyle duo ===== {%- endcomment -%}
+  <section class="pm-duo">
+    <div class="pm-duo-grid">
+      <div class="pm-duo-image pm-duo-image--a pm-reveal">
+        {%- if section.settings.duo_image_a -%}
+          <img src="{{ section.settings.duo_image_a | image_url: width: 1200 }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
+        {%- else -%}
+          <img src="{{ 'pm-about-duo-a.jpg' | asset_url }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
+        {%- endif -%}
+      </div>
+      <div class="pm-duo-image pm-duo-image--b pm-reveal" style="transition-delay: 150ms">
+        {%- if section.settings.duo_image_b -%}
+          <img src="{{ section.settings.duo_image_b | image_url: width: 900 }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
+        {%- else -%}
+          <img src="{{ 'pm-about-duo-b.jpg' | asset_url }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="pm-duo-caption pm-reveal" style="transition-delay: 300ms">
+      <span class="pm-eyebrow">{{ section.settings.duo_eyebrow }}</span>
+      <p class="pm-serif">{{ section.settings.duo_copy }}</p>
+    </div>
+  </section>
+
   {%- comment -%} ===== Values row ===== {%- endcomment -%}
   {%- if section.blocks.size > 0 -%}
     <section class="pm-about-values">
@@ -98,6 +122,19 @@
       "id": "story_text",
       "label": "Text",
       "default": "<p>Every Palera piece is finished by artisan hands in Italy. Crystals are set one at a time, by eye, so no two pieces catch the light quite the same way — a deliberate imperfection we've never tried to engineer out.</p><p>We work in small runs, not seasons. A piece is made when it's ordered, not stocked in anticipation of a trend, which means what you carry was made with you already in mind.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Lifestyle duo"
+    },
+    { "type": "image_picker", "id": "duo_image_a", "label": "Large image" },
+    { "type": "image_picker", "id": "duo_image_b", "label": "Small offset image" },
+    { "type": "text", "id": "duo_eyebrow", "label": "Eyebrow", "default": "Worn in Paris" },
+    {
+      "type": "textarea",
+      "id": "duo_copy",
+      "label": "Copy",
+      "default": "Thank you for being part of this journey. Your appreciation for artistry and thoughtful design allows us to continue pushing the boundaries of what a crystal handbag can be."
     },
     {
       "type": "header",
