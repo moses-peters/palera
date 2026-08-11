@@ -129,6 +129,7 @@
         },
         "photo-8": {
           "type": "photo",
+          "disabled": true,
           "settings": {
             "product": "",
             "fallback_label": "",
