@@ -361,8 +361,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-shop-menu-links-item:hover { opacity: 0.55; }
 .pm-shop-menu-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 18px 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 18px;
 }
 .pm-shop-menu-tile { display: block; text-align: left; }
 .pm-shop-menu-tile img,

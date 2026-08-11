@@ -1,22 +1,23 @@
 {%- comment -%}
-  "Shop" mega-menu panel — one glance at every bag line, styled after the
-  Jacquemus nav dropdown: quick links | family grid | campaign panel.
+  "Shop" mega-menu panel — one glance at every bag family, styled after
+  the Jacquemus nav dropdown: quick links | family grid | campaign panel.
   Rendered inside a stock <details class="site-nav__dropdown megamenu">
   (see header-desktop-nav.liquid) so hover-open/close and full-width
   positioning come from the theme's existing mega-menu CSS/JS — only the
   inner content here is custom.
 
-  Family images/links pull live from the real products (by handle) so
-  they always match Shopify, no manual image uploads to keep in sync.
-
-  Hovering a family (left link or grid tile) swaps the right-hand panel
-  from the AW27 campaign image to that family's color variants — see
-  the script at the bottom.
+  Families are grouped (e.g. "Roma" covers Maxi Roma, Maxi Roma-Lock,
+  Diamond Maxi Roma, Mini Roma, the Roma belts, etc.) rather than one
+  tile per product/material variant — see FAMILY_GROUPS below. Hovering
+  a family (left link or grid tile) swaps the right-hand panel from the
+  AW27 campaign image to that family's member bags; hovering "Shop All"
+  or leaving the menu reverts to the AW27 panel.
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign families = 'Roma|maxi-roma-0,Diamond Roma|diamond-maxi-roma-1,Santorini|santorini-6,Diamond Santorini|diamond-santorini-1,Milano|mini-milano-n2-sparkle-blue,Diamond Milano|diamond-mini-milano-n2-22,Clutch Edge|clutch-edge-long-silver-blue,Clutch Mini|clutch-mini-champagne,Clutch|clutch-micro-bag,Pouch|crystal-pouch,Wallet|crystal-wallet-rare-pink,Chain|wallet-chain-rare-pink,Capri|capri-bag-gold,Amelia|amelia-bag-gold,Hobo|hobo-wood-bag' | split: ','
+  # name|representative_handle|member_handle:Label,member_handle:Label,...
+  assign family_groups = 'Roma|maxi-roma-0|diamond-maxi-roma-lock:Diamond Maxi Roma Lock,diamond-roma-belt-u:Diamond Roma Belt-U,maxi-roma-0:Maxi Roma,maxi-roma-lock:Maxi Roma-Lock,diamond-maxi-roma-1:Diamond Maxi Roma,diamond-mini-roma-1:Diamond Mini Roma,mini-roma-1:Mini Roma,roma-belt-u-black:Roma Belt-U,mini-roma-exclusive-uae:Mini Roma - UAE;Santorini|santorini-6|santorini-6:Santorini,santorini-lock-green:Santorini-Lock,diamond-santorini-1:Diamond Santorini;Milano|mini-milano-n2-sparkle-blue|mini-milano-n2-sparkle-blue:Mini Milano N2,diamond-mini-milano-n2-22:Diamond Mini Milano N2;Clutch|clutch-edge-long-silver-blue|clutch-edge-long-silver-blue:Clutch Edge-Long,clutch-edge-short-copy:Clutch Edge - Short,clutch-edge-airpod-wood-crystal:Clutch Edge - Airpod - Wood - Crystal,clutch-edge-airpod:Clutch Edge - Airpod,clutch-edge-short-brass-champagne:Clutch Edge - Short - Brass - Crystal,clutch-mini-champagne:Clutch Mini Bag,clutch-mini-brass-silve-blue:Clutch Mini - Brass - Crystal,clutch-mini-wood-crystal-silver-blue:Clutch Mini Wood - Crystal,clutch-wood-crystal-sylver-blue:Clutch Wood-Crystal,clutch-micro-bag:Clutch Micro Bag;Pouch|crystal-pouch|crystal-pouch:Crystal Pouch,crystal-pouch-wood-1:Crystal Pouch - Wood,crystal-pouch-brass-rare-pink:Crystal Pouch - Brass,maxi-crystal-wood-pouch-rare-pink:Maxi Crystal Wood - Pouch;Wallet|crystal-wallet-rare-pink|crystal-wallet-rare-pink:Crystal Wallet,crystal-wallet-wood-rare-pink:Crystal Wallet - Wood,wallet-chain-rare-pink:Wallet Chain;Capri|capri-bag-gold|capri-bag-gold:Capri Bag,capri-baby-brown:Capri Baby,capri-baby-wood-silver-blue:Capri Baby Wood;Amelia|amelia-bag-gold|amelia-bag-gold:Amelia Bag,amelia-brass-silver-blue:Amelia Brass - Crystal,amelia-wood-crystal-green:Amelia Wood-Crystal;Hobo|hobo-wood-bag|hobo-wood-bag:Wood Net Hobo;Accessories|mirage-necklace-green|mirage-necklace-green:Mirage Necklace,mirage-necklace-crystal:Mirage Necklace-Crystal,mirage-multi-necklaces:Mirage Multi-Necklace,necklace-agate-purple:Necklace Agate,necklace-agate-heart-purple:Necklace Agate Heart,necklace-crystal-heart-rare-pink:Necklace Crystal Heart,necklace-crystal-silver-blue:Necklace Crystal,belt:Belt' | split: ';'
 -%}
 
 <div class="pm-homepage">
@@ -24,32 +25,36 @@
     <div class="pm-shop-menu-links">
       <a href="{{ routes.all_products_collection_url | default: '/collections' }}" class="pm-shop-menu-links-item pm-shop-menu-links-item--all">View All</a>
       <a href="/collections/aw27" class="pm-shop-menu-links-item">New: AW27</a>
-      {%- for entry in families -%}
-        {%- assign parts = entry | split: '|' -%}
-        {%- assign line_name = parts[0] -%}
-        {%- assign line_product = all_products[parts[1]] -%}
-        {%- if line_product != blank -%}
-          <a href="{{ line_product.url }}" class="pm-shop-menu-links-item" data-family="{{ line_name | handle }}">{{ line_name }}</a>
+      {%- for group in family_groups -%}
+        {%- assign group_parts = group | split: '|' -%}
+        {%- assign group_name = group_parts[0] -%}
+        {%- assign rep_product = all_products[group_parts[1]] -%}
+        {%- if rep_product != blank -%}
+          <a href="{{ rep_product.url }}" class="pm-shop-menu-links-item" data-family="{{ group_name | handle }}">{{ group_name }}</a>
         {%- endif -%}
       {%- endfor -%}
     </div>
 
     <div class="pm-shop-menu-grid">
-      {%- for entry in families -%}
-        {%- assign parts = entry | split: '|' -%}
-        {%- assign line_name = parts[0] -%}
-        {%- assign line_product = all_products[parts[1]] -%}
-        {%- if line_product != blank -%}
-          <a href="{{ line_product.url }}" class="pm-shop-menu-tile" data-family="{{ line_name | handle }}">
-            {%- if line_product.featured_image -%}
-              <img src="{{ line_product.featured_image | image_url: width: 260 }}" alt="{{ line_name }}" loading="lazy">
+      {%- for group in family_groups -%}
+        {%- assign group_parts = group | split: '|' -%}
+        {%- assign group_name = group_parts[0] -%}
+        {%- assign rep_product = all_products[group_parts[1]] -%}
+        {%- if rep_product != blank -%}
+          <a href="{{ rep_product.url }}" class="pm-shop-menu-tile" data-family="{{ group_name | handle }}">
+            {%- if rep_product.featured_image -%}
+              <img src="{{ rep_product.featured_image | image_url: width: 260 }}" alt="{{ group_name }}" loading="lazy">
             {%- else -%}
-              {% render 'pm-media-placeholder', label: line_name %}
+              {% render 'pm-media-placeholder', label: group_name %}
             {%- endif -%}
-            <span>{{ line_name }}</span>
+            <span>{{ group_name }}</span>
           </a>
         {%- endif -%}
       {%- endfor -%}
+      <a href="{{ routes.all_products_collection_url | default: '/collections' }}" class="pm-shop-menu-tile" data-family="shop-all">
+        <img src="{{ 'pm-about-duo-a.jpg' | asset_url }}" alt="Shop All" loading="lazy">
+        <span>Shop All</span>
+      </a>
     </div>
 
     <div class="pm-shop-menu-side">
@@ -62,26 +67,27 @@
         </span>
       </a>
 
-      {%- for entry in families -%}
-        {%- assign parts = entry | split: '|' -%}
-        {%- assign line_name = parts[0] -%}
-        {%- assign line_product = all_products[parts[1]] -%}
-        {%- if line_product != blank -%}
-          <div class="pm-shop-menu-variants" data-shop-menu-variants data-family="{{ line_name | handle }}" hidden>
-            <span class="pm-eyebrow">{{ line_name }} — {{ line_product.variants.size }} {% if line_product.variants.size == 1 %}color{% else %}colors{% endif %}</span>
-            <div class="pm-shop-menu-variants-grid">
-              {%- for variant in line_product.variants -%}
-                <a href="{{ variant.url }}" class="pm-shop-menu-variant">
-                  {%- assign variant_image = variant.featured_image | default: line_product.featured_image -%}
-                  {%- if variant_image -%}
-                    <img src="{{ variant_image | image_url: width: 120 }}" alt="{{ variant.title }}" loading="lazy">
+      {%- for group in family_groups -%}
+        {%- assign group_parts = group | split: '|' -%}
+        {%- assign group_name = group_parts[0] -%}
+        {%- assign members = group_parts[2] | split: ',' -%}
+        <div class="pm-shop-menu-variants" data-shop-menu-variants data-family="{{ group_name | handle }}" hidden>
+          <span class="pm-eyebrow">{{ group_name }} — {{ members.size }} {% if members.size == 1 %}piece{% else %}pieces{% endif %}</span>
+          <div class="pm-shop-menu-variants-grid">
+            {%- for member in members -%}
+              {%- assign member_parts = member | split: ':' -%}
+              {%- assign member_product = all_products[member_parts[0]] -%}
+              {%- if member_product != blank -%}
+                <a href="{{ member_product.url }}" class="pm-shop-menu-variant">
+                  {%- if member_product.featured_image -%}
+                    <img src="{{ member_product.featured_image | image_url: width: 120 }}" alt="{{ member_parts[1] }}" loading="lazy">
                   {%- endif -%}
-                  <span>{{ variant.title }}</span>
+                  <span>{{ member_parts[1] }}</span>
                 </a>
-              {%- endfor -%}
-            </div>
+              {%- endif -%}
+            {%- endfor -%}
           </div>
-        {%- endif -%}
+        </div>
       {%- endfor -%}
     </div>
   </div>
@@ -94,13 +100,13 @@
       if (!trigger) return;
       var menu = trigger.closest('.pm-shop-menu');
       if (!menu) return;
-      var match = menu.querySelector('[data-shop-menu-variants][data-family="' + trigger.getAttribute('data-family') + '"]');
-      if (!match) return;
       var feature = menu.querySelector('[data-shop-menu-default]');
-      if (feature) feature.hidden = true;
+      var family = trigger.getAttribute('data-family');
+      var match = family === 'shop-all' ? null : menu.querySelector('[data-shop-menu-variants][data-family="' + family + '"]');
       menu.querySelectorAll('[data-shop-menu-variants]').forEach(function (panel) {
         panel.hidden = (panel !== match);
       });
+      if (feature) feature.hidden = !!match;
     });
 
     document.querySelectorAll('.pm-shop-menu').forEach(function (menu) {
