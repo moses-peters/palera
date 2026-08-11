@@ -11,7 +11,9 @@
   "sections": {
     "pm-hero": {
       "type": "pm-hero",
-      "settings": {}
+      "settings": {
+        "video_url": ""
+      }
     },
     "pm-product-pair": {
       "type": "pm-product-pair",
@@ -19,15 +21,19 @@
         "prod-1": {
           "type": "product",
           "settings": {
+            "product": "",
             "fallback_label": "Signature Clutch",
-            "fallback_asset": "pm-drive-product-a.jpg"
+            "fallback_asset": "pm-drive-product-a.jpg",
+            "link": ""
           }
         },
         "prod-2": {
           "type": "product",
           "settings": {
+            "product": "",
             "fallback_label": "Crystal Mini",
-            "fallback_asset": "pm-drive-product-b.jpg"
+            "fallback_asset": "pm-drive-product-b.jpg",
+            "link": ""
           }
         }
       },
@@ -40,62 +46,98 @@
     "pm-full-bleed-media": {
       "type": "pm-full-bleed-media",
       "settings": {
+        "video_url": "",
         "caption": ""
       }
     },
     "pm-photo-grid": {
       "type": "pm-photo-grid",
       "blocks": {
+        "photo_HByhkb": {
+          "type": "photo",
+          "settings": {
+            "product": "",
+            "image": "shopify://shop_images/3U7A3063-2.jpg",
+            "fallback_label": "",
+            "fallback_asset": "",
+            "link": ""
+          }
+        },
         "photo-1": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-1.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-1.jpg",
+            "link": ""
           }
         },
         "photo-2": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-2.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-2.jpg",
+            "link": ""
           }
         },
         "photo-3": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-3.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-3.jpg",
+            "link": ""
           }
         },
         "photo-4": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-4.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-4.jpg",
+            "link": ""
           }
         },
         "photo-5": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-5.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-5.jpg",
+            "link": ""
           }
         },
         "photo-6": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-6.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-6.jpg",
+            "link": ""
           }
         },
         "photo-7": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-7.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-7.jpg",
+            "link": ""
           }
         },
         "photo-8": {
           "type": "photo",
           "settings": {
-            "fallback_asset": "pm-drive-grid-8.jpg"
+            "product": "",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-8.jpg",
+            "link": ""
           }
         }
       },
       "block_order": [
+        "photo_HByhkb",
         "photo-1",
         "photo-2",
         "photo-3",
@@ -105,7 +147,10 @@
         "photo-7",
         "photo-8"
       ],
-      "settings": {}
+      "settings": {
+        "eyebrow": "",
+        "heading": ""
+      }
     }
   },
   "order": [
