@@ -6,18 +6,17 @@
   positioning come from the theme's existing mega-menu CSS/JS — only the
   inner content here is custom.
 
-  Families are grouped (e.g. "Roma" covers Maxi Roma, Maxi Roma-Lock,
-  Diamond Maxi Roma, Mini Roma, the Roma belts, etc.) rather than one
-  tile per product/material variant — see FAMILY_GROUPS below. Hovering
-  a family (left link or grid tile) swaps the right-hand panel from the
-  AW27 campaign image to that family's member bags; hovering "Shop All"
-  or leaving the menu reverts to the AW27 panel.
+  Right panel: hovering a family (left link or grid tile) swaps the big
+  campaign-style photo from the default AW27 image to that family's own
+  flagship shot, same treatment (full image + eyebrow + name + link) —
+  matches the reference Jacquemus behavior where the right panel always
+  shows one full product photo, not a list. Leaving the menu, or
+  hovering Shop All, reverts to the AW27 panel.
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  # name|representative_handle|member_handle:Label,member_handle:Label,...
-  assign family_groups = 'Roma|maxi-roma-0|diamond-maxi-roma-lock:Diamond Maxi Roma Lock,diamond-roma-belt-u:Diamond Roma Belt-U,maxi-roma-0:Maxi Roma,maxi-roma-lock:Maxi Roma-Lock,diamond-maxi-roma-1:Diamond Maxi Roma,diamond-mini-roma-1:Diamond Mini Roma,mini-roma-1:Mini Roma,roma-belt-u-black:Roma Belt-U,mini-roma-exclusive-uae:Mini Roma - UAE;Santorini|santorini-6|santorini-6:Santorini,santorini-lock-green:Santorini-Lock,diamond-santorini-1:Diamond Santorini;Milano|mini-milano-n2-sparkle-blue|mini-milano-n2-sparkle-blue:Mini Milano N2,diamond-mini-milano-n2-22:Diamond Mini Milano N2;Clutch|clutch-edge-long-silver-blue|clutch-edge-long-silver-blue:Clutch Edge-Long,clutch-edge-short-copy:Clutch Edge - Short,clutch-edge-airpod-wood-crystal:Clutch Edge - Airpod - Wood - Crystal,clutch-edge-airpod:Clutch Edge - Airpod,clutch-edge-short-brass-champagne:Clutch Edge - Short - Brass - Crystal,clutch-mini-champagne:Clutch Mini Bag,clutch-mini-brass-silve-blue:Clutch Mini - Brass - Crystal,clutch-mini-wood-crystal-silver-blue:Clutch Mini Wood - Crystal,clutch-wood-crystal-sylver-blue:Clutch Wood-Crystal,clutch-micro-bag:Clutch Micro Bag;Pouch|crystal-pouch|crystal-pouch:Crystal Pouch,crystal-pouch-wood-1:Crystal Pouch - Wood,crystal-pouch-brass-rare-pink:Crystal Pouch - Brass,maxi-crystal-wood-pouch-rare-pink:Maxi Crystal Wood - Pouch;Wallet|crystal-wallet-rare-pink|crystal-wallet-rare-pink:Crystal Wallet,crystal-wallet-wood-rare-pink:Crystal Wallet - Wood,wallet-chain-rare-pink:Wallet Chain;Capri|capri-bag-gold|capri-bag-gold:Capri Bag,capri-baby-brown:Capri Baby,capri-baby-wood-silver-blue:Capri Baby Wood;Amelia|amelia-bag-gold|amelia-bag-gold:Amelia Bag,amelia-brass-silver-blue:Amelia Brass - Crystal,amelia-wood-crystal-green:Amelia Wood-Crystal;Hobo|hobo-wood-bag|hobo-wood-bag:Wood Net Hobo;Accessories|mirage-necklace-green|mirage-necklace-green:Mirage Necklace,mirage-necklace-crystal:Mirage Necklace-Crystal,mirage-multi-necklaces:Mirage Multi-Necklace,necklace-agate-purple:Necklace Agate,necklace-agate-heart-purple:Necklace Agate Heart,necklace-crystal-heart-rare-pink:Necklace Crystal Heart,necklace-crystal-silver-blue:Necklace Crystal,belt:Belt' | split: ';'
+  assign family_groups = 'Roma|maxi-roma-0,Santorini|santorini-6,Milano|mini-milano-n2-sparkle-blue,Clutch|clutch-edge-long-silver-blue,Pouch|crystal-pouch,Wallet|crystal-wallet-rare-pink,Capri|capri-bag-gold,Amelia|amelia-bag-gold,Hobo|hobo-wood-bag,Accessories|mirage-necklace-green' | split: ','
 -%}
 
 <div class="pm-homepage">
@@ -58,7 +57,7 @@
     </div>
 
     <div class="pm-shop-menu-side">
-      <a href="/collections/aw27" class="pm-shop-menu-feature" data-shop-menu-default>
+      <a href="/collections/aw27" class="pm-shop-menu-feature" data-shop-menu-panel data-shop-menu-default>
         <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27">
         <span class="pm-shop-menu-feature-copy">
           <span class="pm-eyebrow">New Season</span>
@@ -70,24 +69,21 @@
       {%- for group in family_groups -%}
         {%- assign group_parts = group | split: '|' -%}
         {%- assign group_name = group_parts[0] -%}
-        {%- assign members = group_parts[2] | split: ',' -%}
-        <div class="pm-shop-menu-variants" data-shop-menu-variants data-family="{{ group_name | handle }}" hidden>
-          <span class="pm-eyebrow">{{ group_name }} — {{ members.size }} {% if members.size == 1 %}piece{% else %}pieces{% endif %}</span>
-          <div class="pm-shop-menu-variants-grid">
-            {%- for member in members -%}
-              {%- assign member_parts = member | split: ':' -%}
-              {%- assign member_product = all_products[member_parts[0]] -%}
-              {%- if member_product != blank -%}
-                <a href="{{ member_product.url }}" class="pm-shop-menu-variant">
-                  {%- if member_product.featured_image -%}
-                    <img src="{{ member_product.featured_image | image_url: width: 120 }}" alt="{{ member_parts[1] }}" loading="lazy">
-                  {%- endif -%}
-                  <span>{{ member_parts[1] }}</span>
-                </a>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </div>
+        {%- assign rep_product = all_products[group_parts[1]] -%}
+        {%- if rep_product != blank -%}
+          <a href="{{ rep_product.url }}" class="pm-shop-menu-feature" data-shop-menu-panel data-family="{{ group_name | handle }}" hidden>
+            {%- if rep_product.featured_image -%}
+              <img src="{{ rep_product.featured_image | image_url: width: 700 }}" alt="{{ group_name }}">
+            {%- else -%}
+              {% render 'pm-media-placeholder', label: group_name %}
+            {%- endif -%}
+            <span class="pm-shop-menu-feature-copy">
+              <span class="pm-eyebrow">Palera Milano</span>
+              <span class="pm-serif">{{ group_name }}</span>
+              <span class="pm-link" style="margin-top:10px;">Shop {{ group_name }}</span>
+            </span>
+          </a>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
@@ -100,22 +96,22 @@
       if (!trigger) return;
       var menu = trigger.closest('.pm-shop-menu');
       if (!menu) return;
-      var feature = menu.querySelector('[data-shop-menu-default]');
       var family = trigger.getAttribute('data-family');
-      var match = family === 'shop-all' ? null : menu.querySelector('[data-shop-menu-variants][data-family="' + family + '"]');
-      menu.querySelectorAll('[data-shop-menu-variants]').forEach(function (panel) {
-        panel.hidden = (panel !== match);
+      var panels = menu.querySelectorAll('[data-shop-menu-panel]');
+      var match = menu.querySelector('[data-shop-menu-panel][data-family="' + family + '"]');
+      var fallback = menu.querySelector('[data-shop-menu-default]');
+      var show = match || fallback;
+      panels.forEach(function (panel) {
+        panel.hidden = (panel !== show);
       });
-      if (feature) feature.hidden = !!match;
     });
 
     document.querySelectorAll('.pm-shop-menu').forEach(function (menu) {
       menu.addEventListener('mouseleave', function () {
-        menu.querySelectorAll('[data-shop-menu-variants]').forEach(function (panel) {
-          panel.hidden = true;
+        var fallback = menu.querySelector('[data-shop-menu-default]');
+        menu.querySelectorAll('[data-shop-menu-panel]').forEach(function (panel) {
+          panel.hidden = (panel !== fallback);
         });
-        var feature = menu.querySelector('[data-shop-menu-default]');
-        if (feature) feature.hidden = false;
       });
     });
   })();
