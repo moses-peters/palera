@@ -173,26 +173,14 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   .pm-family-grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(160px, 20vw); }
 }
 
-.pm-family-tile { position: relative; display: block; overflow: hidden; background: var(--pm-sable); }
+.pm-family-tile {
+  position: relative; display: block; overflow: hidden; background: var(--pm-sable);
+  width: 100%; border: 0; margin: 0; padding: 0; font: inherit; text-align: left; cursor: pointer;
+}
 .pm-family-tile-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--pm-ease); }
 .pm-family-tile:hover .pm-family-tile-image { transform: scale(1.045); }
 .pm-family-tile .pm-placeholder { position: absolute; inset: 0; }
-.pm-family-tile--soon { cursor: default; }
-.pm-family-tile--soon .pm-family-tile-image,
-.pm-family-tile--soon .pm-placeholder { filter: grayscale(0.4); opacity: 0.55; }
-.pm-family-tile--soon:hover .pm-family-tile-image { transform: none; }
-.pm-family-tile-soon {
-  position: absolute; top: 50%; left: 50%; z-index: 2; transform: translate(-50%, -50%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  padding: 6px 14px;
-  font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: #fff;
-  white-space: nowrap;
-}
-.pm-family-tile-line {
-  position: absolute; top: 0; left: 0; z-index: 2;
-  background: var(--pm-paper); border-bottom: 1px solid var(--pm-line); border-right: 1px solid var(--pm-line);
-  padding: 5px 10px; font-size: 8px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pm-muted);
-}
+.pm-family-tile[aria-expanded="true"] { outline: 2px solid var(--pm-ink); outline-offset: -2px; }
 .pm-family-tile-caption {
   position: absolute; inset: auto 0 0 0; z-index: 2;
   padding: clamp(12px, 2vw, 22px) clamp(12px, 2vw, 20px);
@@ -203,6 +191,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-family-tile-name { font-size: clamp(13px, 1.6vw, 18px); }
 .pm-family-tile--big .pm-family-tile-name { font-size: clamp(20px, 2.8vw, 34px); }
 .pm-family-tile-count { flex-shrink: 0; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.75); }
+
+/* ===== Family panel — revealed in place below the grid when a family tile is clicked ===== */
+.pm-family-panel { margin-top: clamp(32px, 5vw, 56px); padding-top: clamp(24px, 3vw, 40px); border-top: 1px solid var(--pm-line); }
+.pm-family-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(20px, 3vw, 32px); }
+.pm-family-panel-name { font-size: clamp(24px, 3.6vw, 36px); }
+.pm-family-panel-close {
+  border: 1px solid var(--pm-line); background: none; padding: 8px 16px; cursor: pointer;
+  font-family: var(--pm-font-sans); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pm-ink);
+  transition: border-color 0.2s var(--pm-ease);
+}
+.pm-family-panel-close:hover { border-color: var(--pm-ink); }
+.pm-family-panel .pm-collection-grid { gap: clamp(4px, 0.8vw, 10px); }
 
 /* ===== Family detail (collection page) — 4-column product grid ===== */
 .pm-collection-bar {
