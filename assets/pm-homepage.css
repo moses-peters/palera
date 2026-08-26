@@ -156,25 +156,19 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-shop-wrap { max-width: 1560px; margin: 0 auto; padding: 0 var(--pm-pad) clamp(80px, 10vw, 140px); }
 @media (min-width: 900px) { .pm-shop-wrap { max-width: min(88vw, 1560px); } }
 
-/* Mosaic family grid: a fixed sequence of big (2x2) / small (1x1) tiles fed
-   into CSS Grid's dense auto-placement reproduces the intended rhythm —
-   1 big + 2x2 of small, two plain rows of 4, then 2 big side by side —
-   without any manual row/column math. See pm-shop-families.liquid for the
-   sequence. */
+/* Fixed, even grid — always exactly 9 family cards, so no mosaic/big-tile
+   variation is needed (or possible to balance cleanly). Uniform aspect
+   ratio keeps every card the same size and lined up in neat rows. */
 .pm-family-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: minmax(150px, 44vw);
-  grid-auto-flow: row dense;
   gap: clamp(6px, 1vw, 14px);
 }
-.pm-family-tile--big { grid-column: span 2; grid-row: span 2; }
-@media (min-width: 768px) {
-  .pm-family-grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(160px, 20vw); }
-}
+@media (min-width: 600px) { .pm-family-grid { grid-template-columns: repeat(3, 1fr); } }
 
 .pm-family-tile {
   position: relative; display: block; overflow: hidden; background: var(--pm-sable);
+  aspect-ratio: 3 / 4;
   width: 100%; border: 0; margin: 0; padding: 0; font: inherit; text-align: left; cursor: pointer;
 }
 .pm-family-tile-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--pm-ease); }
@@ -188,8 +182,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   color: #fff;
   display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
 }
-.pm-family-tile-name { font-size: clamp(13px, 1.6vw, 18px); }
-.pm-family-tile--big .pm-family-tile-name { font-size: clamp(20px, 2.8vw, 34px); }
+.pm-family-tile-name { font-size: clamp(15px, 1.8vw, 22px); }
 .pm-family-tile-count { flex-shrink: 0; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.75); }
 
 /* ===== Family panel — revealed in place below the grid when a family tile is clicked ===== */
@@ -202,7 +195,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   transition: border-color 0.2s var(--pm-ease);
 }
 .pm-family-panel-close:hover { border-color: var(--pm-ink); }
-.pm-family-panel .pm-collection-grid { gap: clamp(4px, 0.8vw, 10px); }
+/* The member grid reuses .pm-collection-grid's tile styling but not its
+   mosaic sizing (grid-auto-rows/dense pack + occasional --big tile) —
+   that rhythm assumes many products cycling through a repeating 15-tile
+   pattern. A family here can have as few as 1 or as many as 10 pieces,
+   so a plain, uniform grid stays aligned regardless of count. */
+.pm-family-panel .pm-collection-grid {
+  grid-auto-rows: unset;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(4px, 0.8vw, 10px);
+}
+@media (min-width: 640px) { .pm-family-panel .pm-collection-grid { grid-template-columns: repeat(4, 1fr); } }
+.pm-family-panel .pm-product-tile { aspect-ratio: 3 / 4; }
 
 /* ===== Family detail (collection page) — 4-column product grid ===== */
 .pm-collection-bar {

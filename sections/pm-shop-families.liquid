@@ -25,13 +25,10 @@
         {%- assign group_slug = group_name | handle -%}
         {%- assign rep_product = all_products[group_parts[1]] -%}
         {%- assign members = group_parts[2] | split: ',' -%}
-        {%- assign pos = forloop.index0 | modulo: 15 -%}
-        {%- assign is_big = false -%}
-        {%- if pos == 0 or pos == 13 or pos == 14 -%}{%- assign is_big = true -%}{%- endif -%}
         <button
           type="button"
-          class="pm-family-tile pm-reveal{% if is_big %} pm-family-tile--big{% endif %}"
-          style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms"
+          class="pm-family-tile pm-reveal"
+          style="transition-delay: {{ forloop.index0 | times: 70 }}ms"
           data-family-trigger
           data-family="{{ group_slug }}"
           aria-expanded="false"
@@ -44,9 +41,7 @@
           {%- endif -%}
           <div class="pm-family-tile-caption">
             <span class="pm-serif pm-family-tile-name">{{ group_name }}</span>
-            {%- if is_big -%}
-              <span class="pm-family-tile-count">{{ members.size }} {% if members.size == 1 %}piece{% else %}pieces{% endif %}</span>
-            {%- endif -%}
+            <span class="pm-family-tile-count">{{ members.size }} {% if members.size == 1 %}piece{% else %}pieces{% endif %}</span>
           </div>
         </button>
       {%- endfor -%}
