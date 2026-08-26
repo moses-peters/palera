@@ -1041,5 +1041,17 @@
         "label": "t:settings_schema.extras.settings.disable_animations.label"
       }
     ]
+  },
+  {
+    "name": "Klaviyo",
+    "settings": [
+      {
+        "type": "text",
+        "id": "klaviyo_public_api_key",
+        "label": "Klaviyo public API key (company ID)",
+        "default": "UwummL",
+        "info": "Used by the newsletter signup form to subscribe visitors directly via Klaviyo."
+      }
+    ]
   }
 ]

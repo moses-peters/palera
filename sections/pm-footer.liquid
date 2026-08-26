@@ -26,25 +26,19 @@
         {%- if section.settings.newsletter_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.newsletter_eyebrow }}</span>{%- endif -%}
         <span class="pm-footer-newsletter-compact-heading">{{ section.settings.newsletter_heading }}</span>
 
-        {%- form 'customer', class: 'pm-footer-newsletter-form pm-footer-newsletter-form--compact' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter">
+        <form class="pm-footer-newsletter-form pm-footer-newsletter-form--compact" data-klaviyo-signup-form data-klaviyo-list-id="{{ section.settings.klaviyo_list_id }}">
           <label for="FooterNewsletterEmail-{{ section.id }}" class="pm-visually-hidden">Email address</label>
           <input
             id="FooterNewsletterEmail-{{ section.id }}"
             type="email"
-            name="contact[email]"
+            name="email"
             class="pm-footer-newsletter-input pm-serif"
             placeholder="Your email address"
             required
           >
           <button type="submit" class="pm-footer-newsletter-submit">Subscribe</button>
-
-          {%- if form.posted_successfully? -%}
-            <p class="pm-footer-newsletter-message">Thank you for subscribing</p>
-          {%- elsif form.errors -%}
-            <p class="pm-footer-newsletter-message">Please enter a valid email</p>
-          {%- endif -%}
-        {%- endform -%}
+          <p class="pm-footer-newsletter-message" data-klaviyo-signup-message hidden></p>
+        </form>
       </div>
     {%- endif -%}
 
@@ -65,6 +59,7 @@
 </div>
 
 <script src="{{ 'pm-homepage.js' | asset_url }}" defer></script>
+<script src="{{ 'pm-klaviyo-signup.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -74,6 +69,13 @@
     { "type": "text", "id": "newsletter_eyebrow", "label": "Newsletter eyebrow" },
     { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join the Palera Community" },
     { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "Subscribe and enjoy 10% off your first order." },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "Klaviyo list ID",
+      "default": "YrD2Vj",
+      "info": "Defaults to the \"Newsletter\" list created for this signup form."
+    },
     { "type": "text", "id": "location_text", "label": "Location text", "default": "Milano, Italia" }
   ],
   "blocks": [

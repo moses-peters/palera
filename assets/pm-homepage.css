@@ -291,6 +291,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 .pm-footer-newsletter-form--compact .pm-footer-newsletter-submit:hover { opacity: 0.6; }
 .pm-footer-newsletter-message { margin-top: 6px; font-size: 11px; color: rgba(255, 255, 255, 0.6); width: 100%; }
+.pm-footer-newsletter-message--error { color: #ff8f85; }
 @media (max-width: 639px) {
   .pm-footer-newsletter-compact { flex-direction: column; align-items: flex-start; }
   .pm-footer-newsletter-form--compact { margin-left: 0; width: 100%; }

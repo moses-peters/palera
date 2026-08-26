@@ -1,0 +1,62 @@
+{%- comment -%}
+  Shared handler for every [data-klaviyo-signup-form] on the page (footer,
+  homepage newsletter section, etc.) — one delegated listener, guarded so
+  including this file from multiple sections on the same page never
+  double-binds or double-submits.
+{%- endcomment -%}
+if (!window.__pmKlaviyoSignupBound) {
+  window.__pmKlaviyoSignupBound = true;
+
+  document.addEventListener('submit', function (e) {
+    var form = e.target.closest('[data-klaviyo-signup-form]');
+    if (!form) return;
+    e.preventDefault();
+
+    var listId = form.getAttribute('data-klaviyo-list-id');
+    var email = form.querySelector('input[type="email"]').value;
+    var message = form.querySelector('[data-klaviyo-signup-message]');
+    var button = form.querySelector('button[type="submit"]');
+    if (button) button.disabled = true;
+
+    fetch('https://a.klaviyo.com/client/subscriptions/?company_id={{ settings.klaviyo_public_api_key | default: "UwummL" }}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.api+json',
+        'revision': '2024-10-15'
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'subscription',
+          attributes: {
+            profile: { data: { type: 'profile', attributes: { email: email } } }
+          },
+          relationships: {
+            list: { data: { type: 'list', id: listId } }
+          }
+        }
+      })
+    })
+      .then(function (res) {
+        if (!message) return;
+        message.hidden = false;
+        if (res.ok) {
+          message.textContent = 'Thank you for subscribing';
+          message.classList.remove('pm-newsletter-message--error', 'pm-footer-newsletter-message--error');
+          form.reset();
+        } else {
+          message.textContent = 'Please enter a valid email';
+          message.classList.add('pm-newsletter-message--error', 'pm-footer-newsletter-message--error');
+        }
+      })
+      .catch(function () {
+        if (!message) return;
+        message.hidden = false;
+        message.textContent = 'Something went wrong — please try again';
+        message.classList.add('pm-newsletter-message--error', 'pm-footer-newsletter-message--error');
+      })
+      .finally(function () {
+        if (button) button.disabled = false;
+      });
+  });
+}
