@@ -1,4 +1,30 @@
+{%- comment -%}
+  Builds the <title> tag: Shopify's page_title already reflects any
+  per-page SEO title override set in Admin, so this only adds the
+  bits that are a theme-level concern — search-results context,
+  tag/filter context, pagination, and the shop name suffix — none of
+  which page_title carries on its own. Falls back to
+  "{{ shop.name }} – {{ shop.description }}" on the homepage when no
+  custom title is set there, since page_title is blank in that case.
+{%- endcomment -%}
+{%- liquid
+  if template == 'search' and search.performed
+    assign base_title = 'general.search.title' | t | append: ': ' | append: search.terms
+  elsif page_title != blank
+    assign base_title = page_title
+  else
+    assign base_title = shop.name
+    if shop.description != blank
+      assign base_title = base_title | append: ' – ' | append: shop.description
+    endif
+  endif
+-%}
 {%- capture seo_title -%}
-  {{ page_title }}
+  {{ base_title }}
+  {%- if current_tags -%}
+    {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
+  {%- endif -%}
+  {%- if current_page > 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
+  {%- unless base_title contains shop.name -%} &ndash; {{ shop.name }}{%- endunless -%}
 {%- endcapture -%}
-<title>{{ seo_title }}</title>
+<title>{{ seo_title | strip_newlines | strip }}</title>
