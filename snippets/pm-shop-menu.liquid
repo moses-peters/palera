@@ -22,17 +22,21 @@
 <div class="pm-homepage">
   <div class="pm-shop-menu">
     <div class="pm-shop-menu-links">
-      <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item pm-shop-menu-links-item--all">Shop All</a>
-      <a href="/collections" class="pm-shop-menu-links-item pm-shop-menu-links-item--all">Shop by Family</a>
-      <a href="/collections/aw27" class="pm-shop-menu-links-item">New: AW27</a>
-      {%- for group in family_groups -%}
-        {%- assign group_parts = group | split: '|' -%}
-        {%- assign group_name = group_parts[0] -%}
-        {%- assign rep_product = all_products[group_parts[1]] -%}
-        {%- if rep_product != blank -%}
-          <a href="{{ rep_product.url }}" class="pm-shop-menu-links-item" data-family="{{ group_name | handle }}">{{ group_name }}</a>
-        {%- endif -%}
-      {%- endfor -%}
+      <div class="pm-shop-menu-links-group">
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item pm-shop-menu-links-item--all">Shop All</a>
+        <a href="/collections" class="pm-shop-menu-links-item pm-shop-menu-links-item--all">Shop by Family</a>
+        <a href="/collections/aw27" class="pm-shop-menu-links-item">New: AW27</a>
+      </div>
+      <div class="pm-shop-menu-links-group">
+        {%- for group in family_groups -%}
+          {%- assign group_parts = group | split: '|' -%}
+          {%- assign group_name = group_parts[0] -%}
+          {%- assign rep_product = all_products[group_parts[1]] -%}
+          {%- if rep_product != blank -%}
+            <a href="{{ rep_product.url }}" class="pm-shop-menu-links-item" data-family="{{ group_name | handle }}">{{ group_name }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
     </div>
 
     <div class="pm-shop-menu-grid">
