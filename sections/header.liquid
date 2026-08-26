@@ -136,6 +136,17 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
+  /* The stock theme's .page-width (17px mobile / 40px desktop) is what
+     positions the header logo, but every rebuilt pm- page uses the new
+     design system's --pm-pad scale for its own left/right margin. Those
+     two didn't match at any breakpoint, so the logo/icons sat at a
+     different inset than the page title and content below them —
+     most visible on mobile. Align them by routing .page-width through
+     the same --pm-pad token everywhere. */
+  .page-width, .page-full {
+    padding-left: var(--pm-pad) !important;
+    padding-right: var(--pm-pad) !important;
+  }
 </style>
 
 <div data-section-id="{{ section.id }}" data-section-type="header">
