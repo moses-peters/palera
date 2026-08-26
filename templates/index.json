@@ -21,7 +21,7 @@
         "prod-1": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "shopify://products/clutch-mini-champagne",
             "fallback_label": "Signature Clutch",
             "fallback_asset": "pm-drive-product-a.jpg",
             "link": ""
@@ -30,7 +30,7 @@
         "prod-2": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "shopify://products/crystal-pouch",
             "fallback_label": "Crystal Mini",
             "fallback_asset": "pm-drive-product-b.jpg",
             "link": ""
@@ -56,7 +56,7 @@
         "photo-1": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/maxi-roma-0",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-1.jpg",
             "link": ""
@@ -65,7 +65,7 @@
         "photo_xL8DkK": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/diamond-maxi-roma-1",
             "image": "shopify://shop_images/3U7A3057.jpg",
             "fallback_label": "",
             "fallback_asset": "",
@@ -75,7 +75,7 @@
         "photo-2": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/santorini-6",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-2.jpg",
             "link": ""
@@ -84,7 +84,7 @@
         "photo-3": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/crystal-pouch",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-3.jpg",
             "link": ""
@@ -93,7 +93,7 @@
         "photo-4": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/clutch-edge-long-silver-blue",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-4.jpg",
             "link": ""
@@ -102,7 +102,7 @@
         "photo-5": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/amelia-bag-gold",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-5.jpg",
             "link": ""
@@ -111,7 +111,7 @@
         "photo-6": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/capri-bag-gold",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-6.jpg",
             "link": ""
@@ -120,7 +120,7 @@
         "photo_HByhkb": {
           "type": "photo",
           "settings": {
-            "product": "",
+            "product": "shopify://products/crystal-wallet-rare-pink",
             "image": "shopify://shop_images/3U7A3063-2.jpg",
             "fallback_label": "",
             "fallback_asset": "",
@@ -131,7 +131,7 @@
           "type": "photo",
           "disabled": true,
           "settings": {
-            "product": "",
+            "product": "shopify://products/mini-milano-n2-sparkle-blue",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-8.jpg",
             "link": ""
