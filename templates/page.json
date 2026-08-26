@@ -105,6 +105,20 @@
         "closing_link_label": "Shop the Collection",
         "closing_link_url": ""
       }
+    },
+    "pm_press": {
+      "type": "pm-press",
+      "blocks": {
+        "mention-1": { "type": "mention", "settings": {} },
+        "mention-2": { "type": "mention", "settings": {} },
+        "mention-3": { "type": "mention", "settings": {} },
+        "mention-4": { "type": "mention", "settings": {} }
+      },
+      "block_order": ["mention-1", "mention-2", "mention-3", "mention-4"],
+      "settings": {
+        "eyebrow": "As Seen In",
+        "heading": "Press & Editorial"
+      }
     }
   },
   "order": [
@@ -112,6 +126,7 @@
     "1726698142b015c0cf",
     "1782813006baba11cb",
     "17828139319027552a",
-    "pm_about_Ch6rqK"
+    "pm_about_Ch6rqK",
+    "pm_press"
   ]
 }
