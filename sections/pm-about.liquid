@@ -5,7 +5,11 @@
 
   {%- comment -%} ===== Intro / hero ===== {%- endcomment -%}
   <section class="pm-about-hero">
-    {%- if section.settings.hero_image -%}
+    {%- if section.settings.hero_video_url != blank -%}
+      <video autoplay muted loop playsinline poster="{% if section.settings.hero_image %}{{ section.settings.hero_image | image_url: width: 1800 }}{% endif %}">
+        <source src="{{ section.settings.hero_video_url }}" type="video/mp4">
+      </video>
+    {%- elsif section.settings.hero_image -%}
       <img src="{{ section.settings.hero_image | image_url: width: 1800 }}" alt="{{ section.settings.hero_heading }}" loading="eager">
     {%- else -%}
       <img src="{{ 'pm-about-hero.jpg' | asset_url }}" alt="{{ section.settings.hero_heading }}" loading="eager">
@@ -97,6 +101,7 @@
       "content": "Intro"
     },
     { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_video_url", "label": "Hero video URL (.mp4)", "info": "Overrides the image when set. The image above is still used as the poster frame." },
     { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Palera Milano" },
     { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Our Story" },
     {
