@@ -147,6 +147,11 @@
     padding-left: var(--pm-pad) !important;
     padding-right: var(--pm-pad) !important;
   }
+  /* Stock .megamenu/.site-nav__dropdown padding (39px + 10px/5px) adds
+     ~90px of fixed chrome on top of the Shop dropdown's own content —
+     trim it so the whole panel fits one laptop viewport with no scroll. */
+  .megamenu.pm-shop-dropdown { padding: 16px 0 !important; }
+  .site-nav__dropdown.pm-shop-dropdown { padding: 6px 0 !important; }
 </style>
 
 <div data-section-id="{{ section.id }}" data-section-type="header">
