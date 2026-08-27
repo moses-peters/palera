@@ -29,13 +29,13 @@
 
 /* ===== Header block ===== */
 .pm-product .product-single__meta { max-width: 520px; }
-.pm-product .product-block--header { margin-bottom: clamp(20px, 2.6vw, 28px); }
+.pm-product .product-block--header { margin-bottom: clamp(12px, 1.4vw, 16px); }
 .pm-product .product-single__vendor {
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--pm-muted); margin-bottom: 10px;
 }
 .pm-product .product-single__title {
   font-family: var(--pm-font-serif); font-weight: 400;
-  font-size: clamp(30px, 4vw, 44px); line-height: 1.08; letter-spacing: 0; text-transform: none;
+  font-size: clamp(32px, 4.6vw, 52px); line-height: 1.02; letter-spacing: 0; text-transform: none;
 }
 .pm-product .product-single__sku {
   margin-top: 8px; font-size: 11px; letter-spacing: 0.1em; color: var(--pm-muted); text-transform: uppercase;
@@ -46,7 +46,7 @@
 /* ===== Price ===== */
 .pm-product .product-block--price { padding-bottom: clamp(20px, 2.4vw, 26px); border-bottom: 1px solid var(--pm-line); }
 .pm-product .product__price {
-  font-family: var(--pm-font-sans); font-size: 18px; letter-spacing: 0.02em; color: var(--pm-ink);
+  font-family: var(--pm-font-sans); font-size: 20px; font-weight: 500; letter-spacing: 0.02em; color: var(--pm-ink);
 }
 .pm-product .product__price--compare { color: var(--pm-muted); text-decoration: line-through; margin-right: 10px; }
 .pm-product .product__price-savings { margin-left: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pm-muted); }
@@ -137,8 +137,14 @@
 .pm-product .collapsible-content__inner p { margin-bottom: 12px; }
 
 /* ===== Description (non-tab) ===== */
-.pm-product .product-block .rte { font-size: 14px; line-height: 1.75; color: var(--pm-muted); }
+.pm-product .product-block .rte { font-size: 14px; line-height: 1.8; color: var(--pm-muted); }
 .pm-product .product-block .rte p { margin-bottom: 14px; }
+.pm-product-description {
+  padding-top: clamp(24px, 3vw, 32px);
+  border-top: 1px solid var(--pm-line);
+}
+.pm-product-description .pm-eyebrow { display: block; margin-bottom: 14px; }
+.pm-product-description .rte { max-width: 46em; }
 
 /* ===== Recommendations ("You may also like") — same pm-product-tile
    cards used on the collection/family pages, not the stock grid-product
