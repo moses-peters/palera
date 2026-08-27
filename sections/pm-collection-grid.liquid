@@ -1,10 +1,14 @@
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
 {%- comment -%}
-  pm-family-data is included (not rendered) — {% render %} runs in an
-  isolated scope and its assigns wouldn't reach this template.
+  pm-family-data is rendered, not included — some shops reject
+  the include tag outright ("Include usage is not allowed in this
+  context"). {% render %} runs in an isolated scope, so it can't
+  assign into this template directly; capture its text output instead
+  and split it here.
 {%- endcomment -%}
-{%- include 'pm-family-data' -%}
+{%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
+{%- assign pm_families = pm_families_raw | strip | split: ';;' -%}
 
 {%- comment -%}
   Every bag is one Shopify product with a Color option holding several

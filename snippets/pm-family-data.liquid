@@ -4,12 +4,19 @@
   into that family (Shopify has no real per-family Collections behind
   these, so matching happens against product.title). Every surface that
   lists families (Shop mega-menu, Shop All sub-nav + filtering, mobile
-  drawer) should render from `pm_families` rather than keeping its own
-  copy, so the list can't drift out of sync again.
+  drawer) should pull from this rather than keeping its own copy, so
+  the list can't drift out of sync again.
+
+  This snippet is rendered (not included — some shops disable
+  the include tag outright, which is why this used to be an assign+
+  include and broke). {% render %} runs in an isolated scope, so
+  instead of assigning a variable this just outputs the raw string;
+  callers capture that output and split it themselves:
+
+    {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
+    {%- assign pm_families = pm_families_raw | strip | split: ';;' -%}
 
   Format per entry: Name|Preview description|keyword1,keyword2,...
   Entries joined by ";;".
 {%- endcomment -%}
-{%- liquid
-  assign pm_families = 'Clutches|Compact, hand-set crystal clutches for evening.|Clutch;;Accessories|Necklaces, belts, and the finishing details.|Necklace,Belt,Bracelet,Earring,Charm;;Pouches|Soft crystal pouches, worn crossbody or in hand.|Pouch;;Wallets|Compact crystal wallets, sized to fit a phone.|Wallet;;Maxi Roma|The Roma silhouette, in its fullest form.|Maxi Roma;;Mini Milano|Milano architecture, scaled down.|Milano;;Mini Roma|A smaller take on the signature Roma.|Mini Roma;;Santorini|Sun-bleached crystal, inspired by the Cyclades.|Santorini;;Wood Net Hobo|Hand-netted crystal over a wood frame.|Hobo,Wood Net' | split: ';;'
--%}
+{{- 'Clutches|Compact, hand-set crystal clutches for evening.|Clutch;;Accessories|Necklaces, belts, and the finishing details.|Necklace,Belt,Bracelet,Earring,Charm;;Pouches|Soft crystal pouches, worn crossbody or in hand.|Pouch;;Wallets|Compact crystal wallets, sized to fit a phone.|Wallet;;Maxi Roma|The Roma silhouette, in its fullest form.|Maxi Roma;;Mini Milano|Milano architecture, scaled down.|Milano;;Mini Roma|A smaller take on the signature Roma.|Mini Roma;;Santorini|Sun-bleached crystal, inspired by the Cyclades.|Santorini;;Wood Net Hobo|Hand-netted crystal over a wood frame.|Hobo,Wood Net' -}}

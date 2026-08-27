@@ -42,11 +42,13 @@
                   <span>Shop All</span>
                 </a>
                 {%- comment -%}
-                  pm-family-data is included (not rendered) — {% render %}
-                  runs in an isolated scope and its assigns wouldn't reach
-                  this template.
+                  pm-family-data is rendered, not included — some shops
+                  reject the include tag outright. {% render %} runs in an
+                  isolated scope, so capture its text output and split
+                  it here instead of assigning inside the snippet.
                 {%- endcomment -%}
-                {%- include 'pm-family-data' -%}
+                {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
+                {%- assign pm_families = pm_families_raw | strip | split: ';;' -%}
                 {%- for family in pm_families -%}
                   {%- assign family_parts = family | split: '|' -%}
                   {%- assign family_name = family_parts[0] -%}
