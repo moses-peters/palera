@@ -319,6 +319,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-plp-campaign-tile--full .pm-plp-tile-image { aspect-ratio: 21 / 9; }
 .pm-plp-campaign-tile .pm-plp-tile-image img,
 .pm-plp-campaign-tile .pm-plp-tile-image .pm-placeholder { object-fit: cover; padding: 0; }
+.pm-plp-campaign-tile .pm-plp-tile-image video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pm-plp-campaign-caption { margin-top: 10px; text-align: center; }
 
 .pm-product-tile { position: relative; display: block; overflow: hidden; background: var(--pm-sable); }
 .pm-product-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--pm-ease); }

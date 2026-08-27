@@ -68,6 +68,7 @@
         widening to a full-width banner every third break.
       {%- endcomment -%}
       <div class="pm-plp-grid" data-pm-plp-grid>
+        {%- assign editorial_break_index = -1 -%}
         {%- for product in collection.products -%}
           {%- comment -%}
             No real per-family Collection exists to filter against, so
@@ -109,14 +110,36 @@
           {%- unless forloop.last -%}
             {%- assign campaign_check = forloop.index | modulo: 12 -%}
             {%- if campaign_check == 0 -%}
+              {%- comment -%}
+                Editorial breaks pull from this section's "Editorial
+                break" blocks in order (image or video, plus a caption) —
+                these are the "handles" a merchant fills in via the
+                theme editor for real campaign photos/video, one per
+                break as the grid scrolls. Any break beyond the blocks
+                defined here falls back to the plain placeholder tile.
+              {%- endcomment -%}
+              {%- assign editorial_break_index = editorial_break_index | plus: 1 -%}
+              {%- assign editorial_block = section.blocks[editorial_break_index] -%}
               {%- assign campaign_slot = forloop.index | divided_by: 12 -%}
               {%- assign campaign_slot_check = campaign_slot | modulo: 3 -%}
               {%- assign is_full = false -%}
               {%- if campaign_slot_check == 0 -%}{%- assign is_full = true -%}{%- endif -%}
-              <div class="pm-plp-tile pm-plp-campaign-tile{% if is_full %} pm-plp-campaign-tile--full{% endif %}" aria-hidden="true">
+              {%- if editorial_block.settings.full_width -%}{%- assign is_full = true -%}{%- endif -%}
+              <div class="pm-plp-tile pm-plp-campaign-tile{% if is_full %} pm-plp-campaign-tile--full{% endif %}" aria-hidden="true"{% if editorial_block %} {{ editorial_block.shopify_attributes }}{% endif %}>
                 <div class="pm-plp-tile-image pm-plp-tile-image--campaign">
-                  {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+                  {%- if editorial_block.settings.video_url != blank -%}
+                    <video autoplay muted loop playsinline{% if editorial_block.settings.image %} poster="{{ editorial_block.settings.image | image_url: width: 1800 }}"{% endif %}>
+                      <source src="{{ editorial_block.settings.video_url }}" type="video/mp4">
+                    </video>
+                  {%- elsif editorial_block.settings.image -%}
+                    <img src="{{ editorial_block.settings.image | image_url: width: 1800 }}" alt="{{ editorial_block.settings.image.alt | escape | default: editorial_block.settings.caption }}" loading="lazy">
+                  {%- else -%}
+                    {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+                  {%- endif -%}
                 </div>
+                {%- if editorial_block.settings.caption != blank -%}
+                  <p class="pm-eyebrow pm-plp-campaign-caption">{{ editorial_block.settings.caption }}</p>
+                {%- endif -%}
               </div>
             {%- endif -%}
           {%- endunless -%}
@@ -214,6 +237,18 @@
     { "type": "url", "id": "back_url", "label": "Back link URL", "info": "Point this at your Shop by Family page (/collections)." },
     { "type": "text", "id": "line_label", "label": "Line label override" },
     { "type": "text", "id": "empty_label", "label": "Empty collection message", "default": "New pieces for this family are on the way." }
+  ],
+  "blocks": [
+    {
+      "type": "editorial_break",
+      "name": "Editorial break",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
+        { "type": "text", "id": "caption", "label": "Caption" },
+        { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false }
+      ]
+    }
   ]
 }
 {% endschema %}

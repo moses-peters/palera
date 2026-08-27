@@ -48,10 +48,15 @@
     },
     "aw27-shop": {
       "type": "pm-collection-grid",
+      "blocks": {
+        "break-1": { "type": "editorial_break", "settings": { "caption": "AW27 — In Motion", "full_width": false } },
+        "break-2": { "type": "editorial_break", "settings": { "caption": "AW27 — The Collection", "full_width": true } }
+      },
+      "block_order": ["break-1", "break-2"],
       "settings": {
         "back_label": "All Collections",
         "back_url": "/collections",
-        "line_label": "",
+        "line_label": "AW27",
         "empty_label": "AW27 pieces are being finished by hand — the collection lands here shortly."
       }
     }
