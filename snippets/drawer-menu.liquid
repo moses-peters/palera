@@ -21,9 +21,36 @@
       <ul class="mobile-nav{% if settings.type_navigation_style == 'heading' %} mobile-nav--heading-style{% endif %}" role="navigation" aria-label="Primary">
         {%- comment -%}
           Fixed 3-item nav (Shop / Home / About Us) — see header-desktop-nav.liquid.
+          Shop expands in place (same collapsible-trigger/collapsible-content
+          pattern as the product-page tabs — see tab.liquid) into a
+          horizontal-scrolling strip of every family, since there's no room
+          for the desktop mega-menu's grid on a phone screen.
         {%- endcomment -%}
         <li class="mobile-nav__item appear-animation appear-delay-2">
-          <a href="/collections" class="mobile-nav__link mobile-nav__link--top-level">Shop</a>
+          <button
+            type="button"
+            class="mobile-nav__link mobile-nav__link--top-level collapsible-trigger collapsible-trigger-btn"
+            aria-controls="MobileShopFamilies"
+            aria-expanded="false">
+            Shop
+            {%- render 'collapsible-icons' -%}
+          </button>
+          <div id="MobileShopFamilies" class="collapsible-content">
+            <div class="collapsible-content__inner">
+              <div class="pm-mobile-family-scroll">
+                <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-mobile-family-scroll-item pm-mobile-family-scroll-item--all">
+                  <span>Shop All</span>
+                </a>
+                {%- assign mobile_families = 'Clutches,Accessories,Pouches,Wallets,Maxi Roma,Mini Milano,Mini Roma,Santorini,Wood Net Hobo' | split: ',' -%}
+                {%- for family_name in mobile_families -%}
+                  <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-mobile-family-scroll-item">
+                    {% render 'pm-media-placeholder', label: family_name %}
+                    <span>{{ family_name }}</span>
+                  </a>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
         </li>
         <li class="mobile-nav__item appear-animation appear-delay-3">
           <a href="{{ routes.root_url }}" class="mobile-nav__link mobile-nav__link--top-level">Home</a>

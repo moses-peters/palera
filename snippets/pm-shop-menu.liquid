@@ -1,19 +1,25 @@
 {%- comment -%}
-  "Shop" mega-menu panel — matches the Jacquemus nav dropdown exactly:
-  a plain-text category sidebar, a 3x3 grid of real products (photo +
-  name, no price — this is a browse panel, not a PLP), and a single
-  static campaign image on the right. No hover-swap behavior: the
-  campaign panel never changes based on what you're looking at.
+  "Shop" mega-menu panel — real category/family taxonomy from the
+  merchant's product data. Two zones: a family grid in the middle (every
+  family is its own product line, e.g. Maxi Roma vs Mini Roma are
+  different families), and a narrow right column with the four broad
+  categories as plain links, plus a preview panel that shows a
+  placeholder product image + short description for whichever family is
+  currently hovered/focused — swapping via the same show/hide mechanism
+  used before, just retargeted from "family in a sidebar" to "family in
+  the grid" and from "one static campaign photo" to "one photo per
+  family". Real photos/links to be dropped in later by the merchant.
 
   Opens on click, not hover — see header-desktop-nav.liquid, where the
   <details> lost its data-hover attribute so native <details>/<summary>
-  click-toggle takes over. Closes via the X button here or a click
-  outside the panel (see script below).
+  click-toggle takes over. Closes via the X button here, a click
+  outside the panel, or Escape (see script below).
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign family_groups = 'Roma|maxi-roma-0,Santorini|santorini-6,Clutch|clutch-edge-long-silver-blue,Pouch|crystal-pouch,Wallet|crystal-wallet-rare-pink,Capri|capri-bag-gold,Amelia|amelia-bag-gold,Other Bags|mini-milano-n2-sparkle-blue,Accessories|mirage-necklace-green' | split: ','
+  assign categories = 'Clutches,Accessories,Mini Bags,Fits A Phone' | split: ','
+  assign families = 'Clutches|Compact, hand-set crystal clutches for evening.;;Accessories|Necklaces, belts, and the finishing details.;;Pouches|Soft crystal pouches, worn crossbody or in hand.;;Wallets|Compact crystal wallets, sized to fit a phone.;;Maxi Roma|The Roma silhouette, in its fullest form.;;Mini Milano|Milano architecture, scaled down.;;Mini Roma|A smaller take on the signature Roma.;;Santorini|Sun-bleached crystal, inspired by the Cyclades.;;Wood Net Hobo|Hand-netted crystal over a wood frame.' | split: ';;'
 -%}
 
 <div class="pm-homepage">
@@ -22,48 +28,68 @@
       <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg>
     </button>
 
-    <nav class="pm-shop-menu-links">
-      <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">View all</a>
-      <a href="/collections/aw27" class="pm-shop-menu-links-item">New In</a>
-      {%- for group in family_groups -%}
-        {%- assign group_parts = group | split: '|' -%}
-        {%- assign group_name = group_parts[0] -%}
-        {%- assign rep_product = all_products[group_parts[1]] -%}
-        {%- if rep_product != blank -%}
-          <a href="{{ rep_product.url }}" class="pm-shop-menu-links-item">{{ group_name }}</a>
-        {%- endif -%}
-      {%- endfor -%}
-    </nav>
-
     <div class="pm-shop-menu-grid">
-      {%- for group in family_groups -%}
-        {%- assign group_parts = group | split: '|' -%}
-        {%- assign rep_product = all_products[group_parts[1]] -%}
-        {%- if rep_product != blank -%}
-          <a href="{{ rep_product.url }}" class="pm-shop-menu-tile">
-            {%- if rep_product.featured_image -%}
-              <img src="{{ rep_product.featured_image | image_url: width: 400 }}" alt="{{ rep_product.title | escape }}" loading="lazy">
-            {%- else -%}
-              {% render 'pm-media-placeholder', label: rep_product.title %}
-            {%- endif -%}
-            <span>{{ rep_product.title }}</span>
-          </a>
-        {%- endif -%}
+      {%- for family in families -%}
+        {%- assign parts = family | split: '|' -%}
+        {%- assign family_name = parts[0] -%}
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-family" data-family="{{ family_name | handle }}">
+          {{ family_name }}
+        </a>
       {%- endfor -%}
     </div>
 
-    <a href="/collections/aw27" class="pm-shop-menu-feature">
-      <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27 — New Season">
-      <span class="pm-shop-menu-feature-copy">
-        <span class="pm-shop-menu-feature-title">&ldquo;AW27&rdquo;</span>
-        <span class="pm-link">Discover the collection</span>
-      </span>
-    </a>
+    <div class="pm-shop-menu-side">
+      <nav class="pm-shop-menu-links">
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">View All</a>
+        <a href="/collections/aw27" class="pm-shop-menu-links-item">New In</a>
+        {%- for category in categories -%}
+          <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">{{ category }}</a>
+        {%- endfor -%}
+      </nav>
+
+      <div class="pm-shop-menu-preview">
+        {%- for family in families -%}
+          {%- assign parts = family | split: '|' -%}
+          {%- assign family_name = parts[0] -%}
+          {%- assign family_desc = parts[1] -%}
+          <div class="pm-shop-menu-preview-panel" data-family-panel="{{ family_name | handle }}" {% unless forloop.first %}hidden{% endunless %}>
+            {% render 'pm-media-placeholder', label: family_name %}
+            <span class="pm-shop-menu-preview-name">{{ family_name }}</span>
+            <p class="pm-shop-menu-preview-desc">{{ family_desc }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
   (function () {
+    function showFamily(menu, family) {
+      var panels = menu.querySelectorAll('[data-family-panel]');
+      var match = menu.querySelector('[data-family-panel="' + family + '"]');
+      if (!match) return;
+      panels.forEach(function (panel) {
+        panel.hidden = (panel !== match);
+      });
+    }
+
+    document.addEventListener('mouseover', function (e) {
+      var trigger = e.target.closest('[data-family]');
+      if (!trigger) return;
+      var menu = trigger.closest('.pm-shop-menu');
+      if (!menu) return;
+      showFamily(menu, trigger.getAttribute('data-family'));
+    });
+
+    document.addEventListener('focusin', function (e) {
+      var trigger = e.target.closest('[data-family]');
+      if (!trigger) return;
+      var menu = trigger.closest('.pm-shop-menu');
+      if (!menu) return;
+      showFamily(menu, trigger.getAttribute('data-family'));
+    });
+
     document.querySelectorAll('[data-shop-menu-close]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var details = btn.closest('details');
