@@ -467,10 +467,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   grid-template-columns: repeat(3, 1fr);
   gap: 18px 12px;
   align-content: start;
+  align-items: start;
 }
 .pm-shop-menu-family { display: block; }
 .pm-shop-menu-family .pm-placeholder {
-  width: 100%; aspect-ratio: 4 / 5; margin-bottom: 8px; transition: opacity 0.2s var(--pm-ease);
+  /* height:auto overrides the base .pm-placeholder rule's height:100%,
+     which — now that this tile is a grid item with a definite stretched
+     height available to resolve against — would otherwise fight with
+     aspect-ratio for control of the box's height (the same class of bug
+     as the campaign-panel issue earlier in this file). align-items:start
+     above removes the stretch itself; this is the belt-and-suspenders
+     second half of the fix. */
+  width: 100%; height: auto; aspect-ratio: 4 / 5; margin-bottom: 8px; transition: opacity 0.2s var(--pm-ease);
 }
 .pm-shop-menu-family:hover .pm-placeholder,
 .pm-shop-menu-family:focus-visible .pm-placeholder { opacity: 0.82; }
@@ -478,7 +486,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   display: block; text-align: center; font-size: 11px; letter-spacing: 0.02em; color: var(--pm-ink);
 }
 
-.pm-shop-menu-preview-panel .pm-placeholder { width: 100%; aspect-ratio: 1 / 1; }
+.pm-shop-menu-preview-panel .pm-placeholder { width: 100%; height: auto; aspect-ratio: 1 / 1; }
 .pm-shop-menu-preview-name { display: block; margin-top: 10px; font-family: var(--pm-font-serif); font-size: 16px; }
 .pm-shop-menu-preview-desc { margin-top: 4px; font-size: 11px; line-height: 1.5; color: var(--pm-muted); }
 
