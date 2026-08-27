@@ -67,18 +67,18 @@
       <div class="pm-plp-grid">
         {%- for product in collection.products -%}
           <a href="{{ product.url }}" class="pm-plp-tile pm-reveal" style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms">
-            <div class="pm-plp-tile-info">
-              <span class="pm-plp-tile-name">{{ product.title }}</span>
-              <span class="pm-plp-tile-price">
-                {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
-              </span>
-            </div>
             <div class="pm-plp-tile-image">
               {%- if product.featured_image -%}
                 <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
               {%- else -%}
                 {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
               {%- endif -%}
+            </div>
+            <div class="pm-plp-tile-info">
+              <span class="pm-plp-tile-name">{{ product.title }}</span>
+              <span class="pm-plp-tile-price">
+                {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
+              </span>
             </div>
           </a>
           {%- unless forloop.last -%}
