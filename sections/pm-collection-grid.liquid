@@ -6,6 +6,33 @@
 {%- endcomment -%}
 {%- include 'pm-family-data' -%}
 
+{%- comment -%}
+  Every bag is one Shopify product with a Color option holding several
+  variants, not separate per-color products — Shopify has no setting
+  that renders one Product as multiple collection-grid tiles (Combined
+  Listings runs the opposite direction: merging separate products into
+  one PDP). So the grid below explodes each product into one tile per
+  color itself. Pre-count how many tiles that actually produces, so the
+  piece count and the "don't break mid-product" campaign-tile logic
+  further down both use the real tile count instead of the product
+  count.
+{%- endcomment -%}
+{%- assign total_tile_count = 0 -%}
+{%- for product in collection.products -%}
+  {%- assign color_option = nil -%}
+  {%- for option in product.options_with_values -%}
+    {%- assign option_name_downcase = option.name | downcase -%}
+    {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+      {%- assign color_option = option -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if color_option -%}
+    {%- assign total_tile_count = total_tile_count | plus: color_option.values.size -%}
+  {%- else -%}
+    {%- assign total_tile_count = total_tile_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+
 <div class="pm-homepage">
   {%- comment -%}
     Category sub-nav — the reference (Gucci) shows a row of bag-type tabs
@@ -32,7 +59,7 @@
       ← {{ section.settings.back_label }}
     </a>
     <div class="pm-collection-bar-right">
-      <span class="pm-eyebrow" data-pm-piece-count>{{ collection.products_count }} {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}</span>
+      <span class="pm-eyebrow" data-pm-piece-count>{{ total_tile_count }} {% if total_tile_count == 1 %}piece{% else %}pieces{% endif %}</span>
       {%- if collection.sort_options.size > 0 -%}
         {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
         <div class="pm-collection-sort">
@@ -61,14 +88,16 @@
     {%- else -%}
       {%- comment -%}
         Product tiles are uniform (name + price sit above a plain,
-        contained product photo — no gradient caption overlay). A
-        campaign placeholder tile (real imagery to be dropped in later)
-        breaks the grid every 12 products, always landing on a fresh row
-        since 12 is a multiple of both the 2- and 4-column layouts —
-        widening to a full-width banner every third break.
+        contained product photo — no gradient caption overlay), one per
+        color (see the pre-count above). A campaign placeholder tile
+        (real imagery to be dropped in later) breaks the grid every 12
+        tiles, always landing on a fresh row since 12 is a multiple of
+        both the 2- and 4-column layouts — widening to a full-width
+        banner every third break.
       {%- endcomment -%}
       <div class="pm-plp-grid" data-pm-plp-grid>
         {%- assign editorial_break_index = -1 -%}
+        {%- assign tile_index = 0 -%}
         {%- for product in collection.products -%}
           {%- comment -%}
             No real per-family Collection exists to filter against, so
@@ -92,23 +121,59 @@
               {%- endfor -%}
             {%- endif -%}
           {%- endfor -%}
-          <a href="{{ product.url }}" class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms">
-            <div class="pm-plp-tile-image">
-              {%- if product.featured_image -%}
-                <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
-              {%- else -%}
-                {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
-              {%- endif -%}
-            </div>
-            <div class="pm-plp-tile-info">
-              <span class="pm-plp-tile-name">{{ product.title }}</span>
-              <span class="pm-plp-tile-price">
-                {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
-              </span>
-            </div>
-          </a>
-          {%- unless forloop.last -%}
-            {%- assign campaign_check = forloop.index | modulo: 12 -%}
+
+          {%- comment -%}
+            Each bag is one product with a Color option holding several
+            variants — split it into one tile per color (see the
+            pre-count comment above the piece-count computation).
+            Products with no Color option just render their one tile,
+            same as before.
+          {%- endcomment -%}
+          {%- assign color_option = nil -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign option_name_downcase = option.name | downcase -%}
+            {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+              {%- assign color_option = option -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if color_option -%}
+            {%- assign color_values = color_option.values -%}
+            {%- assign color_option_key = 'option' | append: color_option.position -%}
+          {%- else -%}
+            {%- assign color_values = 'x' | split: ',' -%}
+          {%- endif -%}
+
+          {%- for color_value in color_values -%}
+            {%- assign tile_index = tile_index | plus: 1 -%}
+            {%- if color_option -%}
+              {%- assign tile_variant = product.variants | where: color_option_key, color_value | first -%}
+              {%- assign tile_name = product.title | append: ' — ' | append: color_value -%}
+              {%- assign tile_price_varies = false -%}
+            {%- else -%}
+              {%- assign tile_variant = product.selected_or_first_available_variant -%}
+              {%- assign tile_name = product.title -%}
+              {%- assign tile_price_varies = product.price_varies -%}
+            {%- endif -%}
+            {%- assign tile_image = tile_variant.featured_image | default: product.featured_image -%}
+            {%- assign tile_price = tile_variant.price | default: product.price -%}
+
+            <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
+              <div class="pm-plp-tile-image">
+                {%- if tile_image -%}
+                  <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: tile_name }}" loading="lazy">
+                {%- else -%}
+                  {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+                {%- endif -%}
+              </div>
+              <div class="pm-plp-tile-info">
+                <span class="pm-plp-tile-name">{{ tile_name }}</span>
+                <span class="pm-plp-tile-price">
+                  {%- if tile_price_varies -%}From {{ tile_price | money }}{%- else -%}{{ tile_price | money }}{%- endif -%}
+                </span>
+              </div>
+            </a>
+          {%- unless tile_index == total_tile_count -%}
+            {%- assign campaign_check = tile_index | modulo: 12 -%}
             {%- if campaign_check == 0 -%}
               {%- comment -%}
                 Editorial breaks pull from this section's "Editorial
@@ -120,7 +185,7 @@
               {%- endcomment -%}
               {%- assign editorial_break_index = editorial_break_index | plus: 1 -%}
               {%- assign editorial_block = section.blocks[editorial_break_index] -%}
-              {%- assign campaign_slot = forloop.index | divided_by: 12 -%}
+              {%- assign campaign_slot = tile_index | divided_by: 12 -%}
               {%- assign campaign_slot_check = campaign_slot | modulo: 3 -%}
               {%- assign is_full = false -%}
               {%- if campaign_slot_check == 0 -%}{%- assign is_full = true -%}{%- endif -%}
@@ -143,6 +208,7 @@
               </div>
             {%- endif -%}
           {%- endunless -%}
+          {%- endfor -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
