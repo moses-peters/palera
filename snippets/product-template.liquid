@@ -299,6 +299,8 @@
             assign is_color = true
           elsif swatch_trigger == 'color' and downcased_option contains 'colour'
             assign is_color = true
+          elsif downcased_option contains 'hardware'
+            assign is_color = true
           endif
         endif
       -%}
