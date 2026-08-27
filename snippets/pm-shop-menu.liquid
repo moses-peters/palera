@@ -1,14 +1,11 @@
 {%- comment -%}
-  "Shop" mega-menu panel — real category/family taxonomy from the
-  merchant's product data. Two zones: a family grid in the middle (every
-  family is its own product line, e.g. Maxi Roma vs Mini Roma are
-  different families), and a narrow right column with the four broad
-  categories as plain links, plus a preview panel that shows a
-  placeholder product image + short description for whichever family is
-  currently hovered/focused — swapping via the same show/hide mechanism
-  used before, just retargeted from "family in a sidebar" to "family in
-  the grid" and from "one static campaign photo" to "one photo per
-  family". Real photos/links to be dropped in later by the merchant.
+  "Shop" mega-menu panel — three zones: quick links (View All / New In /
+  the four categories) on the left, the family grid (photo + name) in
+  the middle, and a preview panel on the right that swaps to show a
+  placeholder product photo + short description for whichever family is
+  currently hovered/focused in the grid. Real photos and per-family
+  links are left as an easy swap for later, same as every other
+  placeholder in this theme.
 
   Opens on click, not hover — see header-desktop-nav.liquid, where the
   <details> lost its data-hover attribute so native <details>/<summary>
@@ -28,37 +25,36 @@
       <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg>
     </button>
 
+    <nav class="pm-shop-menu-links">
+      <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">View All</a>
+      <a href="/collections/aw27" class="pm-shop-menu-links-item">New In</a>
+      {%- for category in categories -%}
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">{{ category }}</a>
+      {%- endfor -%}
+    </nav>
+
     <div class="pm-shop-menu-grid">
       {%- for family in families -%}
         {%- assign parts = family | split: '|' -%}
         {%- assign family_name = parts[0] -%}
         <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-family" data-family="{{ family_name | handle }}">
-          {{ family_name }}
+          {% render 'pm-media-placeholder', label: family_name %}
+          <span>{{ family_name }}</span>
         </a>
       {%- endfor -%}
     </div>
 
-    <div class="pm-shop-menu-side">
-      <nav class="pm-shop-menu-links">
-        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">View All</a>
-        <a href="/collections/aw27" class="pm-shop-menu-links-item">New In</a>
-        {%- for category in categories -%}
-          <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">{{ category }}</a>
-        {%- endfor -%}
-      </nav>
-
-      <div class="pm-shop-menu-preview">
-        {%- for family in families -%}
-          {%- assign parts = family | split: '|' -%}
-          {%- assign family_name = parts[0] -%}
-          {%- assign family_desc = parts[1] -%}
-          <div class="pm-shop-menu-preview-panel" data-family-panel="{{ family_name | handle }}" {% unless forloop.first %}hidden{% endunless %}>
-            {% render 'pm-media-placeholder', label: family_name %}
-            <span class="pm-shop-menu-preview-name">{{ family_name }}</span>
-            <p class="pm-shop-menu-preview-desc">{{ family_desc }}</p>
-          </div>
-        {%- endfor -%}
-      </div>
+    <div class="pm-shop-menu-preview">
+      {%- for family in families -%}
+        {%- assign parts = family | split: '|' -%}
+        {%- assign family_name = parts[0] -%}
+        {%- assign family_desc = parts[1] -%}
+        <div class="pm-shop-menu-preview-panel" data-family-panel="{{ family_name | handle }}" {% unless forloop.first %}hidden{% endunless %}>
+          {% render 'pm-media-placeholder', label: family_name %}
+          <span class="pm-shop-menu-preview-name">{{ family_name }}</span>
+          <p class="pm-shop-menu-preview-desc">{{ family_desc }}</p>
+        </div>
+      {%- endfor -%}
     </div>
   </div>
 </div>

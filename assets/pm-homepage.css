@@ -426,15 +426,16 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
 }
 
-/* ===== Header "Shop" mega-menu — family grid | categories + hover preview =====
+/* ===== Header "Shop" mega-menu — quick links | family grid | hover preview =====
    Real taxonomy: "family" = a specific product line (Maxi Roma and Mini
    Roma are different families); "category" = the broad grouping a few
    families sit under (Clutches, Accessories, Mini Bags, Fits A Phone).
-   Family tiles are text-only so the grid stays short; hovering/focusing
-   one swaps which preview panel shows on the right (placeholder photo +
-   short description — real photos to be dropped in later). Sized to
-   keep the whole dropdown within one screen height (verified via a
-   mockup render — see git history for the exact numbers). */
+   Family tiles carry a photo + name; hovering/focusing one swaps which
+   preview panel shows on the right (placeholder photo + short
+   description — real photos to be dropped in later). Grid is capped at
+   380px so tile size — and therefore the whole dropdown's height —
+   stays in check regardless of how wide the menu itself grows (sized
+   to fit one screen — verified via a mockup render, see git history). */
 .pm-shop-menu { position: relative; }
 .pm-shop-menu-close {
   position: absolute; top: 0; right: var(--pm-pad); z-index: 3;
@@ -445,45 +446,44 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-shop-menu-close:hover { opacity: 1; }
 .pm-shop-menu {
   display: grid;
-  grid-template-columns: 1fr clamp(200px, 19vw, 260px);
-  gap: clamp(28px, 3.4vw, 56px);
-  width: min(92vw, 1160px);
+  grid-template-columns: clamp(120px, 11vw, 160px) 1fr clamp(200px, 19vw, 260px);
+  gap: clamp(24px, 3vw, 44px);
+  width: min(92vw, 1200px);
   margin: 0 auto;
   padding: 24px var(--pm-pad) 26px;
   font-family: var(--pm-font-sans);
 }
-.pm-shop-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  align-content: start;
-}
-.pm-shop-menu-family {
-  display: flex; align-items: center; justify-content: center; text-align: center;
-  padding: 24px 10px; border: 1px solid var(--pm-line);
-  font-size: 12px; letter-spacing: 0.03em; color: var(--pm-ink);
-  transition: border-color 0.2s var(--pm-ease), background 0.2s var(--pm-ease);
-}
-.pm-shop-menu-family:hover,
-.pm-shop-menu-family:focus-visible { border-color: var(--pm-ink); background: var(--pm-sable); }
-
-.pm-shop-menu-side { display: flex; flex-direction: column; gap: clamp(16px, 2vw, 24px); }
-.pm-shop-menu-links { display: flex; flex-direction: column; gap: 11px; }
+.pm-shop-menu-links { display: flex; flex-direction: column; gap: 13px; padding-top: 4px; }
 .pm-shop-menu-links-item {
   font-size: 12px; color: var(--pm-ink); transition: opacity 0.2s var(--pm-ease);
 }
 .pm-shop-menu-links-item:hover { opacity: 0.55; }
 
-.pm-shop-menu-preview { border-top: 1px solid var(--pm-line); padding-top: clamp(14px, 1.8vw, 20px); }
+.pm-shop-menu-grid {
+  max-width: 380px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px 12px;
+  align-content: start;
+}
+.pm-shop-menu-family { display: block; }
+.pm-shop-menu-family .pm-placeholder {
+  width: 100%; aspect-ratio: 4 / 5; margin-bottom: 8px; transition: opacity 0.2s var(--pm-ease);
+}
+.pm-shop-menu-family:hover .pm-placeholder,
+.pm-shop-menu-family:focus-visible .pm-placeholder { opacity: 0.82; }
+.pm-shop-menu-family span {
+  display: block; text-align: center; font-size: 11px; letter-spacing: 0.02em; color: var(--pm-ink);
+}
+
 .pm-shop-menu-preview-panel .pm-placeholder { width: 100%; aspect-ratio: 1 / 1; }
 .pm-shop-menu-preview-name { display: block; margin-top: 10px; font-family: var(--pm-font-serif); font-size: 16px; }
 .pm-shop-menu-preview-desc { margin-top: 4px; font-size: 11px; line-height: 1.5; color: var(--pm-muted); }
 
 @media (max-width: 1050px) {
   .pm-shop-menu { grid-template-columns: 1fr; }
-  .pm-shop-menu-side { flex-direction: row; align-items: flex-start; }
-  .pm-shop-menu-links { flex: 0 0 auto; }
-  .pm-shop-menu-preview { flex: 1 1 auto; border-top: none; border-left: 1px solid var(--pm-line); padding-top: 0; padding-left: clamp(20px, 2.6vw, 28px); }
   .pm-shop-menu-preview-panel .pm-placeholder { max-width: 220px; }
 }
 
