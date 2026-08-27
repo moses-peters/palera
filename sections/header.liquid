@@ -152,6 +152,12 @@
      trim it so the whole panel fits one laptop viewport with no scroll. */
   .megamenu.pm-shop-dropdown { padding: 16px 0 !important; }
   .site-nav__dropdown.pm-shop-dropdown { padding: 6px 0 !important; }
+  /* Stock .site-nav__dropdown is z-index:5 — fine on the homepage, but on
+     a page with its own sticky/fixed chrome (the Shop All collection bar
+     at z-index:30, the sticky add-to-cart bar on product pages at
+     z-index:40) that page content showed through on top of the open
+     Shop dropdown instead of being covered by it. Push it above both. */
+  .site-nav__dropdown.pm-shop-dropdown { z-index: 50 !important; }
 </style>
 
 <div data-section-id="{{ section.id }}" data-section-type="header">
