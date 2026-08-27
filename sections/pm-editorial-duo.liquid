@@ -1,20 +1,20 @@
 <div class="pm-homepage">
   <section class="pm-duo">
     <div class="pm-duo-grid">
-      <div class="pm-duo-image pm-duo-image--a pm-reveal">
+      <a href="{{ section.settings.link_url | default: '#' }}" class="pm-duo-image pm-duo-image--a pm-reveal">
         {%- if section.settings.image_a -%}
           <img src="{{ section.settings.image_a | image_url: width: 1200 }}" alt="{{ section.settings.image_a.alt | escape }}" loading="lazy">
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
         {%- endif -%}
-      </div>
-      <div class="pm-duo-image pm-duo-image--b pm-reveal" style="transition-delay: 150ms">
+      </a>
+      <a href="{{ section.settings.link_url | default: '#' }}" class="pm-duo-image pm-duo-image--b pm-reveal" style="transition-delay: 150ms">
         {%- if section.settings.image_b -%}
           <img src="{{ section.settings.image_b | image_url: width: 900 }}" alt="{{ section.settings.image_b.alt | escape }}" loading="lazy">
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
         {%- endif -%}
-      </div>
+      </a>
     </div>
 
     <div class="pm-duo-caption pm-reveal" style="transition-delay: 300ms">

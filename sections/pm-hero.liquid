@@ -2,7 +2,7 @@
 
 <div class="pm-homepage">
   <section class="pm-hero">
-    <div class="pm-hero-media">
+    <a href="{{ section.settings.link_url | default: '#' }}" class="pm-hero-media">
       {%- if section.settings.video_url != blank -%}
         <video autoplay muted loop playsinline poster="{% if section.settings.image %}{{ section.settings.image | image_url: width: 1800 }}{% endif %}">
           <source src="{{ section.settings.video_url }}" type="video/mp4">
@@ -12,7 +12,7 @@
       {%- else -%}
         <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ shop.name }}" loading="eager">
       {%- endif -%}
-    </div>
+    </a>
   </section>
 </div>
 
@@ -23,7 +23,8 @@
   "name": "PM: Hero",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image" },
-    { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." }
+    { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
+    { "type": "url", "id": "link_url", "label": "Link" }
   ],
   "presets": [{ "name": "PM: Hero" }]
 }

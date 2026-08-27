@@ -1,6 +1,6 @@
 <div class="pm-homepage">
   <section class="pm-cinema">
-    <div class="pm-cinema-media pm-reveal">
+    <a href="{{ section.settings.link_url | default: '#' }}" class="pm-cinema-media pm-reveal">
       {%- if section.settings.video_url != blank -%}
         <video autoplay muted loop playsinline poster="{% if section.settings.image %}{{ section.settings.image | image_url: width: 1800 }}{% endif %}">
           <source src="{{ section.settings.video_url }}" type="video/mp4">
@@ -10,7 +10,7 @@
       {%- else -%}
         <img src="{{ 'pm-drive-horizontal.jpg' | asset_url }}" alt="{{ section.settings.caption }}" loading="lazy">
       {%- endif -%}
-    </div>
+    </a>
     {%- if section.settings.caption != blank -%}
       <p class="pm-eyebrow pm-cinema-caption">{{ section.settings.caption }}</p>
     {%- endif -%}
@@ -23,7 +23,8 @@
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image" },
     { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
-    { "type": "text", "id": "caption", "label": "Caption", "default": "Identity 1, 2026" }
+    { "type": "text", "id": "caption", "label": "Caption", "default": "Identity 1, 2026" },
+    { "type": "url", "id": "link_url", "label": "Link" }
   ],
   "presets": [{ "name": "PM: Full-bleed media" }]
 }

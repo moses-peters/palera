@@ -153,12 +153,32 @@
         "eyebrow": "",
         "heading": ""
       }
+    },
+    "pm-image-duo": {
+      "type": "pm-image-duo",
+      "settings": {
+        "caption_left": "",
+        "link_left": "",
+        "caption_right": "",
+        "link_right": ""
+      }
+    },
+    "pm-editorial-duo": {
+      "type": "pm-editorial-duo",
+      "settings": {
+        "tag": "Made By Hand",
+        "copy": "Every crystal is set individually, so no two pieces catch the light the same way.",
+        "link_label": "",
+        "link_url": ""
+      }
     }
   },
   "order": [
     "pm-hero",
     "pm-product-pair",
+    "pm-image-duo",
     "pm-full-bleed-media",
+    "pm-editorial-duo",
     "pm-photo-grid"
   ]
 }
