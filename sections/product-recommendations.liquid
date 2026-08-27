@@ -51,15 +51,21 @@
         {%- endif -%}
         {%- if related_collection.products_count > 0 -%}
           <div class="product-recommendations page-width">
-            <div class="grid grid--uniform" data-aos="overflow__animation">
+            <div class="pm-collection-grid pm-product-recs-grid">
               {%- for product in related_collection.products limit: number_of_products -%}
-                {% comment %} On smaller screen sizes, 39vw is used for grid items in the CSS {% endcomment %}
-                {%- render 'product-grid-item',
-                  product: product,
-                  per_row: section.settings.products_per_row,
-                  quick_shop_enable: settings.quick_shop_enable,
-                  fallback: '39vw',
-                -%}
+                <a href="{{ product.url }}" class="pm-product-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
+                  {%- if product.featured_image -%}
+                    <img class="pm-product-image" src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
+                  {%- else -%}
+                    {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+                  {%- endif -%}
+                  <div class="pm-product-caption">
+                    <span class="pm-product-title">{{ product.title }}</span>
+                    <span class="pm-product-price">
+                      {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
+                    </span>
+                  </div>
+                </a>
               {%- endfor -%}
             </div>
           </div>

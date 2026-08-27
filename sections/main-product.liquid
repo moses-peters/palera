@@ -30,6 +30,50 @@
   -%}
 </div>
 
+{%- unless isModal -%}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- comment -%}
+    Sticky "add to cart" bar — appears once the real buy button scrolls
+    out of view, and just clicks that same real button (same form, same
+    currently-selected variant/qty, same AJAX cart handling) rather than
+    duplicating any cart logic.
+  {%- endcomment -%}
+  <div class="pm-sticky-atc" data-sticky-atc>
+    <div class="pm-sticky-atc-inner">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 100 }}" alt="{{ product.title | escape }}">
+      {%- endif -%}
+      <div class="pm-sticky-atc-info">
+        <span class="pm-sticky-atc-title notranslate">{{ product.title }}</span>
+        <span class="pm-sticky-atc-price">{{ current_variant.price | money }}</span>
+      </div>
+      <button type="button" class="pm-sticky-atc-button" data-sticky-atc-button {% unless current_variant.available %}disabled{% endunless %}>
+        {%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+      </button>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var bar = document.querySelector('[data-sticky-atc]');
+      var target = document.querySelector('.pm-product [data-add-to-cart]');
+      if (!bar || !target) return;
+
+      var btn = bar.querySelector('[data-sticky-atc-button]');
+      btn.addEventListener('click', function () {
+        if (!target.disabled) target.click();
+      });
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            bar.classList.toggle('is-visible', !entry.isIntersecting);
+          });
+        }, { rootMargin: '0px 0px -20% 0px' }).observe(target);
+      }
+    })();
+  </script>
+{%- endunless -%}
+
 {% schema %}
 {
   "name": "t:sections.main-product.name",
