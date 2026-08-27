@@ -43,10 +43,15 @@
     under the main nav. Palera's site is organized by family/model line
     rather than bag type, so this reuses the same family list as the Shop
     mega-menu (pm-family-data) instead of inventing categories with no
-    real collection behind them. There's no real per-family Shopify
-    Collection to filter server-side, so filtering happens client-side
-    below: each tab writes a ?family= param and toggles matching tiles
-    (see data-family on each tile, and the script at the bottom).
+    real collection behind them. Each tab is a real link to this same
+    page with ?family=... — clicking one is a normal page navigation,
+    not an in-place filter. There's no real per-family Shopify
+    Collection to filter server-side (Shopify caches rendered HTML by
+    URL, so query-string-driven server content isn't safe to rely on —
+    a cached response could show one visitor a family meant for another),
+    so the page that loads still sorts itself out client-side once on
+    arrival (see data-family on each tile, and the script at the
+    bottom) rather than as a live, click-driven filter.
   {%- endcomment -%}
   <nav class="pm-plp-subnav" data-pm-family-nav>
     <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item is-active" data-family-filter="">View All</a>
@@ -280,17 +285,17 @@
       }
     }
 
-    nav.addEventListener('click', function (e) {
-      var link = e.target.closest('[data-family-filter]');
-      if (!link) return;
-      e.preventDefault();
-      var handle = link.getAttribute('data-family-filter');
-      var url = new URL(window.location.href);
-      if (handle) { url.searchParams.set('family', handle); } else { url.searchParams.delete('family'); }
-      window.history.pushState({}, '', url);
-      applyFilter(handle, link.textContent.trim());
-    });
-
+    {%- comment -%}
+      Family links (here and in the mega-menu/mobile drawer) are real
+      <a href> navigations to this same page with ?family=... — clicking
+      one is a full page load, not an in-place filter swap, so it reads
+      as going to that family's page. There's still no real per-family
+      Shopify Collection behind it, so the arriving page still needs to
+      sort itself out client-side once — that's all this does now: read
+      the family off the URL on load and apply it, with no click
+      handling or history.pushState left to fight the browser's own
+      navigation.
+    {%- endcomment -%}
     var initialFamily = new URLSearchParams(window.location.search).get('family');
     if (initialFamily) {
       var initialLink = nav.querySelector('[data-family-filter="' + initialFamily + '"]');
