@@ -441,31 +441,25 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
 }
 
-/* ===== Header "Shop" mega-menu — quick links | family grid | hover preview =====
+/* ===== "Shop" browse section — quick links | family grid | hover preview =====
    Real taxonomy: "family" = a specific product line (Maxi Roma and Mini
    Roma are different families); "category" = the broad grouping a few
    families sit under (Clutches, Accessories, Mini Bags, Fits A Phone).
    Family tiles carry a photo + name; hovering/focusing one swaps which
    preview panel shows on the right (placeholder photo + short
    description — real photos to be dropped in later). Grid is capped at
-   380px so tile size — and therefore the whole dropdown's height —
-   stays in check regardless of how wide the menu itself grows (sized
-   to fit one screen — verified via a mockup render, see git history). */
+   380px so tile size stays in check regardless of how wide the section
+   grows. Sits at the top of the Shop All page (sections/pm-shop-browse),
+   not in a header dropdown — "Shop" in the nav is a real link now. */
 .pm-shop-menu { position: relative; }
-.pm-shop-menu-close {
-  position: absolute; top: 0; right: var(--pm-pad); z-index: 3;
-  display: flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; padding: 0; border: none; background: none; cursor: pointer;
-  color: var(--pm-ink); opacity: 0.7; transition: opacity 0.2s var(--pm-ease);
-}
-.pm-shop-menu-close:hover { opacity: 1; }
 .pm-shop-menu {
   display: grid;
   grid-template-columns: clamp(120px, 11vw, 160px) 1fr clamp(200px, 19vw, 260px);
   gap: clamp(24px, 3vw, 44px);
   width: min(92vw, 1200px);
   margin: 0 auto;
-  padding: 24px var(--pm-pad) 26px;
+  padding: clamp(28px, 4vw, 44px) var(--pm-pad) clamp(40px, 6vw, 64px);
+  border-bottom: 1px solid var(--pm-line);
   font-family: var(--pm-font-sans);
 }
 .pm-shop-menu-links { display: flex; flex-direction: column; gap: 13px; padding-top: 4px; }
@@ -510,27 +504,6 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   .pm-shop-menu-preview-panel .pm-placeholder { max-width: 220px; }
 }
 
-/* ===== Mobile nav drawer — "Shop" expands into a horizontal-scrolling
-   strip of every family, smaller than the desktop grid tiles since
-   there's no room for a 3-column layout on a phone. ===== */
-.pm-mobile-family-scroll {
-  display: flex; gap: 12px;
-  padding: 4px var(--pm-pad) 14px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.pm-mobile-family-scroll-item {
-  flex: 0 0 auto; width: 96px;
-  font-size: 11px; letter-spacing: 0.02em; color: var(--pm-ink); text-align: center;
-}
-.pm-mobile-family-scroll-item .pm-placeholder {
-  width: 100%; aspect-ratio: 4 / 5; margin-bottom: 8px; font-size: 9px;
-}
-.pm-mobile-family-scroll-item--all {
-  display: flex; align-items: center; justify-content: center;
-  width: 72px; aspect-ratio: 4 / 5; border: 1px solid var(--pm-line);
-  text-transform: uppercase; letter-spacing: 0.08em;
-}
 @media (min-width: 640px) { .pm-photo-grid { grid-template-columns: repeat(4, 1fr); } }
 
 /* ===== Press / editorial mentions ===== */

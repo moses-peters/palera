@@ -21,45 +21,13 @@
       <ul class="mobile-nav{% if settings.type_navigation_style == 'heading' %} mobile-nav--heading-style{% endif %}" role="navigation" aria-label="Primary">
         {%- comment -%}
           Fixed 3-item nav (Shop / Home / About Us) — see header-desktop-nav.liquid.
-          Shop expands in place (same collapsible-trigger/collapsible-content
-          pattern as the product-page tabs — see tab.liquid) into a
-          horizontal-scrolling strip of every family, since there's no room
-          for the desktop mega-menu's grid on a phone screen.
+          Shop is a real link to the Shop All page, same as desktop —
+          its top section (sections/pm-shop-browse) is the family browse
+          grid, so there's no separate in-drawer family list to keep in
+          sync here anymore.
         {%- endcomment -%}
         <li class="mobile-nav__item appear-animation appear-delay-2">
-          <button
-            type="button"
-            class="mobile-nav__link mobile-nav__link--top-level collapsible-trigger collapsible-trigger-btn"
-            aria-controls="MobileShopFamilies"
-            aria-expanded="false">
-            Shop
-            {%- render 'collapsible-icons' -%}
-          </button>
-          <div id="MobileShopFamilies" class="collapsible-content">
-            <div class="collapsible-content__inner">
-              <div class="pm-mobile-family-scroll">
-                <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-mobile-family-scroll-item pm-mobile-family-scroll-item--all">
-                  <span>Shop All</span>
-                </a>
-                {%- comment -%}
-                  pm-family-data is rendered, not included — some shops
-                  reject the include tag outright. {% render %} runs in an
-                  isolated scope, so capture its text output and split
-                  it here instead of assigning inside the snippet.
-                {%- endcomment -%}
-                {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
-                {%- assign pm_families = pm_families_raw | strip | split: ';;' -%}
-                {%- for family in pm_families -%}
-                  {%- assign family_parts = family | split: '|' -%}
-                  {%- assign family_name = family_parts[0] -%}
-                  <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}?family={{ family_name | handle }}" class="pm-mobile-family-scroll-item">
-                    {% render 'pm-media-placeholder', label: family_name %}
-                    <span>{{ family_name }}</span>
-                  </a>
-                {%- endfor -%}
-              </div>
-            </div>
-          </div>
+          <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="mobile-nav__link mobile-nav__link--top-level">Shop</a>
         </li>
         <li class="mobile-nav__item appear-animation appear-delay-3">
           <a href="{{ routes.root_url }}" class="mobile-nav__link mobile-nav__link--top-level">Home</a>

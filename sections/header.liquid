@@ -147,27 +147,12 @@
     padding-left: var(--pm-pad) !important;
     padding-right: var(--pm-pad) !important;
   }
-  /* Stock .megamenu/.site-nav__dropdown padding (39px + 10px/5px) adds
-     ~90px of fixed chrome on top of the Shop dropdown's own content —
-     trim it so the whole panel fits one laptop viewport with no scroll. */
-  .megamenu.pm-shop-dropdown { padding: 16px 0 !important; }
-  .site-nav__dropdown.pm-shop-dropdown { padding: 6px 0 !important; }
-  /* Stock .site-nav__dropdown is z-index:5 — fine on the homepage, but on
-     a page with its own sticky/fixed chrome (the Shop All collection bar
-     at z-index:30, the sticky add-to-cart bar on product pages at
-     z-index:40) that page content showed through on top of the open
-     Shop dropdown instead of being covered by it. Push it above both. */
-  .site-nav__dropdown.pm-shop-dropdown { z-index: 50 !important; }
-  /* The above alone wasn't enough: .header-sticky-wrapper (the header's
-     own ancestor, wrapping everything below) is itself position:relative
-     with z-index:28 — a stacking context that traps any z-index set
-     inside it, so the dropdown could never actually out-rank a
-     z-index:30/40 element elsewhere on the page no matter how high its
-     own z-index went. Raise that wrapper's stacking context, but only
-     while the Shop dropdown is actually open — the cart/nav drawers
-     render as siblings of this wrapper at z-index:30, and jumping the
-     header above them unconditionally would cover those drawers too. */
-  .header-sticky-wrapper:has(#site-nav-item--shop[open]) { z-index: 45; }
+  /* "Shop" used to open a <details> mega-menu here (.pm-shop-dropdown),
+     which needed padding trims and a couple of z-index overrides to sit
+     correctly above sticky page chrome. It's a real link to the Shop
+     All page now (see snippets/header-desktop-nav.liquid and
+     sections/pm-shop-browse.liquid), so none of that dropdown-specific
+     CSS applies to anything in the page anymore. */
 </style>
 
 <div data-section-id="{{ section.id }}" data-section-type="header">

@@ -2,11 +2,11 @@
   Fixed 4-item nav (Home / AW27 / Shop / About Us) — intentionally ignores
   the store's main-menu link list. About Us / AW27 URLs come from the
   header section's settings (theme editor), since they can't be known
-  from theme code. Shop opens a mega-menu (pm-shop-menu) on click: no
-  data-hover attribute here, so this is a plain <details>/<summary> —
-  native click-to-toggle, no hover-open and no click-through navigation
-  (that redirect-on-click behavior lives in theme.js's hoverMenu(),
-  which only touches details[data-hover="true"]).
+  from theme code. Shop is a real link to the Shop All page, whose top
+  section (sections/pm-shop-browse) is the family-grid browse content
+  that used to only exist as a hover/click dropdown here — clicking
+  "Shop" opened an overlay on top of whatever page you were on rather
+  than actually going anywhere.
 {%- endcomment -%}
 <ul class="site-nav site-navigation small--hide">
   <li class="site-nav__item site-nav__expanded-item">
@@ -15,17 +15,8 @@
   <li class="site-nav__item site-nav__expanded-item">
     <a href="{{ aw27_url | default: '/collections/aw27' }}" class="site-nav__link site-nav__link--underline">AW27</a>
   </li>
-  <li class="site-nav__item site-nav__expanded-item site-nav--has-dropdown site-nav--is-megamenu">
-    <details id="site-nav-item--shop" class="site-nav__details">
-      <summary
-        aria-expanded="false"
-        aria-controls="site-nav-item--shop"
-        class="site-nav__link site-nav__link--underline site-nav__link--has-dropdown"
-      >Shop</summary>
-      <div class="site-nav__dropdown megamenu text-left pm-shop-dropdown">
-        {%- render 'pm-shop-menu' -%}
-      </div>
-    </details>
+  <li class="site-nav__item site-nav__expanded-item">
+    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="site-nav__link site-nav__link--underline">Shop</a>
   </li>
   <li class="site-nav__item site-nav__expanded-item">
     <a href="{{ about_us_url | default: '/pages/about-us' }}" class="site-nav__link site-nav__link--underline">About Us</a>

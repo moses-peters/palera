@@ -1,5 +1,5 @@
 {%- comment -%}
-  "Shop" mega-menu panel — three zones: quick links (View All / New In /
+  "Shop" browse panel — three zones: quick links (View All / New In /
   the four categories) on the left, the family grid (photo + name) in
   the middle, and a preview panel on the right that swaps to show a
   placeholder product photo + short description for whichever family is
@@ -7,10 +7,11 @@
   links are left as an easy swap for later, same as every other
   placeholder in this theme.
 
-  Opens on click, not hover — see header-desktop-nav.liquid, where the
-  <details> lost its data-hover attribute so native <details>/<summary>
-  click-toggle takes over. Closes via the X button here, a click
-  outside the panel, or Escape (see script below).
+  Renders as a real page (sections/pm-shop-browse.liquid, at the top of
+  the Shop All page) rather than a hover/click dropdown — it used to be
+  a <details> mega-menu, but that meant "Shop" never actually navigated
+  anywhere, it only toggled an overlay on top of whatever page you were
+  already on.
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
@@ -29,10 +30,6 @@
 
 <div class="pm-homepage">
   <div class="pm-shop-menu">
-    <button type="button" class="pm-shop-menu-close" data-shop-menu-close aria-label="Close menu">
-      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg>
-    </button>
-
     <nav class="pm-shop-menu-links">
       <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">View All</a>
       <a href="/collections/aw27" class="pm-shop-menu-links-item">New In</a>
@@ -92,33 +89,6 @@
       var menu = trigger.closest('.pm-shop-menu');
       if (!menu) return;
       showFamily(menu, trigger.getAttribute('data-family'));
-    });
-
-    document.querySelectorAll('[data-shop-menu-close]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var details = btn.closest('details');
-        if (details) {
-          details.removeAttribute('open');
-          details.setAttribute('aria-expanded', 'false');
-        }
-      });
-    });
-
-    document.addEventListener('click', function (e) {
-      document.querySelectorAll('.site-nav--is-megamenu > details[open]').forEach(function (details) {
-        if (!details.contains(e.target)) {
-          details.removeAttribute('open');
-          details.setAttribute('aria-expanded', 'false');
-        }
-      });
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      document.querySelectorAll('.site-nav--is-megamenu > details[open]').forEach(function (details) {
-        details.removeAttribute('open');
-        details.setAttribute('aria-expanded', 'false');
-      });
     });
   })();
 </script>
