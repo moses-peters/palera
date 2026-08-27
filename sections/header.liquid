@@ -158,6 +158,16 @@
      z-index:40) that page content showed through on top of the open
      Shop dropdown instead of being covered by it. Push it above both. */
   .site-nav__dropdown.pm-shop-dropdown { z-index: 50 !important; }
+  /* The above alone wasn't enough: .header-sticky-wrapper (the header's
+     own ancestor, wrapping everything below) is itself position:relative
+     with z-index:28 — a stacking context that traps any z-index set
+     inside it, so the dropdown could never actually out-rank a
+     z-index:30/40 element elsewhere on the page no matter how high its
+     own z-index went. Raise that wrapper's stacking context, but only
+     while the Shop dropdown is actually open — the cart/nav drawers
+     render as siblings of this wrapper at z-index:30, and jumping the
+     header above them unconditionally would cover those drawers too. */
+  .header-sticky-wrapper:has(#site-nav-item--shop[open]) { z-index: 45; }
 </style>
 
 <div data-section-id="{{ section.id }}" data-section-type="header">
