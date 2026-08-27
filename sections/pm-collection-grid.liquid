@@ -5,7 +5,20 @@
     <a href="{{ section.settings.back_url | default: '/collections' }}" class="pm-collection-back">
       ← {{ section.settings.back_label }}
     </a>
-    <span class="pm-eyebrow">{{ collection.products_count }} {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}</span>
+    <div class="pm-collection-bar-right">
+      <span class="pm-eyebrow">{{ collection.products_count }} {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}</span>
+      {%- if collection.sort_options.size > 0 -%}
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        <div class="pm-collection-sort">
+          <label for="PmSortBy" class="pm-visually-hidden">{{ 'collections.sorting.title' | t }}</label>
+          <select id="PmSortBy" class="pm-collection-sort-select" data-pm-sort>
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 
   <div class="pm-collection-header">
@@ -23,7 +36,10 @@
       {%- comment -%}
         Same mosaic rhythm as the Shop family grid (see pm-shop-families.liquid):
         repeats every 15 tiles — 1 big, 4 small (2x2), 8 small (two rows of 4),
-        2 big side by side — via CSS Grid dense auto-placement.
+        2 big side by side — via CSS Grid dense auto-placement. A campaign
+        placeholder tile (real imagery to be dropped in later) is folded into
+        the same dense-packed grid every 12 products, widening to a full-width
+        banner every third time.
       {%- endcomment -%}
       <div class="pm-collection-grid">
         {%- for product in collection.products -%}
@@ -43,6 +59,16 @@
               </span>
             </div>
           </a>
+          {%- unless forloop.last -%}
+            {%- if forloop.index | modulo: 12 == 0 -%}
+              {%- assign campaign_slot = forloop.index | divided_by: 12 -%}
+              {%- assign is_full = false -%}
+              {%- if campaign_slot | modulo: 3 == 0 -%}{%- assign is_full = true -%}{%- endif -%}
+              <div class="pm-product-tile pm-campaign-tile{% if is_full %} pm-campaign-tile--full{% endif %}" aria-hidden="true">
+                {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+              </div>
+            {%- endif -%}
+          {%- endunless -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
@@ -50,6 +76,17 @@
 </div>
 
 <script src="{{ 'pm-homepage.js' | asset_url }}" defer></script>
+<script>
+  (function () {
+    var select = document.getElementById('PmSortBy');
+    if (!select) return;
+    select.addEventListener('change', function () {
+      var url = new URL(window.location.href);
+      url.searchParams.set('sort_by', select.value);
+      window.location.href = url.toString();
+    });
+  })();
+</script>
 
 {% schema %}
 {
