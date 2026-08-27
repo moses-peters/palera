@@ -1,17 +1,14 @@
 {%- comment -%}
-  "Shop" mega-menu panel — one glance at every bag family, styled after
-  the Jacquemus nav dropdown: quick links | family grid | campaign panel.
-  Rendered inside a stock <details class="site-nav__dropdown megamenu">
-  (see header-desktop-nav.liquid) so hover-open/close and full-width
-  positioning come from the theme's existing mega-menu CSS/JS — only the
-  inner content here is custom.
+  "Shop" mega-menu panel — matches the Jacquemus nav dropdown exactly:
+  a plain-text category sidebar, a 3x3 grid of real products (photo +
+  name, no price — this is a browse panel, not a PLP), and a single
+  static campaign image on the right. No hover-swap behavior: the
+  campaign panel never changes based on what you're looking at.
 
-  Right panel: hovering a family (left link or grid tile) swaps the big
-  campaign-style photo from the default AW27 image to that family's own
-  flagship shot, same treatment (full image + eyebrow + name + link) —
-  matches the reference Jacquemus behavior where the right panel always
-  shows one full product photo, not a list. Leaving the menu, or
-  hovering Shop All, reverts to the AW27 panel.
+  Opens on click, not hover — see header-desktop-nav.liquid, where the
+  <details> lost its data-hover attribute so native <details>/<summary>
+  click-toggle takes over. Closes via the X button here or a click
+  outside the panel (see script below).
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
@@ -21,98 +18,76 @@
 
 <div class="pm-homepage">
   <div class="pm-shop-menu">
-    <div class="pm-shop-menu-links">
-      <div class="pm-shop-menu-links-group">
-        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item pm-shop-menu-links-item--all">Shop All</a>
-        <a href="/collections" class="pm-shop-menu-links-item pm-shop-menu-links-item--all">Shop by Family</a>
-        <a href="/collections/aw27" class="pm-shop-menu-links-item">New: AW27</a>
-      </div>
-      <div class="pm-shop-menu-links-group">
-        {%- for group in family_groups -%}
-          {%- assign group_parts = group | split: '|' -%}
-          {%- assign group_name = group_parts[0] -%}
-          {%- assign rep_product = all_products[group_parts[1]] -%}
-          {%- if rep_product != blank -%}
-            <a href="{{ rep_product.url }}" class="pm-shop-menu-links-item" data-family="{{ group_name | handle }}">{{ group_name }}</a>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    </div>
+    <button type="button" class="pm-shop-menu-close" data-shop-menu-close aria-label="Close menu">
+      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg>
+    </button>
+
+    <nav class="pm-shop-menu-links">
+      <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">View all</a>
+      <a href="/collections/aw27" class="pm-shop-menu-links-item">New In</a>
+      {%- for group in family_groups -%}
+        {%- assign group_parts = group | split: '|' -%}
+        {%- assign group_name = group_parts[0] -%}
+        {%- assign rep_product = all_products[group_parts[1]] -%}
+        {%- if rep_product != blank -%}
+          <a href="{{ rep_product.url }}" class="pm-shop-menu-links-item">{{ group_name }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
 
     <div class="pm-shop-menu-grid">
       {%- for group in family_groups -%}
         {%- assign group_parts = group | split: '|' -%}
-        {%- assign group_name = group_parts[0] -%}
         {%- assign rep_product = all_products[group_parts[1]] -%}
         {%- if rep_product != blank -%}
-          <a href="{{ rep_product.url }}" class="pm-shop-menu-tile" data-family="{{ group_name | handle }}">
+          <a href="{{ rep_product.url }}" class="pm-shop-menu-tile">
             {%- if rep_product.featured_image -%}
-              <img src="{{ rep_product.featured_image | image_url: width: 260 }}" alt="{{ group_name }}" loading="lazy">
+              <img src="{{ rep_product.featured_image | image_url: width: 400 }}" alt="{{ rep_product.title | escape }}" loading="lazy">
             {%- else -%}
-              {% render 'pm-media-placeholder', label: group_name %}
+              {% render 'pm-media-placeholder', label: rep_product.title %}
             {%- endif -%}
-            <span>{{ group_name }}</span>
+            <span>{{ rep_product.title }}</span>
           </a>
         {%- endif -%}
       {%- endfor -%}
     </div>
 
-    <div class="pm-shop-menu-side">
-      <a href="/collections/aw27" class="pm-shop-menu-feature" data-shop-menu-panel data-shop-menu-default>
-        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27">
-        <span class="pm-shop-menu-feature-copy">
-          <span class="pm-eyebrow">New Season</span>
-          <span class="pm-serif">AW27</span>
-          <span class="pm-link" style="margin-top:10px;">Discover the Collection</span>
-        </span>
-      </a>
-
-      {%- for group in family_groups -%}
-        {%- assign group_parts = group | split: '|' -%}
-        {%- assign group_name = group_parts[0] -%}
-        {%- assign rep_product = all_products[group_parts[1]] -%}
-        {%- if rep_product != blank -%}
-          <a href="{{ rep_product.url }}" class="pm-shop-menu-feature" data-shop-menu-panel data-family="{{ group_name | handle }}" hidden>
-            {%- if rep_product.featured_image -%}
-              <img src="{{ rep_product.featured_image | image_url: width: 700 }}" alt="{{ group_name }}">
-            {%- else -%}
-              {% render 'pm-media-placeholder', label: group_name %}
-            {%- endif -%}
-            <span class="pm-shop-menu-feature-copy">
-              <span class="pm-eyebrow">Palera Milano</span>
-              <span class="pm-serif">{{ group_name }}</span>
-              <span class="pm-link" style="margin-top:10px;">Shop {{ group_name }}</span>
-            </span>
-          </a>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
+    <a href="/collections/aw27" class="pm-shop-menu-feature">
+      <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27 — New Season">
+      <span class="pm-shop-menu-feature-copy">
+        <span class="pm-shop-menu-feature-title">&ldquo;AW27&rdquo;</span>
+        <span class="pm-link">Discover the collection</span>
+      </span>
+    </a>
   </div>
 </div>
 
 <script>
   (function () {
-    document.addEventListener('mouseover', function (e) {
-      var trigger = e.target.closest('[data-family]');
-      if (!trigger) return;
-      var menu = trigger.closest('.pm-shop-menu');
-      if (!menu) return;
-      var family = trigger.getAttribute('data-family');
-      var panels = menu.querySelectorAll('[data-shop-menu-panel]');
-      var match = menu.querySelector('[data-shop-menu-panel][data-family="' + family + '"]');
-      var fallback = menu.querySelector('[data-shop-menu-default]');
-      var show = match || fallback;
-      panels.forEach(function (panel) {
-        panel.hidden = (panel !== show);
+    document.querySelectorAll('[data-shop-menu-close]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var details = btn.closest('details');
+        if (details) {
+          details.removeAttribute('open');
+          details.setAttribute('aria-expanded', 'false');
+        }
       });
     });
 
-    document.querySelectorAll('.pm-shop-menu').forEach(function (menu) {
-      menu.addEventListener('mouseleave', function () {
-        var fallback = menu.querySelector('[data-shop-menu-default]');
-        menu.querySelectorAll('[data-shop-menu-panel]').forEach(function (panel) {
-          panel.hidden = (panel !== fallback);
-        });
+    document.addEventListener('click', function (e) {
+      document.querySelectorAll('.site-nav--is-megamenu > details[open]').forEach(function (details) {
+        if (!details.contains(e.target)) {
+          details.removeAttribute('open');
+          details.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('.site-nav--is-megamenu > details[open]').forEach(function (details) {
+        details.removeAttribute('open');
+        details.setAttribute('aria-expanded', 'false');
       });
     });
   })();

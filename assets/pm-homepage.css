@@ -377,75 +377,67 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
 }
 
-/* ===== Header "Shop" mega-menu — quick links | family grid | campaign panel =====
-   The campaign image was blowing out to its own intrinsic aspect-ratio
-   height (rendering hundreds of px tall) instead of being cropped to the
-   panel — .pm-shop-menu-side had no definite height of its own (it only
-   relied on CSS Grid "stretch" from its siblings), so .pm-shop-menu-
-   feature's height:100% had nothing reliable to resolve against. Fixed
-   by giving .pm-shop-menu-side an explicit height and making the feature
-   panel position:absolute/inset:0 within it — the same fills-its-box
-   pattern already used successfully everywhere else in this file (see
-   .pm-family-tile-image, .pm-product-image), just applied here too.
-   Verified against real headless-browser screenshots at 1366x768 and
-   1440x900 — see git history for the exact numbers. */
+/* ===== Header "Shop" mega-menu — plain-text sidebar | real-product grid | one static campaign image =====
+   Matches the Jacquemus nav dropdown structurally: a narrow text-link
+   sidebar, a 3x3 grid of real products (photo + name, no price), and a
+   single non-interactive campaign image on the right — no per-family
+   hover-swap any more. Tile size/gap are kept modest specifically so
+   the whole dropdown still fits one screen height without scrolling
+   (verified at 1366x768 / 1440x900 — see git history). */
+.pm-shop-menu { position: relative; }
+.pm-shop-menu-close {
+  position: absolute; top: 0; right: var(--pm-pad); z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; padding: 0; border: none; background: none; cursor: pointer;
+  color: var(--pm-ink); opacity: 0.7; transition: opacity 0.2s var(--pm-ease);
+}
+.pm-shop-menu-close:hover { opacity: 1; }
 .pm-shop-menu {
   display: grid;
   grid-template-columns: clamp(130px, 12vw, 170px) 1fr clamp(240px, 22vw, 320px);
-  gap: clamp(16px, 2vw, 28px);
-  width: min(92vw, 1200px);
+  gap: clamp(20px, 2.4vw, 36px);
+  width: min(92vw, 1240px);
   margin: 0 auto;
-  padding: 8px var(--pm-pad) 10px;
+  padding: 34px var(--pm-pad) 30px;
   font-family: var(--pm-font-sans);
 }
-.pm-shop-menu-links { display: flex; flex-direction: column; gap: 14px; }
-.pm-shop-menu-links-group { display: flex; flex-direction: column; }
+.pm-shop-menu-links { display: flex; flex-direction: column; gap: 15px; padding-top: 4px; }
 .pm-shop-menu-links-item {
-  padding: 2px 0; font-size: 12px; color: var(--pm-ink); transition: opacity 0.2s var(--pm-ease);
-  border-bottom: 1px solid transparent;
+  font-size: 12px; color: var(--pm-ink); transition: opacity 0.2s var(--pm-ease);
 }
-.pm-shop-menu-links-item--all { font-weight: 600; }
 .pm-shop-menu-links-item:hover { opacity: 0.55; }
 .pm-shop-menu-grid {
-  /* Capped at 640px and centered in its track, independent of how wide
-     .pm-shop-menu itself grows — the grid is what drives the panel's
-     height (square tiles), so keeping tile size bounded here is what
-     keeps the whole dropdown fitting one screen even on very wide
-     monitors, while the sidebar/campaign panel are still free to use
-     the extra width. */
-  max-width: 480px;
+  max-width: 380px;
   margin: 0 auto;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 20px 14px;
   align-content: start;
 }
-.pm-shop-menu-tile { display: block; text-align: center; }
+.pm-shop-menu-tile { display: block; }
 .pm-shop-menu-tile img,
 .pm-shop-menu-tile .pm-placeholder {
-  width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: var(--pm-sable);
-  margin-bottom: 5px; transition: opacity 0.2s var(--pm-ease);
+  width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--pm-sable);
+  margin-bottom: 8px; transition: opacity 0.2s var(--pm-ease);
 }
 .pm-shop-menu-tile:hover img,
 .pm-shop-menu-tile:hover .pm-placeholder { opacity: 0.82; }
 .pm-shop-menu-tile span {
   display: block; font-size: 11px; letter-spacing: 0.02em; color: var(--pm-ink);
 }
-.pm-shop-menu-side { position: relative; align-self: center; height: 380px; }
-.pm-shop-menu-feature { position: absolute; inset: 0; overflow: hidden; }
+.pm-shop-menu-feature { position: relative; display: block; overflow: hidden; }
 .pm-shop-menu-feature img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--pm-ease); }
 .pm-shop-menu-feature:hover img { transform: scale(1.04); }
 .pm-shop-menu-feature-copy {
-  position: absolute; left: 16px; bottom: 16px; right: 16px; z-index: 2;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 3px; color: #fff;
+  position: absolute; left: 18px; bottom: 18px; right: 18px; z-index: 2;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; color: #fff;
 }
-.pm-shop-menu-feature-copy .pm-eyebrow,
-.pm-shop-menu-feature-copy .pm-link { color: #fff; }
-.pm-shop-menu-feature-copy .pm-serif { font-size: 18px; }
+.pm-shop-menu-feature-title { font-family: var(--pm-font-sans); font-size: 14px; font-weight: 500; }
+.pm-shop-menu-feature-copy .pm-link { color: #fff; font-size: 10px; }
 @media (max-width: 1050px) {
   .pm-shop-menu { grid-template-columns: 140px 1fr; }
-  .pm-shop-menu-side { display: none; }
+  .pm-shop-menu-feature { display: none; }
 }
 @media (min-width: 640px) { .pm-photo-grid { grid-template-columns: repeat(4, 1fr); } }
 
