@@ -2,23 +2,31 @@
 
 <div class="pm-homepage">
   <footer class="pm-footer">
-    <div class="pm-footer-cols">
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'menu' -%}
-            {%- assign menu = linklists[block.settings.menu] -%}
-            {%- if menu.links.size > 0 -%}
-              <div class="pm-footer-col" {{ block.shopify_attributes }}>
-                <h4>{{ block.settings.title | default: menu.title }}</h4>
-                <ul>
-                  {%- for link in menu.links -%}
-                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                  {%- endfor -%}
-                </ul>
-              </div>
-            {%- endif -%}
-        {%- endcase -%}
-      {%- endfor -%}
+    <div class="pm-footer-top">
+      <div class="pm-footer-brand">
+        <span class="pm-serif pm-footer-wordmark">{{ shop.name }}</span>
+        {%- if section.settings.tagline != blank -%}
+          <p class="pm-footer-tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+      </div>
+      <div class="pm-footer-cols">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'menu' -%}
+              {%- assign menu = linklists[block.settings.menu] -%}
+              {%- if menu.links.size > 0 -%}
+                <div class="pm-footer-col" {{ block.shopify_attributes }}>
+                  <h4>{{ block.settings.title | default: menu.title }}</h4>
+                  <ul>
+                    {%- for link in menu.links -%}
+                      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
     </div>
 
     {%- if section.settings.show_newsletter -%}
@@ -65,6 +73,7 @@
 {
   "name": "PM: Footer",
   "settings": [
+    { "type": "text", "id": "tagline", "label": "Brand tagline", "default": "Hand-set crystal, made in Italy." },
     { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter signup", "default": true },
     { "type": "text", "id": "newsletter_eyebrow", "label": "Newsletter eyebrow" },
     { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join the Palera Community" },
