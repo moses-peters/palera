@@ -1,26 +1,29 @@
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
-{%- liquid
-  assign family_groups = 'Roma|maxi-roma-0,Santorini|santorini-6,Clutch|clutch-edge-long-silver-blue,Pouch|crystal-pouch,Wallet|crystal-wallet-rare-pink,Capri|capri-bag-gold,Amelia|amelia-bag-gold,Other Bags|mini-milano-n2-sparkle-blue,Accessories|mirage-necklace-green' | split: ','
--%}
+{%- comment -%}
+  pm-family-data is included (not rendered) — {% render %} runs in an
+  isolated scope and its assigns wouldn't reach this template.
+{%- endcomment -%}
+{%- include 'pm-family-data' -%}
 
 <div class="pm-homepage">
   {%- comment -%}
     Category sub-nav — the reference (Gucci) shows a row of bag-type tabs
     under the main nav. Palera's site is organized by family/model line
     rather than bag type, so this reuses the same family list as the Shop
-    mega-menu instead of inventing categories with no real collection
-    behind them.
+    mega-menu (pm-family-data) instead of inventing categories with no
+    real collection behind them. There's no real per-family Shopify
+    Collection to filter server-side, so filtering happens client-side
+    below: each tab writes a ?family= param and toggles matching tiles
+    (see data-family on each tile, and the script at the bottom).
   {%- endcomment -%}
-  <nav class="pm-plp-subnav">
-    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item is-active">View All</a>
-    {%- for group in family_groups -%}
-      {%- assign group_parts = group | split: '|' -%}
-      {%- assign group_name = group_parts[0] -%}
-      {%- assign rep_product = all_products[group_parts[1]] -%}
-      {%- if rep_product != blank -%}
-        <a href="{{ rep_product.url }}" class="pm-plp-subnav-item">{{ group_name }}</a>
-      {%- endif -%}
+  <nav class="pm-plp-subnav" data-pm-family-nav>
+    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item is-active" data-family-filter="">View All</a>
+    {%- for family in pm_families -%}
+      {%- assign family_parts = family | split: '|' -%}
+      {%- assign family_name = family_parts[0] -%}
+      {%- assign family_handle = family_name | handle -%}
+      <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}?family={{ family_handle }}" class="pm-plp-subnav-item" data-family-filter="{{ family_handle }}">{{ family_name }}</a>
     {%- endfor -%}
   </nav>
 
@@ -29,7 +32,7 @@
       ← {{ section.settings.back_label }}
     </a>
     <div class="pm-collection-bar-right">
-      <span class="pm-eyebrow">{{ collection.products_count }} {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}</span>
+      <span class="pm-eyebrow" data-pm-piece-count>{{ collection.products_count }} {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}</span>
       {%- if collection.sort_options.size > 0 -%}
         {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
         <div class="pm-collection-sort">
@@ -46,7 +49,7 @@
 
   <div class="pm-collection-header">
     {%- if section.settings.line_label != blank -%}<span class="pm-eyebrow">{{ section.settings.line_label }} — Family</span>{%- endif -%}
-    <h1 class="pm-serif pm-collection-name">{{ collection.title }}</h1>
+    <h1 class="pm-serif pm-collection-name" data-pm-collection-title>{{ collection.title }}</h1>
     {%- if collection.description != blank -%}
       <p class="pm-serif pm-collection-note">{{ collection.description | strip_html }}</p>
     {%- endif -%}
@@ -64,9 +67,31 @@
         since 12 is a multiple of both the 2- and 4-column layouts —
         widening to a full-width banner every third break.
       {%- endcomment -%}
-      <div class="pm-plp-grid">
+      <div class="pm-plp-grid" data-pm-plp-grid>
         {%- for product in collection.products -%}
-          <a href="{{ product.url }}" class="pm-plp-tile pm-reveal" style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms">
+          {%- comment -%}
+            No real per-family Collection exists to filter against, so
+            sort each product into one of the 9 real families by matching
+            keywords (pm-family-data) against its title. Products that
+            don't match any keyword still show under View All, just not
+            under any family tab.
+          {%- endcomment -%}
+          {%- assign tile_family = '' -%}
+          {%- assign title_downcase = product.title | downcase -%}
+          {%- for family in pm_families -%}
+            {%- if tile_family == '' -%}
+              {%- assign family_parts = family | split: '|' -%}
+              {%- assign family_name = family_parts[0] -%}
+              {%- assign family_keywords = family_parts[2] | split: ',' -%}
+              {%- for keyword in family_keywords -%}
+                {%- assign keyword_downcase = keyword | downcase -%}
+                {%- if tile_family == '' and title_downcase contains keyword_downcase -%}
+                  {%- assign tile_family = family_name | handle -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <a href="{{ product.url }}" class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms">
             <div class="pm-plp-tile-image">
               {%- if product.featured_image -%}
                 <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
@@ -105,12 +130,79 @@
 <script>
   (function () {
     var select = document.getElementById('PmSortBy');
-    if (!select) return;
-    select.addEventListener('change', function () {
+    if (select) {
+      select.addEventListener('change', function () {
+        var url = new URL(window.location.href);
+        url.searchParams.set('sort_by', select.value);
+        window.location.href = url.toString();
+      });
+    }
+
+    var grid = document.querySelector('[data-pm-plp-grid]');
+    var nav = document.querySelector('[data-pm-family-nav]');
+    if (!grid || !nav) return;
+
+    var countEl = document.querySelector('[data-pm-piece-count]');
+    var titleEl = document.querySelector('[data-pm-collection-title]');
+    var baseTitle = titleEl ? titleEl.textContent : '';
+
+    var tiles = Array.prototype.slice.call(grid.querySelectorAll('.pm-plp-tile:not(.pm-plp-campaign-tile)'));
+    var campaignTiles = Array.prototype.slice.call(grid.querySelectorAll('.pm-plp-campaign-tile'));
+    var originalOrder = tiles.slice();
+
+    // A freestyle (shuffled) order per filter, so a family tab doesn't
+    // show the same fixed sequence every time — only applied within a
+    // family filter; View All keeps the section's real product order.
+    function shuffled(list) {
+      var copy = list.slice();
+      for (var i = copy.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp;
+      }
+      return copy;
+    }
+
+    function applyFilter(familyHandle, familyLabel) {
+      var isFiltered = !!familyHandle;
+      campaignTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', isFiltered); });
+
+      var visible;
+      if (!isFiltered) {
+        visible = originalOrder;
+        tiles.forEach(function (tile) { tile.classList.remove('pm-is-hidden'); });
+      } else {
+        visible = shuffled(tiles.filter(function (tile) { return tile.getAttribute('data-family') === familyHandle; }));
+        tiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', tile.getAttribute('data-family') !== familyHandle); });
+      }
+      visible.forEach(function (tile) { grid.appendChild(tile); });
+
+      nav.querySelectorAll('[data-family-filter]').forEach(function (link) {
+        link.classList.toggle('is-active', link.getAttribute('data-family-filter') === familyHandle);
+      });
+      if (countEl) {
+        countEl.textContent = visible.length + ' ' + (visible.length === 1 ? 'piece' : 'pieces');
+      }
+      if (titleEl) {
+        titleEl.textContent = isFiltered ? familyLabel : baseTitle;
+      }
+    }
+
+    nav.addEventListener('click', function (e) {
+      var link = e.target.closest('[data-family-filter]');
+      if (!link) return;
+      e.preventDefault();
+      var handle = link.getAttribute('data-family-filter');
       var url = new URL(window.location.href);
-      url.searchParams.set('sort_by', select.value);
-      window.location.href = url.toString();
+      if (handle) { url.searchParams.set('family', handle); } else { url.searchParams.delete('family'); }
+      window.history.pushState({}, '', url);
+      applyFilter(handle, link.textContent.trim());
     });
+
+    var initialFamily = new URLSearchParams(window.location.search).get('family');
+    if (initialFamily) {
+      var initialLink = nav.querySelector('[data-family-filter="' + initialFamily + '"]');
+      if (initialLink) applyFilter(initialFamily, initialLink.textContent.trim());
+    }
   })();
 </script>
 

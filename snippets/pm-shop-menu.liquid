@@ -14,9 +14,14 @@
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
+{%- comment -%}
+  pm-family-data is included (not rendered) because {% render %} runs in
+  an isolated scope — its `assign`s wouldn't reach this template. include
+  shares scope, which is exactly what a shared string-data snippet needs.
+{%- endcomment -%}
+{%- include 'pm-family-data' -%}
 {%- liquid
   assign categories = 'Clutches,Accessories,Mini Bags,Fits A Phone' | split: ','
-  assign families = 'Clutches|Compact, hand-set crystal clutches for evening.;;Accessories|Necklaces, belts, and the finishing details.;;Pouches|Soft crystal pouches, worn crossbody or in hand.;;Wallets|Compact crystal wallets, sized to fit a phone.;;Maxi Roma|The Roma silhouette, in its fullest form.;;Mini Milano|Milano architecture, scaled down.;;Mini Roma|A smaller take on the signature Roma.;;Santorini|Sun-bleached crystal, inspired by the Cyclades.;;Wood Net Hobo|Hand-netted crystal over a wood frame.' | split: ';;'
 -%}
 
 <div class="pm-homepage">
@@ -34,10 +39,10 @@
     </nav>
 
     <div class="pm-shop-menu-grid">
-      {%- for family in families -%}
+      {%- for family in pm_families -%}
         {%- assign parts = family | split: '|' -%}
         {%- assign family_name = parts[0] -%}
-        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-family" data-family="{{ family_name | handle }}">
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}?family={{ family_name | handle }}" class="pm-shop-menu-family" data-family="{{ family_name | handle }}">
           {% render 'pm-media-placeholder', label: family_name %}
           <span>{{ family_name }}</span>
         </a>
@@ -45,7 +50,7 @@
     </div>
 
     <div class="pm-shop-menu-preview">
-      {%- for family in families -%}
+      {%- for family in pm_families -%}
         {%- assign parts = family | split: '|' -%}
         {%- assign family_name = parts[0] -%}
         {%- assign family_desc = parts[1] -%}

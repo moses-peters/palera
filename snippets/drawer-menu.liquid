@@ -41,9 +41,16 @@
                 <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-mobile-family-scroll-item pm-mobile-family-scroll-item--all">
                   <span>Shop All</span>
                 </a>
-                {%- assign mobile_families = 'Clutches,Accessories,Pouches,Wallets,Maxi Roma,Mini Milano,Mini Roma,Santorini,Wood Net Hobo' | split: ',' -%}
-                {%- for family_name in mobile_families -%}
-                  <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-mobile-family-scroll-item">
+                {%- comment -%}
+                  pm-family-data is included (not rendered) — {% render %}
+                  runs in an isolated scope and its assigns wouldn't reach
+                  this template.
+                {%- endcomment -%}
+                {%- include 'pm-family-data' -%}
+                {%- for family in pm_families -%}
+                  {%- assign family_parts = family | split: '|' -%}
+                  {%- assign family_name = family_parts[0] -%}
+                  <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}?family={{ family_name | handle }}" class="pm-mobile-family-scroll-item">
                     {% render 'pm-media-placeholder', label: family_name %}
                     <span>{{ family_name }}</span>
                   </a>

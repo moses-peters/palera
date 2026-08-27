@@ -1,0 +1,15 @@
+{%- comment -%}
+  Single source of truth for the 9 real product families — name,
+  preview description, and the title keyword(s) used to sort a product
+  into that family (Shopify has no real per-family Collections behind
+  these, so matching happens against product.title). Every surface that
+  lists families (Shop mega-menu, Shop All sub-nav + filtering, mobile
+  drawer) should render from `pm_families` rather than keeping its own
+  copy, so the list can't drift out of sync again.
+
+  Format per entry: Name|Preview description|keyword1,keyword2,...
+  Entries joined by ";;".
+{%- endcomment -%}
+{%- liquid
+  assign pm_families = 'Clutches|Compact, hand-set crystal clutches for evening.|Clutch;;Accessories|Necklaces, belts, and the finishing details.|Necklace,Belt,Bracelet,Earring,Charm;;Pouches|Soft crystal pouches, worn crossbody or in hand.|Pouch;;Wallets|Compact crystal wallets, sized to fit a phone.|Wallet;;Maxi Roma|The Roma silhouette, in its fullest form.|Maxi Roma;;Mini Milano|Milano architecture, scaled down.|Milano;;Mini Roma|A smaller take on the signature Roma.|Mini Roma;;Santorini|Sun-bleached crystal, inspired by the Cyclades.|Santorini;;Wood Net Hobo|Hand-netted crystal over a wood frame.|Hobo,Wood Net' | split: ';;'
+-%}
