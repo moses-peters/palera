@@ -367,9 +367,9 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    1440x900 — see git history for the exact numbers. */
 .pm-shop-menu {
   display: grid;
-  grid-template-columns: 150px 1fr 280px;
-  gap: 20px;
-  max-width: 950px;
+  grid-template-columns: clamp(130px, 12vw, 170px) 1fr clamp(240px, 22vw, 320px);
+  gap: clamp(16px, 2vw, 28px);
+  width: min(92vw, 1200px);
   margin: 0 auto;
   padding: 8px var(--pm-pad) 10px;
   font-family: var(--pm-font-sans);
@@ -383,12 +383,21 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-shop-menu-links-item--all { font-weight: 600; }
 .pm-shop-menu-links-item:hover { opacity: 0.55; }
 .pm-shop-menu-grid {
+  /* Capped at 640px and centered in its track, independent of how wide
+     .pm-shop-menu itself grows — the grid is what drives the panel's
+     height (square tiles), so keeping tile size bounded here is what
+     keeps the whole dropdown fitting one screen even on very wide
+     monitors, while the sidebar/campaign panel are still free to use
+     the extra width. */
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   align-content: start;
 }
-.pm-shop-menu-tile { display: block; text-align: left; }
+.pm-shop-menu-tile { display: block; text-align: center; }
 .pm-shop-menu-tile img,
 .pm-shop-menu-tile .pm-placeholder {
   width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: var(--pm-sable);
