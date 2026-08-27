@@ -1,6 +1,29 @@
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign family_groups = 'Roma|maxi-roma-0,Santorini|santorini-6,Clutch|clutch-edge-long-silver-blue,Pouch|crystal-pouch,Wallet|crystal-wallet-rare-pink,Capri|capri-bag-gold,Amelia|amelia-bag-gold,Other Bags|mini-milano-n2-sparkle-blue,Accessories|mirage-necklace-green' | split: ','
+-%}
+
 <div class="pm-homepage">
+  {%- comment -%}
+    Category sub-nav — the reference (Gucci) shows a row of bag-type tabs
+    under the main nav. Palera's site is organized by family/model line
+    rather than bag type, so this reuses the same family list as the Shop
+    mega-menu instead of inventing categories with no real collection
+    behind them.
+  {%- endcomment -%}
+  <nav class="pm-plp-subnav">
+    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item is-active">View All</a>
+    {%- for group in family_groups -%}
+      {%- assign group_parts = group | split: '|' -%}
+      {%- assign group_name = group_parts[0] -%}
+      {%- assign rep_product = all_products[group_parts[1]] -%}
+      {%- if rep_product != blank -%}
+        <a href="{{ rep_product.url }}" class="pm-plp-subnav-item">{{ group_name }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </nav>
+
   <div class="pm-collection-bar">
     <a href="{{ section.settings.back_url | default: '/collections' }}" class="pm-collection-back">
       ← {{ section.settings.back_label }}
@@ -34,29 +57,28 @@
       <p class="pm-collection-empty">{{ section.settings.empty_label }}</p>
     {%- else -%}
       {%- comment -%}
-        Same mosaic rhythm as the Shop family grid (see pm-shop-families.liquid):
-        repeats every 15 tiles — 1 big, 4 small (2x2), 8 small (two rows of 4),
-        2 big side by side — via CSS Grid dense auto-placement. A campaign
-        placeholder tile (real imagery to be dropped in later) is folded into
-        the same dense-packed grid every 12 products, widening to a full-width
-        banner every third time.
+        Product tiles are uniform (name + price sit above a plain,
+        contained product photo — no gradient caption overlay). A
+        campaign placeholder tile (real imagery to be dropped in later)
+        breaks the grid every 12 products, always landing on a fresh row
+        since 12 is a multiple of both the 2- and 4-column layouts —
+        widening to a full-width banner every third break.
       {%- endcomment -%}
-      <div class="pm-collection-grid">
+      <div class="pm-plp-grid">
         {%- for product in collection.products -%}
-          {%- assign pos = forloop.index0 | modulo: 15 -%}
-          {%- assign is_big = false -%}
-          {%- if pos == 0 or pos == 13 or pos == 14 -%}{%- assign is_big = true -%}{%- endif -%}
-          <a href="{{ product.url }}" class="pm-product-tile pm-reveal{% if is_big %} pm-product-tile--big{% endif %}" style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms">
-            {%- if product.featured_image -%}
-              <img class="pm-product-image" src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
-            {%- else -%}
-              {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
-            {%- endif -%}
-            <div class="pm-product-caption">
-              <span class="pm-product-title">{{ product.title }}</span>
-              <span class="pm-product-price">
+          <a href="{{ product.url }}" class="pm-plp-tile pm-reveal" style="transition-delay: {{ forloop.index0 | modulo: 8 | times: 70 }}ms">
+            <div class="pm-plp-tile-info">
+              <span class="pm-plp-tile-name">{{ product.title }}</span>
+              <span class="pm-plp-tile-price">
                 {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
               </span>
+            </div>
+            <div class="pm-plp-tile-image">
+              {%- if product.featured_image -%}
+                <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
+              {%- else -%}
+                {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+              {%- endif -%}
             </div>
           </a>
           {%- unless forloop.last -%}
@@ -66,8 +88,10 @@
               {%- assign campaign_slot_check = campaign_slot | modulo: 3 -%}
               {%- assign is_full = false -%}
               {%- if campaign_slot_check == 0 -%}{%- assign is_full = true -%}{%- endif -%}
-              <div class="pm-product-tile pm-campaign-tile{% if is_full %} pm-campaign-tile--full{% endif %}" aria-hidden="true">
-                {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+              <div class="pm-plp-tile pm-plp-campaign-tile{% if is_full %} pm-plp-campaign-tile--full{% endif %}" aria-hidden="true">
+                <div class="pm-plp-tile-image pm-plp-tile-image--campaign">
+                  {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+                </div>
               </div>
             {%- endif -%}
           {%- endunless -%}

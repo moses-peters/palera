@@ -230,6 +230,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 .pm-collection-back { display: flex; align-items: center; gap: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; transition: opacity 0.2s var(--pm-ease); }
 .pm-collection-back:hover { opacity: 0.55; }
+
+/* ===== PLP category sub-nav (Shop All) ===== */
+.pm-plp-subnav {
+  display: flex; flex-wrap: wrap; align-items: center; gap: clamp(14px, 2.2vw, 28px);
+  padding: 14px var(--pm-pad); border-bottom: 1px solid var(--pm-line);
+}
+.pm-plp-subnav-item {
+  font-size: 12px; color: var(--pm-muted); padding-bottom: 3px; border-bottom: 1px solid transparent;
+  transition: color 0.2s var(--pm-ease), border-color 0.2s var(--pm-ease);
+}
+.pm-plp-subnav-item:hover { color: var(--pm-ink); }
+.pm-plp-subnav-item.is-active { color: var(--pm-ink); font-weight: 600; border-color: var(--pm-ink); }
 .pm-collection-bar-right { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 8px clamp(14px, 2vw, 28px); }
 @media (max-width: 420px) {
   .pm-collection-bar { flex-direction: column; align-items: flex-start; }
@@ -269,13 +281,41 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   grid-auto-flow: row dense;
   gap: clamp(6px, 1vw, 14px);
 }
-.pm-product-tile--big { grid-column: span 2; grid-row: span 2; }
-.pm-campaign-tile { grid-column: span 2; grid-row: span 1; }
-.pm-campaign-tile--full { grid-column: 1 / -1; }
 @media (min-width: 640px) {
   .pm-collection-grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(160px, 21vw); }
 }
 .pm-collection-empty { padding: 60px 0; color: var(--pm-muted); text-align: center; }
+
+/* ===== PLP product grid (Shop All) — name + price sit above a plain,
+   contained product photo, matching the Gucci reference exactly: no
+   gradient caption overlaid on the image, no big/small mosaic sizing,
+   every tile the same size. A campaign placeholder tile breaks the
+   grid every 12 products (always a fresh row — 12 divides evenly into
+   both the 2- and 4-column layouts), widening to full-bleed every
+   third break. ===== */
+.pm-plp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(28px, 3.4vw, 44px) clamp(12px, 1.6vw, 20px);
+}
+@media (min-width: 640px) { .pm-plp-grid { grid-template-columns: repeat(4, 1fr); } }
+.pm-plp-tile { display: block; }
+.pm-plp-tile-info { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+.pm-plp-tile-name { font-size: 13px; line-height: 1.35; color: var(--pm-ink); }
+.pm-plp-tile-price { font-size: 13px; color: var(--pm-ink); }
+.pm-plp-tile-image { position: relative; aspect-ratio: 4 / 5; background: var(--pm-sable); overflow: hidden; }
+.pm-plp-tile-image img,
+.pm-plp-tile-image .pm-placeholder {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; padding: 7%; transition: transform 0.4s var(--pm-ease);
+}
+.pm-plp-tile:hover .pm-plp-tile-image img { transform: scale(1.04); }
+.pm-plp-campaign-tile { grid-column: span 2; }
+.pm-plp-campaign-tile--full { grid-column: 1 / -1; }
+.pm-plp-campaign-tile .pm-plp-tile-image { aspect-ratio: 16 / 9; }
+.pm-plp-campaign-tile--full .pm-plp-tile-image { aspect-ratio: 21 / 9; }
+.pm-plp-campaign-tile .pm-plp-tile-image img,
+.pm-plp-campaign-tile .pm-plp-tile-image .pm-placeholder { object-fit: cover; padding: 0; }
 
 .pm-product-tile { position: relative; display: block; overflow: hidden; background: var(--pm-sable); }
 .pm-product-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--pm-ease); }
