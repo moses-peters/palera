@@ -120,15 +120,25 @@
           getting added in Admin. The instant collection.products has
           anything in it, this branch stops running and the real grid
           below takes over automatically — nothing to swap by hand.
+          Always exactly 12 tiles for a consistent grid; each one pulls
+          a real photo from this section's "Placeholder photo" blocks
+          (add up to 12, in order) and falls back to the plain
+          placeholder for any spot left unset.
         {%- endcomment -%}
+        {%- assign placeholder_blocks = section.blocks | where: 'type', 'placeholder_spot' -%}
         <div class="pm-plp-grid">
           {%- for i in (1..12) -%}
-            <div class="pm-plp-tile" aria-hidden="true">
+            {%- assign spot_block = placeholder_blocks[forloop.index0] -%}
+            <div class="pm-plp-tile" aria-hidden="true"{% if spot_block %} {{ spot_block.shopify_attributes }}{% endif %}>
               <div class="pm-plp-tile-image">
-                {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+                {%- if spot_block.settings.image -%}
+                  <img src="{{ spot_block.settings.image | image_url: width: 900 }}" alt="{{ spot_block.settings.image.alt | escape | default: spot_block.settings.label }}" loading="lazy">
+                {%- else -%}
+                  {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+                {%- endif -%}
               </div>
               <div class="pm-plp-tile-info">
-                <span class="pm-plp-tile-name">Coming soon</span>
+                <span class="pm-plp-tile-name">{{ spot_block.settings.label | default: 'Coming soon' }}</span>
                 <span class="pm-plp-tile-price">—</span>
               </div>
             </div>
@@ -377,6 +387,14 @@
         { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
         { "type": "text", "id": "caption", "label": "Caption" },
         { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false }
+      ]
+    },
+    {
+      "type": "placeholder_spot",
+      "name": "Placeholder photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Coming soon" }
       ]
     }
   ]

@@ -11,6 +11,12 @@
   "sections": {
     "main": {
       "type": "pm-collection-grid",
+      "blocks": {
+        "break-1": { "type": "editorial_break", "settings": { "full_width": false } },
+        "break-2": { "type": "editorial_break", "settings": { "full_width": true } },
+        "break-3": { "type": "editorial_break", "settings": { "full_width": false } }
+      },
+      "block_order": ["break-1", "break-2", "break-3"],
       "settings": {
         "back_label": "All Families",
         "back_url": "",
