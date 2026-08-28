@@ -4,33 +4,22 @@
       "type": "pm-hero",
       "settings": {}
     },
-    "aw27-statement": {
-      "type": "pm-brand-statement",
-      "settings": {
-        "mark": "AW27",
-        "quote": "Autumn/Winter Twenty-Seven turns toward the interior — heavier crystal, deeper settings, silhouettes built for shorter days. The coastline light that shaped Palera Milano is still here, just held a little closer.",
-        "link_label": "",
-        "link_url": ""
-      }
-    },
     "aw27-shop": {
-      "type": "pm-collection-grid",
-      "blocks": {
-        "break-1": { "type": "editorial_break", "settings": { "caption": "AW27 — In Motion", "full_width": false } },
-        "break-2": { "type": "editorial_break", "settings": { "caption": "AW27 — The Collection", "full_width": true } }
-      },
-      "block_order": ["break-1", "break-2"],
+      "type": "pm-shop-picked",
+      "blocks": {},
+      "block_order": [],
       "settings": {
+        "eyebrow": "AW27",
+        "heading": "The Collection",
+        "note": "",
         "back_label": "All Collections",
         "back_url": "/collections",
-        "line_label": "AW27",
         "empty_label": "AW27 pieces are being finished by hand — the collection lands here shortly."
       }
     }
   },
   "order": [
     "aw27-hero",
-    "aw27-statement",
     "aw27-shop"
   ]
 }
