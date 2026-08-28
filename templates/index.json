@@ -60,6 +60,7 @@
     "pm-full-bleed-media": {
       "type": "pm-full-bleed-media",
       "settings": {
+        "image": "shopify://shop_images/3U7A2898_-_Copy.jpg",
         "video_url": "",
         "caption": "",
         "link_url": ""
