@@ -149,6 +149,7 @@
         "mention-3",
         "mention-4"
       ],
+      "disabled": true,
       "settings": {
         "eyebrow": "As Seen In",
         "heading": "Press & Editorial"
