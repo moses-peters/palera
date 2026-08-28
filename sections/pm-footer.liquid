@@ -21,6 +21,15 @@
                     {%- for link in menu.links -%}
                       <li><a href="{{ link.url }}">{{ link.title }}</a></li>
                     {%- endfor -%}
+                    {%- comment -%}
+                      Press is hardcoded into the Client Service column
+                      rather than a real linklist entry — adding an item
+                      to a Shopify navigation menu needs Admin access
+                      this theme doesn't have.
+                    {%- endcomment -%}
+                    {%- if block.settings.menu == 'client-service' -%}
+                      <li><a href="/pages/press">Press</a></li>
+                    {%- endif -%}
                   </ul>
                 </div>
               {%- endif -%}
@@ -52,12 +61,6 @@
 
     <div class="pm-footer-bottom">
       <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
-      {%- comment -%}
-        Hardcoded rather than a linklist entry — adding a real item to a
-        Shopify navigation menu needs Admin access this theme doesn't
-        have; a direct link avoids depending on a menu being set up.
-      {%- endcomment -%}
-      <a href="/pages/press">Press</a>
       {%- if settings.social_instagram_link != blank or settings.social_pinterest_link != blank or settings.social_tiktok_link != blank or settings.social_youtube_link != blank or settings.social_facebook_link != blank -%}
         <span class="pm-footer-socials">
           {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}

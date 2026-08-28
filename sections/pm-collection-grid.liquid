@@ -39,6 +39,26 @@
 
 <div class="pm-homepage">
   {%- comment -%}
+    AW27 banner — coded directly here rather than as a separate section
+    on an alternate template, so the AW27 collection can stay on the
+    same default template every collection uses (no template selection
+    or assignment step in Admin, and it can never end up pointed at the
+    wrong collection). Gated on the handle so no other collection
+    (Shop All included) picks up a banner it never asked for.
+  {%- endcomment -%}
+  {%- if collection.handle == 'aw27' -%}
+    <section class="pm-hero">
+      <a href="{{ section.settings.aw27_banner_link | default: '#' }}" class="pm-hero-media">
+        {%- if section.settings.aw27_banner_image -%}
+          <img src="{{ section.settings.aw27_banner_image | image_url: width: 1800 }}" alt="AW27" loading="eager">
+        {%- else -%}
+          <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27" loading="eager">
+        {%- endif -%}
+      </a>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%}
     Category sub-nav — the reference (Gucci) shows a row of bag-type tabs
     under the main nav. Palera's site is organized by family/model line
     rather than bag type, so this reuses the same family list as the Shop
@@ -93,7 +113,30 @@
 
   <div class="pm-collection-grid-wrap">
     {%- if collection.products.size == 0 -%}
-      <p class="pm-collection-empty">{{ section.settings.empty_label }}</p>
+      {%- if collection.handle == 'aw27' -%}
+        {%- comment -%}
+          Coded placeholder spots, not a text message — so the page
+          never reads as broken/empty while the real AW27 products are
+          getting added in Admin. The instant collection.products has
+          anything in it, this branch stops running and the real grid
+          below takes over automatically — nothing to swap by hand.
+        {%- endcomment -%}
+        <div class="pm-plp-grid">
+          {%- for i in (1..12) -%}
+            <div class="pm-plp-tile" aria-hidden="true">
+              <div class="pm-plp-tile-image">
+                {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+              </div>
+              <div class="pm-plp-tile-info">
+                <span class="pm-plp-tile-name">Coming soon</span>
+                <span class="pm-plp-tile-price">—</span>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="pm-collection-empty">{{ section.settings.empty_label }}</p>
+      {%- endif -%}
     {%- else -%}
       {%- comment -%}
         Product tiles are uniform (name + price sit above a plain,
@@ -321,7 +364,9 @@
     { "type": "text", "id": "back_label", "label": "Back link label", "default": "All Families" },
     { "type": "url", "id": "back_url", "label": "Back link URL", "info": "Point this at your Shop by Family page (/collections)." },
     { "type": "text", "id": "line_label", "label": "Line label override" },
-    { "type": "text", "id": "empty_label", "label": "Empty collection message", "default": "New pieces for this family are on the way." }
+    { "type": "text", "id": "empty_label", "label": "Empty collection message", "default": "New pieces for this family are on the way." },
+    { "type": "image_picker", "id": "aw27_banner_image", "label": "AW27 banner image", "info": "Only shown on the AW27 collection page." },
+    { "type": "url", "id": "aw27_banner_link", "label": "AW27 banner link" }
   ],
   "blocks": [
     {
