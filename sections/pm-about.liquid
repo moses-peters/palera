@@ -5,10 +5,8 @@
 
   {%- comment -%} ===== Intro / hero ===== {%- endcomment -%}
   <section class="pm-about-hero">
-    {%- if section.settings.hero_video_url != blank -%}
-      <video autoplay muted loop playsinline poster="{% if section.settings.hero_image %}{{ section.settings.hero_image | image_url: width: 1800 }}{% endif %}">
-        <source src="{{ section.settings.hero_video_url }}" type="video/mp4">
-      </video>
+    {%- if section.settings.hero_video != blank -%}
+      {{ section.settings.hero_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1800x' }}
     {%- elsif section.settings.hero_image -%}
       <img src="{{ section.settings.hero_image | image_url: width: 1800 }}" alt="{{ section.settings.hero_heading }}" loading="eager">
     {%- else -%}
@@ -29,7 +27,9 @@
   {%- comment -%} ===== Craft / story spread ===== {%- endcomment -%}
   <section class="pm-about-spread">
     <div class="pm-about-spread-image pm-reveal">
-      {%- if section.settings.story_image -%}
+      {%- if section.settings.story_video != blank -%}
+        {{ section.settings.story_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
+      {%- elsif section.settings.story_image -%}
         <img src="{{ section.settings.story_image | image_url: width: 1400 }}" alt="{{ section.settings.story_heading }}" loading="lazy">
       {%- else -%}
         <img src="{{ 'pm-about-story.jpg' | asset_url }}" alt="{{ section.settings.story_heading }}" loading="lazy">
@@ -101,7 +101,7 @@
       "content": "Intro"
     },
     { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
-    { "type": "text", "id": "hero_video_url", "label": "Hero video URL (.mp4)", "info": "Overrides the image when set. The image above is still used as the poster frame." },
+    { "type": "video", "id": "hero_video", "label": "Hero video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Palera Milano" },
     { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Our Story" },
     {
@@ -120,6 +120,7 @@
       "content": "Craft spread"
     },
     { "type": "image_picker", "id": "story_image", "label": "Image" },
+    { "type": "video", "id": "story_video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Made By Hand" },
     { "type": "text", "id": "story_heading", "label": "Heading", "default": "Every piece, considered" },
     {
