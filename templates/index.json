@@ -13,6 +13,7 @@
       "type": "pm-hero",
       "settings": {
         "video_url": "",
+        "link_url": "",
         "focal_x": 40,
         "focal_y": 35
       }
@@ -45,11 +46,32 @@
       ],
       "settings": {}
     },
+    "pm-image-duo": {
+      "type": "pm-image-duo",
+      "settings": {
+        "image_left": "shopify://shop_images/3U7A2811-2.jpg",
+        "caption_left": "",
+        "link_left": "",
+        "image_right": "shopify://shop_images/3U7A3534.jpg",
+        "caption_right": "",
+        "link_right": ""
+      }
+    },
     "pm-full-bleed-media": {
       "type": "pm-full-bleed-media",
       "settings": {
         "video_url": "",
-        "caption": ""
+        "caption": "",
+        "link_url": ""
+      }
+    },
+    "pm-editorial-duo": {
+      "type": "pm-editorial-duo",
+      "settings": {
+        "tag": "Made By Hand",
+        "copy": "Every crystal is set individually, so no two pieces catch the light the same way.",
+        "link_label": "",
+        "link_url": ""
       }
     },
     "pm-photo-grid": {
@@ -154,24 +176,6 @@
       "settings": {
         "eyebrow": "",
         "heading": ""
-      }
-    },
-    "pm-image-duo": {
-      "type": "pm-image-duo",
-      "settings": {
-        "caption_left": "",
-        "link_left": "",
-        "caption_right": "",
-        "link_right": ""
-      }
-    },
-    "pm-editorial-duo": {
-      "type": "pm-editorial-duo",
-      "settings": {
-        "tag": "Made By Hand",
-        "copy": "Every crystal is set individually, so no two pieces catch the light the same way.",
-        "link_label": "",
-        "link_url": ""
       }
     }
   },
