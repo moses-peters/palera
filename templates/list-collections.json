@@ -11,7 +11,17 @@
   "sections": {
     "main": {
       "type": "pm-shop-browse",
-      "settings": {}
+      "settings": {
+        "clutches_image": "shopify://shop_images/3U7A0532.jpg",
+        "accessories_image": "shopify://shop_images/Mirage_Necklace.jpg",
+        "pouches_image": "shopify://shop_images/3U7A3493.jpg",
+        "wallets_image": "shopify://shop_images/Wallet_Chain_2.jpg",
+        "maxi_roma_image": "shopify://shop_images/maxi-roma-509829.jpg",
+        "mini_milano_image": "shopify://shop_images/diamond-mini-milano-n2-637445_1.jpg",
+        "mini_roma_image": "shopify://shop_images/mini-roma-899168.jpg",
+        "santorini_image": "shopify://shop_images/santorini-786671_a340a78a-b134-4620-a33b-4da3c5469e34.jpg",
+        "wood_net_hobo_image": "shopify://shop_images/Wood-Net-Bag-Model1.jpg"
+      }
     }
   },
   "order": [
