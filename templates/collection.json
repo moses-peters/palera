@@ -213,9 +213,10 @@
         "fam-mini-milano-2": {
           "type": "editorial_break",
           "settings": {
-            "show_on": "family",
+            "show_on": "shop_all",
             "family": "mini-milano",
             "orientation": "vertical",
+            "image": "shopify://shop_images/santorini-869229_b4c2b711-d330-4ede-9ad3-e1f91064c610.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -223,9 +224,10 @@
         "fam-mini-roma-1": {
           "type": "editorial_break",
           "settings": {
-            "show_on": "family",
+            "show_on": "shop_all",
             "family": "mini-roma",
-            "orientation": "horizontal",
+            "orientation": "vertical",
+            "image": "shopify://shop_images/Shine_is_withinn_you.png",
             "video_url": "",
             "caption": ""
           }
@@ -233,9 +235,10 @@
         "fam-mini-roma-2": {
           "type": "editorial_break",
           "settings": {
-            "show_on": "family",
+            "show_on": "shop_all",
             "family": "mini-roma",
             "orientation": "vertical",
+            "image": "shopify://shop_images/IMG_3.webp",
             "video_url": "",
             "caption": ""
           }
@@ -243,9 +246,10 @@
         "fam-santorini-1": {
           "type": "editorial_break",
           "settings": {
-            "show_on": "family",
+            "show_on": "shop_all",
             "family": "santorini",
             "orientation": "horizontal",
+            "image": "shopify://shop_images/How_2.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -253,9 +257,10 @@
         "fam-santorini-2": {
           "type": "editorial_break",
           "settings": {
-            "show_on": "family",
+            "show_on": "shop_all",
             "family": "santorini",
             "orientation": "vertical",
+            "image": "shopify://shop_images/3U7A9631.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -263,9 +268,10 @@
         "fam-wood-net-hobo-1": {
           "type": "editorial_break",
           "settings": {
-            "show_on": "family",
+            "show_on": "shop_all",
             "family": "wood-net-hobo",
             "orientation": "horizontal",
+            "image": "shopify://shop_images/3U7A9773_1.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -273,9 +279,10 @@
         "fam-wood-net-hobo-2": {
           "type": "editorial_break",
           "settings": {
-            "show_on": "family",
+            "show_on": "aw27",
             "family": "wood-net-hobo",
             "orientation": "vertical",
+            "image": "shopify://shop_images/3U7A3250-2.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -285,7 +292,8 @@
           "settings": {
             "show_on": "aw27",
             "family": "clutches",
-            "orientation": "horizontal",
+            "orientation": "vertical",
+            "image": "shopify://shop_images/3U7A2811-2.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -296,6 +304,7 @@
             "show_on": "aw27",
             "family": "clutches",
             "orientation": "horizontal",
+            "image": "shopify://shop_images/3U7A3278.jpg",
             "video_url": "",
             "caption": ""
           }
