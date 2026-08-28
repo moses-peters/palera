@@ -144,6 +144,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/capri-bag-gold",
+            "image": "shopify://shop_images/3U7A2987.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-6.jpg",
             "link": ""
@@ -153,7 +154,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-wallet-rare-pink",
-            "image": "shopify://shop_images/3U7A3063-2.jpg",
+            "image": "shopify://shop_images/3U7A3088-2.jpg",
             "fallback_label": "",
             "fallback_asset": "",
             "link": ""
