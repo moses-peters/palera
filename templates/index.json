@@ -104,6 +104,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/santorini-6",
+            "image": "shopify://shop_images/3U7A3012.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-2.jpg",
             "link": ""
