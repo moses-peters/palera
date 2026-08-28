@@ -7,11 +7,13 @@
   links are left as an easy swap for later, same as every other
   placeholder in this theme.
 
-  Renders as a real page (sections/pm-shop-browse.liquid, at the top of
-  the Shop All page) rather than a hover/click dropdown — it used to be
-  a <details> mega-menu, but that meant "Shop" never actually navigated
+  Renders as its own real page (sections/pm-shop-browse.liquid, at
+  /collections) rather than a hover/click dropdown — it used to be a
+  <details> mega-menu, but that meant "Shop" never actually navigated
   anywhere, it only toggled an overlay on top of whatever page you were
-  already on.
+  already on. Picking a family here goes on to that family's actual
+  products (/collections/all?family=...); this page itself never shows
+  products, only the family picker.
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 

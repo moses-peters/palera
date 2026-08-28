@@ -9,17 +9,12 @@
  */
 {
   "sections": {
-    "shop-browse": {
-      "type": "pm-shop-browse",
-      "settings": {}
-    },
     "main": {
       "type": "pm-collection-grid",
       "settings": {}
     }
   },
   "order": [
-    "shop-browse",
     "main"
   ]
 }

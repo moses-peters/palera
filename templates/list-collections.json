@@ -1,12 +1,8 @@
 {
   "sections": {
     "main": {
-      "type": "pm-shop-families",
-      "settings": {
-        "eyebrow": "The Collection",
-        "heading": "Shop by Family",
-        "subheading": "Choose a family, then the piece within it."
-      }
+      "type": "pm-shop-browse",
+      "settings": {}
     }
   },
   "order": [

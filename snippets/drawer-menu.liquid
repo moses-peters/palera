@@ -21,13 +21,12 @@
       <ul class="mobile-nav{% if settings.type_navigation_style == 'heading' %} mobile-nav--heading-style{% endif %}" role="navigation" aria-label="Primary">
         {%- comment -%}
           Fixed 3-item nav (Shop / Home / About Us) — see header-desktop-nav.liquid.
-          Shop is a real link to the Shop All page, same as desktop —
-          its top section (sections/pm-shop-browse) is the family browse
-          grid, so there's no separate in-drawer family list to keep in
-          sync here anymore.
+          Shop links to /collections (the family picker page), same as
+          desktop — no separate in-drawer family list to keep in sync
+          here anymore.
         {%- endcomment -%}
         <li class="mobile-nav__item appear-animation appear-delay-2">
-          <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="mobile-nav__link mobile-nav__link--top-level">Shop</a>
+          <a href="{{ routes.collections_url | default: '/collections' }}" class="mobile-nav__link mobile-nav__link--top-level">Shop</a>
         </li>
         <li class="mobile-nav__item appear-animation appear-delay-3">
           <a href="{{ routes.root_url }}" class="mobile-nav__link mobile-nav__link--top-level">Home</a>

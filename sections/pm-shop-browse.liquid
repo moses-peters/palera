@@ -1,22 +1,19 @@
 {%- comment -%}
-  Top-of-page "Shop" browse section — quick links + the 9-family grid +
-  hover preview (pm-shop-menu), same content that used to only exist as
-  the header's "Shop" dropdown. It lives here, at the top of the Shop
-  All page (see templates/collection.json), so clicking "Shop" in the
-  header is a real page visit instead of opening a hovering overlay.
+  "Shop" landing page — quick links + the 9-family grid + hover preview
+  (pm-shop-menu), same content that used to only exist as the header's
+  "Shop" dropdown. Lives at /collections (see templates/list-collections.json),
+  a real Shopify route that needs no Collection/Page resource created in
+  Admin. Clicking "Shop" in the header goes here — just the family
+  picker, no product grid — and clicking a family from here goes on to
+  that family's actual products (/collections/all?family=..., handled
+  by pm-collection-grid).
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
 <div class="pm-homepage">
   <div class="pm-collection-header">
-    {%- comment -%}
-      h2, not h1 — pm-collection-grid below still owns the page's one
-      real h1 (the actual collection title). This is reused
-      .pm-collection-header/.pm-collection-name styling for a matching
-      look, not a second page heading.
-    {%- endcomment -%}
     <span class="pm-eyebrow">Shop</span>
-    <h2 class="pm-serif pm-collection-name">Browse by Family</h2>
+    <h1 class="pm-serif pm-collection-name">Browse by Family</h1>
   </div>
 </div>
 
