@@ -1,0 +1,24 @@
+{%- comment -%}
+  One campaign/"Editorial break" tile. Shared by pm-collection-grid for
+  both the in-grid break points (rendered inline, already in the right
+  spot) and the family-scoped tiles (rendered once after the grid,
+  starting hidden — JS un-hides and repositions them when a family
+  filter is applied). Params: campaign_block (the block), hidden
+  (boolean, true to start with pm-is-hidden applied).
+{%- endcomment -%}
+<div class="pm-plp-tile pm-plp-campaign-tile{% if campaign_block.settings.orientation == 'vertical' %} pm-plp-campaign-tile--vertical{% endif %}{% if hidden %} pm-is-hidden{% endif %}" data-show-on="{{ campaign_block.settings.show_on }}" aria-hidden="true" {{ campaign_block.shopify_attributes }}>
+  <div class="pm-plp-tile-image pm-plp-tile-image--campaign">
+    {%- if campaign_block.settings.video_url != blank -%}
+      <video autoplay muted loop playsinline{% if campaign_block.settings.image %} poster="{{ campaign_block.settings.image | image_url: width: 1800 }}"{% endif %}>
+        <source src="{{ campaign_block.settings.video_url }}" type="video/mp4">
+      </video>
+    {%- elsif campaign_block.settings.image -%}
+      <img src="{{ campaign_block.settings.image | image_url: width: 1800 }}" alt="{{ campaign_block.settings.image.alt | escape | default: campaign_block.settings.caption }}" loading="lazy">
+    {%- else -%}
+      {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+    {%- endif -%}
+  </div>
+  {%- if campaign_block.settings.caption != blank -%}
+    <p class="pm-eyebrow pm-plp-campaign-caption">{{ campaign_block.settings.caption }}</p>
+  {%- endif -%}
+</div>

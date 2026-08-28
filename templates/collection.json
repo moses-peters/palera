@@ -12,11 +12,21 @@
     "main": {
       "type": "pm-collection-grid",
       "blocks": {
-        "break-1": { "type": "editorial_break", "settings": { "full_width": false } },
-        "break-2": { "type": "editorial_break", "settings": { "full_width": true } },
-        "break-3": { "type": "editorial_break", "settings": { "full_width": false } }
+        "sa-1": { "type": "editorial_break", "settings": { "show_on": "shop_all", "orientation": "horizontal", "image": "shopify://shop_images/santorini-516142.webp" } },
+        "sa-2": { "type": "editorial_break", "settings": { "show_on": "shop_all", "orientation": "vertical", "image": "shopify://shop_images/santorini-861385.webp" } },
+        "sa-3": { "type": "editorial_break", "settings": { "show_on": "shop_all", "orientation": "horizontal", "image": "shopify://shop_images/diamond-santorini-915268_2a54bb22-1d2b-4f88-a4e7-d39a2f27d348.jpg" } },
+        "sa-4": { "type": "editorial_break", "settings": { "show_on": "shop_all", "orientation": "vertical" } },
+        "sa-5": { "type": "editorial_break", "settings": { "show_on": "shop_all", "orientation": "horizontal" } },
+        "sa-6": { "type": "editorial_break", "settings": { "show_on": "shop_all", "orientation": "vertical" } },
+        "sa-7": { "type": "editorial_break", "settings": { "show_on": "shop_all", "orientation": "horizontal" } },
+        "fam-1": { "type": "editorial_break", "settings": { "show_on": "family", "orientation": "horizontal" } },
+        "fam-2": { "type": "editorial_break", "settings": { "show_on": "family", "orientation": "vertical" } },
+        "aw-1": { "type": "editorial_break", "settings": { "show_on": "aw27", "orientation": "horizontal" } },
+        "aw-2": { "type": "editorial_break", "settings": { "show_on": "aw27", "orientation": "horizontal" } },
+        "aw-3": { "type": "editorial_break", "settings": { "show_on": "aw27", "orientation": "vertical" } },
+        "aw-4": { "type": "editorial_break", "settings": { "show_on": "aw27", "orientation": "vertical" } }
       },
-      "block_order": ["break-1", "break-2", "break-3"],
+      "block_order": ["sa-1", "sa-2", "sa-3", "sa-4", "sa-5", "sa-6", "sa-7", "fam-1", "fam-2", "aw-1", "aw-2", "aw-3", "aw-4"],
       "settings": {
         "back_label": "All Families",
         "back_url": "",

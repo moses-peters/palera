@@ -161,11 +161,25 @@
         {%- comment -%}
           This section's blocks can be a mix of "Editorial break" and
           AW27's "Placeholder photo" blocks — filter to just the
-          editorial breaks so campaign_check below can't accidentally
-          grab a placeholder_spot block's unrelated settings.
+          editorial breaks so the lookup below can't accidentally grab
+          a placeholder_spot block's unrelated settings.
+
+          Shop All, AW27, and every family (client-side-filtered) view
+          all share this one section instance/block list, but each
+          needs its own campaign-photo count — so every "Editorial
+          break" block carries a "Show on" scope, and only blocks
+          matching the current page's scope are ever picked here. AW27
+          is a real separate collection, so its scope resolves
+          server-side from collection.handle; family views are a
+          client-side filter on this same Shop All page, so
+          "family"-scoped blocks are rendered after the grid (hidden by
+          default) and shown/positioned by the script at the bottom
+          once a family filter is applied.
         {%- endcomment -%}
         {%- assign editorial_blocks = section.blocks | where: 'type', 'editorial_break' -%}
-        {%- assign editorial_break_index = -1 -%}
+        {%- assign current_scope = 'shop_all' -%}
+        {%- if collection.handle == 'aw27' -%}{%- assign current_scope = 'aw27' -%}{%- endif -%}
+        {%- assign scoped_break_index = -1 -%}
         {%- assign tile_index = 0 -%}
         {%- for product in collection.products -%}
           {%- comment -%}
@@ -256,45 +270,49 @@
             {%- if campaign_check == 0 -%}
               {%- comment -%}
                 Editorial breaks pull from this section's "Editorial
-                break" blocks in order (image or video, plus a caption) —
-                these are the "handles" a merchant fills in via the
-                theme editor for real campaign photos/video, one per
-                break as the grid scrolls. A break only renders a tile
-                when there's an actual block behind it — once the
-                blocks run out, later break points are skipped entirely
-                (no gray placeholder tile with nothing to select an
-                image for), so there are never more photo slots visible
-                than blocks the merchant has actually added.
+                break" blocks scoped to the current page (see above),
+                in order — these are the "handles" a merchant fills in
+                via the theme editor for real campaign photos/video,
+                one per break as the grid scrolls. A break only renders
+                a tile when there's an actual matching-scope block
+                behind it — once those run out, later break points are
+                skipped entirely (no gray placeholder tile with nothing
+                to select an image for), so there are never more photo
+                slots visible than blocks the merchant has actually
+                added for this page.
               {%- endcomment -%}
-              {%- assign editorial_break_index = editorial_break_index | plus: 1 -%}
-              {%- assign editorial_block = editorial_blocks[editorial_break_index] -%}
-              {%- if editorial_block -%}
-                {%- assign campaign_slot = tile_index | divided_by: 12 -%}
-                {%- assign campaign_slot_check = campaign_slot | modulo: 3 -%}
-                {%- assign is_full = false -%}
-                {%- if campaign_slot_check == 0 -%}{%- assign is_full = true -%}{%- endif -%}
-                {%- if editorial_block.settings.full_width -%}{%- assign is_full = true -%}{%- endif -%}
-                <div class="pm-plp-tile pm-plp-campaign-tile{% if is_full %} pm-plp-campaign-tile--full{% endif %}" aria-hidden="true" {{ editorial_block.shopify_attributes }}>
-                  <div class="pm-plp-tile-image pm-plp-tile-image--campaign">
-                    {%- if editorial_block.settings.video_url != blank -%}
-                      <video autoplay muted loop playsinline{% if editorial_block.settings.image %} poster="{{ editorial_block.settings.image | image_url: width: 1800 }}"{% endif %}>
-                        <source src="{{ editorial_block.settings.video_url }}" type="video/mp4">
-                      </video>
-                    {%- elsif editorial_block.settings.image -%}
-                      <img src="{{ editorial_block.settings.image | image_url: width: 1800 }}" alt="{{ editorial_block.settings.image.alt | escape | default: editorial_block.settings.caption }}" loading="lazy">
-                    {%- else -%}
-                      {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
-                    {%- endif -%}
-                  </div>
-                  {%- if editorial_block.settings.caption != blank -%}
-                    <p class="pm-eyebrow pm-plp-campaign-caption">{{ editorial_block.settings.caption }}</p>
+              {%- assign scoped_break_index = scoped_break_index | plus: 1 -%}
+              {%- assign editorial_block = nil -%}
+              {%- assign scan_index = -1 -%}
+              {%- for candidate_block in editorial_blocks -%}
+                {%- if candidate_block.settings.show_on == current_scope -%}
+                  {%- assign scan_index = scan_index | plus: 1 -%}
+                  {%- if scan_index == scoped_break_index and editorial_block == nil -%}
+                    {%- assign editorial_block = candidate_block -%}
                   {%- endif -%}
-                </div>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if editorial_block -%}
+                {% render 'pm-campaign-tile', campaign_block: editorial_block, hidden: false %}
               {%- endif -%}
             {%- endif -%}
           {%- endunless -%}
           {%- endfor -%}
         {%- endfor -%}
+
+        {%- unless current_scope == 'aw27' -%}
+          {%- comment -%}
+            Family-scoped campaign tiles: rendered here (hidden) so
+            they exist in the DOM for every family, not baked into any
+            one family's position — the script below shows/positions
+            them once a ?family= filter is actually applied.
+          {%- endcomment -%}
+          {%- for family_block in editorial_blocks -%}
+            {%- if family_block.settings.show_on == 'family' -%}
+              {% render 'pm-campaign-tile', campaign_block: family_block, hidden: true %}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endunless -%}
       </div>
     {%- endif -%}
   </div>
@@ -320,9 +338,14 @@
     var titleEl = document.querySelector('[data-pm-collection-title]');
     var baseTitle = titleEl ? titleEl.textContent : '';
 
-    var tiles = Array.prototype.slice.call(grid.querySelectorAll('.pm-plp-tile:not(.pm-plp-campaign-tile)'));
-    var campaignTiles = Array.prototype.slice.call(grid.querySelectorAll('.pm-plp-campaign-tile'));
-    var originalOrder = tiles.slice();
+    var allTiles = Array.prototype.slice.call(grid.querySelectorAll('.pm-plp-tile'));
+    var productTiles = allTiles.filter(function (el) { return !el.classList.contains('pm-plp-campaign-tile'); });
+    var shopAllCampaignTiles = allTiles.filter(function (el) { return el.getAttribute('data-show-on') === 'shop_all'; });
+    var familyCampaignTiles = allTiles.filter(function (el) { return el.getAttribute('data-show-on') === 'family'; });
+    // Original (server-rendered) order, excluding the family-scoped
+    // tiles — those are appended after everything else and start
+    // hidden, so they're not part of the default View All order.
+    var originalOrder = allTiles.filter(function (el) { return el.getAttribute('data-show-on') !== 'family'; });
 
     // A freestyle (shuffled) order per filter, so a family tab doesn't
     // show the same fixed sequence every time — only applied within a
@@ -338,23 +361,35 @@
 
     function applyFilter(familyHandle, familyLabel) {
       var isFiltered = !!familyHandle;
-      campaignTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', isFiltered); });
+      shopAllCampaignTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', isFiltered); });
+      familyCampaignTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', !isFiltered); });
 
-      var visible;
+      var visibleProducts, orderedAll;
       if (!isFiltered) {
-        visible = originalOrder;
-        tiles.forEach(function (tile) { tile.classList.remove('pm-is-hidden'); });
+        productTiles.forEach(function (tile) { tile.classList.remove('pm-is-hidden'); });
+        visibleProducts = productTiles;
+        orderedAll = originalOrder;
       } else {
-        visible = shuffled(tiles.filter(function (tile) { return tile.getAttribute('data-family') === familyHandle; }));
-        tiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', tile.getAttribute('data-family') !== familyHandle); });
+        visibleProducts = shuffled(productTiles.filter(function (tile) { return tile.getAttribute('data-family') === familyHandle; }));
+        productTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', tile.getAttribute('data-family') !== familyHandle); });
+        orderedAll = visibleProducts.slice();
+        // Intersperse the family-scoped campaign tiles evenly through
+        // the shuffled product list rather than lumping them at the end.
+        if (familyCampaignTiles.length) {
+          var spacing = Math.max(1, Math.floor(orderedAll.length / (familyCampaignTiles.length + 1)));
+          familyCampaignTiles.forEach(function (tile, i) {
+            var pos = Math.min(spacing * (i + 1) + i, orderedAll.length);
+            orderedAll.splice(pos, 0, tile);
+          });
+        }
       }
-      visible.forEach(function (tile) { grid.appendChild(tile); });
+      orderedAll.forEach(function (tile) { grid.appendChild(tile); });
 
       nav.querySelectorAll('[data-family-filter]').forEach(function (link) {
         link.classList.toggle('is-active', link.getAttribute('data-family-filter') === familyHandle);
       });
       if (countEl) {
-        countEl.textContent = visible.length + ' ' + (visible.length === 1 ? 'piece' : 'pieces');
+        countEl.textContent = visibleProducts.length + ' ' + (visibleProducts.length === 1 ? 'piece' : 'pieces');
       }
       if (titleEl) {
         titleEl.textContent = isFiltered ? familyLabel : baseTitle;
@@ -396,10 +431,30 @@
       "type": "editorial_break",
       "name": "Editorial break",
       "settings": [
+        {
+          "type": "select",
+          "id": "show_on",
+          "label": "Show on",
+          "options": [
+            { "value": "shop_all", "label": "Shop All" },
+            { "value": "family", "label": "Family pages (any family)" },
+            { "value": "aw27", "label": "AW27" }
+          ],
+          "default": "shop_all"
+        },
+        {
+          "type": "select",
+          "id": "orientation",
+          "label": "Orientation",
+          "options": [
+            { "value": "horizontal", "label": "Horizontal" },
+            { "value": "vertical", "label": "Vertical" }
+          ],
+          "default": "horizontal"
+        },
         { "type": "image_picker", "id": "image", "label": "Image" },
         { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
-        { "type": "text", "id": "caption", "label": "Caption" },
-        { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false }
+        { "type": "text", "id": "caption", "label": "Caption" }
       ]
     },
     {
