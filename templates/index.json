@@ -114,6 +114,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-pouch",
+            "image": "shopify://shop_images/3U7A3111.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-3.jpg",
             "link": ""
@@ -123,6 +124,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/clutch-edge-long-silver-blue",
+            "image": "shopify://shop_images/3U7A3157.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-4.jpg",
             "link": ""
@@ -132,6 +134,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/amelia-bag-gold",
+            "image": "shopify://shop_images/3U7A3063-2_02e6ae47-b1e3-4e1a-80bf-060338f5496d.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-5.jpg",
             "link": ""
