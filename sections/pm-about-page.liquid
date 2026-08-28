@@ -3,11 +3,19 @@
   editorial About Us layout unconditionally (no page.handle check),
   so it doesn't depend on knowing the page's exact URL handle.
 {%- endcomment -%}
-{%- render 'pm-about-content' -%}
+{%- render 'pm-about-content',
+  craft_image: section.settings.craft_image,
+  craft_video_url: section.settings.craft_video_url
+-%}
 
 {% schema %}
 {
   "name": "PM: About page",
-  "tag": "section"
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "\"Made By Hand\" image/video" },
+    { "type": "image_picker", "id": "craft_image", "label": "Image" },
+    { "type": "text", "id": "craft_video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." }
+  ]
 }
 {% endschema %}

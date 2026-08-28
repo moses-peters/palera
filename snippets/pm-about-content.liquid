@@ -23,7 +23,15 @@
 
   <section class="pm-about-spread">
     <div class="pm-about-spread-image pm-reveal">
-      <img src="{{ 'pm-about-story.jpg' | asset_url }}" alt="Made By Hand" loading="lazy">
+      {%- if craft_video_url != blank -%}
+        <video autoplay muted loop playsinline poster="{% if craft_image %}{{ craft_image | image_url: width: 1200 }}{% endif %}">
+          <source src="{{ craft_video_url }}" type="video/mp4">
+        </video>
+      {%- elsif craft_image -%}
+        <img src="{{ craft_image | image_url: width: 1200 }}" alt="Made By Hand" loading="lazy">
+      {%- else -%}
+        <img src="{{ 'pm-about-story.jpg' | asset_url }}" alt="Made By Hand" loading="lazy">
+      {%- endif -%}
     </div>
     <div class="pm-about-spread-copy pm-reveal" style="transition-delay: 150ms">
       <span class="pm-eyebrow">Made By Hand</span>
