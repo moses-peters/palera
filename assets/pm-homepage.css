@@ -414,7 +414,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   align-items: start;
 }
 .pm-shop-menu-family { display: block; }
-.pm-shop-menu-family .pm-placeholder {
+.pm-shop-menu-family .pm-placeholder,
+.pm-shop-menu-family img {
   /* height:auto overrides the base .pm-placeholder rule's height:100%,
      which — now that this tile is a grid item with a definite stretched
      height available to resolve against — would otherwise fight with
@@ -424,19 +425,24 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
      second half of the fix. */
   width: 100%; height: auto; aspect-ratio: 4 / 5; margin-bottom: 8px; transition: opacity 0.2s var(--pm-ease);
 }
+.pm-shop-menu-family img { object-fit: cover; display: block; }
 .pm-shop-menu-family:hover .pm-placeholder,
-.pm-shop-menu-family:focus-visible .pm-placeholder { opacity: 0.82; }
+.pm-shop-menu-family:focus-visible .pm-placeholder,
+.pm-shop-menu-family:hover img,
+.pm-shop-menu-family:focus-visible img { opacity: 0.82; }
 .pm-shop-menu-family span {
   display: block; text-align: center; font-size: 11px; letter-spacing: 0.02em; color: var(--pm-ink);
 }
 
-.pm-shop-menu-preview-panel .pm-placeholder { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+.pm-shop-menu-preview-panel .pm-placeholder,
+.pm-shop-menu-preview-panel img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
 .pm-shop-menu-preview-name { display: block; margin-top: 10px; font-family: var(--pm-font-serif); font-size: 16px; }
 .pm-shop-menu-preview-desc { margin-top: 4px; font-size: 11px; line-height: 1.5; color: var(--pm-muted); }
 
 @media (max-width: 1050px) {
   .pm-shop-menu { grid-template-columns: 1fr; }
-  .pm-shop-menu-preview-panel .pm-placeholder { max-width: 220px; }
+  .pm-shop-menu-preview-panel .pm-placeholder,
+  .pm-shop-menu-preview-panel img { max-width: 220px; }
 }
 
 @media (min-width: 640px) { .pm-photo-grid { grid-template-columns: repeat(4, 1fr); } }

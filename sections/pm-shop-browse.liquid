@@ -7,14 +7,42 @@
   picker, no product grid — and clicking a family from here goes on to
   that family's actual products (/collections/all?family=..., handled
   by pm-collection-grid).
+
+  The 9 families are a fixed, known list (see snippets/pm-family-data),
+  so each gets its own named image setting here rather than open-ended
+  blocks — one clearly-labeled picker per family, no chance of a typo'd
+  family name leaving an image unmatched. pm-shop-menu is rendered (not
+  included), which runs in an isolated scope, so each image has to be
+  passed in explicitly as a render parameter.
 {%- endcomment -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
-{%- render 'pm-shop-menu' -%}
+{%- render 'pm-shop-menu',
+  clutches_image: section.settings.clutches_image,
+  accessories_image: section.settings.accessories_image,
+  pouches_image: section.settings.pouches_image,
+  wallets_image: section.settings.wallets_image,
+  maxi_roma_image: section.settings.maxi_roma_image,
+  mini_milano_image: section.settings.mini_milano_image,
+  mini_roma_image: section.settings.mini_roma_image,
+  santorini_image: section.settings.santorini_image,
+  wood_net_hobo_image: section.settings.wood_net_hobo_image
+-%}
 
 {% schema %}
 {
   "name": "PM: Shop browse",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Family images" },
+    { "type": "image_picker", "id": "clutches_image", "label": "Clutches" },
+    { "type": "image_picker", "id": "accessories_image", "label": "Accessories" },
+    { "type": "image_picker", "id": "pouches_image", "label": "Pouches" },
+    { "type": "image_picker", "id": "wallets_image", "label": "Wallets" },
+    { "type": "image_picker", "id": "maxi_roma_image", "label": "Maxi Roma" },
+    { "type": "image_picker", "id": "mini_milano_image", "label": "Mini Milano" },
+    { "type": "image_picker", "id": "mini_roma_image", "label": "Mini Roma" },
+    { "type": "image_picker", "id": "santorini_image", "label": "Santorini" },
+    { "type": "image_picker", "id": "wood_net_hobo_image", "label": "Wood Net Hobo" }
+  ]
 }
 {% endschema %}
