@@ -68,6 +68,8 @@
     "pm-editorial-duo": {
       "type": "pm-editorial-duo",
       "settings": {
+        "image_a": "shopify://shop_images/3U7A2949-2.jpg",
+        "image_b": "shopify://shop_images/3U7A2976.jpg",
         "tag": "Made By Hand",
         "copy": "Every crystal is set individually, so no two pieces catch the light the same way.",
         "link_label": "",
