@@ -361,8 +361,14 @@
 
     function applyFilter(familyHandle, familyLabel) {
       var isFiltered = !!familyHandle;
+      // Each family-scoped block belongs to exactly one family (Clutches
+      // gets its own 2 slots, Santorini gets its own 2, etc.) — only the
+      // ones matching the family actually being viewed ever show.
+      var matchingCampaignTiles = isFiltered
+        ? familyCampaignTiles.filter(function (tile) { return tile.getAttribute('data-campaign-family') === familyHandle; })
+        : [];
       shopAllCampaignTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', isFiltered); });
-      familyCampaignTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', !isFiltered); });
+      familyCampaignTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', matchingCampaignTiles.indexOf(tile) === -1); });
 
       var visibleProducts, orderedAll;
       if (!isFiltered) {
@@ -373,11 +379,11 @@
         visibleProducts = shuffled(productTiles.filter(function (tile) { return tile.getAttribute('data-family') === familyHandle; }));
         productTiles.forEach(function (tile) { tile.classList.toggle('pm-is-hidden', tile.getAttribute('data-family') !== familyHandle); });
         orderedAll = visibleProducts.slice();
-        // Intersperse the family-scoped campaign tiles evenly through
-        // the shuffled product list rather than lumping them at the end.
-        if (familyCampaignTiles.length) {
-          var spacing = Math.max(1, Math.floor(orderedAll.length / (familyCampaignTiles.length + 1)));
-          familyCampaignTiles.forEach(function (tile, i) {
+        // Intersperse this family's campaign tiles evenly through the
+        // shuffled product list rather than lumping them at the end.
+        if (matchingCampaignTiles.length) {
+          var spacing = Math.max(1, Math.floor(orderedAll.length / (matchingCampaignTiles.length + 1)));
+          matchingCampaignTiles.forEach(function (tile, i) {
             var pos = Math.min(spacing * (i + 1) + i, orderedAll.length);
             orderedAll.splice(pos, 0, tile);
           });
@@ -437,10 +443,28 @@
           "label": "Show on",
           "options": [
             { "value": "shop_all", "label": "Shop All" },
-            { "value": "family", "label": "Family pages (any family)" },
+            { "value": "family", "label": "One family page (pick below)" },
             { "value": "aw27", "label": "AW27" }
           ],
           "default": "shop_all"
+        },
+        {
+          "type": "select",
+          "id": "family",
+          "label": "Family",
+          "info": "Only used when \"Show on\" is set to a family page — this block only appears on that one family's filtered view.",
+          "options": [
+            { "value": "clutches", "label": "Clutches" },
+            { "value": "accessories", "label": "Accessories" },
+            { "value": "pouches", "label": "Pouches" },
+            { "value": "wallets", "label": "Wallets" },
+            { "value": "maxi-roma", "label": "Maxi Roma" },
+            { "value": "mini-milano", "label": "Mini Milano" },
+            { "value": "mini-roma", "label": "Mini Roma" },
+            { "value": "santorini", "label": "Santorini" },
+            { "value": "wood-net-hobo", "label": "Wood Net Hobo" }
+          ],
+          "default": "clutches"
         },
         {
           "type": "select",
