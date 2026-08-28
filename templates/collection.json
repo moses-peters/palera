@@ -11,7 +11,14 @@
   "sections": {
     "main": {
       "type": "pm-collection-grid",
-      "settings": {}
+      "settings": {
+        "back_label": "All Families",
+        "back_url": "",
+        "line_label": "",
+        "empty_label": "New pieces for this family are on the way.",
+        "aw27_banner_image": "shopify://shop_images/3U7A2976.jpg",
+        "aw27_banner_link": ""
+      }
     }
   },
   "order": [

@@ -13,6 +13,7 @@
       "type": "pm-hero",
       "settings": {
         "video_url": "",
+        "link_url": "",
         "focal_x": 40,
         "focal_y": 35
       }
@@ -24,7 +25,7 @@
           "type": "product",
           "settings": {
             "product": "shopify://products/clutch-mini-champagne",
-            "fallback_label": "Signature Clutch",
+            "fallback_label": "Crystal Pouch",
             "fallback_asset": "pm-drive-product-a.jpg",
             "link": ""
           }
@@ -33,7 +34,7 @@
           "type": "product",
           "settings": {
             "product": "shopify://products/crystal-pouch",
-            "fallback_label": "Crystal Mini",
+            "fallback_label": "Diamond Mini Roma",
             "fallback_asset": "pm-drive-product-b.jpg",
             "link": ""
           }
@@ -45,11 +46,35 @@
       ],
       "settings": {}
     },
+    "pm-image-duo": {
+      "type": "pm-image-duo",
+      "settings": {
+        "image_left": "shopify://shop_images/3U7A2811-2.jpg",
+        "caption_left": "",
+        "link_left": "",
+        "image_right": "shopify://shop_images/3U7A3534.jpg",
+        "caption_right": "",
+        "link_right": ""
+      }
+    },
     "pm-full-bleed-media": {
       "type": "pm-full-bleed-media",
       "settings": {
+        "image": "shopify://shop_images/3U7A2898_-_Copy.jpg",
         "video_url": "",
-        "caption": ""
+        "caption": "",
+        "link_url": ""
+      }
+    },
+    "pm-editorial-duo": {
+      "type": "pm-editorial-duo",
+      "settings": {
+        "image_a": "shopify://shop_images/3U7A2949-2.jpg",
+        "image_b": "shopify://shop_images/3U7A2976.jpg",
+        "tag": "Made By Hand",
+        "copy": "Every piece is handmade, with care in every detail.",
+        "link_label": "",
+        "link_url": ""
       }
     },
     "pm-photo-grid": {
@@ -59,6 +84,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/maxi-roma-0",
+            "image": "shopify://shop_images/3U7A3174.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-1.jpg",
             "link": ""
@@ -78,6 +104,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/santorini-6",
+            "image": "shopify://shop_images/3U7A3012.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-2.jpg",
             "link": ""
@@ -87,6 +114,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-pouch",
+            "image": "shopify://shop_images/3U7A3111.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-3.jpg",
             "link": ""
@@ -96,6 +124,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/clutch-edge-long-silver-blue",
+            "image": "shopify://shop_images/3U7A3157.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-4.jpg",
             "link": ""
@@ -105,6 +134,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/amelia-bag-gold",
+            "image": "shopify://shop_images/3U7A3063-2_02e6ae47-b1e3-4e1a-80bf-060338f5496d.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-5.jpg",
             "link": ""
@@ -114,6 +144,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/capri-bag-gold",
+            "image": "shopify://shop_images/3U7A2987.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-6.jpg",
             "link": ""
@@ -123,7 +154,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-wallet-rare-pink",
-            "image": "shopify://shop_images/3U7A3063-2.jpg",
+            "image": "shopify://shop_images/3U7A3088-2.jpg",
             "fallback_label": "",
             "fallback_asset": "",
             "link": ""
@@ -154,24 +185,6 @@
       "settings": {
         "eyebrow": "",
         "heading": ""
-      }
-    },
-    "pm-image-duo": {
-      "type": "pm-image-duo",
-      "settings": {
-        "caption_left": "",
-        "link_left": "",
-        "caption_right": "",
-        "link_right": ""
-      }
-    },
-    "pm-editorial-duo": {
-      "type": "pm-editorial-duo",
-      "settings": {
-        "tag": "Made By Hand",
-        "copy": "Every crystal is set individually, so no two pieces catch the light the same way.",
-        "link_label": "",
-        "link_url": ""
       }
     }
   },
