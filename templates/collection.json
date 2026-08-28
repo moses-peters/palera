@@ -137,8 +137,9 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "pouches",
+            "family": "mini-roma",
             "orientation": "horizontal",
+            "image": "shopify://shop_images/WhatsApp_Image_2026-08-28_at_11.31.04.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -147,8 +148,9 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "pouches",
+            "family": "mini-roma",
             "orientation": "vertical",
+            "image": "shopify://shop_images/mini-roma-981143.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -157,8 +159,9 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "wallets",
-            "orientation": "horizontal",
+            "family": "mini-roma",
+            "orientation": "vertical",
+            "image": "shopify://shop_images/mini-roma-883739.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -167,8 +170,9 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "wallets",
+            "family": "santorini",
             "orientation": "vertical",
+            "image": "shopify://shop_images/santorini-861385.webp",
             "video_url": "",
             "caption": ""
           }
@@ -177,8 +181,9 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "maxi-roma",
-            "orientation": "horizontal",
+            "family": "santorini",
+            "orientation": "vertical",
+            "image": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_15.34.46.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -187,8 +192,9 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "maxi-roma",
-            "orientation": "vertical",
+            "family": "santorini",
+            "orientation": "horizontal",
+            "image": "shopify://shop_images/santorini-667310_7e077142-54ae-4376-b134-197dddb4dcbc.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -197,8 +203,9 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "mini-milano",
+            "family": "wood-net-hobo",
             "orientation": "horizontal",
+            "image": "shopify://shop_images/Wood_Net_Hobo.jpg",
             "video_url": "",
             "caption": ""
           }
