@@ -158,6 +158,13 @@
         banner every third break.
       {%- endcomment -%}
       <div class="pm-plp-grid" data-pm-plp-grid>
+        {%- comment -%}
+          This section's blocks can be a mix of "Editorial break" and
+          AW27's "Placeholder photo" blocks — filter to just the
+          editorial breaks so campaign_check below can't accidentally
+          grab a placeholder_spot block's unrelated settings.
+        {%- endcomment -%}
+        {%- assign editorial_blocks = section.blocks | where: 'type', 'editorial_break' -%}
         {%- assign editorial_break_index = -1 -%}
         {%- assign tile_index = 0 -%}
         {%- for product in collection.products -%}
@@ -252,32 +259,38 @@
                 break" blocks in order (image or video, plus a caption) —
                 these are the "handles" a merchant fills in via the
                 theme editor for real campaign photos/video, one per
-                break as the grid scrolls. Any break beyond the blocks
-                defined here falls back to the plain placeholder tile.
+                break as the grid scrolls. A break only renders a tile
+                when there's an actual block behind it — once the
+                blocks run out, later break points are skipped entirely
+                (no gray placeholder tile with nothing to select an
+                image for), so there are never more photo slots visible
+                than blocks the merchant has actually added.
               {%- endcomment -%}
               {%- assign editorial_break_index = editorial_break_index | plus: 1 -%}
-              {%- assign editorial_block = section.blocks[editorial_break_index] -%}
-              {%- assign campaign_slot = tile_index | divided_by: 12 -%}
-              {%- assign campaign_slot_check = campaign_slot | modulo: 3 -%}
-              {%- assign is_full = false -%}
-              {%- if campaign_slot_check == 0 -%}{%- assign is_full = true -%}{%- endif -%}
-              {%- if editorial_block.settings.full_width -%}{%- assign is_full = true -%}{%- endif -%}
-              <div class="pm-plp-tile pm-plp-campaign-tile{% if is_full %} pm-plp-campaign-tile--full{% endif %}" aria-hidden="true"{% if editorial_block %} {{ editorial_block.shopify_attributes }}{% endif %}>
-                <div class="pm-plp-tile-image pm-plp-tile-image--campaign">
-                  {%- if editorial_block.settings.video_url != blank -%}
-                    <video autoplay muted loop playsinline{% if editorial_block.settings.image %} poster="{{ editorial_block.settings.image | image_url: width: 1800 }}"{% endif %}>
-                      <source src="{{ editorial_block.settings.video_url }}" type="video/mp4">
-                    </video>
-                  {%- elsif editorial_block.settings.image -%}
-                    <img src="{{ editorial_block.settings.image | image_url: width: 1800 }}" alt="{{ editorial_block.settings.image.alt | escape | default: editorial_block.settings.caption }}" loading="lazy">
-                  {%- else -%}
-                    {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+              {%- assign editorial_block = editorial_blocks[editorial_break_index] -%}
+              {%- if editorial_block -%}
+                {%- assign campaign_slot = tile_index | divided_by: 12 -%}
+                {%- assign campaign_slot_check = campaign_slot | modulo: 3 -%}
+                {%- assign is_full = false -%}
+                {%- if campaign_slot_check == 0 -%}{%- assign is_full = true -%}{%- endif -%}
+                {%- if editorial_block.settings.full_width -%}{%- assign is_full = true -%}{%- endif -%}
+                <div class="pm-plp-tile pm-plp-campaign-tile{% if is_full %} pm-plp-campaign-tile--full{% endif %}" aria-hidden="true" {{ editorial_block.shopify_attributes }}>
+                  <div class="pm-plp-tile-image pm-plp-tile-image--campaign">
+                    {%- if editorial_block.settings.video_url != blank -%}
+                      <video autoplay muted loop playsinline{% if editorial_block.settings.image %} poster="{{ editorial_block.settings.image | image_url: width: 1800 }}"{% endif %}>
+                        <source src="{{ editorial_block.settings.video_url }}" type="video/mp4">
+                      </video>
+                    {%- elsif editorial_block.settings.image -%}
+                      <img src="{{ editorial_block.settings.image | image_url: width: 1800 }}" alt="{{ editorial_block.settings.image.alt | escape | default: editorial_block.settings.caption }}" loading="lazy">
+                    {%- else -%}
+                      {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
+                    {%- endif -%}
+                  </div>
+                  {%- if editorial_block.settings.caption != blank -%}
+                    <p class="pm-eyebrow pm-plp-campaign-caption">{{ editorial_block.settings.caption }}</p>
                   {%- endif -%}
                 </div>
-                {%- if editorial_block.settings.caption != blank -%}
-                  <p class="pm-eyebrow pm-plp-campaign-caption">{{ editorial_block.settings.caption }}</p>
-                {%- endif -%}
-              </div>
+              {%- endif -%}
             {%- endif -%}
           {%- endunless -%}
           {%- endfor -%}
