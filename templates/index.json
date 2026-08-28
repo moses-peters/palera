@@ -84,6 +84,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/maxi-roma-0",
+            "image": "shopify://shop_images/3U7A3174.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-1.jpg",
             "link": ""
