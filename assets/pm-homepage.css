@@ -58,8 +58,10 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-duo { position: relative; padding: clamp(80px, 11vw, 160px) var(--pm-pad); }
 .pm-duo-grid { display: grid; grid-template-columns: 1fr; gap: clamp(24px, 4vw, 40px); }
 .pm-duo-image { display: block; position: relative; overflow: hidden; }
-.pm-duo-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--pm-ease); }
-.pm-duo-image:hover img { transform: scale(1.035); }
+.pm-duo-image img,
+.pm-duo-image video { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--pm-ease); }
+.pm-duo-image:hover img,
+.pm-duo-image:hover video { transform: scale(1.035); }
 .pm-duo-image--a { aspect-ratio: 3 / 4; }
 .pm-duo-image--b { aspect-ratio: 4 / 3; }
 .pm-duo-caption {

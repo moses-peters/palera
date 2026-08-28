@@ -46,14 +46,18 @@
   <section class="pm-duo">
     <div class="pm-duo-grid">
       <div class="pm-duo-image pm-duo-image--a pm-reveal">
-        {%- if section.settings.duo_image_a -%}
+        {%- if section.settings.duo_video_a != blank -%}
+          {{ section.settings.duo_video_a | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+        {%- elsif section.settings.duo_image_a -%}
           <img src="{{ section.settings.duo_image_a | image_url: width: 1200 }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
         {%- else -%}
           <img src="{{ 'pm-about-duo-a.jpg' | asset_url }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
         {%- endif -%}
       </div>
       <div class="pm-duo-image pm-duo-image--b pm-reveal" style="transition-delay: 150ms">
-        {%- if section.settings.duo_image_b -%}
+        {%- if section.settings.duo_video_b != blank -%}
+          {{ section.settings.duo_video_b | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
+        {%- elsif section.settings.duo_image_b -%}
           <img src="{{ section.settings.duo_image_b | image_url: width: 900 }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
         {%- else -%}
           <img src="{{ 'pm-about-duo-b.jpg' | asset_url }}" alt="{{ section.settings.duo_eyebrow }}" loading="lazy">
@@ -134,7 +138,9 @@
       "content": "Lifestyle duo"
     },
     { "type": "image_picker", "id": "duo_image_a", "label": "Large image" },
+    { "type": "video", "id": "duo_video_a", "label": "Large video", "info": "Overrides the large image when set." },
     { "type": "image_picker", "id": "duo_image_b", "label": "Small offset image" },
+    { "type": "video", "id": "duo_video_b", "label": "Small offset video", "info": "Overrides the small offset image when set." },
     { "type": "text", "id": "duo_eyebrow", "label": "Eyebrow", "default": "Worn in Paris" },
     {
       "type": "textarea",
