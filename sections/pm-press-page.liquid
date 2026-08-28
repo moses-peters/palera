@@ -1,0 +1,88 @@
+{%- comment -%}
+  Dedicated Press page — reuses the same editorial image+copy "spread"
+  pattern as the About page (pm-about.css: .pm-about-spread), one per
+  press mention, alternating image side left/right down the page.
+  Preset blocks below are pre-filled with the publication, a headline
+  derived from each article's own URL slug, and the real article link;
+  each block's image is left empty on purpose — add the actual press
+  photo/screenshot per mention from the theme editor.
+{%- endcomment -%}
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+{{ 'pm-about.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage">
+  <div class="pm-collection-header">
+    {%- if section.settings.eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h1 class="pm-serif pm-collection-name">{{ section.settings.heading }}</h1>
+    {%- if section.settings.intro != blank -%}
+      <p class="pm-serif pm-collection-note">{{ section.settings.intro }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- for block in section.blocks -%}
+    {%- assign is_reverse = false -%}
+    {%- assign index_check = forloop.index0 | modulo: 2 -%}
+    {%- if index_check == 1 -%}{%- assign is_reverse = true -%}{%- endif -%}
+    <div class="pm-about-spread pm-press-spread{% if is_reverse %} pm-about-spread--reverse{% endif %} pm-reveal" {{ block.shopify_attributes }}>
+      <div class="pm-about-spread-image">
+        {%- if block.settings.image -%}
+          <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.publication | escape }}" loading="lazy">
+        {%- else -%}
+          {% render 'pm-media-placeholder', label: block.settings.publication | default: 'Press', hover: true %}
+        {%- endif -%}
+      </div>
+      <div class="pm-about-spread-copy">
+        <span class="pm-eyebrow">{{ block.settings.publication }}{% if block.settings.date != blank %} — {{ block.settings.date }}{% endif %}</span>
+        <h2 class="pm-serif">{{ block.settings.headline }}</h2>
+        {%- if block.settings.excerpt != blank -%}
+          <div class="pm-about-spread-text"><p>{{ block.settings.excerpt }}</p></div>
+        {%- endif -%}
+        {%- if block.settings.link != blank -%}
+          <p class="pm-about-spread-text"><a href="{{ block.settings.link }}" target="_blank" rel="noopener" class="pm-link">Read the feature →</a></p>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+<script src="{{ 'pm-homepage.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "PM: Press page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Press" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "As Seen In" },
+    { "type": "text", "id": "intro", "label": "Intro line" }
+  ],
+  "blocks": [
+    {
+      "type": "mention",
+      "name": "Press mention",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "publication", "label": "Publication name" },
+        { "type": "text", "id": "headline", "label": "Headline" },
+        { "type": "textarea", "id": "excerpt", "label": "Excerpt (optional)" },
+        { "type": "text", "id": "date", "label": "Date (optional)" },
+        { "type": "url", "id": "link", "label": "Link to article" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PM: Press page",
+      "blocks": [
+        { "type": "mention", "settings": { "publication": "Vogue Italia", "headline": "Opening: the new boutiques shaping Milan retail", "link": "https://www.vogue.it/gallery/opening-boutique-moda-novita-2025" } },
+        { "type": "mention", "settings": { "publication": "Dress Code Magazine", "headline": "Palera Milano accende La Rinascente con la sua eleganza senza tempo", "link": "https://dresscodemagazine.it/palera-milano-accende-la-rinascente-con-la-sua-eleganza-senza-tempo/" } },
+        { "type": "mention", "settings": { "publication": "Fashion United", "headline": "Palera Milano apre un temporary store alla Rinascente", "link": "https://fashionunited.it/news/retail/palera-milano-apre-un-temporary-store-alla-rinascente/2025051426996" } },
+        { "type": "mention", "settings": { "publication": "Fashion Network", "headline": "Nuovi opening: Giorgio Armani, Boggi Milano, Harmont & Blaine, Etro, Loewe, Oakley, Palera Milano", "link": "https://it.fashionnetwork.com/news/Nuovi-opening-giorgio-armani-boggi-milano-harmont-blaine-etro-loewe-oakley-palera-milano,1730097.html" } },
+        { "type": "mention", "settings": { "publication": "Fashion News Magazine", "headline": "Palera Milano: la perfetta borsa da cerimonia svelata in un temporary store alla Rinascente di Milano", "link": "https://www.fashionnewsmagazine.com/2025/05/15/palera-milano-la-perfetta-borsa-da-cerimonia-svelata-in-un-temporary-store-alla-rinascente-di-milano/" } },
+        { "type": "mention", "settings": { "publication": "TGCOM24", "headline": "Palera Milano: borse che illuminano il vivere quotidiano", "link": "https://www.tgcom24.mediaset.it/lifestyle/palera-milano-borse-che-illuminano-il-vivere-quotidiano_103679206-202502k.shtml" } },
+        { "type": "mention", "settings": { "publication": "Fashionality", "headline": "Palera Milano SS26: The Bags That Capture the Essence of Handcrafted Radiance", "link": "https://www.fashionality.nyc/palera-milano-ss26-the-bags-that-capture-the-essence-of-handcrafted-radiance/" } },
+        { "type": "mention", "settings": { "publication": "Hub Style", "headline": "Palera Milano accelera l'espansione retail globale", "link": "https://hubstyle.it/2026/05/04/palera-milano-accelera-lespansione-retail-globale/" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -22,6 +22,16 @@
   .pm-about-spread { grid-template-columns: 1.1fr 1fr; align-items: center; }
 }
 
+/* Press page reuses .pm-about-spread per mention, alternating which
+   side the image sits on so a long list of entries doesn't read as
+   one repeating block. */
+.pm-press-spread { padding-top: clamp(56px, 8vw, 96px); padding-bottom: clamp(56px, 8vw, 96px); }
+.pm-press-spread + .pm-press-spread { border-top: 1px solid var(--pm-line); }
+@media (min-width: 900px) {
+  .pm-about-spread--reverse .pm-about-spread-image { order: 2; }
+  .pm-about-spread--reverse .pm-about-spread-copy { order: 1; }
+}
+
 .pm-about-values { padding: 0 var(--pm-pad) clamp(80px, 11vw, 160px); border-top: 1px solid var(--pm-line); }
 .pm-about-values-grid { display: grid; grid-template-columns: 1fr; gap: clamp(32px, 4vw, 48px); padding-top: clamp(56px, 8vw, 96px); }
 .pm-about-value-index { display: block; font-size: 11px; color: var(--pm-muted); letter-spacing: 0.1em; margin-bottom: 14px; }

@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "main": { "type": "pm-press-page", "settings": {} }
+  },
+  "order": ["main"]
+}
