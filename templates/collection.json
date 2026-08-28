@@ -280,7 +280,7 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "aw27",
-            "family": "wood-net-hobo",
+            "family": "clutches",
             "orientation": "vertical",
             "image": "shopify://shop_images/3U7A3250-2.jpg",
             "video_url": "",
@@ -315,6 +315,7 @@
             "show_on": "aw27",
             "family": "clutches",
             "orientation": "vertical",
+            "image": "shopify://shop_images/3U7A3362.jpg",
             "video_url": "",
             "caption": ""
           }
@@ -325,6 +326,7 @@
             "show_on": "aw27",
             "family": "clutches",
             "orientation": "vertical",
+            "image": "shopify://shop_images/3U7A2916.jpg",
             "video_url": "",
             "caption": ""
           }
