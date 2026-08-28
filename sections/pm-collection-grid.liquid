@@ -151,11 +151,9 @@
       {%- comment -%}
         Product tiles are uniform (name + price sit above a plain,
         contained product photo — no gradient caption overlay), one per
-        color (see the pre-count above). A campaign placeholder tile
-        (real imagery to be dropped in later) breaks the grid every 12
-        tiles, always landing on a fresh row since 12 is a multiple of
-        both the 2- and 4-column layouts — widening to a full-width
-        banner every third break.
+        color (see the pre-count above). A campaign tile breaks the grid
+        at evenly-spaced points (see break_spacing below), one per
+        "Editorial break" block scoped to this page.
       {%- endcomment -%}
       <div class="pm-plp-grid" data-pm-plp-grid>
         {%- comment -%}
@@ -179,6 +177,30 @@
         {%- assign editorial_blocks = section.blocks | where: 'type', 'editorial_break' -%}
         {%- assign current_scope = 'shop_all' -%}
         {%- if collection.handle == 'aw27' -%}{%- assign current_scope = 'aw27' -%}{%- endif -%}
+
+        {%- comment -%}
+          Break spacing used to be a fixed "every 12 tiles" — fine for
+          Shop All's 100+ tiles, but AW27 (and any small family) can
+          have well under 12 tiles total, so tile_index never lands on
+          a multiple of 12 and no break point ever fires even with
+          blocks configured. Space breaks evenly across however many
+          tiles this page actually has instead, based on how many
+          blocks are scoped to it, so a small collection still gets
+          all of its campaign photos in.
+        {%- endcomment -%}
+        {%- assign scoped_block_count = 0 -%}
+        {%- for candidate_block in editorial_blocks -%}
+          {%- if candidate_block.settings.show_on == current_scope -%}
+            {%- assign scoped_block_count = scoped_block_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign break_spacing = 12 -%}
+        {%- if scoped_block_count > 0 -%}
+          {%- assign spacing_slots = scoped_block_count | plus: 1 -%}
+          {%- assign break_spacing = total_tile_count | times: 1.0 | divided_by: spacing_slots | ceil -%}
+          {%- if break_spacing < 1 -%}{%- assign break_spacing = 1 -%}{%- endif -%}
+        {%- endif -%}
+
         {%- assign scoped_break_index = -1 -%}
         {%- assign tile_index = 0 -%}
         {%- for product in collection.products -%}
@@ -266,7 +288,7 @@
               </div>
             </a>
           {%- unless tile_index == total_tile_count -%}
-            {%- assign campaign_check = tile_index | modulo: 12 -%}
+            {%- assign campaign_check = tile_index | modulo: break_spacing -%}
             {%- if campaign_check == 0 -%}
               {%- comment -%}
                 Editorial breaks pull from this section's "Editorial
