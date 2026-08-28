@@ -12,11 +12,39 @@
     "main": {
       "type": "pm-collection-grid",
       "blocks": {
-        "break-1": { "type": "editorial_break", "settings": { "full_width": false } },
-        "break-2": { "type": "editorial_break", "settings": { "full_width": true } },
-        "break-3": { "type": "editorial_break", "settings": { "full_width": false } }
+        "break-1": {
+          "type": "editorial_break",
+          "settings": {
+            "image": "shopify://shop_images/santorini-516142.webp",
+            "video_url": "",
+            "caption": "",
+            "full_width": false
+          }
+        },
+        "break-2": {
+          "type": "editorial_break",
+          "settings": {
+            "image": "shopify://shop_images/santorini-861385.webp",
+            "video_url": "",
+            "caption": "",
+            "full_width": true
+          }
+        },
+        "break-3": {
+          "type": "editorial_break",
+          "settings": {
+            "image": "shopify://shop_images/diamond-santorini-915268_2a54bb22-1d2b-4f88-a4e7-d39a2f27d348.jpg",
+            "video_url": "",
+            "caption": "",
+            "full_width": false
+          }
+        }
       },
-      "block_order": ["break-1", "break-2", "break-3"],
+      "block_order": [
+        "break-1",
+        "break-2",
+        "break-3"
+      ],
       "settings": {
         "back_label": "All Families",
         "back_url": "",
