@@ -9,7 +9,25 @@
  */
 {
   "sections": {
-    "main": { "type": "pm-press-page", "settings": {} }
+    "main": {
+      "type": "pm-press-page",
+      "blocks": {
+        "mention-1": { "type": "mention", "settings": { "publication": "Vogue Italia", "headline": "Opening: the new boutiques shaping Milan retail", "link": "https://www.vogue.it/gallery/opening-boutique-moda-novita-2025" } },
+        "mention-2": { "type": "mention", "settings": { "publication": "Dress Code Magazine", "headline": "Palera Milano accende La Rinascente con la sua eleganza senza tempo", "link": "https://dresscodemagazine.it/palera-milano-accende-la-rinascente-con-la-sua-eleganza-senza-tempo/" } },
+        "mention-3": { "type": "mention", "settings": { "publication": "Fashion United", "headline": "Palera Milano apre un temporary store alla Rinascente", "link": "https://fashionunited.it/news/retail/palera-milano-apre-un-temporary-store-alla-rinascente/2025051426996" } },
+        "mention-4": { "type": "mention", "settings": { "publication": "Fashion Network", "headline": "Nuovi opening: Giorgio Armani, Boggi Milano, Harmont & Blaine, Etro, Loewe, Oakley, Palera Milano", "link": "https://it.fashionnetwork.com/news/Nuovi-opening-giorgio-armani-boggi-milano-harmont-blaine-etro-loewe-oakley-palera-milano,1730097.html" } },
+        "mention-5": { "type": "mention", "settings": { "publication": "Fashion News Magazine", "headline": "Palera Milano: la perfetta borsa da cerimonia svelata in un temporary store alla Rinascente di Milano", "link": "https://www.fashionnewsmagazine.com/2025/05/15/palera-milano-la-perfetta-borsa-da-cerimonia-svelata-in-un-temporary-store-alla-rinascente-di-milano/" } },
+        "mention-6": { "type": "mention", "settings": { "publication": "TGCOM24", "headline": "Palera Milano: borse che illuminano il vivere quotidiano", "link": "https://www.tgcom24.mediaset.it/lifestyle/palera-milano-borse-che-illuminano-il-vivere-quotidiano_103679206-202502k.shtml" } },
+        "mention-7": { "type": "mention", "settings": { "publication": "Fashionality", "headline": "Palera Milano SS26: The Bags That Capture the Essence of Handcrafted Radiance", "link": "https://www.fashionality.nyc/palera-milano-ss26-the-bags-that-capture-the-essence-of-handcrafted-radiance/" } },
+        "mention-8": { "type": "mention", "settings": { "publication": "Hub Style", "headline": "Palera Milano accelera l'espansione retail globale", "link": "https://hubstyle.it/2026/05/04/palera-milano-accelera-lespansione-retail-globale/" } },
+        "mention-9": { "type": "mention", "settings": { "publication": "Fashion Network", "headline": "Nuovi opening e pop-up store: Falconeri, Scholl, Lancôme, Zona20 Milano, Marlù, Palera Milano", "link": "https://it.fashionnetwork.com/news/Nuovi-opening-e-pop-up-store-falconeri-scholl-lancome-zona20-milano-marlu-palera-milano,1829140.html" } },
+        "mention-10": { "type": "mention", "settings": { "publication": "Beesness", "headline": "Palera Milano accelera l'espansione retail globale", "link": "https://www.beesness.it/2026/05/11/palera-milano-accelera-lespansione-retail-globale/" } },
+        "mention-11": { "type": "mention", "settings": { "publication": "Affari Italiani", "headline": "Palera Milano accelera l'espansione retail globale", "link": "https://www.affaritaliani.it/milano/milan-show-biz/paler-milano-accelera-espansione-retail-globale.html" } },
+        "mention-12": { "type": "mention", "settings": { "publication": "Press", "headline": "More Coverage", "excerpt": "Additional recognition — updated as it comes in." } }
+      },
+      "block_order": ["mention-1", "mention-2", "mention-3", "mention-4", "mention-5", "mention-6", "mention-7", "mention-8", "mention-9", "mention-10", "mention-11", "mention-12"],
+      "settings": {}
+    }
   },
   "order": ["main"]
 }
