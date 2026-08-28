@@ -12,7 +12,9 @@
     "pm-hero": {
       "type": "pm-hero",
       "settings": {
-        "video_url": ""
+        "video_url": "",
+        "focal_x": 40,
+        "focal_y": 35
       }
     },
     "pm-product-pair": {

@@ -1,16 +1,26 @@
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
+{%- comment -%}
+  This section is reused across pages with different photos (homepage,
+  AW27 banner), so the crop focal point is a per-instance setting rather
+  than a fixed CSS rule — each instance can frame its own image
+  differently instead of all sharing one center-crop.
+{%- endcomment -%}
+{%- liquid
+  assign focal_x = section.settings.focal_x | default: 50
+  assign focal_y = section.settings.focal_y | default: 50
+-%}
 <div class="pm-homepage">
   <section class="pm-hero">
     <a href="{{ section.settings.link_url | default: '#' }}" class="pm-hero-media">
       {%- if section.settings.video_url != blank -%}
-        <video autoplay muted loop playsinline poster="{% if section.settings.image %}{{ section.settings.image | image_url: width: 1800 }}{% endif %}">
+        <video autoplay muted loop playsinline poster="{% if section.settings.image %}{{ section.settings.image | image_url: width: 1800 }}{% endif %}" style="object-position: {{ focal_x }}% {{ focal_y }}%;">
           <source src="{{ section.settings.video_url }}" type="video/mp4">
         </video>
       {%- elsif section.settings.image -%}
-        <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ shop.name }}" loading="eager">
+        <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ shop.name }}" loading="eager" style="object-position: {{ focal_x }}% {{ focal_y }}%;">
       {%- else -%}
-        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ shop.name }}" loading="eager">
+        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ shop.name }}" loading="eager" style="object-position: {{ focal_x }}% {{ focal_y }}%;">
       {%- endif -%}
     </a>
   </section>
@@ -24,7 +34,9 @@
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image" },
     { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
-    { "type": "url", "id": "link_url", "label": "Link" }
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "range", "id": "focal_x", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's left side." },
+    { "type": "range", "id": "focal_y", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's top." }
   ],
   "presets": [{ "name": "PM: Hero" }]
 }
