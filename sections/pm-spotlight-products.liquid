@@ -17,7 +17,7 @@
               {% render 'pm-media-placeholder', label: 'Photo' %}
             {%- endif -%}
           </div>
-          <p class="pm-spotlight-title">{{ product.title | default: block.settings.fallback_label }}</p>
+          <p class="pm-spotlight-title">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}</p>
           {%- if product.price -%}
             <span class="pm-spotlight-price">
               {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}

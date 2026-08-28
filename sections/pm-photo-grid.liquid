@@ -18,7 +18,7 @@
             <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">
           {%- endif -%}
           {%- if product.title != blank or block.settings.fallback_label != blank -%}
-            <span class="pm-photo-tile-caption">{{ product.title | default: block.settings.fallback_label }}</span>
+            <span class="pm-photo-tile-caption">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}</span>
           {%- endif -%}
         </a>
       {%- endfor -%}

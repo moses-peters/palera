@@ -223,7 +223,7 @@
                     <img class="ecom-predictive-search__image" src="{{ product.featured_media | image_url: width: 150 }}" alt="{{ product.featured_media.alt }}" width="50" height="50">
                   {%- endif -%}
                   <div class="ecom-predictive-search__item-content">
-                    <p class="ecom-predictive-search__item-title">{{ product.title }}</p>
+                    <p class="ecom-predictive-search__item-title">{{ product.title | split: ' — ' | first }}</p>
                     <div class="ecom-predictive-search__item-price">{{ product.price | money_with_currency}}</div>
                   </div>
                 </a>

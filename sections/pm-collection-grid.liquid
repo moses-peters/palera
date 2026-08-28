@@ -155,13 +155,17 @@
           {%- for color_value in color_values -%}
             {%- assign tile_index = tile_index | plus: 1 -%}
             {%- comment -%}
-              tile_name is always the plain product title — no color
-              suffix. Each color still gets its own tile (data-family,
-              image, price, and the ?variant= link all still come from
-              that specific color's variant), the name just doesn't
-              spell the color out.
+              tile_name is the product title with any " — Color" suffix
+              stripped — colors here are baked into the product's own
+              title text in Shopify (e.g. "Maxi Roma — Black" is the
+              literal title, not a variant), not appended by this
+              template, so this has to split it back off rather than
+              just not appending it. Each color still gets its own tile
+              (data-family, image, price, and the ?variant= link all
+              still come from that specific color's variant/product),
+              the displayed name just doesn't spell the color out.
             {%- endcomment -%}
-            {%- assign tile_name = product.title -%}
+            {%- assign tile_name = product.title | split: ' — ' | first -%}
             {%- if color_option -%}
               {%- assign tile_variant = product.variants | where: color_option_key, color_value | first -%}
               {%- assign tile_price_varies = false -%}

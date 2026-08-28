@@ -122,14 +122,21 @@
                 </div>
               {%- endif -%}
 
+              {%- comment -%}
+                Colors are baked into the product's own title in
+                Shopify (e.g. "Maxi Roma — Black" is the literal
+                title), so the color has to be split back off here too
+                — just the product name shows, not the color.
+              {%- endcomment -%}
+              {%- assign product_display_title = product.title | split: ' — ' | first -%}
               {%- if isModal -%}
                 <p class=" h2 product-single__title notranslate" >
-                  {{ product.title }}
+                  {{ product_display_title }}
                 </p>
               {%- else -%}
                 <h1 class="notranslate h2 product-single__title">
                   {%- unless product.empty? -%}
-                    {{ product.title }}
+                    {{ product_display_title }}
                   {%- else -%}
                     {{ 'home_page.onboarding.product_title' | t }}
                   {%- endunless -%}

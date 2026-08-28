@@ -10,7 +10,7 @@
           <img src="{{ block.settings.fallback_asset | default: 'pm-drive-product-a.jpg' | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">
         {%- endif -%}
         <div class="pm-product-pair-caption">
-          <span class="pm-serif">{{ product.title | default: block.settings.fallback_label }}</span>
+          <span class="pm-serif">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}</span>
           {%- if product.price -%}
             <span class="pm-product-pair-price">
               {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}

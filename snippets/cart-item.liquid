@@ -16,11 +16,13 @@
   <div class="cart__item-details">
     <div class="cart__item-title">
 
+     {% comment %} Color is baked into the product's own title (e.g. "Maxi Roma — Black" is the literal title) — strip it back off so the cart shows just the product name. {% endcomment %}
+     {% assign cart_item_display_title = product.product.title | split: ' — ' | first %}
      {% if product.product.id == 9231359869275 or product.product.id == 9231356395867 %}
-        {{ product.product.title }}
+        {{ cart_item_display_title }}
       {% else %}
         <a href="{{ product.url }}" class="notranslate cart__item-name">
-        {{ product.product.title }}
+        {{ cart_item_display_title }}
         </a>
       {% endif %}
       

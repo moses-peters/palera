@@ -44,7 +44,7 @@
         <img src="{{ product.featured_image | image_url: width: 100 }}" alt="{{ product.title | escape }}">
       {%- endif -%}
       <div class="pm-sticky-atc-info">
-        <span class="pm-sticky-atc-title notranslate">{{ product.title }}</span>
+        <span class="pm-sticky-atc-title notranslate">{{ product.title | split: ' — ' | first }}</span>
         <span class="pm-sticky-atc-price">{{ current_variant.price | money }}</span>
       </div>
       <button type="button" class="pm-sticky-atc-button" data-sticky-atc-button {% unless current_variant.available %}disabled{% endunless %}>
