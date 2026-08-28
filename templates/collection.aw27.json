@@ -13,39 +13,6 @@
         "link_url": ""
       }
     },
-    "aw27-duo": {
-      "type": "pm-editorial-duo",
-      "settings": {
-        "tag": "The AW27 Line",
-        "copy": "Each piece in the new season is finished the same way it always has been — by hand, one crystal at a time — but built in richer materials for the months ahead.",
-        "link_label": "",
-        "link_url": ""
-      }
-    },
-    "aw27-moment": {
-      "type": "pm-full-bleed-media",
-      "settings": {
-        "caption": "AW27 — Autumn/Winter 2027"
-      }
-    },
-    "aw27-lookbook": {
-      "type": "pm-photo-grid",
-      "blocks": {
-        "look-1": { "type": "photo", "settings": { "fallback_label": "Look 01", "fallback_asset": "pm-drive-grid-1.jpg" } },
-        "look-2": { "type": "photo", "settings": { "fallback_label": "Look 02", "fallback_asset": "pm-drive-grid-2.jpg" } },
-        "look-3": { "type": "photo", "settings": { "fallback_label": "Look 03", "fallback_asset": "pm-drive-grid-3.jpg" } },
-        "look-4": { "type": "photo", "settings": { "fallback_label": "Look 04", "fallback_asset": "pm-drive-grid-4.jpg" } },
-        "look-5": { "type": "photo", "settings": { "fallback_label": "Look 05", "fallback_asset": "pm-drive-grid-5.jpg" } },
-        "look-6": { "type": "photo", "settings": { "fallback_label": "Look 06", "fallback_asset": "pm-drive-grid-6.jpg" } },
-        "look-7": { "type": "photo", "settings": { "fallback_label": "Look 07", "fallback_asset": "pm-drive-grid-7.jpg" } },
-        "look-8": { "type": "photo", "settings": { "fallback_label": "Look 08", "fallback_asset": "pm-drive-grid-8.jpg" } }
-      },
-      "block_order": ["look-1", "look-2", "look-3", "look-4", "look-5", "look-6", "look-7", "look-8"],
-      "settings": {
-        "eyebrow": "The Lookbook",
-        "heading": "AW27, look by look"
-      }
-    },
     "aw27-shop": {
       "type": "pm-collection-grid",
       "blocks": {
@@ -64,9 +31,6 @@
   "order": [
     "aw27-hero",
     "aw27-statement",
-    "aw27-duo",
-    "aw27-moment",
-    "aw27-lookbook",
     "aw27-shop"
   ]
 }

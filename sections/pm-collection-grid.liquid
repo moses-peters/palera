@@ -154,13 +154,19 @@
 
           {%- for color_value in color_values -%}
             {%- assign tile_index = tile_index | plus: 1 -%}
+            {%- comment -%}
+              tile_name is always the plain product title — no color
+              suffix. Each color still gets its own tile (data-family,
+              image, price, and the ?variant= link all still come from
+              that specific color's variant), the name just doesn't
+              spell the color out.
+            {%- endcomment -%}
+            {%- assign tile_name = product.title -%}
             {%- if color_option -%}
               {%- assign tile_variant = product.variants | where: color_option_key, color_value | first -%}
-              {%- assign tile_name = product.title | append: ' — ' | append: color_value -%}
               {%- assign tile_price_varies = false -%}
             {%- else -%}
               {%- assign tile_variant = product.selected_or_first_available_variant -%}
-              {%- assign tile_name = product.title -%}
               {%- assign tile_price_varies = product.price_varies -%}
             {%- endif -%}
             {%- assign tile_image = tile_variant.featured_image | default: product.featured_image -%}
