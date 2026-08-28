@@ -23,10 +23,15 @@
 
   <section class="pm-about-spread">
     <div class="pm-about-spread-image pm-reveal">
-      {%- if craft_video_url != blank -%}
-        <video autoplay muted loop playsinline poster="{% if craft_image %}{{ craft_image | image_url: width: 1200 }}{% endif %}">
-          <source src="{{ craft_video_url }}" type="video/mp4">
-        </video>
+      {%- if craft_video != blank -%}
+        {%- comment -%}
+          video_tag (a native Shopify-uploaded video, not a pasted URL)
+          renders multiple quality renditions Shopify generates on
+          upload and lets the browser pick the right one — a single
+          hardcoded .mp4 URL doesn't get that, so it either stays
+          low-res or gets stretched/blurred to fill this box.
+        {%- endcomment -%}
+        {{ craft_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
       {%- elsif craft_image -%}
         <img src="{{ craft_image | image_url: width: 1200 }}" alt="Made By Hand" loading="lazy">
       {%- else -%}

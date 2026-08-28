@@ -5,7 +5,7 @@
 {%- endcomment -%}
 {%- render 'pm-about-content',
   craft_image: section.settings.craft_image,
-  craft_video_url: section.settings.craft_video_url
+  craft_video: section.settings.craft_video
 -%}
 
 {% schema %}
@@ -15,7 +15,7 @@
   "settings": [
     { "type": "header", "content": "\"Made By Hand\" image/video" },
     { "type": "image_picker", "id": "craft_image", "label": "Image" },
-    { "type": "text", "id": "craft_video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." }
+    { "type": "video", "id": "craft_video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set. Shopify generates multiple quality renditions automatically, so this stays sharp instead of one flat file stretched to fit." }
   ]
 }
 {% endschema %}
