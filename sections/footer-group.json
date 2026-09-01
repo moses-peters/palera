@@ -65,19 +65,22 @@
         "footer-1": {
           "type": "menu",
           "settings": {
-            "menu": "client-service"
+            "menu": "client-service",
+            "title": ""
           }
         },
         "217b7ec0-300b-4978-a6e8-fc32152f7953": {
           "type": "menu",
           "settings": {
-            "menu": "footer"
+            "menu": "footer",
+            "title": ""
           }
         },
         "menu_xFhy8Q": {
           "type": "menu",
           "settings": {
-            "menu": "contact-us"
+            "menu": "contact-us",
+            "title": ""
           }
         }
       },
@@ -87,10 +90,12 @@
         "menu_xFhy8Q"
       ],
       "settings": {
+        "tagline": "Handcrafted in Italy.",
         "show_newsletter": true,
         "newsletter_eyebrow": "",
         "newsletter_heading": "Join the Palera Community",
         "newsletter_text": "Subscribe and enjoy 10% off your first order.",
+        "klaviyo_list_id": "YrD2Vj",
         "location_text": "Milano, Italia"
       }
     }
