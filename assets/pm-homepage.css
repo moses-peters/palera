@@ -244,7 +244,16 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   gap: clamp(28px, 3.4vw, 44px) clamp(12px, 1.6vw, 20px);
 }
 @media (min-width: 640px) { .pm-plp-grid { grid-template-columns: repeat(4, 1fr); } }
-.pm-plp-tile { display: block; }
+.pm-plp-tile {
+  display: block;
+  /* Grid items default to min-width: auto, which floors their size at
+     their content's min-content width — a long product name (e.g.
+     "Clutch Edge - Short - Brass - Crystal") could then force its
+     whole column wider than the others, throwing every tile's
+     name/price alignment off across the row. min-width: 0 lets the
+     grid track win instead, so the name wraps within its own column. */
+  min-width: 0;
+}
 .pm-plp-tile.pm-is-hidden { display: none; }
 .pm-plp-tile-info { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 10px; }
 .pm-plp-tile-name { min-width: 0; font-size: 13px; line-height: 1.35; color: var(--pm-ink); }
