@@ -2,14 +2,18 @@
   <section class="pm-duo">
     <div class="pm-duo-grid">
       <a href="{{ section.settings.link_url | default: '#' }}" class="pm-duo-image pm-duo-image--a pm-reveal">
-        {%- if section.settings.image_a -%}
+        {%- if section.settings.video_a != blank -%}
+          {{ section.settings.video_a | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+        {%- elsif section.settings.image_a -%}
           <img src="{{ section.settings.image_a | image_url: width: 1200 }}" alt="{{ section.settings.image_a.alt | escape }}" loading="lazy">
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
         {%- endif -%}
       </a>
       <a href="{{ section.settings.link_url | default: '#' }}" class="pm-duo-image pm-duo-image--b pm-reveal" style="transition-delay: 150ms">
-        {%- if section.settings.image_b -%}
+        {%- if section.settings.video_b != blank -%}
+          {{ section.settings.video_b | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
+        {%- elsif section.settings.image_b -%}
           <img src="{{ section.settings.image_b | image_url: width: 900 }}" alt="{{ section.settings.image_b.alt | escape }}" loading="lazy">
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
@@ -32,7 +36,9 @@
   "name": "PM: Editorial duo",
   "settings": [
     { "type": "image_picker", "id": "image_a", "label": "Large image" },
+    { "type": "video", "id": "video_a", "label": "Large video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "image_picker", "id": "image_b", "label": "Small offset image" },
+    { "type": "video", "id": "video_b", "label": "Small offset video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "tag", "label": "Tag", "default": "Made By Hand" },
     { "type": "textarea", "id": "copy", "label": "Copy", "default": "Every crystal is set individually, so no two pieces catch the light the same way." },
     { "type": "text", "id": "link_label", "label": "Link label" },

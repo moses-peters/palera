@@ -52,7 +52,10 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 @media (min-width: 640px) { .pm-hero { min-height: 460px; } }
 .pm-hero-media { position: absolute; inset: 0; }
-.pm-hero-media img, .pm-hero-media video { width: 100%; height: 100%; object-fit: cover; }
+.pm-hero-media img, .pm-hero-media video {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: var(--pm-focal, 50% 50%);
+}
 
 /* ===== Editorial duo — Jacquemus-style asymmetric split with a floating caption card over the seam ===== */
 .pm-duo { position: relative; padding: clamp(80px, 11vw, 160px) var(--pm-pad); }
@@ -85,8 +88,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    block right under the hero instead of two tall stacked rows. */
 .pm-image-duo { display: grid; grid-template-columns: 1fr; margin-top: clamp(20px, 2.4vw, 32px); }
 .pm-image-duo-half { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
-.pm-image-duo-half img, .pm-image-duo-half .pm-placeholder { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--pm-ease); }
-.pm-image-duo-half:hover img { transform: scale(1.03); }
+.pm-image-duo-half img, .pm-image-duo-half video, .pm-image-duo-half .pm-placeholder { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--pm-ease); }
+.pm-image-duo-half:hover img, .pm-image-duo-half:hover video { transform: scale(1.03); }
 .pm-image-duo-caption {
   position: absolute; left: clamp(14px, 2vw, 24px); bottom: clamp(14px, 2vw, 24px); z-index: 2;
   color: #fff;
@@ -248,11 +251,13 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-plp-tile-price { flex-shrink: 0; font-size: 13px; color: var(--pm-ink); }
 .pm-plp-tile-image { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
 .pm-plp-tile-image img,
+.pm-plp-tile-image video,
 .pm-plp-tile-image .pm-placeholder {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: contain; padding: 7%; transition: transform 0.4s var(--pm-ease);
 }
-.pm-plp-tile:hover .pm-plp-tile-image img { transform: scale(1.04); }
+.pm-plp-tile:hover .pm-plp-tile-image img,
+.pm-plp-tile:hover .pm-plp-tile-image video { transform: scale(1.04); }
 .pm-plp-campaign-tile { grid-column: span 2; }
 .pm-plp-campaign-tile--vertical { grid-column: span 1; }
 .pm-plp-campaign-tile .pm-plp-tile-image { aspect-ratio: 16 / 9; }
@@ -377,8 +382,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-photo-grid-section { padding: clamp(64px, 9vw, 120px) var(--pm-pad); }
 .pm-photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(24px, 3.2vw, 48px); }
 .pm-photo-tile { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; }
-.pm-photo-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--pm-ease); }
-.pm-photo-tile:hover img { transform: scale(1.05); }
+.pm-photo-tile img, .pm-photo-tile video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--pm-ease); }
+.pm-photo-tile:hover img, .pm-photo-tile:hover video { transform: scale(1.05); }
 .pm-photo-tile-caption {
   position: absolute; left: clamp(12px, 1.6vw, 20px); bottom: clamp(12px, 1.6vw, 20px); z-index: 2;
   color: #fff; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
@@ -424,7 +429,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 .pm-shop-menu-family { display: block; }
 .pm-shop-menu-family .pm-placeholder,
-.pm-shop-menu-family img {
+.pm-shop-menu-family img,
+.pm-shop-menu-family video {
   /* height:auto overrides the base .pm-placeholder rule's height:100%,
      which — now that this tile is a grid item with a definite stretched
      height available to resolve against — would otherwise fight with
@@ -434,24 +440,29 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
      second half of the fix. */
   width: 100%; height: auto; aspect-ratio: 4 / 5; margin-bottom: 8px; transition: opacity 0.2s var(--pm-ease);
 }
-.pm-shop-menu-family img { object-fit: cover; display: block; }
+.pm-shop-menu-family img,
+.pm-shop-menu-family video { object-fit: cover; display: block; }
 .pm-shop-menu-family:hover .pm-placeholder,
 .pm-shop-menu-family:focus-visible .pm-placeholder,
 .pm-shop-menu-family:hover img,
-.pm-shop-menu-family:focus-visible img { opacity: 0.82; }
+.pm-shop-menu-family:focus-visible img,
+.pm-shop-menu-family:hover video,
+.pm-shop-menu-family:focus-visible video { opacity: 0.82; }
 .pm-shop-menu-family span {
   display: block; text-align: center; font-size: 11px; letter-spacing: 0.02em; color: var(--pm-ink);
 }
 
 .pm-shop-menu-preview-panel .pm-placeholder,
-.pm-shop-menu-preview-panel img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+.pm-shop-menu-preview-panel img,
+.pm-shop-menu-preview-panel video { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
 .pm-shop-menu-preview-name { display: block; margin-top: 10px; font-family: var(--pm-font-serif); font-size: 16px; }
 .pm-shop-menu-preview-desc { margin-top: 4px; font-size: 11px; line-height: 1.5; color: var(--pm-muted); }
 
 @media (max-width: 1050px) {
   .pm-shop-menu { grid-template-columns: 1fr; }
   .pm-shop-menu-preview-panel .pm-placeholder,
-  .pm-shop-menu-preview-panel img { max-width: 220px; }
+  .pm-shop-menu-preview-panel img,
+  .pm-shop-menu-preview-panel video { max-width: 220px; }
 }
 
 @media (min-width: 640px) { .pm-photo-grid { grid-template-columns: repeat(4, 1fr); } }

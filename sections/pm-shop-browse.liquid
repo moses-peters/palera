@@ -19,14 +19,23 @@
 
 {%- render 'pm-shop-menu',
   clutches_image: section.settings.clutches_image,
+  clutches_video: section.settings.clutches_video,
   accessories_image: section.settings.accessories_image,
+  accessories_video: section.settings.accessories_video,
   pouches_image: section.settings.pouches_image,
+  pouches_video: section.settings.pouches_video,
   wallets_image: section.settings.wallets_image,
+  wallets_video: section.settings.wallets_video,
   maxi_roma_image: section.settings.maxi_roma_image,
+  maxi_roma_video: section.settings.maxi_roma_video,
   mini_milano_image: section.settings.mini_milano_image,
+  mini_milano_video: section.settings.mini_milano_video,
   mini_roma_image: section.settings.mini_roma_image,
+  mini_roma_video: section.settings.mini_roma_video,
   santorini_image: section.settings.santorini_image,
-  wood_net_hobo_image: section.settings.wood_net_hobo_image
+  santorini_video: section.settings.santorini_video,
+  wood_net_hobo_image: section.settings.wood_net_hobo_image,
+  wood_net_hobo_video: section.settings.wood_net_hobo_video
 -%}
 
 {% schema %}
@@ -35,14 +44,23 @@
   "settings": [
     { "type": "header", "content": "Family images" },
     { "type": "image_picker", "id": "clutches_image", "label": "Clutches" },
+    { "type": "video", "id": "clutches_video", "label": "Clutches video", "info": "Uploaded directly — overrides the image when set." },
     { "type": "image_picker", "id": "accessories_image", "label": "Accessories" },
+    { "type": "video", "id": "accessories_video", "label": "Accessories video", "info": "Uploaded directly — overrides the image when set." },
     { "type": "image_picker", "id": "pouches_image", "label": "Pouches" },
+    { "type": "video", "id": "pouches_video", "label": "Pouches video", "info": "Uploaded directly — overrides the image when set." },
     { "type": "image_picker", "id": "wallets_image", "label": "Wallets" },
+    { "type": "video", "id": "wallets_video", "label": "Wallets video", "info": "Uploaded directly — overrides the image when set." },
     { "type": "image_picker", "id": "maxi_roma_image", "label": "Maxi Roma" },
+    { "type": "video", "id": "maxi_roma_video", "label": "Maxi Roma video", "info": "Uploaded directly — overrides the image when set." },
     { "type": "image_picker", "id": "mini_milano_image", "label": "Mini Milano" },
+    { "type": "video", "id": "mini_milano_video", "label": "Mini Milano video", "info": "Uploaded directly — overrides the image when set." },
     { "type": "image_picker", "id": "mini_roma_image", "label": "Mini Roma" },
+    { "type": "video", "id": "mini_roma_video", "label": "Mini Roma video", "info": "Uploaded directly — overrides the image when set." },
     { "type": "image_picker", "id": "santorini_image", "label": "Santorini" },
-    { "type": "image_picker", "id": "wood_net_hobo_image", "label": "Wood Net Hobo" }
+    { "type": "video", "id": "santorini_video", "label": "Santorini video", "info": "Uploaded directly — overrides the image when set." },
+    { "type": "image_picker", "id": "wood_net_hobo_image", "label": "Wood Net Hobo" },
+    { "type": "video", "id": "wood_net_hobo_video", "label": "Wood Net Hobo video", "info": "Uploaded directly — overrides the image when set." }
   ]
 }
 {% endschema %}

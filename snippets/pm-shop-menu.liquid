@@ -46,29 +46,25 @@
         {%- assign family_name = parts[0] -%}
         {%- assign family_handle = family_name | handle -%}
         {%- comment -%}
-          Each of the 9 real families maps to its own named image
+          Each of the 9 real families maps to its own named image/video
           param passed in from pm-shop-browse.liquid (render runs in
           an isolated scope, so these can't be looked up generically —
-          case/when matches the handle to the right one).
+          case/when matches the handle to the right pair).
         {%- endcomment -%}
         {%- case family_handle -%}
-          {%- when 'clutches' -%}{%- assign family_image = clutches_image -%}
-          {%- when 'accessories' -%}{%- assign family_image = accessories_image -%}
-          {%- when 'pouches' -%}{%- assign family_image = pouches_image -%}
-          {%- when 'wallets' -%}{%- assign family_image = wallets_image -%}
-          {%- when 'maxi-roma' -%}{%- assign family_image = maxi_roma_image -%}
-          {%- when 'mini-milano' -%}{%- assign family_image = mini_milano_image -%}
-          {%- when 'mini-roma' -%}{%- assign family_image = mini_roma_image -%}
-          {%- when 'santorini' -%}{%- assign family_image = santorini_image -%}
-          {%- when 'wood-net-hobo' -%}{%- assign family_image = wood_net_hobo_image -%}
-          {%- else -%}{%- assign family_image = nil -%}
+          {%- when 'clutches' -%}{%- assign family_image = clutches_image -%}{%- assign family_video = clutches_video -%}
+          {%- when 'accessories' -%}{%- assign family_image = accessories_image -%}{%- assign family_video = accessories_video -%}
+          {%- when 'pouches' -%}{%- assign family_image = pouches_image -%}{%- assign family_video = pouches_video -%}
+          {%- when 'wallets' -%}{%- assign family_image = wallets_image -%}{%- assign family_video = wallets_video -%}
+          {%- when 'maxi-roma' -%}{%- assign family_image = maxi_roma_image -%}{%- assign family_video = maxi_roma_video -%}
+          {%- when 'mini-milano' -%}{%- assign family_image = mini_milano_image -%}{%- assign family_video = mini_milano_video -%}
+          {%- when 'mini-roma' -%}{%- assign family_image = mini_roma_image -%}{%- assign family_video = mini_roma_video -%}
+          {%- when 'santorini' -%}{%- assign family_image = santorini_image -%}{%- assign family_video = santorini_video -%}
+          {%- when 'wood-net-hobo' -%}{%- assign family_image = wood_net_hobo_image -%}{%- assign family_video = wood_net_hobo_video -%}
+          {%- else -%}{%- assign family_image = nil -%}{%- assign family_video = nil -%}
         {%- endcase -%}
         <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}?family={{ family_handle }}" class="pm-shop-menu-family" data-family="{{ family_handle }}">
-          {%- if family_image -%}
-            <img src="{{ family_image | image_url: width: 500 }}" alt="{{ family_name | escape }}" loading="lazy">
-          {%- else -%}
-            {% render 'pm-media-placeholder', label: family_name %}
-          {%- endif -%}
+          {% render 'pm-family-media', media_video: family_video, media_image: family_image, media_label: family_name, media_width: 500 %}
           <span>{{ family_name }}</span>
         </a>
       {%- endfor -%}
@@ -81,23 +77,19 @@
         {%- assign family_desc = parts[1] -%}
         {%- assign family_handle = family_name | handle -%}
         {%- case family_handle -%}
-          {%- when 'clutches' -%}{%- assign family_image = clutches_image -%}
-          {%- when 'accessories' -%}{%- assign family_image = accessories_image -%}
-          {%- when 'pouches' -%}{%- assign family_image = pouches_image -%}
-          {%- when 'wallets' -%}{%- assign family_image = wallets_image -%}
-          {%- when 'maxi-roma' -%}{%- assign family_image = maxi_roma_image -%}
-          {%- when 'mini-milano' -%}{%- assign family_image = mini_milano_image -%}
-          {%- when 'mini-roma' -%}{%- assign family_image = mini_roma_image -%}
-          {%- when 'santorini' -%}{%- assign family_image = santorini_image -%}
-          {%- when 'wood-net-hobo' -%}{%- assign family_image = wood_net_hobo_image -%}
-          {%- else -%}{%- assign family_image = nil -%}
+          {%- when 'clutches' -%}{%- assign family_image = clutches_image -%}{%- assign family_video = clutches_video -%}
+          {%- when 'accessories' -%}{%- assign family_image = accessories_image -%}{%- assign family_video = accessories_video -%}
+          {%- when 'pouches' -%}{%- assign family_image = pouches_image -%}{%- assign family_video = pouches_video -%}
+          {%- when 'wallets' -%}{%- assign family_image = wallets_image -%}{%- assign family_video = wallets_video -%}
+          {%- when 'maxi-roma' -%}{%- assign family_image = maxi_roma_image -%}{%- assign family_video = maxi_roma_video -%}
+          {%- when 'mini-milano' -%}{%- assign family_image = mini_milano_image -%}{%- assign family_video = mini_milano_video -%}
+          {%- when 'mini-roma' -%}{%- assign family_image = mini_roma_image -%}{%- assign family_video = mini_roma_video -%}
+          {%- when 'santorini' -%}{%- assign family_image = santorini_image -%}{%- assign family_video = santorini_video -%}
+          {%- when 'wood-net-hobo' -%}{%- assign family_image = wood_net_hobo_image -%}{%- assign family_video = wood_net_hobo_video -%}
+          {%- else -%}{%- assign family_image = nil -%}{%- assign family_video = nil -%}
         {%- endcase -%}
         <div class="pm-shop-menu-preview-panel" data-family-panel="{{ family_handle }}" {% unless forloop.first %}hidden{% endunless %}>
-          {%- if family_image -%}
-            <img src="{{ family_image | image_url: width: 700 }}" alt="{{ family_name | escape }}" loading="lazy">
-          {%- else -%}
-            {% render 'pm-media-placeholder', label: family_name %}
-          {%- endif -%}
+          {% render 'pm-family-media', media_video: family_video, media_image: family_image, media_label: family_name, media_width: 700 %}
           <span class="pm-shop-menu-preview-name">{{ family_name }}</span>
           <p class="pm-shop-menu-preview-desc">{{ family_desc }}</p>
         </div>

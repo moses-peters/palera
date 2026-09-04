@@ -3,7 +3,9 @@
 <div class="pm-homepage">
   <div class="pm-image-duo">
     <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal">
-      {%- if section.settings.image_left -%}
+      {%- if section.settings.video_left != blank -%}
+        {{ section.settings.video_left | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
+      {%- elsif section.settings.image_left -%}
         <img src="{{ section.settings.image_left | image_url: width: 1400 }}" alt="{{ section.settings.image_left.alt | escape | default: section.settings.caption_left }}" loading="lazy">
       {%- else -%}
         {% render 'pm-media-placeholder', label: 'Photo' %}
@@ -11,7 +13,9 @@
       {%- if section.settings.caption_left != blank -%}<span class="pm-image-duo-caption">{{ section.settings.caption_left }}</span>{%- endif -%}
     </a>
     <a href="{{ section.settings.link_right | default: '#' }}" class="pm-image-duo-half pm-reveal" style="transition-delay: 120ms">
-      {%- if section.settings.image_right -%}
+      {%- if section.settings.video_right != blank -%}
+        {{ section.settings.video_right | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
+      {%- elsif section.settings.image_right -%}
         <img src="{{ section.settings.image_right | image_url: width: 1400 }}" alt="{{ section.settings.image_right.alt | escape | default: section.settings.caption_right }}" loading="lazy">
       {%- else -%}
         {% render 'pm-media-placeholder', label: 'Photo' %}
@@ -27,10 +31,12 @@
   "settings": [
     { "type": "header", "content": "Left image" },
     { "type": "image_picker", "id": "image_left", "label": "Image" },
+    { "type": "video", "id": "video_left", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption_left", "label": "Caption" },
     { "type": "url", "id": "link_left", "label": "Link" },
     { "type": "header", "content": "Right image" },
     { "type": "image_picker", "id": "image_right", "label": "Image" },
+    { "type": "video", "id": "video_right", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption_right", "label": "Caption" },
     { "type": "url", "id": "link_right", "label": "Link" }
   ],

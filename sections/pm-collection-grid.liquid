@@ -131,7 +131,9 @@
             {%- assign spot_block = placeholder_blocks[forloop.index0] -%}
             <div class="pm-plp-tile" aria-hidden="true"{% if spot_block %} {{ spot_block.shopify_attributes }}{% endif %}>
               <div class="pm-plp-tile-image">
-                {%- if spot_block.settings.image -%}
+                {%- if spot_block.settings.video != blank -%}
+                  {{ spot_block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
+                {%- elsif spot_block.settings.image -%}
                   <img src="{{ spot_block.settings.image | image_url: width: 900 }}" alt="{{ spot_block.settings.image.alt | escape | default: spot_block.settings.label }}" loading="lazy">
                 {%- else -%}
                   {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
@@ -508,6 +510,7 @@
       "name": "Placeholder photo",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
         { "type": "text", "id": "label", "label": "Label", "default": "Coming soon" }
       ]
     }

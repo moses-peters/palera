@@ -1,0 +1,13 @@
+{%- comment -%}
+  Renders one family's tile media (video, else image, else placeholder).
+  Used by pm-shop-menu for both the grid tile and the hover-preview
+  panel, which each need the same video/image/fallback logic. Params:
+  media_video, media_image, media_label, media_width.
+{%- endcomment -%}
+{%- if media_video != blank -%}
+  {{ media_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: media_width | append: 'x' }}
+{%- elsif media_image -%}
+  <img src="{{ media_image | image_url: width: media_width }}" alt="{{ media_label | escape }}" loading="lazy">
+{%- else -%}
+  {% render 'pm-media-placeholder', label: media_label %}
+{%- endif -%}

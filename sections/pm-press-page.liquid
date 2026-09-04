@@ -25,7 +25,9 @@
     {%- if index_check == 1 -%}{%- assign is_reverse = true -%}{%- endif -%}
     <div class="pm-about-spread pm-press-spread{% if is_reverse %} pm-about-spread--reverse{% endif %} pm-reveal" {{ block.shopify_attributes }}>
       <div class="pm-about-spread-image">
-        {%- if block.settings.image -%}
+        {%- if block.settings.video != blank -%}
+          {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+        {%- elsif block.settings.image -%}
           <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.publication | escape }}" loading="lazy">
         {%- else -%}
           {% render 'pm-media-placeholder', label: block.settings.publication | default: 'Press', hover: true %}
@@ -61,6 +63,7 @@
       "name": "Press mention",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
         { "type": "text", "id": "publication", "label": "Publication name" },
         { "type": "text", "id": "headline", "label": "Headline" },
         { "type": "textarea", "id": "excerpt", "label": "Excerpt (optional)" },
