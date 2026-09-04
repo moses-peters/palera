@@ -255,8 +255,15 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   min-width: 0;
 }
 .pm-plp-tile.pm-is-hidden { display: none; }
-.pm-plp-tile-info { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 10px; }
-.pm-plp-tile-name { min-width: 0; font-size: 13px; line-height: 1.35; color: var(--pm-ink); }
+.pm-plp-tile-info { display: flex; flex-wrap: nowrap; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.pm-plp-tile-name {
+  min-width: 0; flex-shrink: 1;
+  font-size: 13px; line-height: 1.35; color: var(--pm-ink);
+  /* Truncate instead of wrapping, so a long name (e.g. "Clutch Edge -
+     Short - Brass - Crystal") never pushes the price onto its own
+     line below — name and price always stay on one row. */
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 .pm-plp-tile-price { flex-shrink: 0; font-size: 13px; color: var(--pm-ink); }
 .pm-plp-tile-image { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
 .pm-plp-tile-image img,
