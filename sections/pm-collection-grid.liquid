@@ -274,12 +274,44 @@
             {%- assign tile_image = tile_variant.featured_image | default: product.featured_image -%}
             {%- assign tile_price = tile_variant.price | default: product.price -%}
 
-            <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
-              <div class="pm-plp-tile-image">
+            {%- comment -%}
+              Hover video — there's no dedicated "hover video" field on a
+              real Shopify product, so this looks for a video already
+              sitting in the product's own media (Admin → product →
+              Media → Add video) whose alt text is tagged "video". Tiles
+              are per-color (see above); a product's media is normally
+              specific to that same color already since each color here
+              is usually its own product, so this naturally lines up.
+              Falls back to the first video in the product's media if
+              none is explicitly tagged, and to nothing (just the still
+              image) if the product has no video at all.
+            {%- endcomment -%}
+            {%- assign tile_video = nil -%}
+            {%- for media_item in product.media -%}
+              {%- if media_item.media_type == 'video' -%}
+                {%- assign alt_downcase = media_item.alt | downcase -%}
+                {%- if tile_video == nil and alt_downcase contains 'video' -%}
+                  {%- assign tile_video = media_item -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if tile_video == nil -%}
+              {%- for media_item in product.media -%}
+                {%- if tile_video == nil and media_item.media_type == 'video' -%}
+                  {%- assign tile_video = media_item -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+
+            <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile pm-reveal{% if tile_video %} pm-plp-tile--has-video{% endif %}" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
+              <div class="pm-plp-tile-image"{% if tile_video %} data-pm-hover-video{% endif %}>
                 {%- if tile_image -%}
                   <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: tile_name }}" loading="lazy">
                 {%- else -%}
                   {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+                {%- endif -%}
+                {%- if tile_video -%}
+                  {{ tile_video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'none', image_size: '900x' }}
                 {%- endif -%}
               </div>
               <div class="pm-plp-tile-info">
@@ -441,6 +473,54 @@
     if (initialFamily) {
       var initialLink = nav.querySelector('[data-family-filter="' + initialFamily + '"]');
       if (initialLink) applyFilter(initialFamily, initialLink.textContent.trim());
+    }
+
+    {%- comment -%}
+      Hover video — a tile with data-pm-hover-video has both a still
+      image and a <video> layered on top of it (see the tile markup
+      above); this only ever toggles pm-is-playing and calls
+      play()/pause(), CSS handles the actual crossfade. Desktop (real
+      hover) plays on mouseenter, pauses+rewinds on mouseleave. Touch
+      devices can't hover, so there the same video plays automatically
+      once its tile scrolls to roughly the middle of the screen instead
+      — the closest touch equivalent to "look at it, see it move" —
+      and pauses again once it scrolls back out.
+    {%- endcomment -%}
+    var hoverVideoTiles = Array.prototype.slice.call(grid.querySelectorAll('[data-pm-hover-video]'));
+    if (hoverVideoTiles.length) {
+      var supportsHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      function playTile(tile) {
+        var video = tile.querySelector('video');
+        if (!video) return;
+        tile.classList.add('pm-is-playing');
+        video.play().catch(function () {});
+      }
+      function stopTile(tile) {
+        var video = tile.querySelector('video');
+        if (!video) return;
+        tile.classList.remove('pm-is-playing');
+        video.pause();
+        video.currentTime = 0;
+      }
+
+      if (supportsHover) {
+        hoverVideoTiles.forEach(function (tile) {
+          tile.addEventListener('mouseenter', function () { playTile(tile); });
+          tile.addEventListener('mouseleave', function () { stopTile(tile); });
+        });
+      } else if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              playTile(entry.target);
+            } else {
+              stopTile(entry.target);
+            }
+          });
+        }, { threshold: 0.6 });
+        hoverVideoTiles.forEach(function (tile) { observer.observe(tile); });
+      }
     }
   })();
 </script>

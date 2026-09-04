@@ -254,10 +254,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-plp-tile-image video,
 .pm-plp-tile-image .pm-placeholder {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: contain; padding: 7%; transition: transform 0.4s var(--pm-ease);
+  object-fit: contain; padding: 7%;
+  transition: transform 0.4s var(--pm-ease), opacity 0.35s var(--pm-ease);
 }
 .pm-plp-tile:hover .pm-plp-tile-image img,
 .pm-plp-tile:hover .pm-plp-tile-image video { transform: scale(1.04); }
+/* Hover video (see data-pm-hover-video) — the video sits on top of the
+   still image, hidden until JS adds pm-is-playing (hover on desktop,
+   scroll-into-view on touch — see the script), then it crossfades in
+   while the still image fades out underneath. */
+.pm-plp-tile-image[data-pm-hover-video] video { opacity: 0; }
+.pm-plp-tile-image[data-pm-hover-video].pm-is-playing video { opacity: 1; }
+.pm-plp-tile-image[data-pm-hover-video].pm-is-playing img { opacity: 0; }
 .pm-plp-campaign-tile { grid-column: span 2; }
 .pm-plp-campaign-tile--vertical { grid-column: span 1; }
 .pm-plp-campaign-tile .pm-plp-tile-image { aspect-ratio: 16 / 9; }
