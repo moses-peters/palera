@@ -389,12 +389,14 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-photo-tile:hover img, .pm-photo-tile:hover video { transform: scale(1.05); }
 .pm-photo-tile-caption {
   position: absolute; left: clamp(12px, 1.6vw, 20px); bottom: clamp(12px, 1.6vw, 20px); z-index: 2;
-  color: #fff; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+  display: flex; flex-direction: column; gap: 2px;
+  color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
   opacity: 0; transition: opacity 0.3s var(--pm-ease);
 }
 .pm-photo-tile:hover .pm-photo-tile-caption,
 .pm-photo-tile:focus-visible .pm-photo-tile-caption { opacity: 1; }
+.pm-photo-tile-name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
+.pm-photo-tile-price { font-size: 11px; color: rgba(255, 255, 255, 0.8); }
 
 /* ===== "Shop" browse section — quick links | family grid | hover preview =====
    Real taxonomy: "family" = a specific product line (Maxi Roma and Mini
