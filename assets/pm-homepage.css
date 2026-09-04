@@ -79,9 +79,12 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   .pm-duo-caption { position: absolute; left: 55%; bottom: clamp(40px, 6vw, 72px); z-index: 2; }
 }
 
-/* ===== Image duo — true edge-to-edge split, zero gap, minimal caption ===== */
-.pm-image-duo { display: grid; grid-template-columns: 1fr; margin-top: clamp(48px, 6vw, 88px); }
-.pm-image-duo-half { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; }
+/* ===== Image duo — true edge-to-edge split, zero gap, minimal caption =====
+   Sized short (16/10, was 3/4) with a tight margin-top so this, together
+   with Product pair right above it, reads as one compact "4 photos"
+   block right under the hero instead of two tall stacked rows. */
+.pm-image-duo { display: grid; grid-template-columns: 1fr; margin-top: clamp(20px, 2.4vw, 32px); }
+.pm-image-duo-half { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
 .pm-image-duo-half img, .pm-image-duo-half .pm-placeholder { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--pm-ease); }
 .pm-image-duo-half:hover img { transform: scale(1.03); }
 .pm-image-duo-caption {
@@ -90,7 +93,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
 }
-@media (min-width: 640px) { .pm-image-duo { grid-template-columns: 1fr 1fr; } .pm-image-duo-half { aspect-ratio: 3 / 4; } }
+@media (min-width: 640px) { .pm-image-duo { grid-template-columns: 1fr 1fr; } .pm-image-duo-half { aspect-ratio: 16 / 10; } }
 
 /* ===== Brand statement — stark full-bleed, YSL register ===== */
 .pm-statement { background: var(--pm-ink); color: var(--pm-paper); text-align: center; padding: clamp(90px, 15vw, 220px) var(--pm-pad); }
@@ -343,16 +346,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-footer-socials a { color: rgba(255, 255, 255, 0.4); transition: color 0.2s var(--pm-ease); }
 .pm-footer-socials a:hover { color: #fff; }
 
-/* ===== Product pair — two big square tiles, zero gap, "1 product + another product" ===== */
+/* ===== Product pair — two tiles, zero gap, "1 product + another product" ===== */
 /* These three sections (product-pair, image-duo, full-bleed cinema) are
    deliberately edge-to-edge *within* themselves — no gap between two
    images in a duo, matching the Jacquemus reference — but stacked back
    to back on the homepage they were touching with zero space between
    *sections* too, which read as one confused block. Adding the gap only
    above sections that don't already carry their own vertical padding
-   (pm-duo and pm-photo-grid-section already do). */
-.pm-product-pair { display: grid; grid-template-columns: 1fr; margin-top: clamp(48px, 6vw, 88px); }
-.pm-product-pair-half { position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; }
+   (pm-duo and pm-photo-grid-section already do). Kept short (4/3, was
+   1/1) and the gap tight so this and Image duo right below it read as
+   one compact "4 photos" block under the hero, not two tall stacked rows. */
+.pm-product-pair { display: grid; grid-template-columns: 1fr; margin-top: clamp(20px, 2.4vw, 32px); }
+.pm-product-pair-half { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
 .pm-product-pair-half img,
 .pm-product-pair-half video { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--pm-ease); }
 .pm-product-pair-half:hover img,
