@@ -1,0 +1,43 @@
+{%- comment -%}
+  Loads the font pairing chosen in Theme settings > PM: Typography and
+  sets --pm-font-serif / --pm-font-sans, which every custom "pm-" page
+  (homepage, Shop, About, Press, product) reads from. These are real
+  Google Fonts (free, no purchase), loaded here directly rather than
+  through Shopify's font_picker + font_face (see snippets/font-face.liquid
+  for that separate, stock-theme font system) since a font_picker only
+  offers Shopify's own hosted library, not arbitrary Google fonts.
+{%- endcomment -%}
+{%- liquid
+  assign pairing = settings.pm_font_pairing | default: 'cormorant_inter'
+  case pairing
+    when 'playfair_jost'
+      assign google_families = 'Playfair+Display:wght@400;600;700&family=Jost:wght@400;500'
+      assign serif_stack = "'Playfair Display', ui-serif, Georgia, serif"
+      assign sans_stack = "'Jost', ui-sans-serif, system-ui, sans-serif"
+    when 'garamond_work'
+      assign google_families = 'EB+Garamond:wght@400;500;600&family=Work+Sans:wght@400;500'
+      assign serif_stack = "'EB Garamond', ui-serif, Georgia, serif"
+      assign sans_stack = "'Work Sans', ui-sans-serif, system-ui, sans-serif"
+    when 'fraunces_karla'
+      assign google_families = 'Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500'
+      assign serif_stack = "'Fraunces', ui-serif, Georgia, serif"
+      assign sans_stack = "'Karla', ui-sans-serif, system-ui, sans-serif"
+    when 'bodoni_montserrat'
+      assign google_families = 'Bodoni+Moda:wght@400;500;700&family=Montserrat:wght@400;500'
+      assign serif_stack = "'Bodoni Moda', ui-serif, Georgia, serif"
+      assign sans_stack = "'Montserrat', ui-sans-serif, system-ui, sans-serif"
+    else
+      assign google_families = 'Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500'
+      assign serif_stack = "'Cormorant Garamond', ui-serif, Georgia, serif"
+      assign sans_stack = "'Inter', ui-sans-serif, system-ui, sans-serif"
+  endcase
+-%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ google_families }}&display=swap">
+{%- style -%}
+  :root {
+    --pm-font-serif: {{ serif_stack }};
+    --pm-font-sans: {{ sans_stack }};
+  }
+{%- endstyle -%}

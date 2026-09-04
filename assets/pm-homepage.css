@@ -8,8 +8,13 @@
   --pm-line: oklch(0.9 0.006 90);
   --pm-muted: oklch(0.55 0.014 90);
   --pm-pad: clamp(20px, 4.4vw, 72px);
-  --pm-font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
-  --pm-font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* --pm-font-serif / --pm-font-sans are NOT declared here on purpose —
+     snippets/pm-fonts.liquid sets them in <head> based on Theme
+     settings > PM: Typography (a picker of a few free luxury font
+     pairings). Declaring them again here, later in the cascade (this
+     file loads inside the body, after <head>), would silently win and
+     override whatever the merchant picked, so the actual font choice
+     lives in that one place only. */
   --pm-ease: cubic-bezier(0.2, 0.6, 0.2, 1);
 }
 

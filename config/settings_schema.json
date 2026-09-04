@@ -555,6 +555,43 @@
     ]
   },
   {
+    "name": "PM: Typography",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Font pairing used across the custom Palera Milano pages (homepage, Shop, About, Press, product page) — free, luxury-leaning Google Fonts."
+      },
+      {
+        "type": "select",
+        "id": "pm_font_pairing",
+        "label": "Font pairing",
+        "options": [
+          {
+            "value": "cormorant_inter",
+            "label": "Cormorant Garamond + Inter — editorial, refined"
+          },
+          {
+            "value": "playfair_jost",
+            "label": "Playfair Display + Jost — classic high-fashion"
+          },
+          {
+            "value": "garamond_work",
+            "label": "EB Garamond + Work Sans — old-world minimal"
+          },
+          {
+            "value": "fraunces_karla",
+            "label": "Fraunces + Karla — warm contemporary"
+          },
+          {
+            "value": "bodoni_montserrat",
+            "label": "Bodoni Moda + Montserrat — bold Vogue-style"
+          }
+        ],
+        "default": "cormorant_inter"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.products.name",
     "settings": [
       {
