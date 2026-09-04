@@ -25,7 +25,7 @@
           "type": "product",
           "settings": {
             "product": "shopify://products/clutch-mini-champagne",
-            "video": "shopify://files/videos/copy_0F9C06FF-D341-466C-A97F-9E87D60E3D97.mov",
+            "image": "shopify://shop_images/3U7A3235.jpg",
             "fallback_label": "Crystal Pouch",
             "fallback_asset": "pm-drive-product-a.jpg",
             "link": ""
