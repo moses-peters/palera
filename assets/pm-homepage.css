@@ -374,7 +374,10 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   color: #fff;
   display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
   font-size: clamp(15px, 1.8vw, 20px);
+  opacity: 0; transition: opacity 0.3s var(--pm-ease);
 }
+.pm-product-pair-half:hover .pm-product-pair-caption,
+.pm-product-pair-half:focus-visible .pm-product-pair-caption { opacity: 1; }
 .pm-product-pair-price { font-size: 12px; color: rgba(255, 255, 255, 0.8); }
 @media (min-width: 640px) { .pm-product-pair { grid-template-columns: 1fr 1fr; } }
 
@@ -388,7 +391,10 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   position: absolute; left: clamp(12px, 1.6vw, 20px); bottom: clamp(12px, 1.6vw, 20px); z-index: 2;
   color: #fff; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+  opacity: 0; transition: opacity 0.3s var(--pm-ease);
 }
+.pm-photo-tile:hover .pm-photo-tile-caption,
+.pm-photo-tile:focus-visible .pm-photo-tile-caption { opacity: 1; }
 
 /* ===== "Shop" browse section — quick links | family grid | hover preview =====
    Real taxonomy: "family" = a specific product line (Maxi Roma and Mini
