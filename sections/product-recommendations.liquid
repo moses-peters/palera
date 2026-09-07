@@ -69,16 +69,48 @@
             {%- if shown_count >= number_of_products -%}{%- break -%}{%- endif -%}
             {%- if rec_product.id != product.id -%}
               {%- assign shown_count = shown_count | plus: 1 -%}
+              {%- comment -%}
+                Sibling color count (the "+5" in the reference) — same
+                title-prefix matching used on the Shop grid, since most
+                colors here are separate products (e.g. "Maxi Roma —
+                Black" / "Maxi Roma — Red"), not real variants.
+              {%- endcomment -%}
+              {%- assign rec_color_option = nil -%}
+              {%- for option in rec_product.options_with_values -%}
+                {%- assign option_name_downcase = option.name | downcase -%}
+                {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+                  {%- assign rec_color_option = option -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if rec_color_option -%}
+                {%- assign sibling_count = rec_color_option.values.size | minus: 1 -%}
+              {%- else -%}
+                {%- assign rec_base_title = rec_product.title | split: ' — ' | first -%}
+                {%- assign sibling_count = 0 -%}
+                {%- for sibling_product in collections.all.products -%}
+                  {%- if sibling_product.id != rec_product.id -%}
+                    {%- assign sibling_base = sibling_product.title | split: ' — ' | first -%}
+                    {%- if sibling_base == rec_base_title -%}
+                      {%- assign sibling_count = sibling_count | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
               <a href="{{ rec_product.url }}" class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
                 <div class="pm-rec-tile-image">
                   {%- if rec_product.featured_image -%}
-                    <img src="{{ rec_product.featured_image | image_url: width: 600 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
+                    <img src="{{ rec_product.featured_image | image_url: width: 800 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
                   {%- else -%}
                     {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
                   {%- endif -%}
                 </div>
                 <div class="pm-rec-tile-info">
-                  <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}</span>
+                  <div class="pm-rec-tile-row">
+                    <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}</span>
+                    {%- if sibling_count > 0 -%}
+                      <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
+                    {%- endif -%}
+                  </div>
                   <span class="pm-rec-tile-price">
                     {%- if rec_product.price_varies -%}From {{ rec_product.price | money }}{%- else -%}{{ rec_product.price | money }}{%- endif -%}
                   </span>

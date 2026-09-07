@@ -191,39 +191,58 @@
    (pm-rec-*), not shared with any other section, dropped down here
    from the stock Impulse index-section/page-width/section-header
    wrapper classes that were injecting a large chunk of unexplained
-   vertical space above the row. Plain and quiet on purpose: name +
-   price sit below the photo, no dark gradient/shadow over the image.
+   vertical space above the row.
+
+   Photo sits *inside* a tinted box with real breathing room
+   (object-fit: contain + padding), not cropped to fill it
+   (object-fit: cover) — cover was cutting off badly on photos shot
+   with a lot of headroom above the bag, which is what actually caused
+   the broken-looking empty space before. Name + a small "+N" color
+   count sit on one line below the photo, price on the line under
+   that — plain text, no gradient/shadow over the image itself.
+
    Horizontally scrollable (flex row, not a wrapping grid) since this
-   shows up to 8 dynamically-picked products — a row you scroll through
-   reads better than a tall stack of wrapped rows. Each tile shows a
-   deliberate partial peek of the next one so the row reads as
-   scrollable at a glance, without needing arrow buttons. Sized ~30%
-   smaller than a standard grid tile — this is a secondary "more to
-   browse" strip, not the main event. ===== */
+   shows up to 8 dynamically-picked products — a row you scroll
+   through reads better than a tall stack of wrapped rows. Each tile
+   shows a deliberate partial peek of the next one so the row reads as
+   scrollable at a glance, without needing arrow buttons. ===== */
 .pm-product-recs { padding: clamp(48px, 6vw, 80px) var(--pm-pad); border-top: 1px solid var(--pm-line); }
-.pm-product-recs-head { text-align: center; margin-bottom: clamp(20px, 3vw, 32px); }
+.pm-product-recs-head { text-align: center; margin-bottom: clamp(24px, 3.4vw, 40px); }
 .pm-product-recs-head h3 { margin-top: 8px; font-size: clamp(19px, 2.6vw, 26px); font-weight: 400; }
 .pm-rec-grid {
   display: flex;
-  gap: clamp(6px, 1vw, 12px);
+  gap: clamp(16px, 2vw, 32px);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 .pm-rec-grid::-webkit-scrollbar { display: none; }
-.pm-rec-tile { display: block; flex: 0 0 clamp(110px, 30vw, 155px); scroll-snap-align: start; box-shadow: none; }
-.pm-rec-tile-image { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: var(--pm-sable); }
-.pm-rec-tile-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--pm-ease); }
-.pm-rec-tile:hover .pm-rec-tile-image img { transform: scale(1.05); }
-.pm-rec-tile-info { display: flex; flex-wrap: nowrap; align-items: baseline; justify-content: space-between; gap: 6px; margin-top: 8px; }
+.pm-rec-tile { display: block; flex: 0 0 clamp(230px, 68vw, 280px); scroll-snap-align: start; box-shadow: none; }
+.pm-rec-tile-image {
+  position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+  background: var(--pm-sable);
+}
+.pm-rec-tile-image img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; padding: 8%;
+  transition: transform 0.4s var(--pm-ease);
+}
+.pm-rec-tile:hover .pm-rec-tile-image img { transform: scale(1.03); }
+.pm-rec-tile-info { margin-top: 12px; }
+.pm-rec-tile-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .pm-rec-tile-name {
   min-width: 0; flex-shrink: 1;
-  font-size: 11px; color: var(--pm-ink);
+  font-size: 13px; color: var(--pm-ink);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.pm-rec-tile-price { flex-shrink: 0; font-size: 11px; color: var(--pm-muted); }
-@media (min-width: 640px) { .pm-rec-tile { flex-basis: clamp(140px, 15vw, 180px); } }
+.pm-rec-tile-colors {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--pm-muted);
+}
+.pm-rec-tile-colors i { width: 9px; height: 9px; border-radius: 1px; background: var(--pm-ink); }
+.pm-rec-tile-price { display: block; margin-top: 4px; font-size: 12px; color: var(--pm-muted); }
+@media (min-width: 640px) { .pm-rec-tile { flex-basis: clamp(260px, 24vw, 340px); } }
 
 /* ===== Social sharing ===== */
 .pm-product .social-sharing { display: flex; gap: 16px; }
