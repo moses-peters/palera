@@ -37,20 +37,6 @@
         "space_around": true
       }
     },
-    "1782813006baba11cb": {
-      "type": "apps",
-      "settings": {
-        "full_width": false,
-        "space_around": true
-      }
-    },
-    "17828139319027552a": {
-      "type": "apps",
-      "settings": {
-        "full_width": false,
-        "space_around": true
-      }
-    },
     "pm_about_Ch6rqK": {
       "type": "pm-about",
       "blocks": {
@@ -159,8 +145,6 @@
   "order": [
     "main",
     "1726698142b015c0cf",
-    "1782813006baba11cb",
-    "17828139319027552a",
     "pm_about_Ch6rqK",
     "pm_press"
   ]
