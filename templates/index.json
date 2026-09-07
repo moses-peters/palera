@@ -74,6 +74,7 @@
       "type": "pm-full-bleed-media",
       "settings": {
         "image": "shopify://shop_images/3U7A2898_-_Copy.jpg",
+        "image_mobile": "shopify://shop_images/3U7A2898.jpg",
         "caption": "",
         "link_url": ""
       }
