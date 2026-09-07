@@ -29,7 +29,9 @@
             "image": "shopify://shop_images/3U7A3235.jpg",
             "fallback_label": "Crystal Pouch",
             "fallback_asset": "pm-drive-product-a.jpg",
-            "link": ""
+            "link": "",
+            "focal_x": 50,
+            "focal_y": 50
           }
         },
         "prod-2": {
@@ -39,7 +41,9 @@
             "video": "shopify://files/videos/copy_566BB479-5B3C-478C-9DA9-7D9329401B21.mov",
             "fallback_label": "Diamond Mini Roma",
             "fallback_asset": "pm-drive-product-b.jpg",
-            "link": ""
+            "link": "",
+            "focal_x": 50,
+            "focal_y": 50
           }
         }
       },
@@ -55,9 +59,14 @@
         "image_left": "shopify://shop_images/3U7A2811-2.jpg",
         "caption_left": "",
         "link_left": "",
-        "image_right": "shopify://shop_images/3U7A3534.jpg",
+        "focal_x_left": 50,
+        "focal_y_left": 50,
+        "image_right": "shopify://shop_images/F1.jpg",
+        "image_right_mobile": "shopify://shop_images/3U7A3534.jpg",
         "caption_right": "",
-        "link_right": ""
+        "link_right": "",
+        "focal_x_right": 50,
+        "focal_y_right": 50
       }
     },
     "pm-full-bleed-media": {
