@@ -138,7 +138,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 
 /* ===== Brand statement — stark full-bleed, YSL register ===== */
 .pm-statement { background: var(--pm-ink); color: var(--pm-paper); text-align: center; padding: clamp(90px, 15vw, 220px) var(--pm-pad); }
-.pm-statement-mark { font-size: 11px; letter-spacing: 0.6em; color: rgba(255, 255, 255, 0.4); margin-bottom: 28px; }
+.pm-statement-mark { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-bottom: 28px; }
 .pm-statement-quote { max-width: 880px; margin: 0 auto 32px; font-size: clamp(24px, 5.6vw, 58px); font-style: italic; line-height: 1.35; }
 
 /* ===== Category grid — asymmetric masonry, not a uniform grid ===== */
