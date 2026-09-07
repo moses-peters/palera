@@ -47,7 +47,9 @@
         "value-3",
         "value-4"
       ],
-      "settings": {}
+      "settings": {
+        "statement_mark": "Palera Milano"
+      }
     }
   },
   "order": [
