@@ -141,38 +141,33 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    media. */
 .pm-image-duo-half--text { background: var(--pm-sable); }
 .pm-image-duo-text {
-  width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center;
-  padding: clamp(36px, 6vw, 76px); color: var(--pm-ink); text-align: left;
+  width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: clamp(36px, 6vw, 76px); color: var(--pm-ink); text-align: center;
   position: relative; overflow: hidden;
 }
 .pm-image-duo-text::before {
-  content: "”"; position: absolute; top: clamp(-28px, -3vw, -10px); left: clamp(20px, 4vw, 44px);
+  content: "”"; position: absolute; top: clamp(-28px, -3vw, -10px); left: 50%; transform: translateX(-50%);
   font-family: var(--pm-font-serif); font-size: clamp(140px, 16vw, 240px); line-height: 1;
   color: var(--pm-ink); opacity: 0.06; pointer-events: none;
 }
 .pm-image-duo-text::after {
-  content: "Palera Milano"; position: absolute; right: clamp(20px, 3vw, 40px); bottom: clamp(18px, 2.5vw, 32px);
-  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--pm-muted); opacity: 0.6;
+  content: "Palera Milano"; position: absolute; left: 50%; bottom: clamp(18px, 2.5vw, 32px); transform: translateX(-50%);
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--pm-ink); opacity: 0.55;
 }
 .pm-image-duo-text .pm-eyebrow {
-  color: var(--pm-muted); margin-bottom: 18px; position: relative;
-  padding-left: 32px;
-}
-.pm-image-duo-text .pm-eyebrow::before {
-  content: ""; position: absolute; left: 0; top: 50%; width: 22px; height: 1px;
-  background: currentColor;
+  color: var(--pm-ink); margin-bottom: 18px;
 }
 .pm-image-duo-text h2 {
   font-style: italic; font-size: clamp(26px, 3.4vw, 42px); line-height: 1.15;
-  margin: 0 0 22px; max-width: 13ch; position: relative; z-index: 1;
+  margin: 0 auto 22px; max-width: 13ch; position: relative; z-index: 1;
 }
 .pm-image-duo-text-body {
-  font-size: clamp(14px, 1.3vw, 16px); line-height: 1.75; color: var(--pm-muted);
-  max-width: 36ch; position: relative; z-index: 1;
+  font-size: clamp(14px, 1.3vw, 16px); line-height: 1.75; color: var(--pm-ink);
+  max-width: 36ch; margin: 0 auto; position: relative; z-index: 1;
 }
 .pm-image-duo-text-body p { margin: 0; }
 .pm-image-duo-text-body p + p { margin-top: 14px; }
-.pm-image-duo-half--text:hover .pm-image-duo-text::before { transform: translateY(4px); transition: transform 1.2s var(--pm-ease); }
+.pm-image-duo-half--text:hover .pm-image-duo-text::before { transform: translateX(-50%) translateY(4px); transition: transform 1.2s var(--pm-ease); }
 @media (min-width: 640px) { .pm-image-duo { grid-template-columns: 1fr 1fr; } .pm-image-duo-half { aspect-ratio: 16 / 10; } }
 
 /* ===== Brand statement — stark full-bleed, YSL register ===== */
