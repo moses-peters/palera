@@ -3,7 +3,9 @@
     {%- for block in section.blocks limit: 2 -%}
       {%- assign product = block.settings.product -%}
       {%- assign tile_image = block.settings.image | default: product.featured_image -%}
-      <a href="{{ product.url | default: block.settings.link | default: '#' }}" class="pm-product-pair-half pm-reveal" style="transition-delay: {{ forloop.index0 | times: 120 }}ms">
+      {%- assign focal_x = block.settings.focal_x | default: 50 -%}
+      {%- assign focal_y = block.settings.focal_y | default: 50 -%}
+      <a href="{{ product.url | default: block.settings.link | default: '#' }}" class="pm-product-pair-half pm-reveal" style="transition-delay: {{ forloop.index0 | times: 120 }}ms; --pm-focal: {{ focal_x }}% {{ focal_y }}%;">
         {%- if block.settings.video != blank -%}
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
         {%- elsif tile_image -%}
@@ -43,7 +45,9 @@
         { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
         { "type": "text", "id": "fallback_label", "label": "Fallback label" },
         { "type": "text", "id": "fallback_asset", "label": "Fallback theme asset filename", "info": "Used only if no product/image is set" },
-        { "type": "url", "id": "link", "label": "Fallback link" }
+        { "type": "url", "id": "link", "label": "Fallback link" },
+        { "type": "range", "id": "focal_x", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's left side." },
+        { "type": "range", "id": "focal_y", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's top." }
       ]
     }
   ],

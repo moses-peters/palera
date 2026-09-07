@@ -1,8 +1,14 @@
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign focal_x_left = section.settings.focal_x_left | default: 50
+  assign focal_y_left = section.settings.focal_y_left | default: 50
+  assign focal_x_right = section.settings.focal_x_right | default: 50
+  assign focal_y_right = section.settings.focal_y_right | default: 50
+-%}
 <div class="pm-homepage">
   <div class="pm-image-duo">
-    <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal">
+    <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal" style="--pm-focal: {{ focal_x_left }}% {{ focal_y_left }}%;">
       {%- if section.settings.video_left != blank -%}
         {{ section.settings.video_left | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
       {%- elsif section.settings.image_left -%}
@@ -17,7 +23,7 @@
       {%- endif -%}
       {%- if section.settings.caption_left != blank -%}<span class="pm-image-duo-caption">{{ section.settings.caption_left }}</span>{%- endif -%}
     </a>
-    <a href="{{ section.settings.link_right | default: '#' }}" class="pm-image-duo-half pm-reveal" style="transition-delay: 120ms">
+    <a href="{{ section.settings.link_right | default: '#' }}" class="pm-image-duo-half pm-reveal" style="transition-delay: 120ms; --pm-focal: {{ focal_x_right }}% {{ focal_y_right }}%;">
       {%- if section.settings.video_right != blank -%}
         {{ section.settings.video_right | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
       {%- elsif section.settings.image_right -%}
@@ -45,12 +51,16 @@
     { "type": "video", "id": "video_left", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption_left", "label": "Caption" },
     { "type": "url", "id": "link_left", "label": "Link" },
+    { "type": "range", "id": "focal_x_left", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "focal_y_left", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
     { "type": "header", "content": "Right image" },
     { "type": "image_picker", "id": "image_right", "label": "Image (desktop)" },
     { "type": "image_picker", "id": "image_right_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video_right", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption_right", "label": "Caption" },
-    { "type": "url", "id": "link_right", "label": "Link" }
+    { "type": "url", "id": "link_right", "label": "Link" },
+    { "type": "range", "id": "focal_x_right", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "focal_y_right", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 }
   ],
   "presets": [{ "name": "PM: Image duo" }]
 }
