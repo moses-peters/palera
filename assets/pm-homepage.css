@@ -283,6 +283,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 @media (min-width: 640px) { .pm-plp-grid { grid-template-columns: repeat(4, 1fr); } }
 .pm-plp-tile {
+  position: relative;
   display: block;
   /* Grid items default to min-width: auto, which floors their size at
      their content's min-content width — a long product name (e.g.
@@ -293,6 +294,33 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   min-width: 0;
 }
 .pm-plp-tile.pm-is-hidden { display: none; }
+.pm-plp-tile-link { display: block; }
+/* Sibling color swatches — a plain sibling <div>, not nested inside
+   .pm-plp-tile-link, since an <a> can't legally contain another <a>
+   (browsers silently mangle that). Positioned absolute against
+   .pm-plp-tile itself, over the top-right of the image, hidden until
+   the tile (link or swatches, either counts as ":hover" on the shared
+   parent) is hovered or focused. */
+.pm-plp-swatches {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  display: flex; align-items: center; gap: 6px;
+  opacity: 0; transition: opacity 0.2s var(--pm-ease);
+  pointer-events: none;
+}
+.pm-plp-tile:hover .pm-plp-swatches,
+.pm-plp-tile:focus-within .pm-plp-swatches { opacity: 1; pointer-events: auto; }
+.pm-plp-swatch {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s var(--pm-ease);
+}
+.pm-plp-swatch:hover { transform: scale(1.15); }
+.pm-plp-swatch-more {
+  font-size: 10px; color: var(--pm-muted); background: var(--pm-paper);
+  border: 1px solid var(--pm-line); border-radius: 50%;
+  width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+}
 .pm-plp-tile-info { display: flex; flex-wrap: nowrap; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 10px; }
 .pm-plp-tile-name {
   min-width: 0; flex-shrink: 1;
