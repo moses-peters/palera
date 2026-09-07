@@ -86,7 +86,13 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-duo-image:hover img,
 .pm-duo-image:hover video { transform: scale(1.035); }
 .pm-duo-image--a { aspect-ratio: 3 / 4; }
-.pm-duo-image--b { aspect-ratio: 4 / 3; }
+.pm-duo-image--b {
+  /* Was 4/3 (landscape) at every width, including mobile — the
+     opposite of what a taller mobile-specific photo needs. Portrait
+     on mobile now; the 900px+ override below still makes it square
+     on desktop, unchanged. */
+  aspect-ratio: 4 / 5;
+}
 .pm-duo-caption {
   background: var(--pm-paper);
   border: 1px solid var(--pm-line);
@@ -109,7 +115,13 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    read as one compact "4 photos" block right under the hero — evenly
    spaced on all sides, not two rows loosely stacked. */
 .pm-image-duo { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 5px; }
-.pm-image-duo-half { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+.pm-image-duo-half {
+  position: relative; display: block; overflow: hidden;
+  /* Was 4/3 (landscape) even on mobile — the 640px+ override below
+     makes it wide (16/10) on desktop; this portrait ratio is the
+     mobile-only version, for the taller mobile-specific photo. */
+  aspect-ratio: 4 / 5;
+}
 .pm-image-duo-half img, .pm-image-duo-half video, .pm-image-duo-half .pm-placeholder {
   width: 100%; height: 100%; object-fit: cover;
   object-position: var(--pm-focal, 50% 50%);
@@ -407,12 +419,17 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    otherwise stacked back to back on the homepage with zero space
    between *sections*, which read as one confused block. Adding the
    gap only above sections that don't already carry their own vertical
-   padding (pm-duo and pm-photo-grid-section already do). Kept short
-   (4/3, was 1/1) and the gap tight so this and Image duo right below
-   it read as one compact "4 photos" block under the hero, not two
-   tall stacked rows. */
+   padding (pm-duo and pm-photo-grid-section already do). Portrait on
+   mobile, wider (4/3) on desktop — see the aspect-ratio rules below —
+   with the gap tight so this and Image duo right below it read as one
+   compact "4 photos" block under the hero, not two tall stacked rows. */
 .pm-product-pair { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: clamp(20px, 2.4vw, 32px); }
-.pm-product-pair-half { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+.pm-product-pair-half {
+  position: relative; display: block; overflow: hidden;
+  /* Portrait on mobile for the taller mobile-specific photo; the
+     640px+ override below switches to the wider desktop ratio. */
+  aspect-ratio: 4 / 5;
+}
 .pm-product-pair-half img,
 .pm-product-pair-half video {
   width: 100%; height: 100%; object-fit: cover;
@@ -433,7 +450,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-product-pair-half:hover .pm-product-pair-caption,
 .pm-product-pair-half:focus-visible .pm-product-pair-caption { opacity: 1; }
 .pm-product-pair-price { font-size: 12px; color: rgba(255, 255, 255, 0.8); }
-@media (min-width: 640px) { .pm-product-pair { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 640px) { .pm-product-pair { grid-template-columns: 1fr 1fr; } .pm-product-pair-half { aspect-ratio: 4 / 3; } }
 
 /* ===== Photo grid — 4x2, generously spaced (not the mosaic's near-zero gap) ===== */
 .pm-photo-grid-section { padding: clamp(64px, 9vw, 120px) var(--pm-pad); }
