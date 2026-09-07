@@ -1,0 +1,57 @@
+/* ===== Lookbook — contained PDF slideshow, not a forced fullscreen embed =====
+   Sits at a normal reading size (max-width'd, bounded height) by
+   default; the Fullscreen button is an option, not the default state.
+   :fullscreen (and the WebKit-prefixed equivalent) restyle the same
+   markup to fill the viewport instead of introducing separate markup. */
+.pm-lookbook { max-width: 1000px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) var(--pm-pad); }
+.pm-lookbook-head { text-align: center; margin-bottom: clamp(28px, 4vw, 48px); }
+.pm-lookbook-head h1 { margin-top: 8px; }
+
+.pm-lookbook-viewer { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.pm-lookbook-stage {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 50vh;
+  background: var(--pm-sable);
+  border: 1px solid var(--pm-line);
+  overflow: hidden;
+}
+.pm-lookbook-canvas { max-width: 100%; height: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); }
+.pm-lookbook-loading {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-muted);
+  background: var(--pm-sable);
+}
+.pm-lookbook-loading[hidden] { display: none; }
+
+.pm-lookbook-controls { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 3vw, 32px); }
+.pm-lookbook-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 40px; height: 40px; padding: 0 14px;
+  border: 1px solid var(--pm-line); background: var(--pm-paper); color: var(--pm-ink);
+  font-family: var(--pm-font-sans); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: pointer; transition: opacity 0.2s var(--pm-ease), background 0.2s var(--pm-ease);
+}
+.pm-lookbook-btn:hover { background: var(--pm-sable); }
+.pm-lookbook-btn:disabled { opacity: 0.35; cursor: default; }
+.pm-lookbook-count { font-size: 12px; letter-spacing: 0.04em; color: var(--pm-muted); min-width: 60px; text-align: center; }
+
+/* Fullscreen — the exact same viewer element, just restyled to fill
+   the screen; the button is what makes this happen, never automatic. */
+.pm-lookbook-viewer:fullscreen,
+.pm-lookbook-viewer:-webkit-full-screen {
+  width: 100vw; height: 100vh; max-width: none;
+  background: var(--pm-ink); justify-content: center; padding: 24px;
+}
+.pm-lookbook-viewer:fullscreen .pm-lookbook-stage,
+.pm-lookbook-viewer:-webkit-full-screen .pm-lookbook-stage {
+  flex: 1; min-height: 0; width: 100%; background: transparent; border: none;
+}
+.pm-lookbook-viewer:fullscreen .pm-lookbook-canvas,
+.pm-lookbook-viewer:-webkit-full-screen .pm-lookbook-canvas { max-height: 92vh; }
+.pm-lookbook-viewer:fullscreen .pm-lookbook-btn,
+.pm-lookbook-viewer:-webkit-full-screen .pm-lookbook-btn {
+  background: transparent; border-color: rgba(255, 255, 255, 0.3); color: #fff;
+}
+.pm-lookbook-viewer:fullscreen .pm-lookbook-count,
+.pm-lookbook-viewer:-webkit-full-screen .pm-lookbook-count { color: rgba(255, 255, 255, 0.7); }

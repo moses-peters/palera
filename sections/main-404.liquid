@@ -1,14 +1,52 @@
-<div class="page-width page-content">
-  <header class="section-header section-header--404">
-    <h1 class="section-header__title">{{ 'general.404.title' | t }}</h1>
-    <div class="rte text-spacing">
-      {{ 'general.404.subtext_html' | t: url: routes.root_url }}
-    </div>
-  </header>
-</div>
+{%- comment -%}
+  Hidden lookbook — reachable only by a direct link nobody would land
+  on by browsing the site (no nav entry, no sitemap listing, and
+  Shopify serves this route with a 404 status regardless, which also
+  keeps search engines from indexing it). This works without needing a
+  real Page resource created in Admin: any URL Shopify doesn't
+  recognize falls through to this same 404 template, so matching
+  request.path against a secret slug here turns one specific "broken"
+  URL into the real page instead of showing "page not found". Change
+  the slug (Theme settings for this section, in the customizer) any
+  time to rotate the link.
+{%- endcomment -%}
+{%- liquid
+  assign lookbook_slug = section.settings.lookbook_slug | strip | downcase
+  assign expected_path = 'pages' | append: lookbook_slug
+  assign actual_path = request.path | downcase | remove: '/'
+  assign show_lookbook = false
+  if lookbook_slug != blank and actual_path == expected_path
+    assign show_lookbook = true
+  endif
+-%}
+{%- if show_lookbook -%}
+  {% render 'pm-lookbook', pdf_url: section.settings.lookbook_pdf_url, heading: section.settings.lookbook_heading, eyebrow: section.settings.lookbook_eyebrow %}
+{%- else -%}
+  <div class="page-width page-content">
+    <header class="section-header section-header--404">
+      <h1 class="section-header__title">{{ 'general.404.title' | t }}</h1>
+      <div class="rte text-spacing">
+        {{ 'general.404.subtext_html' | t: url: routes.root_url }}
+      </div>
+    </header>
+  </div>
+{%- endif -%}
 
 {% schema %}
 {
-  "name": "t:sections.main-404.name"
+  "name": "t:sections.main-404.name",
+  "settings": [
+    { "type": "header", "content": "Hidden lookbook" },
+    {
+      "type": "text",
+      "id": "lookbook_slug",
+      "label": "Secret link slug",
+      "default": "lookbook-7hq2m9xk",
+      "info": "The lookbook lives at yourstore.com/pages/<this>. Not linked anywhere on the site — share the link directly. Change it any time to invalidate the old link."
+    },
+    { "type": "text", "id": "lookbook_pdf_url", "label": "Lookbook PDF link", "info": "Upload the PDF in Admin under Content > Files, then paste its link here." },
+    { "type": "text", "id": "lookbook_heading", "label": "Heading", "default": "Lookbook" },
+    { "type": "text", "id": "lookbook_eyebrow", "label": "Eyebrow", "default": "Palera Milano" }
+  ]
 }
 {% endschema %}

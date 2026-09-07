@@ -1,0 +1,40 @@
+{%- comment -%}
+  PDF lookbook viewer — renders a merchant-uploaded PDF (Admin > Content
+  > Files > Upload, then paste the resulting link into the "Lookbook
+  PDF URL" setting) as an in-page slideshow using PDF.js, rather than a
+  plain embedded PDF/download link. Stays contained at a normal reading
+  size by default; a Fullscreen button is offered but never forced.
+  Params: pdf_url, heading, eyebrow.
+{%- endcomment -%}
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+{{ 'pm-lookbook.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage">
+  <section class="pm-lookbook">
+    <div class="pm-lookbook-head">
+      <span class="pm-eyebrow">{{ eyebrow | default: 'Palera Milano' }}</span>
+      <h1 class="pm-serif">{{ heading | default: 'Lookbook' }}</h1>
+    </div>
+
+    {%- if pdf_url != blank -%}
+      <div class="pm-lookbook-viewer" data-pm-lookbook data-pdf-url="{{ pdf_url | escape }}">
+        <div class="pm-lookbook-stage">
+          <canvas class="pm-lookbook-canvas" data-pm-lookbook-canvas></canvas>
+          <p class="pm-lookbook-loading" data-pm-lookbook-loading>Loading lookbook…</p>
+        </div>
+        <div class="pm-lookbook-controls">
+          <button type="button" class="pm-lookbook-btn" data-pm-lookbook-prev aria-label="Previous page">←</button>
+          <span class="pm-lookbook-count"><span data-pm-lookbook-current>1</span> / <span data-pm-lookbook-total>—</span></span>
+          <button type="button" class="pm-lookbook-btn" data-pm-lookbook-next aria-label="Next page">→</button>
+          <button type="button" class="pm-lookbook-btn pm-lookbook-btn--fullscreen" data-pm-lookbook-fullscreen aria-label="Toggle fullscreen">
+            <span data-pm-lookbook-fullscreen-label>Fullscreen</span>
+          </button>
+        </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.min.js"></script>
+      <script src="{{ 'pm-lookbook.js' | asset_url }}" defer></script>
+    {%- else -%}
+      <p class="pm-collection-empty">Add the lookbook PDF's link in the theme editor to show it here.</p>
+    {%- endif -%}
+  </section>
+</div>
