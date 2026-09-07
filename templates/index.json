@@ -56,7 +56,8 @@
     "pm-image-duo": {
       "type": "pm-image-duo",
       "settings": {
-        "image_left": "shopify://shop_images/3U7A2811-2.jpg",
+        "image_left": "shopify://shop_images/F2.jpg",
+        "image_left_mobile": "shopify://shop_images/3U7A2740-2.jpg",
         "caption_left": "",
         "link_left": "",
         "focal_x_left": 50,
