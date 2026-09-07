@@ -22,83 +22,73 @@
     data-section-id="{{ product.id }}"
     data-subsection
     data-section-type="collection-grid"
-    class="index-section pm-product-recs">
+    class="pm-homepage pm-product-recs">
     {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
     {{ 'pm-product.css' | asset_url | stylesheet_tag }}
-    <div class="page-width">
-      <header class="section-header">
-        <span class="pm-eyebrow">Palera Milano</span>
-        <h3 class="section-header__title pm-serif">
-          {{ section.settings.product_recommendations_heading }}
-        </h3>
-      </header>
+    <div class="pm-product-recs-head">
+      <span class="pm-eyebrow">Palera Milano</span>
+      <h3 class="pm-serif">{{ section.settings.product_recommendations_heading }}</h3>
     </div>
 
-    <div class="page-width page-width--flush-small">
-      <div class="grid-overflow-wrapper">
-        {%- if recommend_products -%}
-          <div class="product-recommendations-placeholder">
-            {% comment %}
-              This content is visually hidden and replaced when recommended products show up
-            {% endcomment %}
-            <div class="grid grid--uniform visually-invisible" aria-hidden="true">
-              {%- render 'product-grid-item',
-                product: product,
-                quick_shop_enable: settings.quick_shop_enable
-              -%}
-            </div>
-          </div>
-        {%- endif -%}
-        {%- comment -%}
-          Shopify's dynamic ("related") recommendations need order/view
-          history to have anything to suggest — a brand-new store, or a
-          product with no sales yet, commonly gets zero back, which
-          would otherwise leave this whole section blank forever (not
-          just on first load). Falls back to a plain pull from Shop All
-          (excluding the product being viewed) whenever that happens,
-          so there's always something here — this quietly gets replaced
-          by real recommendations once Shopify's engine actually has
-          enough data to produce them, with no code change needed.
-        {%- endcomment -%}
-        {%- comment -%}
-          related_collection is nil (not 0) on a normal page load — it's
-          only ever assigned above when recommendations.products_count
-          is already > 0. "nil == 0" is false in Liquid, so checking
-          for == 0 here never actually caught that case; "unless > 0"
-          correctly treats nil the same as zero.
-        {%- endcomment -%}
-        {%- assign display_products = related_collection.products -%}
-        {%- unless related_collection.products_count > 0 -%}
-          {%- assign display_products = collections.all.products -%}
-        {%- endunless -%}
-        {%- if display_products.size > 0 -%}
-          <div class="product-recommendations page-width">
-            <div class="pm-collection-grid pm-product-recs-grid">
-              {%- assign shown_count = 0 -%}
-              {%- for rec_product in display_products -%}
-                {%- if shown_count >= number_of_products -%}{%- break -%}{%- endif -%}
-                {%- if rec_product.id != product.id -%}
-                  {%- assign shown_count = shown_count | plus: 1 -%}
-                  <a href="{{ rec_product.url }}" class="pm-product-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
-                    {%- if rec_product.featured_image -%}
-                      <img class="pm-product-image" src="{{ rec_product.featured_image | image_url: width: 900 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
-                    {%- else -%}
-                      {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
-                    {%- endif -%}
-                    <div class="pm-product-caption">
-                      <span class="pm-product-title">{{ rec_product.title | split: ' — ' | first }}</span>
-                      <span class="pm-product-price">
-                        {%- if rec_product.price_varies -%}From {{ rec_product.price | money }}{%- else -%}{{ rec_product.price | money }}{%- endif -%}
-                      </span>
-                    </div>
-                  </a>
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
-          </div>
-        {%- endif -%}
+    {%- if recommend_products -%}
+      <div class="product-recommendations-placeholder">
+        {% comment %}
+          This content is visually hidden and replaced when recommended products show up
+        {% endcomment %}
+        <div class="visually-invisible" aria-hidden="true">
+          {%- render 'product-grid-item',
+            product: product,
+            quick_shop_enable: settings.quick_shop_enable
+          -%}
+        </div>
       </div>
-    </div>
+    {%- endif -%}
+    {%- comment -%}
+      Shopify's dynamic ("related") recommendations need order/view
+      history to have anything to suggest — a brand-new store, or a
+      product with no sales yet, commonly gets zero back, which would
+      otherwise leave this whole section blank forever (not just on
+      first load). Falls back to a plain pull from Shop All (excluding
+      the product being viewed) whenever that happens, so there's
+      always something here — this quietly gets replaced by real
+      recommendations once Shopify's engine actually has enough data
+      to produce them, with no code change needed. related_collection
+      is nil (not 0) on a normal page load, and "nil == 0" is false in
+      Liquid, so this has to check "unless > 0" rather than "== 0" to
+      actually catch that case.
+    {%- endcomment -%}
+    {%- assign display_products = related_collection.products -%}
+    {%- unless related_collection.products_count > 0 -%}
+      {%- assign display_products = collections.all.products -%}
+    {%- endunless -%}
+    {%- if display_products.size > 0 -%}
+      <div class="product-recommendations">
+        <div class="pm-rec-grid">
+          {%- assign shown_count = 0 -%}
+          {%- for rec_product in display_products -%}
+            {%- if shown_count >= number_of_products -%}{%- break -%}{%- endif -%}
+            {%- if rec_product.id != product.id -%}
+              {%- assign shown_count = shown_count | plus: 1 -%}
+              <a href="{{ rec_product.url }}" class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
+                <div class="pm-rec-tile-image">
+                  {%- if rec_product.featured_image -%}
+                    <img src="{{ rec_product.featured_image | image_url: width: 600 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
+                  {%- else -%}
+                    {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+                  {%- endif -%}
+                </div>
+                <div class="pm-rec-tile-info">
+                  <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}</span>
+                  <span class="pm-rec-tile-price">
+                    {%- if rec_product.price_varies -%}From {{ rec_product.price | money }}{%- else -%}{{ rec_product.price | money }}{%- endif -%}
+                  </span>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 </product-recommendations>
 
