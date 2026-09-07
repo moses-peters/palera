@@ -19,22 +19,23 @@
     </div>
     <div class="drawer__scrollable">
       {%- comment -%}
-        Plain <button> elements don't inherit font-family/letter-spacing/
-        text-transform the way the sibling <a class="mobile-nav__link">
-        items do (browsers give form controls their own default font),
-        so without this the "Shop" trigger renders in the browser's
-        default UI font instead of matching Home/About Us.
-
-        The open/close behavior itself is NOT wired through the stock
-        theme.collapsibles mechanism — deliberately. This button doesn't
-        carry a .collapsible-trigger class, so theme.collapsibles.init()
-        never touches it; a small self-contained script below owns the
-        whole interaction instead. That avoids any dependency on when
-        (or whether) theme.js's own init runs relative to this markup,
-        which is what made the toggle unreliable when this used the
-        shared mechanism.
+        Two "screens" inside the same drawer, toggled by JS below via
+        [hidden] — no page navigation, no accordion. Desktop's "Shop"
+        keeps opening the full pm-shop-menu browse page
+        (sections/pm-shop-browse.liquid, at /collections) — untouched.
+        On mobile, tapping "Shop" swaps to a dedicated panel (Jacquemus-
+        style: back arrow, quick links, a horizontal product strip)
+        rather than either navigating away or expanding an accordion in
+        place — a plain accordion read as "broken" (duplicate-looking
+        category names crowding the same list with no hierarchy), so
+        this mirrors the reference more literally. Pulls from the same
+        pm-family-data single source of truth as the desktop menu so
+        the two can't drift.
       {%- endcomment -%}
       <style>
+        .pm-mobile-nav-screen[hidden]{
+          display:none;
+        }
         .pm-mobile-shop-trigger{
           cursor:pointer;
           font:inherit;
@@ -43,51 +44,90 @@
           text-align:left;
           text-transform:inherit;
         }
-        .pm-mobile-shop-trigger.is-open .collapsible-trigger__icon>.icon-chevron-down{
-          transform:scaleY(-1);
+        .pm-mobile-shop-trigger .collapsible-trigger__icon{
+          transform:translateY(-50%) rotate(-90deg);
+        }
+        .pm-mobile-shop-head{
+          align-items:center;
+          border-bottom:1px solid var(--colorDrawerBorder, #e6e6e6);
+          display:flex;
+          gap:15px;
+          padding:15px var(--drawer-gutter);
+        }
+        .pm-mobile-shop-back{
+          background:none;
+          border:0;
+          color:inherit;
+          cursor:pointer;
+          display:flex;
+          flex:0 0 auto;
+          padding:5px;
+        }
+        .pm-mobile-shop-back .icon{
+          height:14px;
+          width:14px;
+        }
+        .pm-mobile-shop-title{
+          font-size:1.4em;
+        }
+        .pm-mobile-shop-links{
+          display:flex;
+          flex-direction:column;
+          padding:10px var(--drawer-gutter) 20px;
+        }
+        .pm-mobile-shop-links a{
+          color:#767676;
+          padding:8px 0;
+          text-decoration:none;
+        }
+        .pm-mobile-shop-links a:first-child,
+        .pm-mobile-shop-links a:nth-child(2){
+          color:inherit;
+        }
+        .pm-mobile-shop-products{
+          -webkit-overflow-scrolling:touch;
+          border-top:1px solid var(--colorDrawerBorder, #e6e6e6);
+          display:flex;
+          gap:12px;
+          overflow-x:auto;
+          padding:20px var(--drawer-gutter);
+          scroll-snap-type:x mandatory;
+          scrollbar-width:none;
+        }
+        .pm-mobile-shop-products::-webkit-scrollbar{
+          display:none;
+        }
+        .pm-mobile-shop-product{
+          color:inherit;
+          flex:0 0 130px;
+          scroll-snap-align:start;
+          text-decoration:none;
+        }
+        .pm-mobile-shop-product-image{
+          aspect-ratio:4/5;
+          background:#f2f2f2;
+          margin-bottom:8px;
+          overflow:hidden;
+        }
+        .pm-mobile-shop-product-image img{
+          display:block;
+          height:100%;
+          object-fit:cover;
+          width:100%;
+        }
+        .pm-mobile-shop-product-name{
+          display:block;
+          font-size:0.85em;
+          text-decoration:underline;
         }
       </style>
+      <div class="pm-mobile-nav-screen" data-mobile-nav-screen="main">
       <ul class="mobile-nav{% if settings.type_navigation_style == 'heading' %} mobile-nav--heading-style{% endif %}" role="navigation" aria-label="Primary">
-        {%- comment -%}
-          Fixed 3-item nav (Shop / Home / About Us) — see header-desktop-nav.liquid.
-          Desktop's "Shop" opens the full pm-shop-menu browse page
-          (sections/pm-shop-browse.liquid, at /collections) — untouched
-          here. On mobile, tapping "Shop" instead expands the same
-          quick-links + family list in place (Jacquemus-style), using
-          the theme's own stock collapsible mechanism (theme.collapsibles,
-          already initialized against #NavDrawer) rather than navigating
-          to a new page. Pulls from the same pm-family-data single
-          source of truth as the desktop menu so the two can't drift.
-        {%- endcomment -%}
-        {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
-        {%- liquid
-          assign pm_families = pm_families_raw | strip | split: ';;'
-          assign shop_categories = 'Clutches,Accessories,Mini Bags,Fits A Phone' | split: ','
-          assign all_products_url = routes.all_products_collection_url | default: '/collections/all'
-        -%}
-        <li class="mobile-nav__item mobile-nav__has-sublist appear-animation appear-delay-2">
-          <button type="button" class="mobile-nav__link mobile-nav__link--top-level pm-mobile-shop-trigger" aria-controls="MobileShopSublist" aria-expanded="false">
+        <li class="mobile-nav__item appear-animation appear-delay-2">
+          <button type="button" class="mobile-nav__link mobile-nav__link--top-level pm-mobile-shop-trigger" data-mobile-nav-open="shop">
             Shop
             {%- render 'collapsible-icons' -%}
           </button>
-        </li>
-        <li class="mobile-nav__item mobile-nav__item--sublist">
-          <div id="MobileShopSublist" class="collapsible-content collapsible-content--small">
-            <div class="collapsible-content__inner">
-              <ul class="mobile-nav__sublist no-bullets">
-                <li class="mobile-nav__item"><a href="{{ all_products_url }}" class="mobile-nav__link">View All</a></li>
-                <li class="mobile-nav__item"><a href="/collections/aw27" class="mobile-nav__link">New In</a></li>
-                {%- for category in shop_categories -%}
-                  <li class="mobile-nav__item"><a href="{{ all_products_url }}" class="mobile-nav__link">{{ category }}</a></li>
-                {%- endfor -%}
-                {%- for family in pm_families -%}
-                  {%- assign family_name = family | split: '|' | first -%}
-                  {%- assign family_handle = family_name | handle -%}
-                  <li class="mobile-nav__item"><a href="{{ all_products_url }}?family={{ family_handle }}" class="mobile-nav__link">{{ family_name }}</a></li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          </div>
         </li>
         <li class="mobile-nav__item appear-animation appear-delay-3">
           <a href="{{ routes.root_url }}" class="mobile-nav__link mobile-nav__link--top-level">Home</a>
@@ -214,37 +254,88 @@
           </li>
         {%- endif -%}
       </ul>
+      </div>
+
+      {%- comment -%}
+        The "Shop" panel: back + title, quick links, then a horizontal
+        strip of products so tapping through feels like Jacquemus's
+        rather than dropping straight into a bare category list.
+      {%- endcomment -%}
+      {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
+      {%- liquid
+        assign pm_families = pm_families_raw | strip | split: ';;'
+        assign all_products_url = routes.all_products_collection_url | default: '/collections/all'
+        assign pm_shop_preview_products = collections.all.products | limit: 8
+      -%}
+      <div class="pm-mobile-nav-screen" data-mobile-nav-screen="shop" hidden>
+        <div class="pm-mobile-shop-head">
+          <button type="button" class="pm-mobile-shop-back" data-mobile-nav-open="main" aria-label="{{ 'general.drawers.close_menu' | t }}">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98"><path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0Z"/></svg>
+          </button>
+          <span class="pm-mobile-shop-title">Shop</span>
+        </div>
+        <div class="pm-mobile-shop-links">
+          <a href="{{ all_products_url }}">View All</a>
+          <a href="/collections/aw27">New In</a>
+          {%- for family in pm_families -%}
+            {%- assign family_name = family | split: '|' | first -%}
+            {%- assign family_handle = family_name | handle -%}
+            <a href="{{ all_products_url }}?family={{ family_handle }}">{{ family_name }}</a>
+          {%- endfor -%}
+        </div>
+        {%- if pm_shop_preview_products.size > 0 -%}
+          <div class="pm-mobile-shop-products">
+            {%- for product in pm_shop_preview_products -%}
+              <a href="{{ product.url }}" class="pm-mobile-shop-product">
+                <span class="pm-mobile-shop-product-image">
+                  {%- if product.featured_image -%}
+                    <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
+                  {%- endif -%}
+                </span>
+                <span class="pm-mobile-shop-product-name">{{ product.title | split: ' — ' | first }}</span>
+              </a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </div>
 
 <script>
   (function () {
-    function bindMobileShopToggle() {
-      var trigger = document.querySelector('.pm-mobile-shop-trigger');
-      var content = document.getElementById('MobileShopSublist');
-      if (!trigger || !content || trigger.dataset.pmBound) {
-        return;
-      }
-      trigger.dataset.pmBound = 'true';
-
-      trigger.addEventListener('click', function () {
-        var isOpen = trigger.classList.contains('is-open');
-        var inner = content.querySelector('.collapsible-content__inner');
-
-        trigger.classList.toggle('is-open', !isOpen);
-        trigger.setAttribute('aria-expanded', String(!isOpen));
-        content.classList.toggle('is-open', !isOpen);
-        content.style.height = isOpen ? '0px' : inner.offsetHeight + 'px';
+    function showScreen(name) {
+      document.querySelectorAll('[data-mobile-nav-screen]').forEach(function (el) {
+        el.hidden = el.dataset.mobileNavScreen !== name;
       });
     }
 
+    function bindMobileNavScreens() {
+      var openers = document.querySelectorAll('[data-mobile-nav-open]');
+      if (!openers.length || openers[0].dataset.pmBound) {
+        return;
+      }
+      openers.forEach(function (btn) {
+        btn.dataset.pmBound = 'true';
+        btn.addEventListener('click', function () {
+          showScreen(btn.dataset.mobileNavOpen);
+        });
+      });
+
+      var closeButton = document.querySelector('.js-drawer-close');
+      if (closeButton) {
+        closeButton.addEventListener('click', function () {
+          showScreen('main');
+        });
+      }
+    }
+
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', bindMobileShopToggle);
+      document.addEventListener('DOMContentLoaded', bindMobileNavScreens);
     } else {
-      bindMobileShopToggle();
+      bindMobileNavScreens();
     }
     // Re-bind if the header section is reloaded in the theme editor.
-    document.addEventListener('shopify:section:load', bindMobileShopToggle);
+    document.addEventListener('shopify:section:load', bindMobileNavScreens);
   })();
 </script>
