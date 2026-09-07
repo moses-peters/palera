@@ -15,8 +15,8 @@
         "image": "shopify://shop_images/Ban1.jpg",
         "image_mobile": "shopify://shop_images/Ban2.jpg",
         "link_url": "",
-        "focal_x": 40,
-        "focal_y": 35
+        "focal_x": 50,
+        "focal_y": 80
       }
     },
     "pm-product-pair": {
