@@ -106,7 +106,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/maxi-roma-0",
-            "image": "shopify://shop_images/3U7A3174.jpg",
+            "image": "shopify://shop_images/Siracusa-CHampagne-Gold_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-1.jpg",
             "link": ""
@@ -116,7 +116,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/diamond-maxi-roma-1",
-            "image": "shopify://shop_images/3U7A3057.jpg",
+            "image": "shopify://shop_images/Micro-Bag-Azure-Gold.jpg",
             "fallback_label": "",
             "fallback_asset": "",
             "link": ""
@@ -127,6 +127,7 @@
           "settings": {
             "product": "shopify://products/santorini-6",
             "image": "shopify://shop_images/3U7A3012.jpg",
+            "image_mobile": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-2.jpg",
             "link": ""
