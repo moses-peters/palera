@@ -146,9 +146,9 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 @media (min-width: 640px) { .pm-image-duo { grid-template-columns: 1fr 1fr; } .pm-image-duo-half { aspect-ratio: 16 / 10; } }
 
 /* ===== Brand statement — stark full-bleed, YSL register ===== */
-.pm-statement { background: var(--pm-ink); color: var(--pm-paper); text-align: center; padding: clamp(90px, 15vw, 220px) var(--pm-pad); }
-.pm-statement-mark { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-bottom: 28px; }
-.pm-statement-quote { max-width: 880px; margin: 0 auto 32px; font-size: clamp(24px, 5.6vw, 58px); font-style: italic; line-height: 1.35; }
+.pm-statement { background: var(--pm-ink); color: var(--pm-paper); text-align: center; padding: clamp(31px, 5.25vw, 77px) var(--pm-pad); }
+.pm-statement-mark { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-bottom: 10px; }
+.pm-statement-quote { max-width: 880px; margin: 0 auto 12px; font-size: clamp(17px, 2vw, 22px); font-style: italic; line-height: 1.35; }
 
 /* ===== Category grid — asymmetric masonry, not a uniform grid ===== */
 .pm-categories { padding: clamp(80px, 11vw, 160px) var(--pm-pad); }
