@@ -49,23 +49,43 @@
             </div>
           </div>
         {%- endif -%}
-        {%- if related_collection.products_count > 0 -%}
+        {%- comment -%}
+          Shopify's dynamic ("related") recommendations need order/view
+          history to have anything to suggest — a brand-new store, or a
+          product with no sales yet, commonly gets zero back, which
+          would otherwise leave this whole section blank forever (not
+          just on first load). Falls back to a plain pull from Shop All
+          (excluding the product being viewed) whenever that happens,
+          so there's always something here — this quietly gets replaced
+          by real recommendations once Shopify's engine actually has
+          enough data to produce them, with no code change needed.
+        {%- endcomment -%}
+        {%- assign display_products = related_collection.products -%}
+        {%- if related_collection.products_count == 0 -%}
+          {%- assign display_products = collections.all.products -%}
+        {%- endif -%}
+        {%- if display_products.size > 0 -%}
           <div class="product-recommendations page-width">
             <div class="pm-collection-grid pm-product-recs-grid">
-              {%- for product in related_collection.products limit: number_of_products -%}
-                <a href="{{ product.url }}" class="pm-product-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
-                  {%- if product.featured_image -%}
-                    <img class="pm-product-image" src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
-                  {%- else -%}
-                    {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
-                  {%- endif -%}
-                  <div class="pm-product-caption">
-                    <span class="pm-product-title">{{ product.title | split: ' — ' | first }}</span>
-                    <span class="pm-product-price">
-                      {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
-                    </span>
-                  </div>
-                </a>
+              {%- assign shown_count = 0 -%}
+              {%- for rec_product in display_products -%}
+                {%- if shown_count >= number_of_products -%}{%- break -%}{%- endif -%}
+                {%- if rec_product.id != product.id -%}
+                  {%- assign shown_count = shown_count | plus: 1 -%}
+                  <a href="{{ rec_product.url }}" class="pm-product-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
+                    {%- if rec_product.featured_image -%}
+                      <img class="pm-product-image" src="{{ rec_product.featured_image | image_url: width: 900 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
+                    {%- else -%}
+                      {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+                    {%- endif -%}
+                    <div class="pm-product-caption">
+                      <span class="pm-product-title">{{ rec_product.title | split: ' — ' | first }}</span>
+                      <span class="pm-product-price">
+                        {%- if rec_product.price_varies -%}From {{ rec_product.price | money }}{%- else -%}{{ rec_product.price | money }}{%- endif -%}
+                      </span>
+                    </div>
+                  </a>
+                {%- endif -%}
               {%- endfor -%}
             </div>
           </div>
