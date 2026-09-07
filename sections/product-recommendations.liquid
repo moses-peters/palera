@@ -1,129 +1,110 @@
 {%- liquid
-  assign recommend_products = true
+  assign number_of_products = section.settings.related_count
 
   if recommendations.products and recommendations.products_count > 0
     assign related_collection = recommendations
   endif
-
-  assign number_of_products = section.settings.related_count
 -%}
 
-<product-recommendations
-  id="Recommendations-{{ section.id }}"
-  data-section-id="{{ section.id }}"
-  data-section-type="product-recommendations"
-  data-enable="{{ recommend_products }}"
-  data-product-id="{{ product.id }}"
-  data-intent="related"
-  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ number_of_products }}"
-  data-limit="{{ number_of_products }}">
+{%- comment -%}
+  This used to be wrapped in Shopify's stock <product-recommendations>
+  custom element, which fetches this same section again via
+  routes.product_recommendations_url and swaps its own JS-managed
+  placeholder once/if that fetch resolves. That JS-driven layer is
+  gone now — after two rounds of chasing an "invisible element still
+  reserving space" bug inside it (most recently a hidden
+  product-grid-item under .visually-invisible, which is only
+  opacity:0 and never actually left layout), plain server-rendered
+  Liquid is more reliable here and the fallback below already covers
+  what that fetch was for anyway: recommendations.products is already
+  populated directly on this render when Shopify has real ones for
+  this product, with no extra fetch required, and the fallback covers
+  every case where it doesn't.
+{%- endcomment -%}
+<div class="pm-homepage pm-product-recs">
+  {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+  {{ 'pm-product.css' | asset_url | stylesheet_tag }}
+  <div class="pm-product-recs-head">
+    <span class="pm-eyebrow">Palera Milano</span>
+    <h3 class="pm-serif">{{ section.settings.product_recommendations_heading }}</h3>
+  </div>
 
-  <div
-    data-section-id="{{ product.id }}"
-    data-subsection
-    data-section-type="collection-grid"
-    class="pm-homepage pm-product-recs">
-    {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
-    {{ 'pm-product.css' | asset_url | stylesheet_tag }}
-    <div class="pm-product-recs-head">
-      <span class="pm-eyebrow">Palera Milano</span>
-      <h3 class="pm-serif">{{ section.settings.product_recommendations_heading }}</h3>
-    </div>
-
-    {%- if recommend_products -%}
-      {%- comment -%}
-        This has to stay in the DOM (the JS custom element looks it up
-        by this class and later replaces its innerHTML once real
-        recommendations load), but left genuinely empty rather than
-        rendering the stock product-grid-item snippet inside it. That
-        snippet was only ever hidden via .visually-invisible, which is
-        just "opacity: 0 !important" — it never actually removed the
-        element from layout, so a full-height invisible product card
-        was sitting here reserving all the blank space seen above the
-        real tiles below.
-      {%- endcomment -%}
-      <div class="product-recommendations-placeholder"></div>
-    {%- endif -%}
-    {%- comment -%}
-      Shopify's dynamic ("related") recommendations need order/view
-      history to have anything to suggest — a brand-new store, or a
-      product with no sales yet, commonly gets zero back, which would
-      otherwise leave this whole section blank forever (not just on
-      first load). Falls back to a plain pull from Shop All (excluding
-      the product being viewed) whenever that happens, so there's
-      always something here — this quietly gets replaced by real
-      recommendations once Shopify's engine actually has enough data
-      to produce them, with no code change needed. related_collection
-      is nil (not 0) on a normal page load, and "nil == 0" is false in
-      Liquid, so this has to check "unless > 0" rather than "== 0" to
-      actually catch that case.
-    {%- endcomment -%}
-    {%- assign display_products = related_collection.products -%}
-    {%- unless related_collection.products_count > 0 -%}
-      {%- assign display_products = collections.all.products -%}
-    {%- endunless -%}
-    {%- if display_products.size > 0 -%}
-      <div class="product-recommendations">
-        <div class="pm-rec-grid">
-          {%- assign shown_count = 0 -%}
-          {%- for rec_product in display_products -%}
-            {%- if shown_count >= number_of_products -%}{%- break -%}{%- endif -%}
-            {%- if rec_product.id != product.id -%}
-              {%- assign shown_count = shown_count | plus: 1 -%}
-              {%- comment -%}
-                Sibling color count (the "+5" in the reference) — same
-                title-prefix matching used on the Shop grid, since most
-                colors here are separate products (e.g. "Maxi Roma —
-                Black" / "Maxi Roma — Red"), not real variants.
-              {%- endcomment -%}
-              {%- assign rec_color_option = nil -%}
-              {%- for option in rec_product.options_with_values -%}
-                {%- assign option_name_downcase = option.name | downcase -%}
-                {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
-                  {%- assign rec_color_option = option -%}
-                {%- endif -%}
-              {%- endfor -%}
-              {%- if rec_color_option -%}
-                {%- assign sibling_count = rec_color_option.values.size | minus: 1 -%}
-              {%- else -%}
-                {%- assign rec_base_title = rec_product.title | split: ' — ' | first -%}
-                {%- assign sibling_count = 0 -%}
-                {%- for sibling_product in collections.all.products -%}
-                  {%- if sibling_product.id != rec_product.id -%}
-                    {%- assign sibling_base = sibling_product.title | split: ' — ' | first -%}
-                    {%- if sibling_base == rec_base_title -%}
-                      {%- assign sibling_count = sibling_count | plus: 1 -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                {%- endfor -%}
-              {%- endif -%}
-              <a href="{{ rec_product.url }}" class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
-                <div class="pm-rec-tile-image">
-                  {%- if rec_product.featured_image -%}
-                    <img src="{{ rec_product.featured_image | image_url: width: 800 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
-                  {%- else -%}
-                    {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
-                  {%- endif -%}
-                </div>
-                <div class="pm-rec-tile-info">
-                  <div class="pm-rec-tile-row">
-                    <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}</span>
-                    {%- if sibling_count > 0 -%}
-                      <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
-                    {%- endif -%}
-                  </div>
-                  <span class="pm-rec-tile-price">
-                    {%- if rec_product.price_varies -%}From {{ rec_product.price | money }}{%- else -%}{{ rec_product.price | money }}{%- endif -%}
-                  </span>
-                </div>
-              </a>
+  {%- comment -%}
+    Shopify's dynamic ("related") recommendations need order/view
+    history to have anything to suggest — a brand-new store, or a
+    product with no sales yet, commonly gets zero back, which would
+    otherwise leave this whole section blank forever. Falls back to a
+    plain pull from Shop All (excluding the product being viewed)
+    whenever that happens, so there's always something here — this
+    quietly gets replaced by real recommendations once Shopify's
+    engine actually has enough data to produce them, with no code
+    change needed. related_collection is nil (not 0) when Shopify has
+    nothing, and "nil == 0" is false in Liquid, so this has to check
+    "unless > 0" rather than "== 0" to actually catch that case.
+  {%- endcomment -%}
+  {%- assign display_products = related_collection.products -%}
+  {%- unless related_collection.products_count > 0 -%}
+    {%- assign display_products = collections.all.products -%}
+  {%- endunless -%}
+  {%- if display_products.size > 0 -%}
+    <div class="pm-rec-grid">
+      {%- assign shown_count = 0 -%}
+      {%- for rec_product in display_products -%}
+        {%- if shown_count >= number_of_products -%}{%- break -%}{%- endif -%}
+        {%- if rec_product.id != product.id -%}
+          {%- assign shown_count = shown_count | plus: 1 -%}
+          {%- comment -%}
+            Sibling color count (the "+5" in the reference) — same
+            title-prefix matching used on the Shop grid, since most
+            colors here are separate products (e.g. "Maxi Roma —
+            Black" / "Maxi Roma — Red"), not real variants.
+          {%- endcomment -%}
+          {%- assign rec_color_option = nil -%}
+          {%- for option in rec_product.options_with_values -%}
+            {%- assign option_name_downcase = option.name | downcase -%}
+            {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+              {%- assign rec_color_option = option -%}
             {%- endif -%}
           {%- endfor -%}
-        </div>
-      </div>
-    {%- endif -%}
-  </div>
-</product-recommendations>
+          {%- if rec_color_option -%}
+            {%- assign sibling_count = rec_color_option.values.size | minus: 1 -%}
+          {%- else -%}
+            {%- assign rec_base_title = rec_product.title | split: ' — ' | first -%}
+            {%- assign sibling_count = 0 -%}
+            {%- for sibling_product in collections.all.products -%}
+              {%- if sibling_product.id != rec_product.id -%}
+                {%- assign sibling_base = sibling_product.title | split: ' — ' | first -%}
+                {%- if sibling_base == rec_base_title -%}
+                  {%- assign sibling_count = sibling_count | plus: 1 -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          <a href="{{ rec_product.url }}" class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
+            <div class="pm-rec-tile-image">
+              {%- if rec_product.featured_image -%}
+                <img src="{{ rec_product.featured_image | image_url: width: 800 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
+              {%- else -%}
+                {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
+              {%- endif -%}
+            </div>
+            <div class="pm-rec-tile-info">
+              <div class="pm-rec-tile-row">
+                <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}</span>
+                {%- if sibling_count > 0 -%}
+                  <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
+                {%- endif -%}
+              </div>
+              <span class="pm-rec-tile-price">
+                {%- if rec_product.price_varies -%}From {{ rec_product.price | money }}{%- else -%}{{ rec_product.price | money }}{%- endif -%}
+              </span>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
 
 {% schema %}
 {
