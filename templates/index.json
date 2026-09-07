@@ -12,7 +12,6 @@
     "pm-hero": {
       "type": "pm-hero",
       "settings": {
-        "video_url": "",
         "link_url": "",
         "focal_x": 40,
         "focal_y": 35
@@ -63,7 +62,6 @@
       "type": "pm-full-bleed-media",
       "settings": {
         "image": "shopify://shop_images/3U7A2898_-_Copy.jpg",
-        "video_url": "",
         "caption": "",
         "link_url": ""
       }
@@ -126,7 +124,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/clutch-edge-long-silver-blue",
-            "image": "shopify://shop_images/3U7A3157.jpg",
+            "image": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-4.jpg",
             "link": ""
@@ -136,7 +134,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/amelia-bag-gold",
-            "image": "shopify://shop_images/3U7A3063-2_02e6ae47-b1e3-4e1a-80bf-060338f5496d.jpg",
+            "image": "shopify://shop_images/Diamond-Mini-Roma-Black-Multicolor.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-5.jpg",
             "link": ""
@@ -146,7 +144,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/capri-bag-gold",
-            "image": "shopify://shop_images/3U7A2987.jpg",
+            "image": "shopify://shop_images/Phone-Holder-Sparkle-Blue-Gold_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-6.jpg",
             "link": ""
@@ -156,7 +154,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-wallet-rare-pink",
-            "image": "shopify://shop_images/3U7A3088-2.jpg",
+            "image": "shopify://shop_images/pouch-Long-Grey-Multicolor_1.jpg",
             "fallback_label": "",
             "fallback_asset": "",
             "link": ""

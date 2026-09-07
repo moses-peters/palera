@@ -9,7 +9,6 @@
  */
 {
   "current": {
-    "pm_font_pairing": "playfair_jost",
     "color_body_bg": "#ffffff",
     "color_body_text": "#000000",
     "color_price": "#1c1d1d",
@@ -56,6 +55,7 @@
     "button_style": "round",
     "icon_weight": "2px",
     "icon_linecaps": "miter",
+    "pm_font_pairing": "playfair_jost",
     "product_save_amount": false,
     "vendor_enable": false,
     "quick_shop_enable": true,
@@ -155,8 +155,6 @@
         "settings": {
           "greeting_message": "Hello! Welcome to Palera Milano.\nPlease message us if you have questions, or give an idea of what you’re looking for. We’re happy to make recommendations.",
           "button_color": "#0c0c0c",
-          "secondary_color": "#ffffff",
-          "ternary_color": "#6A6A6A",
           "button_icon": "chat_bubble",
           "button_text": "chat_with_us",
           "button_horizontal_position": "bottom_right",
