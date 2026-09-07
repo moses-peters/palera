@@ -189,17 +189,31 @@
 
 /* ===== Recommendations ("You may also like") — same pm-product-tile
    cards used on the collection/family pages, not the stock grid-product
-   markup, for a consistent look everywhere a product grid shows up. ===== */
+   markup, for a consistent look everywhere a product grid shows up.
+   Horizontally scrollable (flex row, not a wrapping grid) since this
+   shows up to 8 dynamically-picked products — a row you scroll through
+   reads better than a tall stack of wrapped rows. Each tile shows a
+   deliberate partial peek of the next one so the row reads as
+   scrollable at a glance, without needing arrow buttons. ===== */
 .pm-product-recs { padding: clamp(80px, 10vw, 140px) 0; border-top: 1px solid var(--pm-line); }
 .pm-product-recs .section-header { text-align: center; margin-bottom: clamp(32px, 5vw, 56px); }
 .pm-product-recs .section-header__title { margin-top: 10px; font-size: clamp(26px, 4.4vw, 40px); letter-spacing: 0; text-transform: none; }
 .pm-product-recs-grid {
-  grid-auto-rows: unset;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
   gap: clamp(6px, 1vw, 16px);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+  scrollbar-width: none;
 }
-.pm-product-recs-grid .pm-product-tile { aspect-ratio: 3 / 4; }
-@media (min-width: 640px) { .pm-product-recs-grid { grid-template-columns: repeat(4, 1fr); } }
+.pm-product-recs-grid::-webkit-scrollbar { display: none; }
+.pm-product-recs-grid .pm-product-tile {
+  flex: 0 0 clamp(150px, 42vw, 220px);
+  aspect-ratio: 3 / 4;
+  scroll-snap-align: start;
+}
+@media (min-width: 640px) { .pm-product-recs-grid .pm-product-tile { flex-basis: clamp(200px, 22vw, 260px); } }
 
 /* ===== Social sharing ===== */
 .pm-product .social-sharing { display: flex; gap: 16px; }
