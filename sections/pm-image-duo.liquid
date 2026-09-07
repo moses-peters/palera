@@ -8,8 +8,14 @@
 -%}
 <div class="pm-homepage">
   <div class="pm-image-duo">
-    <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal" style="--pm-focal: {{ focal_x_left }}% {{ focal_y_left }}%;">
-      {%- if section.settings.video_left != blank -%}
+    <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal{% if section.settings.left_content_type == 'text' %} pm-image-duo-half--text{% endif %}" style="--pm-focal: {{ focal_x_left }}% {{ focal_y_left }}%;">
+      {%- if section.settings.left_content_type == 'text' -%}
+        <div class="pm-image-duo-text">
+          {%- if section.settings.text_left_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.text_left_eyebrow }}</span>{%- endif -%}
+          {%- if section.settings.text_left_heading != blank -%}<h2 class="pm-serif">{{ section.settings.text_left_heading }}</h2>{%- endif -%}
+          {%- if section.settings.text_left_body != blank -%}<div class="pm-image-duo-text-body">{{ section.settings.text_left_body }}</div>{%- endif -%}
+        </div>
+      {%- elsif section.settings.video_left != blank -%}
         {{ section.settings.video_left | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
       {%- elsif section.settings.image_left -%}
         <picture>
@@ -21,7 +27,7 @@
       {%- else -%}
         {% render 'pm-media-placeholder', label: 'Photo' %}
       {%- endif -%}
-      {%- if section.settings.caption_left != blank -%}<span class="pm-image-duo-caption">{{ section.settings.caption_left }}</span>{%- endif -%}
+      {%- if section.settings.left_content_type != 'text' and section.settings.caption_left != blank -%}<span class="pm-image-duo-caption">{{ section.settings.caption_left }}</span>{%- endif -%}
     </a>
     <a href="{{ section.settings.link_right | default: '#' }}" class="pm-image-duo-half pm-reveal{% if section.settings.right_content_type == 'text' %} pm-image-duo-half--text{% endif %}" style="transition-delay: 120ms; --pm-focal: {{ focal_x_right }}% {{ focal_y_right }}%;">
       {%- if section.settings.right_content_type == 'text' -%}
@@ -51,7 +57,17 @@
 {
   "name": "PM: Image duo",
   "settings": [
-    { "type": "header", "content": "Left image" },
+    { "type": "header", "content": "Left side" },
+    {
+      "type": "select",
+      "id": "left_content_type",
+      "label": "Content",
+      "default": "image",
+      "options": [
+        { "value": "image", "label": "Image / video" },
+        { "value": "text", "label": "Text" }
+      ]
+    },
     { "type": "image_picker", "id": "image_left", "label": "Image (desktop)" },
     { "type": "image_picker", "id": "image_left_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video_left", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
@@ -59,6 +75,9 @@
     { "type": "url", "id": "link_left", "label": "Link" },
     { "type": "range", "id": "focal_x_left", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
     { "type": "range", "id": "focal_y_left", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "text", "id": "text_left_eyebrow", "label": "Text — eyebrow", "info": "Used when Content above is set to Text." },
+    { "type": "text", "id": "text_left_heading", "label": "Text — heading" },
+    { "type": "richtext", "id": "text_left_body", "label": "Text — body" },
     { "type": "header", "content": "Right side" },
     {
       "type": "select",
