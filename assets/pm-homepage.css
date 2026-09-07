@@ -565,9 +565,28 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 
 @media (max-width: 1050px) {
   .pm-shop-menu { grid-template-columns: 1fr; }
-  .pm-shop-menu-preview-panel .pm-placeholder,
-  .pm-shop-menu-preview-panel img,
-  .pm-shop-menu-preview-panel video { max-width: 220px; }
+  /* The preview panel only makes sense as a hover/focus response —
+     there's no hover on touch, so on mobile it'd just sit frozen on
+     whichever family loaded first. Hidden here in favor of the family
+     row itself acting as the preview (below), matching how this
+     collapses on a phone in the reference layout. */
+  .pm-shop-menu-preview { display: none; }
+  /* Family tiles switch from a wrapping 3-column grid to a single
+     horizontally-scrollable row — a phone-width wrapping grid was
+     forcing every tile down to a cramped 3-per-row width regardless of
+     how much content each family tile actually needs to show. */
+  .pm-shop-menu-grid {
+    max-width: none;
+    margin: 0;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    scrollbar-width: none;
+  }
+  .pm-shop-menu-grid::-webkit-scrollbar { display: none; }
+  .pm-shop-menu-family { flex: 0 0 clamp(120px, 32vw, 160px); scroll-snap-align: start; }
 }
 
 @media (min-width: 640px) { .pm-photo-grid { grid-template-columns: repeat(4, 1fr); } }
