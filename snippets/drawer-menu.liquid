@@ -84,6 +84,10 @@
         .pm-mobile-shop-links a:nth-child(2){
           color:inherit;
         }
+        .pm-mobile-shop-links--families{
+          border-top:1px solid var(--colorDrawerBorder, #e6e6e6);
+          padding-top:15px;
+        }
         .pm-mobile-shop-products{
           -webkit-overflow-scrolling:touch;
           border-top:1px solid var(--colorDrawerBorder, #e6e6e6);
@@ -264,6 +268,7 @@
       {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
       {%- liquid
         assign pm_families = pm_families_raw | strip | split: ';;'
+        assign shop_categories = 'Accessories,Clutches,Mini Bags,Fits A Phone' | split: ','
         assign all_products_url = routes.all_products_collection_url | default: '/collections/all'
         assign pm_shop_preview_products = collections.all.products | limit: 8
       -%}
@@ -277,6 +282,11 @@
         <div class="pm-mobile-shop-links">
           <a href="{{ all_products_url }}">View All</a>
           <a href="/collections/aw27">New In</a>
+          {%- for category in shop_categories -%}
+            <a href="{{ all_products_url }}">{{ category }}</a>
+          {%- endfor -%}
+        </div>
+        <div class="pm-mobile-shop-links pm-mobile-shop-links--families">
           {%- for family in pm_families -%}
             {%- assign family_name = family | split: '|' | first -%}
             {%- assign family_handle = family_name | handle -%}
