@@ -31,17 +31,18 @@
     </div>
 
     {%- if recommend_products -%}
-      <div class="product-recommendations-placeholder">
-        {% comment %}
-          This content is visually hidden and replaced when recommended products show up
-        {% endcomment %}
-        <div class="visually-invisible" aria-hidden="true">
-          {%- render 'product-grid-item',
-            product: product,
-            quick_shop_enable: settings.quick_shop_enable
-          -%}
-        </div>
-      </div>
+      {%- comment -%}
+        This has to stay in the DOM (the JS custom element looks it up
+        by this class and later replaces its innerHTML once real
+        recommendations load), but left genuinely empty rather than
+        rendering the stock product-grid-item snippet inside it. That
+        snippet was only ever hidden via .visually-invisible, which is
+        just "opacity: 0 !important" — it never actually removed the
+        element from layout, so a full-height invisible product card
+        was sitting here reserving all the blank space seen above the
+        real tiles below.
+      {%- endcomment -%}
+      <div class="product-recommendations-placeholder"></div>
     {%- endif -%}
     {%- comment -%}
       Shopify's dynamic ("related") recommendations need order/view
