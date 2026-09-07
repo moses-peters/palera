@@ -60,10 +60,17 @@
           by real recommendations once Shopify's engine actually has
           enough data to produce them, with no code change needed.
         {%- endcomment -%}
+        {%- comment -%}
+          related_collection is nil (not 0) on a normal page load — it's
+          only ever assigned above when recommendations.products_count
+          is already > 0. "nil == 0" is false in Liquid, so checking
+          for == 0 here never actually caught that case; "unless > 0"
+          correctly treats nil the same as zero.
+        {%- endcomment -%}
         {%- assign display_products = related_collection.products -%}
-        {%- if related_collection.products_count == 0 -%}
+        {%- unless related_collection.products_count > 0 -%}
           {%- assign display_products = collections.all.products -%}
-        {%- endif -%}
+        {%- endunless -%}
         {%- if display_products.size > 0 -%}
           <div class="product-recommendations page-width">
             <div class="pm-collection-grid pm-product-recs-grid">
