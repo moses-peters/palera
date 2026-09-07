@@ -21,12 +21,44 @@
       <ul class="mobile-nav{% if settings.type_navigation_style == 'heading' %} mobile-nav--heading-style{% endif %}" role="navigation" aria-label="Primary">
         {%- comment -%}
           Fixed 3-item nav (Shop / Home / About Us) — see header-desktop-nav.liquid.
-          Shop links to /collections (the family picker page), same as
-          desktop — no separate in-drawer family list to keep in sync
-          here anymore.
+          Desktop's "Shop" opens the full pm-shop-menu browse page
+          (sections/pm-shop-browse.liquid, at /collections) — untouched
+          here. On mobile, tapping "Shop" instead expands the same
+          quick-links + family list in place (Jacquemus-style), using
+          the theme's own stock collapsible mechanism (theme.collapsibles,
+          already initialized against #NavDrawer) rather than navigating
+          to a new page. Pulls from the same pm-family-data single
+          source of truth as the desktop menu so the two can't drift.
         {%- endcomment -%}
-        <li class="mobile-nav__item appear-animation appear-delay-2">
-          <a href="{{ routes.collections_url | default: '/collections' }}" class="mobile-nav__link mobile-nav__link--top-level">Shop</a>
+        {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
+        {%- liquid
+          assign pm_families = pm_families_raw | strip | split: ';;'
+          assign shop_categories = 'Clutches,Accessories,Mini Bags,Fits A Phone' | split: ','
+          assign all_products_url = routes.all_products_collection_url | default: '/collections/all'
+        -%}
+        <li class="mobile-nav__item mobile-nav__has-sublist appear-animation appear-delay-2">
+          <button type="button" class="mobile-nav__link mobile-nav__link--top-level mobile-nav__link--button collapsible-trigger" aria-controls="MobileShopSublist" data-controls="MobileShopSublist">
+            Shop
+            {%- render 'collapsible-icons' -%}
+          </button>
+        </li>
+        <li class="mobile-nav__item mobile-nav__item--sublist">
+          <div id="MobileShopSublist" class="collapsible-content collapsible-content--small">
+            <div class="collapsible-content__inner">
+              <ul class="mobile-nav__sublist no-bullets">
+                <li class="mobile-nav__item"><a href="{{ all_products_url }}" class="mobile-nav__link">View All</a></li>
+                <li class="mobile-nav__item"><a href="/collections/aw27" class="mobile-nav__link">New In</a></li>
+                {%- for category in shop_categories -%}
+                  <li class="mobile-nav__item"><a href="{{ all_products_url }}" class="mobile-nav__link">{{ category }}</a></li>
+                {%- endfor -%}
+                {%- for family in pm_families -%}
+                  {%- assign family_name = family | split: '|' | first -%}
+                  {%- assign family_handle = family_name | handle -%}
+                  <li class="mobile-nav__item"><a href="{{ all_products_url }}?family={{ family_handle }}" class="mobile-nav__link">{{ family_name }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
         </li>
         <li class="mobile-nav__item appear-animation appear-delay-3">
           <a href="{{ routes.root_url }}" class="mobile-nav__link mobile-nav__link--top-level">Home</a>
