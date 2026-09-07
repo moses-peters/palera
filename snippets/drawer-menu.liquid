@@ -84,11 +84,7 @@
         .pm-mobile-shop-links a:nth-child(2){
           color:inherit;
         }
-        .pm-mobile-shop-links--families{
-          border-top:1px solid var(--colorDrawerBorder, #e6e6e6);
-          padding-top:15px;
-        }
-        .pm-mobile-shop-products{
+        .pm-mobile-shop-families{
           -webkit-overflow-scrolling:touch;
           border-top:1px solid var(--colorDrawerBorder, #e6e6e6);
           display:flex;
@@ -98,31 +94,31 @@
           scroll-snap-type:x mandatory;
           scrollbar-width:none;
         }
-        .pm-mobile-shop-products::-webkit-scrollbar{
+        .pm-mobile-shop-families::-webkit-scrollbar{
           display:none;
         }
-        .pm-mobile-shop-product{
+        .pm-mobile-shop-family{
           color:inherit;
-          flex:0 0 130px;
+          flex:0 0 clamp(110px, 30vw, 140px);
           scroll-snap-align:start;
           text-decoration:none;
         }
-        .pm-mobile-shop-product-image{
+        .pm-mobile-shop-family-image{
           aspect-ratio:4/5;
           background:#f2f2f2;
+          display:block;
           margin-bottom:8px;
           overflow:hidden;
         }
-        .pm-mobile-shop-product-image img{
+        .pm-mobile-shop-family-image img{
           display:block;
           height:100%;
           object-fit:cover;
           width:100%;
         }
-        .pm-mobile-shop-product-name{
+        .pm-mobile-shop-family-name{
           display:block;
           font-size:0.85em;
-          text-decoration:underline;
         }
       </style>
       <div class="pm-mobile-nav-screen" data-mobile-nav-screen="main">
@@ -261,16 +257,20 @@
       </div>
 
       {%- comment -%}
-        The "Shop" panel: back + title, quick links, then a horizontal
-        strip of products so tapping through feels like Jacquemus's
-        rather than dropping straight into a bare category list.
+        The "Shop" panel: back + title, quick links, then the families
+        as image tiles (same idea as the desktop pm-shop-menu family
+        grid) instead of a bare product catalog preview. There's no
+        section-settings image upload reachable from here (this snippet
+        isn't the shop-browse section), so each family's tile image is
+        the featured image of the first product whose title matches
+        that family's keywords in pm-family-data — the same matching
+        already used to sort products into families elsewhere.
       {%- endcomment -%}
       {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
       {%- liquid
         assign pm_families = pm_families_raw | strip | split: ';;'
         assign shop_categories = 'Accessories,Clutches,Mini Bags,Fits A Phone' | split: ','
         assign all_products_url = routes.all_products_collection_url | default: '/collections/all'
-        assign pm_shop_preview_products = collections.all.products | limit: 8
       -%}
       <div class="pm-mobile-nav-screen" data-mobile-nav-screen="shop" hidden>
         <div class="pm-mobile-shop-head">
@@ -286,27 +286,34 @@
             <a href="{{ all_products_url }}">{{ category }}</a>
           {%- endfor -%}
         </div>
-        <div class="pm-mobile-shop-links pm-mobile-shop-links--families">
+        <div class="pm-mobile-shop-families">
           {%- for family in pm_families -%}
-            {%- assign family_name = family | split: '|' | first -%}
+            {%- assign family_parts = family | split: '|' -%}
+            {%- assign family_name = family_parts[0] -%}
             {%- assign family_handle = family_name | handle -%}
-            <a href="{{ all_products_url }}?family={{ family_handle }}">{{ family_name }}</a>
+            {%- assign family_keywords = family_parts[2] | split: ',' -%}
+            {%- assign family_image = nil -%}
+            {%- for match_product in collections.all.products -%}
+              {%- if family_image -%}
+                {%- break -%}
+              {%- endif -%}
+              {%- for keyword in family_keywords -%}
+                {%- if match_product.title contains keyword -%}
+                  {%- assign family_image = match_product.featured_image -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+            <a href="{{ all_products_url }}?family={{ family_handle }}" class="pm-mobile-shop-family">
+              <span class="pm-mobile-shop-family-image">
+                {%- if family_image -%}
+                  <img src="{{ family_image | image_url: width: 300 }}" alt="{{ family_name }}" loading="lazy">
+                {%- endif -%}
+              </span>
+              <span class="pm-mobile-shop-family-name">{{ family_name }}</span>
+            </a>
           {%- endfor -%}
         </div>
-        {%- if pm_shop_preview_products.size > 0 -%}
-          <div class="pm-mobile-shop-products">
-            {%- for product in pm_shop_preview_products -%}
-              <a href="{{ product.url }}" class="pm-mobile-shop-product">
-                <span class="pm-mobile-shop-product-image">
-                  {%- if product.featured_image -%}
-                    <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy">
-                  {%- endif -%}
-                </span>
-                <span class="pm-mobile-shop-product-name">{{ product.title | split: ' — ' | first }}</span>
-              </a>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
       </div>
     </div>
   </div>
