@@ -292,18 +292,36 @@
             {%- assign family_name = family_parts[0] -%}
             {%- assign family_handle = family_name | handle -%}
             {%- assign family_keywords = family_parts[2] | split: ',' -%}
-            {%- assign family_image = nil -%}
-            {%- for match_product in collections.all.products -%}
-              {%- if family_image -%}
-                {%- break -%}
-              {%- endif -%}
-              {%- for keyword in family_keywords -%}
-                {%- if match_product.title contains keyword -%}
-                  {%- assign family_image = match_product.featured_image -%}
+            {%- case family_handle -%}
+              {%- when 'clutches' -%}{%- assign family_image = section.settings.mobile_shop_clutches_image -%}
+              {%- when 'accessories' -%}{%- assign family_image = section.settings.mobile_shop_accessories_image -%}
+              {%- when 'pouches' -%}{%- assign family_image = section.settings.mobile_shop_pouches_image -%}
+              {%- when 'wallets' -%}{%- assign family_image = section.settings.mobile_shop_wallets_image -%}
+              {%- when 'maxi-roma' -%}{%- assign family_image = section.settings.mobile_shop_maxi_roma_image -%}
+              {%- when 'mini-milano' -%}{%- assign family_image = section.settings.mobile_shop_mini_milano_image -%}
+              {%- when 'mini-roma' -%}{%- assign family_image = section.settings.mobile_shop_mini_roma_image -%}
+              {%- when 'santorini' -%}{%- assign family_image = section.settings.mobile_shop_santorini_image -%}
+              {%- when 'wood-net-hobo' -%}{%- assign family_image = section.settings.mobile_shop_wood_net_hobo_image -%}
+              {%- else -%}{%- assign family_image = nil -%}
+            {%- endcase -%}
+            {%- comment -%}
+              No merchant-picked image for this family — fall back to
+              the featured image of the first product matching its
+              keywords, same as before this control existed.
+            {%- endcomment -%}
+            {%- unless family_image -%}
+              {%- for match_product in collections.all.products -%}
+                {%- if family_image -%}
                   {%- break -%}
                 {%- endif -%}
+                {%- for keyword in family_keywords -%}
+                  {%- if match_product.title contains keyword -%}
+                    {%- assign family_image = match_product.featured_image -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
               {%- endfor -%}
-            {%- endfor -%}
+            {%- endunless -%}
             <a href="{{ all_products_url }}?family={{ family_handle }}" class="pm-mobile-shop-family">
               <span class="pm-mobile-shop-family-image">
                 {%- if family_image -%}
