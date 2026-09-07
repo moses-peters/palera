@@ -57,18 +57,26 @@
     "pm-image-duo": {
       "type": "pm-image-duo",
       "settings": {
+        "left_content_type": "text",
         "image_left": "shopify://shop_images/F2.jpg",
         "image_left_mobile": "shopify://shop_images/3U7A2740-2.jpg",
         "caption_left": "",
         "link_left": "",
         "focal_x_left": 50,
         "focal_y_left": 50,
+        "text_left_eyebrow": "",
+        "text_left_heading": "",
+        "text_left_body": "",
+        "right_content_type": "image",
         "image_right": "shopify://shop_images/F1.jpg",
         "image_right_mobile": "shopify://shop_images/3U7A3534.jpg",
         "caption_right": "",
         "link_right": "",
         "focal_x_right": 50,
-        "focal_y_right": 50
+        "focal_y_right": 50,
+        "text_right_eyebrow": "",
+        "text_right_heading": "",
+        "text_right_body": ""
       }
     },
     "pm-full-bleed-media": {
