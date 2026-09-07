@@ -12,6 +12,8 @@
     "pm-hero": {
       "type": "pm-hero",
       "settings": {
+        "image": "shopify://shop_images/Ban1.jpg",
+        "image_mobile": "shopify://shop_images/Ban2.jpg",
         "link_url": "",
         "focal_x": 40,
         "focal_y": 35
