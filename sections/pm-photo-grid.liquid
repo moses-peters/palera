@@ -11,11 +11,24 @@
       {%- for block in section.blocks -%}
         {%- assign product = block.settings.product -%}
         {%- assign tile_image = block.settings.image | default: product.featured_image -%}
+        {%- assign tile_image_mobile = block.settings.image_mobile -%}
+        {%- assign tile_alt = tile_image.alt | escape | default: product.title | default: block.settings.fallback_label -%}
         <a href="{{ product.url | default: block.settings.link | default: '#' }}" class="pm-photo-tile pm-reveal" style="transition-delay: {{ forloop.index0 | modulo: 4 | times: 90 }}ms">
           {%- if block.settings.video != blank -%}
             {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
           {%- elsif tile_image -%}
-            <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: product.title | default: block.settings.fallback_label }}" loading="lazy">
+            {%- comment -%}
+              A <picture> with a max-width source, not two <img>s shown/
+              hidden by CSS, so only the one image that actually matches
+              the visitor's screen is ever downloaded. Falls back to the
+              same desktop image on mobile when no mobile override is set.
+            {%- endcomment -%}
+            <picture>
+              {%- if tile_image_mobile -%}
+                <source media="(max-width: 639px)" srcset="{{ tile_image_mobile | image_url: width: 900 }}">
+              {%- endif -%}
+              <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_alt }}" loading="lazy">
+            </picture>
           {%- else -%}
             <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">
           {%- endif -%}
@@ -48,7 +61,8 @@
       "name": "Photo",
       "settings": [
         { "type": "product", "id": "product", "label": "Product (optional)" },
-        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
         { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
         { "type": "text", "id": "fallback_label", "label": "Fallback label" },
         { "type": "text", "id": "fallback_asset", "label": "Fallback theme asset filename" },

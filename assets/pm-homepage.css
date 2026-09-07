@@ -412,9 +412,22 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 
 /* ===== Photo grid — 4x2, generously spaced (not the mosaic's near-zero gap) ===== */
 .pm-photo-grid-section { padding: clamp(64px, 9vw, 120px) var(--pm-pad); }
-.pm-photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(24px, 3.2vw, 48px); }
-.pm-photo-tile { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; }
-.pm-photo-tile img, .pm-photo-tile video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--pm-ease); }
+.pm-photo-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(24px, 3.2vw, 48px);
+  /* align-items: start — tiles now size to their own image's natural
+     height (see .pm-photo-tile below), so without this a shorter
+     image next to a taller one in the same row would otherwise
+     stretch to match it, leaving blank space under the shorter photo. */
+  align-items: start;
+}
+.pm-photo-tile {
+  position: relative; display: block; overflow: hidden;
+  /* No fixed aspect-ratio/object-fit: cover here on purpose — that
+     was cropping images to fit a fixed box instead of showing them
+     in full. Each tile now sizes to its own image's natural
+     proportions (rows can be uneven — that's the point). */
+}
+.pm-photo-tile img, .pm-photo-tile video { display: block; width: 100%; height: auto; transition: transform 0.9s var(--pm-ease); }
 .pm-photo-tile:hover img, .pm-photo-tile:hover video { transform: scale(1.05); }
 .pm-photo-tile-caption {
   position: absolute; left: clamp(12px, 1.6vw, 20px); bottom: clamp(12px, 1.6vw, 20px); z-index: 2;
