@@ -7,7 +7,12 @@
         {%- if block.settings.video != blank -%}
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
         {%- elsif tile_image -%}
-          <img src="{{ tile_image | image_url: width: 1400 }}" alt="{{ tile_image.alt | escape | default: product.title | default: block.settings.fallback_label }}" loading="lazy">
+          <picture>
+            {%- if block.settings.image_mobile -%}
+              <source media="(max-width: 639px)" srcset="{{ block.settings.image_mobile | image_url: width: 1400 }}">
+            {%- endif -%}
+            <img src="{{ tile_image | image_url: width: 1400 }}" alt="{{ tile_image.alt | escape | default: product.title | default: block.settings.fallback_label }}" loading="lazy">
+          </picture>
         {%- else -%}
           <img src="{{ block.settings.fallback_asset | default: 'pm-drive-product-a.jpg' | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">
         {%- endif -%}
@@ -33,7 +38,8 @@
       "name": "Product",
       "settings": [
         { "type": "product", "id": "product", "label": "Product" },
-        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "image_picker", "id": "image", "label": "Image override (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image override (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image/product photo when not set." },
         { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
         { "type": "text", "id": "fallback_label", "label": "Fallback label" },
         { "type": "text", "id": "fallback_asset", "label": "Fallback theme asset filename", "info": "Used only if no product/image is set" },

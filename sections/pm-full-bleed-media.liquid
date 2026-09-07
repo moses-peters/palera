@@ -3,10 +3,17 @@
     <a href="{{ section.settings.link_url | default: '#' }}" class="pm-cinema-media pm-reveal">
       {%- if section.settings.video != blank -%}
         {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1800x' }}
-      {%- elsif section.settings.image -%}
-        <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.caption }}" loading="lazy">
       {%- else -%}
-        <img src="{{ 'pm-drive-horizontal.jpg' | asset_url }}" alt="{{ section.settings.caption }}" loading="lazy">
+        <picture>
+          {%- if section.settings.image_mobile -%}
+            <source media="(max-width: 639px)" srcset="{{ section.settings.image_mobile | image_url: width: 1800 }}">
+          {%- endif -%}
+          {%- if section.settings.image -%}
+            <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.caption }}" loading="lazy">
+          {%- else -%}
+            <img src="{{ 'pm-drive-horizontal.jpg' | asset_url }}" alt="{{ section.settings.caption }}" loading="lazy">
+          {%- endif -%}
+        </picture>
       {%- endif -%}
     </a>
     {%- if section.settings.caption != blank -%}
@@ -19,7 +26,8 @@
 {
   "name": "PM: Full-bleed media",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption", "label": "Caption", "default": "Identity 1, 2026" },
     { "type": "url", "id": "link_url", "label": "Link" }

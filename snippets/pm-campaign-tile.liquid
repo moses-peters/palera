@@ -13,7 +13,12 @@
         <source src="{{ campaign_block.settings.video_url }}" type="video/mp4">
       </video>
     {%- elsif campaign_block.settings.image -%}
-      <img src="{{ campaign_block.settings.image | image_url: width: 1800 }}" alt="{{ campaign_block.settings.image.alt | escape | default: campaign_block.settings.caption }}" loading="lazy">
+      <picture>
+        {%- if campaign_block.settings.image_mobile -%}
+          <source media="(max-width: 639px)" srcset="{{ campaign_block.settings.image_mobile | image_url: width: 1800 }}">
+        {%- endif -%}
+        <img src="{{ campaign_block.settings.image | image_url: width: 1800 }}" alt="{{ campaign_block.settings.image.alt | escape | default: campaign_block.settings.caption }}" loading="lazy">
+      </picture>
     {%- else -%}
       {% render 'pm-media-placeholder', label: 'Campaign Photo' %}
     {%- endif -%}

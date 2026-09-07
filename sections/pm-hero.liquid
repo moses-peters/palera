@@ -15,10 +15,17 @@
     <a href="{{ section.settings.link_url | default: '#' }}" class="pm-hero-media" style="--pm-focal: {{ focal_x }}% {{ focal_y }}%;">
       {%- if section.settings.video != blank -%}
         {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1800x' }}
-      {%- elsif section.settings.image -%}
-        <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ shop.name }}" loading="eager">
       {%- else -%}
-        <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ shop.name }}" loading="eager">
+        <picture>
+          {%- if section.settings.image_mobile -%}
+            <source media="(max-width: 639px)" srcset="{{ section.settings.image_mobile | image_url: width: 1800 }}">
+          {%- endif -%}
+          {%- if section.settings.image -%}
+            <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ shop.name }}" loading="eager">
+          {%- else -%}
+            <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ shop.name }}" loading="eager">
+          {%- endif -%}
+        </picture>
       {%- endif -%}
     </a>
   </section>
@@ -30,7 +37,8 @@
 {
   "name": "PM: Hero",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "url", "id": "link_url", "label": "Link" },
     { "type": "range", "id": "focal_x", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's left side." },

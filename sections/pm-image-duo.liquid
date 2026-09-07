@@ -6,7 +6,12 @@
       {%- if section.settings.video_left != blank -%}
         {{ section.settings.video_left | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
       {%- elsif section.settings.image_left -%}
-        <img src="{{ section.settings.image_left | image_url: width: 1400 }}" alt="{{ section.settings.image_left.alt | escape | default: section.settings.caption_left }}" loading="lazy">
+        <picture>
+          {%- if section.settings.image_left_mobile -%}
+            <source media="(max-width: 639px)" srcset="{{ section.settings.image_left_mobile | image_url: width: 1400 }}">
+          {%- endif -%}
+          <img src="{{ section.settings.image_left | image_url: width: 1400 }}" alt="{{ section.settings.image_left.alt | escape | default: section.settings.caption_left }}" loading="lazy">
+        </picture>
       {%- else -%}
         {% render 'pm-media-placeholder', label: 'Photo' %}
       {%- endif -%}
@@ -16,7 +21,12 @@
       {%- if section.settings.video_right != blank -%}
         {{ section.settings.video_right | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
       {%- elsif section.settings.image_right -%}
-        <img src="{{ section.settings.image_right | image_url: width: 1400 }}" alt="{{ section.settings.image_right.alt | escape | default: section.settings.caption_right }}" loading="lazy">
+        <picture>
+          {%- if section.settings.image_right_mobile -%}
+            <source media="(max-width: 639px)" srcset="{{ section.settings.image_right_mobile | image_url: width: 1400 }}">
+          {%- endif -%}
+          <img src="{{ section.settings.image_right | image_url: width: 1400 }}" alt="{{ section.settings.image_right.alt | escape | default: section.settings.caption_right }}" loading="lazy">
+        </picture>
       {%- else -%}
         {% render 'pm-media-placeholder', label: 'Photo' %}
       {%- endif -%}
@@ -30,12 +40,14 @@
   "name": "PM: Image duo",
   "settings": [
     { "type": "header", "content": "Left image" },
-    { "type": "image_picker", "id": "image_left", "label": "Image" },
+    { "type": "image_picker", "id": "image_left", "label": "Image (desktop)" },
+    { "type": "image_picker", "id": "image_left_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video_left", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption_left", "label": "Caption" },
     { "type": "url", "id": "link_left", "label": "Link" },
     { "type": "header", "content": "Right image" },
-    { "type": "image_picker", "id": "image_right", "label": "Image" },
+    { "type": "image_picker", "id": "image_right", "label": "Image (desktop)" },
+    { "type": "image_picker", "id": "image_right_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video_right", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption_right", "label": "Caption" },
     { "type": "url", "id": "link_right", "label": "Link" }

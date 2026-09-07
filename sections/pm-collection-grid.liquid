@@ -49,11 +49,16 @@
   {%- if collection.handle == 'aw27' -%}
     <section class="pm-hero">
       <a href="{{ section.settings.aw27_banner_link | default: '#' }}" class="pm-hero-media">
-        {%- if section.settings.aw27_banner_image -%}
-          <img src="{{ section.settings.aw27_banner_image | image_url: width: 1800 }}" alt="AW27" loading="eager">
-        {%- else -%}
-          <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27" loading="eager">
-        {%- endif -%}
+        <picture>
+          {%- if section.settings.aw27_banner_image_mobile -%}
+            <source media="(max-width: 639px)" srcset="{{ section.settings.aw27_banner_image_mobile | image_url: width: 1800 }}">
+          {%- endif -%}
+          {%- if section.settings.aw27_banner_image -%}
+            <img src="{{ section.settings.aw27_banner_image | image_url: width: 1800 }}" alt="AW27" loading="eager">
+          {%- else -%}
+            <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="AW27" loading="eager">
+          {%- endif -%}
+        </picture>
       </a>
     </section>
   {%- endif -%}
@@ -134,7 +139,12 @@
                 {%- if spot_block.settings.video != blank -%}
                   {{ spot_block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
                 {%- elsif spot_block.settings.image -%}
-                  <img src="{{ spot_block.settings.image | image_url: width: 900 }}" alt="{{ spot_block.settings.image.alt | escape | default: spot_block.settings.label }}" loading="lazy">
+                  <picture>
+                    {%- if spot_block.settings.image_mobile -%}
+                      <source media="(max-width: 639px)" srcset="{{ spot_block.settings.image_mobile | image_url: width: 900 }}">
+                    {%- endif -%}
+                    <img src="{{ spot_block.settings.image | image_url: width: 900 }}" alt="{{ spot_block.settings.image.alt | escape | default: spot_block.settings.label }}" loading="lazy">
+                  </picture>
                 {%- else -%}
                   {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
                 {%- endif -%}
@@ -533,7 +543,8 @@
     { "type": "url", "id": "back_url", "label": "Back link URL", "info": "Point this at your Shop by Family page (/collections)." },
     { "type": "text", "id": "line_label", "label": "Line label override" },
     { "type": "text", "id": "empty_label", "label": "Empty collection message", "default": "New pieces for this family are on the way." },
-    { "type": "image_picker", "id": "aw27_banner_image", "label": "AW27 banner image", "info": "Only shown on the AW27 collection page." },
+    { "type": "image_picker", "id": "aw27_banner_image", "label": "AW27 banner image (desktop)", "info": "Only shown on the AW27 collection page." },
+    { "type": "image_picker", "id": "aw27_banner_image_mobile", "label": "AW27 banner image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "url", "id": "aw27_banner_link", "label": "AW27 banner link" }
   ],
   "blocks": [
@@ -580,7 +591,8 @@
           ],
           "default": "horizontal"
         },
-        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
         { "type": "text", "id": "video_url", "label": "Video URL (.mp4)", "info": "Overrides the image when set." },
         { "type": "text", "id": "caption", "label": "Caption" }
       ]
@@ -589,7 +601,8 @@
       "type": "placeholder_spot",
       "name": "Placeholder photo",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
         { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
         { "type": "text", "id": "label", "label": "Label", "default": "Coming soon" }
       ]

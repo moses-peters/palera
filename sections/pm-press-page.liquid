@@ -28,7 +28,12 @@
         {%- if block.settings.video != blank -%}
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
         {%- elsif block.settings.image -%}
-          <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.publication | escape }}" loading="lazy">
+          <picture>
+            {%- if block.settings.image_mobile -%}
+              <source media="(max-width: 639px)" srcset="{{ block.settings.image_mobile | image_url: width: 1200 }}">
+            {%- endif -%}
+            <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.publication | escape }}" loading="lazy">
+          </picture>
         {%- else -%}
           {% render 'pm-media-placeholder', label: block.settings.publication | default: 'Press', hover: true %}
         {%- endif -%}
@@ -62,7 +67,8 @@
       "type": "mention",
       "name": "Press mention",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
         { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
         { "type": "text", "id": "publication", "label": "Publication name" },
         { "type": "text", "id": "headline", "label": "Headline" },
