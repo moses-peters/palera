@@ -24,14 +24,27 @@
         items do (browsers give form controls their own default font),
         so without this the "Shop" trigger renders in the browser's
         default UI font instead of matching Home/About Us.
+
+        The open/close behavior itself is NOT wired through the stock
+        theme.collapsibles mechanism — deliberately. This button doesn't
+        carry a .collapsible-trigger class, so theme.collapsibles.init()
+        never touches it; a small self-contained script below owns the
+        whole interaction instead. That avoids any dependency on when
+        (or whether) theme.js's own init runs relative to this markup,
+        which is what made the toggle unreliable when this used the
+        shared mechanism.
       {%- endcomment -%}
       <style>
         .pm-mobile-shop-trigger{
           cursor:pointer;
           font:inherit;
           letter-spacing:inherit;
+          position:relative;
           text-align:left;
           text-transform:inherit;
+        }
+        .pm-mobile-shop-trigger.is-open .collapsible-trigger__icon>.icon-chevron-down{
+          transform:scaleY(-1);
         }
       </style>
       <ul class="mobile-nav{% if settings.type_navigation_style == 'heading' %} mobile-nav--heading-style{% endif %}" role="navigation" aria-label="Primary">
@@ -53,7 +66,7 @@
           assign all_products_url = routes.all_products_collection_url | default: '/collections/all'
         -%}
         <li class="mobile-nav__item mobile-nav__has-sublist appear-animation appear-delay-2">
-          <button type="button" class="mobile-nav__link mobile-nav__link--top-level collapsible-trigger pm-mobile-shop-trigger" aria-controls="MobileShopSublist" data-controls="MobileShopSublist">
+          <button type="button" class="mobile-nav__link mobile-nav__link--top-level pm-mobile-shop-trigger" aria-controls="MobileShopSublist" aria-expanded="false">
             Shop
             {%- render 'collapsible-icons' -%}
           </button>
@@ -204,3 +217,34 @@
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    function bindMobileShopToggle() {
+      var trigger = document.querySelector('.pm-mobile-shop-trigger');
+      var content = document.getElementById('MobileShopSublist');
+      if (!trigger || !content || trigger.dataset.pmBound) {
+        return;
+      }
+      trigger.dataset.pmBound = 'true';
+
+      trigger.addEventListener('click', function () {
+        var isOpen = trigger.classList.contains('is-open');
+        var inner = content.querySelector('.collapsible-content__inner');
+
+        trigger.classList.toggle('is-open', !isOpen);
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+        content.classList.toggle('is-open', !isOpen);
+        content.style.height = isOpen ? '0px' : inner.offsetHeight + 'px';
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindMobileShopToggle);
+    } else {
+      bindMobileShopToggle();
+    }
+    // Re-bind if the header section is reloaded in the theme editor.
+    document.addEventListener('shopify:section:load', bindMobileShopToggle);
+  })();
+</script>
