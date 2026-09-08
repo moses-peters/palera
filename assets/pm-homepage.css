@@ -365,6 +365,14 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pm-plp-tile-price { flex-shrink: 0; font-size: 13px; color: var(--pm-ink); }
+/* Shared across every product tile (Shop grid, You may also like,
+   homepage photo grid/product pair) — the color is baked into the
+   product's own title (separate products per color, not real Shopify
+   variants in most cases), so showing it plainly next to the base
+   name reads as a repeated/broken list ("Maxi Roma", "Maxi Roma",
+   "Maxi Roma"...). Muted + italic sets it apart as a secondary detail
+   instead of a second product name. */
+.pm-tile-color { color: var(--pm-muted); font-style: italic; }
 .pm-plp-tile-image { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
 .pm-plp-tile-image img,
 .pm-plp-tile-image video,

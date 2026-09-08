@@ -34,7 +34,7 @@
           {%- endif -%}
           {%- if product.title != blank or block.settings.fallback_label != blank -%}
             <span class="pm-photo-tile-caption">
-              <span class="pm-photo-tile-name">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}</span>
+              <span class="pm-photo-tile-name">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}{%- if product.title contains ' — ' -%} <span class="pm-tile-color">{{ product.title | split: ' — ' | last }}</span>{%- endif -%}</span>
               {%- if product.price -%}
                 <span class="pm-photo-tile-price">
                   {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}

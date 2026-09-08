@@ -277,9 +277,14 @@
             {%- if color_option -%}
               {%- assign tile_variant = product.variants | where: color_option_key, color_value | first -%}
               {%- assign tile_price_varies = false -%}
+              {%- assign tile_color_name = color_value -%}
             {%- else -%}
               {%- assign tile_variant = product.selected_or_first_available_variant -%}
               {%- assign tile_price_varies = product.price_varies -%}
+              {%- assign tile_color_name = '' -%}
+              {%- if product.title contains ' — ' -%}
+                {%- assign tile_color_name = product.title | split: ' — ' | last -%}
+              {%- endif -%}
             {%- endif -%}
             {%- assign tile_image = tile_variant.featured_image | default: product.featured_image -%}
             {%- assign tile_price = tile_variant.price | default: product.price -%}
@@ -376,7 +381,7 @@
                   {%- endif -%}
                 </div>
                 <div class="pm-plp-tile-info">
-                  <span class="pm-plp-tile-name">{{ tile_name }}</span>
+                  <span class="pm-plp-tile-name">{{ tile_name }}{%- if tile_color_name != blank -%} <span class="pm-tile-color">{{ tile_color_name }}</span>{%- endif -%}</span>
                   <span class="pm-plp-tile-price">
                     {%- if tile_price_varies -%}From {{ tile_price | money }}{%- else -%}{{ tile_price | money }}{%- endif -%}
                   </span>
