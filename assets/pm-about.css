@@ -38,7 +38,7 @@
    opener. */
 .pm-press-editorial {
   display: flex; gap: clamp(10px, 1.8vw, 18px);
-  padding: clamp(24px, 4vw, 40px) var(--pm-pad) clamp(8px, 2vw, 16px) calc(var(--pm-pad) + clamp(32px, 6vw, 64px));
+  padding: clamp(24px, 4vw, 40px) 0 clamp(8px, 2vw, 16px) calc(var(--pm-pad) + clamp(32px, 6vw, 64px));
   overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
@@ -49,6 +49,7 @@
 }
 .pm-press-editorial-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--pm-ease); }
 .pm-press-editorial-item:hover img { transform: scale(1.035); }
+.pm-press-editorial-spacer { flex: 0 0 auto; width: calc(var(--pm-pad) + clamp(32px, 6vw, 64px) - clamp(10px, 1.8vw, 18px)); }
 
 /* Press page: a 4-image slot row dropped between mentions, breaking up
    the text-heavy list. Swap the pm-media-placeholder renders for real

@@ -33,6 +33,12 @@
         <img src="{{ editorial_file | asset_url }}" alt="Palera Milano editorial" loading="lazy">
       </div>
     {%- endfor -%}
+    {%- comment -%}
+      Spacer so the right padding is still visible once scrolled all the
+      way to the end — browsers commonly clip the trailing padding of a
+      horizontally scrolling flex container otherwise.
+    {%- endcomment -%}
+    <div class="pm-press-editorial-spacer" aria-hidden="true"></div>
   </div>
 
   {%- assign mention_index = 0 -%}
