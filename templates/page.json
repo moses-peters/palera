@@ -203,6 +203,7 @@
           "settings": {
             "eyebrow": "TGCOM24",
             "heading": "Palera Milano: bags that light up everyday living",
+            "image": "shopify://shop_images/pp1.webp",
             "link_url": "https://www.tgcom24.mediaset.it/lifestyle/palera-milano-borse-che-illuminano-il-vivere-quotidiano_103679206-202502k.shtml",
             "link_label": "Read the feature →",
             "text": ""
@@ -211,9 +212,13 @@
         "gallery_06": {
           "type": "gallery",
           "settings": {
+            "image_1": "shopify://shop_images/pp5.webp",
             "label_1": "Palera Milano — Everyday Elegance",
+            "image_2": "shopify://shop_images/pp3.webp",
             "label_2": "Palera Milano — Daylight Crystal",
+            "image_3": "shopify://shop_images/pp2.webp",
             "label_3": "Palera Milano — Lifestyle Shot",
+            "image_4": "shopify://shop_images/pp4.webp",
             "label_4": "Palera Milano — Styled Look"
           }
         },
