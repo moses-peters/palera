@@ -98,6 +98,7 @@
       "blocks": {
         "mention_01": {
           "type": "mention",
+          "disabled": true,
           "settings": {
             "eyebrow": "Vogue Italia",
             "heading": "Opening: the new boutiques shaping Milan retail",
@@ -146,6 +147,7 @@
           "settings": {
             "eyebrow": "Fashion United",
             "heading": "Palera Milano opens a temporary store at La Rinascente",
+            "image": "shopify://shop_images/P124.avif",
             "link_url": "https://fashionunited.it/news/retail/palera-milano-apre-un-temporary-store-alla-rinascente/2025051426996",
             "link_label": "Read the feature →",
             "text": ""
@@ -232,6 +234,7 @@
           "settings": {
             "eyebrow": "Fashionality",
             "heading": "Palera Milano SS26: The Bags That Capture the Essence of Handcrafted Radiance",
+            "image": "shopify://shop_images/Roma_BeltU_2.jpg",
             "link_url": "https://www.fashionality.nyc/palera-milano-ss26-the-bags-that-capture-the-essence-of-handcrafted-radiance/",
             "link_label": "Read the feature →",
             "text": ""
@@ -252,6 +255,7 @@
           "settings": {
             "eyebrow": "Hub Style",
             "heading": "Palera Milano accelerates global retail expansion",
+            "image": "shopify://shop_images/P1653.jpg",
             "link_url": "https://hubstyle.it/2026/05/04/palera-milano-accelera-lespansione-retail-globale/",
             "link_label": "Read the feature →",
             "text": ""
@@ -272,6 +276,7 @@
           "settings": {
             "eyebrow": "Fashion Network",
             "heading": "New Openings and Pop-Up Stores: Falconeri, Scholl, Lancôme, Zona20 Milano, Marlù, Palera Milano",
+            "image": "shopify://shop_images/P165.jpg",
             "link_url": "https://it.fashionnetwork.com/news/Nuovi-opening-e-pop-up-store-falconeri-scholl-lancome-zona20-milano-marlu-palera-milano,1829140.html",
             "link_label": "Read the feature →",
             "text": ""
