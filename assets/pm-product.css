@@ -229,11 +229,11 @@
 }
 .pm-rec-tile:hover .pm-rec-tile-image img { transform: scale(1.03); }
 .pm-rec-tile-info { margin-top: 12px; }
-.pm-rec-tile-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pm-rec-tile-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .pm-rec-tile-name {
   min-width: 0; flex-shrink: 1;
-  font-size: 13px; color: var(--pm-ink);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 13px; line-height: 1.5; color: var(--pm-ink);
+  white-space: normal; overflow: visible; text-overflow: clip;
 }
 .pm-rec-tile-colors {
   flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;

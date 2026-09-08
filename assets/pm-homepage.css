@@ -355,16 +355,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   border: 1px solid var(--pm-line); border-radius: 50%;
   width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
 }
-.pm-plp-tile-info { display: flex; flex-wrap: nowrap; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 10px; }
+/* Name stacks above price rather than sharing one row — a long name
+   (e.g. "Clutch Edge - Short - Brass - Crystal Silver") now wraps
+   onto a second line in full instead of being cut off with an
+   ellipsis mid-word, which read as cramped/cheap at that width. Price
+   underneath, smaller and muted, so it reads as a secondary detail
+   rather than competing with the name for the same line. */
+.pm-plp-tile-info { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; margin-top: 10px; }
 .pm-plp-tile-name {
-  min-width: 0; flex-shrink: 1;
-  font-size: 13px; line-height: 1.35; color: var(--pm-ink);
-  /* Truncate instead of wrapping, so a long name (e.g. "Clutch Edge -
-     Short - Brass - Crystal") never pushes the price onto its own
-     line below — name and price always stay on one row. */
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 13px; line-height: 1.5; color: var(--pm-ink);
+  white-space: normal; overflow: visible; text-overflow: clip;
 }
-.pm-plp-tile-price { flex-shrink: 0; font-size: 13px; color: var(--pm-ink); }
+.pm-plp-tile-price { font-size: 12px; color: var(--pm-muted); }
 /* Shared across every product tile (Shop grid, You may also like,
    homepage photo grid/product pair) — the color is baked into the
    product's own title (separate products per color, not real Shopify
