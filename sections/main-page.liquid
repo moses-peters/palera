@@ -1,5 +1,7 @@
 {%- if page.handle == 'about-us' -%}
   {%- render 'pm-about-content' -%}
+{%- elsif page.handle == 'press' -%}
+  {%- render 'pm-press-content' -%}
 {%- else -%}
 <div class="page-width page-width--narrow page-content">
   {%- render 'breadcrumbs' -%}

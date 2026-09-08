@@ -92,60 +92,11 @@
         "closing_link_label": "Shop the Collection",
         "closing_link_url": ""
       }
-    },
-    "pm_press": {
-      "type": "pm-press",
-      "blocks": {
-        "mention-1": {
-          "type": "mention",
-          "settings": {
-            "publication": "Publication Name",
-            "article_title": "Add the article headline here",
-            "link": ""
-          }
-        },
-        "mention-2": {
-          "type": "mention",
-          "settings": {
-            "publication": "Publication Name",
-            "article_title": "Add the article headline here",
-            "link": ""
-          }
-        },
-        "mention-3": {
-          "type": "mention",
-          "settings": {
-            "publication": "Publication Name",
-            "article_title": "Add the article headline here",
-            "link": ""
-          }
-        },
-        "mention-4": {
-          "type": "mention",
-          "settings": {
-            "publication": "Publication Name",
-            "article_title": "Add the article headline here",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "mention-1",
-        "mention-2",
-        "mention-3",
-        "mention-4"
-      ],
-      "disabled": true,
-      "settings": {
-        "eyebrow": "As Seen In",
-        "heading": "Press & Editorial"
-      }
     }
   },
   "order": [
     "main",
     "1726698142b015c0cf",
-    "pm_about_Ch6rqK",
-    "pm_press"
+    "pm_about_Ch6rqK"
   ]
 }
