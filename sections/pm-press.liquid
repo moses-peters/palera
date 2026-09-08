@@ -1,0 +1,129 @@
+{%- comment -%}
+  Press page, schema-driven (unlike the earlier hardcoded snippet
+  version) so every mention's image/video and each gallery slot can be
+  managed from the theme customizer instead of by editing code.
+
+  Lives on the same shared default page template as "PM: About"
+  (pm-about.liquid) and is enabled at the same time — the
+  page.handle == 'press' check below is what keeps this section's
+  content from also showing up on About Us or any other page using
+  that template.
+{%- endcomment -%}
+{%- if page.handle == 'press' -%}
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+{{ 'pm-about.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage">
+
+  <div class="pm-collection-header">
+    <span class="pm-eyebrow">{{ section.settings.eyebrow }}</span>
+    <h1 class="pm-serif pm-collection-name">{{ section.settings.heading }}</h1>
+  </div>
+
+  {%- assign mention_index = 0 -%}
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+
+      {%- when 'mention' -%}
+        {%- assign mention_index = mention_index | plus: 1 -%}
+        {%- assign reverse_check = mention_index | modulo: 2 -%}
+        <div class="pm-about-spread pm-press-spread{% if reverse_check == 0 %} pm-about-spread--reverse{% endif %} pm-reveal" {{ block.shopify_attributes }}>
+          <div class="pm-about-spread-image">
+            {%- if block.settings.video != blank -%}
+              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
+            {%- elsif block.settings.image != blank -%}
+              <picture>
+                {%- if block.settings.image_mobile != blank -%}
+                  <source media="(max-width: 639px)" srcset="{{ block.settings.image_mobile | image_url: width: 1400 }}">
+                {%- endif -%}
+                <img src="{{ block.settings.image | image_url: width: 1400 }}" alt="{{ block.settings.eyebrow }}" loading="lazy">
+              </picture>
+            {%- else -%}
+              {%- render 'pm-media-placeholder', label: block.settings.eyebrow, hover: true -%}
+            {%- endif -%}
+          </div>
+          <div class="pm-about-spread-copy">
+            <span class="pm-eyebrow">{{ block.settings.eyebrow }}</span>
+            <h2 class="pm-serif">{{ block.settings.heading }}</h2>
+            {%- if block.settings.link_url != blank -%}
+              <p class="pm-about-spread-text"><a href="{{ block.settings.link_url }}" target="_blank" rel="noopener" class="pm-link">{{ block.settings.link_label | default: 'Read the feature →' }}</a></p>
+            {%- elsif block.settings.text != blank -%}
+              <div class="pm-about-spread-text">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+
+      {%- when 'gallery' -%}
+        <div class="pm-press-gallery pm-reveal" {{ block.shopify_attributes }}>
+          {%- for i in (1..4) -%}
+            {%- liquid
+              assign image_key = 'image_' | append: i
+              assign label_key = 'label_' | append: i
+              assign gallery_image = block.settings[image_key]
+              assign gallery_label = block.settings[label_key]
+            -%}
+            <div class="pm-press-gallery-item">
+              {%- if gallery_image != blank -%}
+                <img src="{{ gallery_image | image_url: width: 800 }}" alt="{{ gallery_label }}" loading="lazy">
+              {%- else -%}
+                {%- render 'pm-media-placeholder', label: gallery_label, hover: true -%}
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+    {%- endcase -%}
+  {%- endfor -%}
+
+</div>
+
+<script src="{{ 'pm-homepage.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "PM: Press",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Press" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "As Seen In" }
+  ],
+  "blocks": [
+    {
+      "type": "mention",
+      "name": "Press mention",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Publication name" },
+        { "type": "text", "id": "heading", "label": "Headline" },
+        { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — falls back to the desktop image." },
+        { "type": "video", "id": "video", "label": "Video", "info": "Overrides the image when set." },
+        { "type": "url", "id": "link_url", "label": "Article link" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Read the feature →" },
+        { "type": "textarea", "id": "text", "label": "Text (shown instead of a link when no article link is set)" }
+      ]
+    },
+    {
+      "type": "gallery",
+      "name": "Image gallery (4 slots)",
+      "settings": [
+        { "type": "image_picker", "id": "image_1", "label": "Image 1" },
+        { "type": "text", "id": "label_1", "label": "Image 1 placeholder label", "default": "Palera Milano" },
+        { "type": "image_picker", "id": "image_2", "label": "Image 2" },
+        { "type": "text", "id": "label_2", "label": "Image 2 placeholder label", "default": "Palera Milano" },
+        { "type": "image_picker", "id": "image_3", "label": "Image 3" },
+        { "type": "text", "id": "label_3", "label": "Image 3 placeholder label", "default": "Palera Milano" },
+        { "type": "image_picker", "id": "image_4", "label": "Image 4" },
+        { "type": "text", "id": "label_4", "label": "Image 4 placeholder label", "default": "Palera Milano" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PM: Press",
+      "blocks": [
+        { "type": "mention", "settings": { "eyebrow": "Publication", "heading": "Headline goes here", "link_label": "Read the feature →" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

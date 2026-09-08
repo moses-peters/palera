@@ -3,17 +3,13 @@
   template (templates/page.json), where it sits enabled while the
   generic main-page section is disabled — meaning it renders
   unconditionally for EVERY page using that template, not just About
-  Us. That's fine as long as About Us is the only page on the default
-  template, but a newly-created Press page (same handle-agnostic setup)
-  would otherwise show this exact About content instead of its own.
-  Checking page.handle here — rather than fixing this at the
-  main-page.liquid level — is what keeps this section's own content
-  (hero video, Lifestyle duo, etc., which has diverged from
-  pm-about-content.liquid's simpler fallback) showing correctly for
-  About Us while still letting Press show its own content.
+  Us. Press uses the same template (see pm-press.liquid, enabled
+  alongside this one), so this section renders nothing on the Press
+  page — checking page.handle here is what keeps About's own content
+  (hero video, Lifestyle duo, etc.) from also showing there.
 {%- endcomment -%}
 {%- if page.handle == 'press' -%}
-  {%- render 'pm-press-content' -%}
+  {%- comment -%} Press content lives in the PM: Press section instead. {%- endcomment -%}
 {%- else -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 {{ 'pm-about.css' | asset_url | stylesheet_tag }}

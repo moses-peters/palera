@@ -92,11 +92,253 @@
         "closing_link_label": "Shop the Collection",
         "closing_link_url": ""
       }
+    },
+    "pm_press_Rh8dKz": {
+      "type": "pm-press",
+      "blocks": {
+        "mention_01": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Vogue Italia",
+            "heading": "Opening: the new boutiques shaping Milan retail",
+            "link_url": "https://www.vogue.it/gallery/opening-boutique-moda-novita-2025",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_01": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Milan Boutique",
+            "label_2": "Palera Milano — Storefront",
+            "label_3": "Palera Milano — Window Display",
+            "label_4": "Palera Milano — Crystal Detail"
+          }
+        },
+        "mention_02": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Dress Code Magazine",
+            "heading": "Palera Milano lights up La Rinascente with its timeless elegance",
+            "link_url": "https://dresscodemagazine.it/palera-milano-accende-la-rinascente-con-la-sua-eleganza-senza-tempo/",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_02": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — La Rinascente",
+            "label_2": "Palera Milano — In-Store Styling",
+            "label_3": "Palera Milano — Crystal Clutch",
+            "label_4": "Palera Milano — Timeless Elegance"
+          }
+        },
+        "mention_03": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Fashion United",
+            "heading": "Palera Milano opens a temporary store at La Rinascente",
+            "link_url": "https://fashionunited.it/news/retail/palera-milano-apre-un-temporary-store-alla-rinascente/2025051426996",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_03": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Temporary Store",
+            "label_2": "Palera Milano — Pop-Up Interior",
+            "label_3": "Palera Milano — Handbag Display",
+            "label_4": "Palera Milano — Milan Retail"
+          }
+        },
+        "mention_04": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Fashion Network",
+            "heading": "New Openings: Giorgio Armani, Boggi Milano, Harmont & Blaine, Etro, Loewe, Oakley, Palera Milano",
+            "link_url": "https://it.fashionnetwork.com/news/Nuovi-opening-giorgio-armani-boggi-milano-harmont-blaine-etro-loewe-oakley-palera-milano,1730097.html",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_04": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Retail Debut",
+            "label_2": "Palera Milano — Storefront Facade",
+            "label_3": "Palera Milano — Craftsmanship",
+            "label_4": "Palera Milano — Signature Bag"
+          }
+        },
+        "mention_05": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Fashion News Magazine",
+            "heading": "Palera Milano: the perfect ceremony bag unveiled in a temporary store at La Rinascente Milan",
+            "link_url": "https://www.fashionnewsmagazine.com/2025/05/15/palera-milano-la-perfetta-borsa-da-cerimonia-svelata-in-un-temporary-store-alla-rinascente-di-milano/",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_05": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Ceremony Bag",
+            "label_2": "Palera Milano — Evening Clutch",
+            "label_3": "Palera Milano — Crystal-Set Detail",
+            "label_4": "Palera Milano — Rinascente Reveal"
+          }
+        },
+        "mention_06": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "TGCOM24",
+            "heading": "Palera Milano: bags that light up everyday living",
+            "link_url": "https://www.tgcom24.mediaset.it/lifestyle/palera-milano-borse-che-illuminano-il-vivere-quotidiano_103679206-202502k.shtml",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_06": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Everyday Elegance",
+            "label_2": "Palera Milano — Daylight Crystal",
+            "label_3": "Palera Milano — Lifestyle Shot",
+            "label_4": "Palera Milano — Styled Look"
+          }
+        },
+        "mention_07": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Fashionality",
+            "heading": "Palera Milano SS26: The Bags That Capture the Essence of Handcrafted Radiance",
+            "link_url": "https://www.fashionality.nyc/palera-milano-ss26-the-bags-that-capture-the-essence-of-handcrafted-radiance/",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_07": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — SS26 Collection",
+            "label_2": "Palera Milano — Handcrafted Detail",
+            "label_3": "Palera Milano — Radiance Campaign",
+            "label_4": "Palera Milano — New Arrivals"
+          }
+        },
+        "mention_08": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Hub Style",
+            "heading": "Palera Milano accelerates global retail expansion",
+            "link_url": "https://hubstyle.it/2026/05/04/palera-milano-accelera-lespansione-retail-globale/",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_08": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Global Expansion",
+            "label_2": "Palera Milano — New Boutique",
+            "label_3": "Palera Milano — Brand Growth",
+            "label_4": "Palera Milano — Retail Milestone"
+          }
+        },
+        "mention_09": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Fashion Network",
+            "heading": "New Openings and Pop-Up Stores: Falconeri, Scholl, Lancôme, Zona20 Milano, Marlù, Palera Milano",
+            "link_url": "https://it.fashionnetwork.com/news/Nuovi-opening-e-pop-up-store-falconeri-scholl-lancome-zona20-milano-marlu-palera-milano,1829140.html",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_09": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Pop-Up Store",
+            "label_2": "Palera Milano — Seasonal Launch",
+            "label_3": "Palera Milano — Storefront",
+            "label_4": "Palera Milano — Styled Display"
+          }
+        },
+        "mention_10": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Beesness",
+            "heading": "Palera Milano accelerates global retail expansion",
+            "link_url": "https://www.beesness.it/2026/05/11/palera-milano-accelera-lespansione-retail-globale/",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_10": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Retail Expansion",
+            "label_2": "Palera Milano — Brand Momentum",
+            "label_3": "Palera Milano — New Market",
+            "label_4": "Palera Milano — Craftsmanship"
+          }
+        },
+        "mention_11": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Affari Italiani",
+            "heading": "Palera Milano accelerates global retail expansion",
+            "link_url": "https://www.affaritaliani.it/milano/milan-show-biz/paler-milano-accelera-espansione-retail-globale.html",
+            "link_label": "Read the feature →"
+          }
+        },
+        "gallery_11": {
+          "type": "gallery",
+          "settings": {
+            "label_1": "Palera Milano — Milan Showroom",
+            "label_2": "Palera Milano — International Growth",
+            "label_3": "Palera Milano — Signature Craft",
+            "label_4": "Palera Milano — Brand Spotlight"
+          }
+        },
+        "mention_12": {
+          "type": "mention",
+          "settings": {
+            "eyebrow": "Press",
+            "heading": "More Coverage",
+            "text": "Additional recognition — updated as it comes in."
+          }
+        }
+      },
+      "block_order": [
+        "mention_01",
+        "gallery_01",
+        "mention_02",
+        "gallery_02",
+        "mention_03",
+        "gallery_03",
+        "mention_04",
+        "gallery_04",
+        "mention_05",
+        "gallery_05",
+        "mention_06",
+        "gallery_06",
+        "mention_07",
+        "gallery_07",
+        "mention_08",
+        "gallery_08",
+        "mention_09",
+        "gallery_09",
+        "mention_10",
+        "gallery_10",
+        "mention_11",
+        "gallery_11",
+        "mention_12"
+      ],
+      "name": "PM: Press",
+      "settings": {
+        "eyebrow": "Press",
+        "heading": "As Seen In"
+      }
     }
   },
   "order": [
     "main",
     "1726698142b015c0cf",
-    "pm_about_Ch6rqK"
+    "pm_about_Ch6rqK",
+    "pm_press_Rh8dKz"
   ]
 }
