@@ -20,6 +20,21 @@
     <h1 class="pm-serif pm-collection-name">{{ section.settings.heading }}</h1>
   </div>
 
+  {%- comment -%}
+    Editorial filmstrip — real photos from the brand's own press/editorial
+    shoots, sitting above the mentions list as a magazine-style opener.
+    Hardcoded assets rather than customizer blocks since this is a fixed
+    curated set, not something meant to be reordered per-mention.
+  {%- endcomment -%}
+  <div class="pm-press-editorial pm-reveal">
+    {%- for i in (1..9) -%}
+      {%- assign editorial_file = 'pm-press-editorial-0' | append: i | append: '.jpg' -%}
+      <div class="pm-press-editorial-item">
+        <img src="{{ editorial_file | asset_url }}" alt="Palera Milano editorial" loading="lazy">
+      </div>
+    {%- endfor -%}
+  </div>
+
   {%- assign mention_index = 0 -%}
   {%- for block in section.blocks -%}
     {%- case block.type -%}

@@ -33,6 +33,26 @@
   .pm-about-spread--reverse .pm-about-spread-copy { order: 1; }
 }
 
+/* Press page: an editorial "filmstrip" of real photos, scroll-snapped
+   horizontally, sitting above the mentions list as a magazine-style
+   opener. */
+.pm-press-editorial {
+  display: flex; gap: clamp(10px, 1.8vw, 18px);
+  padding: clamp(24px, 4vw, 40px) var(--pm-pad) clamp(8px, 2vw, 16px);
+  overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.pm-press-editorial::-webkit-scrollbar { display: none; }
+.pm-press-editorial-item {
+  flex: 0 0 auto; width: clamp(200px, 30vw, 320px); aspect-ratio: 3 / 4;
+  overflow: hidden; scroll-snap-align: start;
+}
+.pm-press-editorial-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--pm-ease); }
+.pm-press-editorial-item:hover img { transform: scale(1.035); }
+@media (min-width: 900px) {
+  .pm-press-editorial-item:first-child { width: clamp(320px, 38vw, 420px); }
+}
+
 /* Press page: a 4-image slot row dropped between mentions, breaking up
    the text-heavy list. Swap the pm-media-placeholder renders for real
    photos the same way the mention images are replaced. */
