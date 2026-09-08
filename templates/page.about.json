@@ -1,6 +1,0 @@
-{
-  "sections": {
-    "main": { "type": "pm-about-page", "settings": {} }
-  },
-  "order": ["main"]
-}

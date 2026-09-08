@@ -1,6 +1,10 @@
-{%- if page.handle == 'about-us' -%}
-  {%- render 'pm-about-content' -%}
-{%- else -%}
+{%- comment -%}
+  Generic fallback for any page on the default template. About Us and
+  Press don't use this — they're rendered by the enabled pm-about and
+  pm-press sections in page.json, which check page.handle themselves.
+  This section stays disabled in page.json; it only matters if it's
+  ever re-enabled for a page with no dedicated section of its own.
+{%- endcomment -%}
 <div class="page-width page-width--narrow page-content">
   {%- render 'breadcrumbs' -%}
   <header class="section-header">
@@ -10,7 +14,6 @@
     {{ page.content }}
   </div>
 </div>
-{%- endif -%}
 
 {% schema %}
 {
