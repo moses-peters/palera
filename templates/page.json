@@ -108,6 +108,7 @@
         },
         "gallery_01": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Milan Boutique",
             "label_2": "Palera Milano — Storefront",
@@ -128,6 +129,7 @@
         },
         "gallery_02": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "image_1": "shopify://shop_images/p4.webp",
             "label_1": "Palera Milano — La Rinascente",
@@ -151,6 +153,7 @@
         },
         "gallery_03": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Temporary Store",
             "label_2": "Palera Milano — Pop-Up Interior",
@@ -171,6 +174,7 @@
         },
         "gallery_04": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Retail Debut",
             "label_2": "Palera Milano — Storefront Facade",
@@ -211,6 +215,7 @@
         },
         "gallery_06": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "image_1": "shopify://shop_images/pp5.webp",
             "label_1": "Palera Milano — Everyday Elegance",
@@ -234,6 +239,7 @@
         },
         "gallery_07": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — SS26 Collection",
             "label_2": "Palera Milano — Handcrafted Detail",
@@ -253,6 +259,7 @@
         },
         "gallery_08": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Global Expansion",
             "label_2": "Palera Milano — New Boutique",
@@ -272,6 +279,7 @@
         },
         "gallery_09": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Pop-Up Store",
             "label_2": "Palera Milano — Seasonal Launch",
@@ -291,6 +299,7 @@
         },
         "gallery_10": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Retail Expansion",
             "label_2": "Palera Milano — Brand Momentum",
@@ -310,6 +319,7 @@
         },
         "gallery_11": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Milan Showroom",
             "label_2": "Palera Milano — International Growth",
