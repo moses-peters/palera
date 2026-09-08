@@ -38,7 +38,7 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "accessories",
+            "family": "clutch-micro-family",
             "orientation": "horizontal",
             "image": "shopify://shop_images/mirage-multi-necklaces-458168.jpg",
             "video_url": "",
