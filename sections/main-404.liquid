@@ -10,10 +10,15 @@
   the slug (Theme settings for this section, in the customizer) any
   time to rotate the link.
 
-  Press page — same trick, but for a page that's meant to be found and
-  linked from the footer rather than kept secret: no Page resource to
-  create in Admin, no template to assign, just /press. Content lives in
-  snippets/pm-press-content.liquid.
+  This 404-interception trick was also tried for the Press page (no
+  Page resource needed, matching /press directly), but confirmed not
+  to work while the theme is unpublished: Shopify's draft-theme
+  preview (?preview_theme_id=...) doesn't run the draft theme's code
+  for unmatched/404 routes at all — it always falls back to the
+  homepage, same as this lookbook link does when tested the same way.
+  Real resources (a real Page, a real product) preview correctly with
+  draft theme code; only 404s don't. Press uses a real Page instead
+  (see sections/main-page.liquid, page.handle == 'press').
 {%- endcomment -%}
 {%- liquid
   assign lookbook_slug = section.settings.lookbook_slug | strip | downcase
@@ -23,15 +28,9 @@
   if lookbook_slug != blank and actual_path == expected_path
     assign show_lookbook = true
   endif
-  assign show_press = false
-  if actual_path == 'press'
-    assign show_press = true
-  endif
 -%}
 {%- if show_lookbook -%}
   {% render 'pm-lookbook', pdf_url: section.settings.lookbook_pdf_url, heading: section.settings.lookbook_heading, eyebrow: section.settings.lookbook_eyebrow %}
-{%- elsif show_press -%}
-  {% render 'pm-press-content' %}
 {%- else -%}
   <div class="page-width page-content">
     <header class="section-header section-header--404">

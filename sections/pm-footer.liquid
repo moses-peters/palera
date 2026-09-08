@@ -25,13 +25,15 @@
                       Press is hardcoded into the Client Service column
                       rather than a real linklist entry — adding an item
                       to a Shopify navigation menu needs Admin access
-                      this theme doesn't have. Points at /press, not
-                      /pages/press — there's no real Page behind it, the
-                      content is served by intercepting the 404 route for
-                      that exact path (see sections/main-404.liquid).
+                      this theme doesn't have. Needs a real Page created
+                      at handle "press" (main-page.liquid renders the
+                      actual content for it) — a 404-interception trick
+                      was tried instead to avoid that, but confirmed not
+                      to work while the theme is unpublished: draft-theme
+                      previews don't run theme code for unmatched routes.
                     {%- endcomment -%}
                     {%- if block.settings.menu == 'client-service' -%}
-                      <li><a href="/press">Press</a></li>
+                      <li><a href="/pages/press">Press</a></li>
                     {%- endif -%}
                   </ul>
                 </div>
