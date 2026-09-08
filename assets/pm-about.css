@@ -33,6 +33,20 @@
   .pm-about-spread--reverse .pm-about-spread-copy { order: 1; }
 }
 
+/* Press page: a 4-image slot row dropped between mentions, breaking up
+   the text-heavy list. Swap the pm-media-placeholder renders for real
+   photos the same way the mention images are replaced. */
+.pm-press-gallery {
+  padding: clamp(16px, 2.5vw, 28px) var(--pm-pad);
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(8px, 1.5vw, 16px);
+}
+.pm-press-gallery-item { aspect-ratio: 1 / 1; overflow: hidden; }
+.pm-press-gallery-item img,
+.pm-press-gallery-item video { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 700px) {
+  .pm-press-gallery { grid-template-columns: repeat(4, 1fr); }
+}
+
 .pm-about-values { padding: 0 var(--pm-pad) clamp(36px, 5vw, 72px); border-top: 1px solid var(--pm-line); }
 .pm-about-values-grid { display: grid; grid-template-columns: 1fr; gap: clamp(32px, 4vw, 48px); padding-top: clamp(28px, 4vw, 48px); }
 .pm-about-value-index { display: block; font-size: 11px; color: var(--pm-muted); letter-spacing: 0.1em; margin-bottom: 14px; }
