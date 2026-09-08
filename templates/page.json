@@ -197,6 +197,7 @@
         },
         "gallery_05": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Ceremony Bag",
             "label_2": "Palera Milano — Evening Clutch",
@@ -297,6 +298,7 @@
           "settings": {
             "eyebrow": "Beesness",
             "heading": "Palera Milano accelerates global retail expansion",
+            "image": "shopify://shop_images/d88f.avif",
             "link_url": "https://www.beesness.it/2026/05/11/palera-milano-accelera-lespansione-retail-globale/",
             "link_label": "Read the feature →",
             "text": ""
@@ -317,6 +319,7 @@
           "settings": {
             "eyebrow": "Affari Italiani",
             "heading": "Palera Milano accelerates global retail expansion",
+            "image": "shopify://shop_images/esposizione.jpg",
             "link_url": "https://www.affaritaliani.it/milano/milan-show-biz/paler-milano-accelera-espansione-retail-globale.html",
             "link_label": "Read the feature →",
             "text": ""
@@ -334,6 +337,7 @@
         },
         "mention_12": {
           "type": "mention",
+          "disabled": true,
           "settings": {
             "eyebrow": "Press",
             "heading": "More Coverage",
