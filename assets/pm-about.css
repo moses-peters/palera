@@ -50,7 +50,7 @@
 }
 .pm-press-editorial::-webkit-scrollbar { display: none; }
 .pm-press-editorial-item {
-  flex: 0 0 auto; width: clamp(230px, 34vw, 360px); aspect-ratio: 3 / 4;
+  flex: 0 0 auto; width: clamp(255px, 34vw, 385px); aspect-ratio: 3 / 4;
   overflow: hidden; scroll-snap-align: start;
 }
 .pm-press-editorial-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--pm-ease); }
