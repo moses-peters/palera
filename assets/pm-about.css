@@ -38,7 +38,7 @@
    opener. */
 .pm-press-editorial {
   display: flex; gap: clamp(10px, 1.8vw, 18px);
-  padding: clamp(24px, 4vw, 40px) var(--pm-pad) clamp(8px, 2vw, 16px) calc(var(--pm-pad) + clamp(16px, 3vw, 32px));
+  padding: clamp(24px, 4vw, 40px) var(--pm-pad) clamp(8px, 2vw, 16px) calc(var(--pm-pad) + clamp(32px, 6vw, 64px));
   overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
