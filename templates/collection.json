@@ -38,7 +38,7 @@
           "type": "editorial_break",
           "settings": {
             "show_on": "family",
-            "family": "clutch-micro-family",
+            "family": "clutch-micro",
             "orientation": "horizontal",
             "image": "shopify://shop_images/Clutch_Micro_Desktop.jpg",
             "video_url": "",
