@@ -381,7 +381,7 @@
                   {%- endif -%}
                 </div>
                 <div class="pm-plp-tile-info">
-                  <span class="pm-plp-tile-name">{{ tile_name }}{%- if tile_color_name != blank -%} <span class="pm-tile-color">{{ tile_color_name }}</span>{%- endif -%}</span>
+                  <span class="pm-plp-tile-name">{{ tile_name }}{%- if tile_color_name != blank %} <span class="pm-tile-color">{{ tile_color_name }}</span>{%- endif -%}</span>
                   <span class="pm-plp-tile-price">
                     {%- if tile_price_varies -%}From {{ tile_price | money }}{%- else -%}{{ tile_price | money }}{%- endif -%}
                   </span>

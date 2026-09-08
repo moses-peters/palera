@@ -90,7 +90,7 @@
             </div>
             <div class="pm-rec-tile-info">
               <div class="pm-rec-tile-row">
-                <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}{%- if rec_product.title contains ' — ' -%} <span class="pm-tile-color">{{ rec_product.title | split: ' — ' | last }}</span>{%- endif -%}</span>
+                <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}{%- if rec_product.title contains ' — ' %} <span class="pm-tile-color">{{ rec_product.title | split: ' — ' | last }}</span>{%- endif -%}</span>
                 {%- if sibling_count > 0 -%}
                   <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
                 {%- endif -%}
