@@ -111,6 +111,8 @@
               endif
             endif
 
+          -%}
+          {%- liquid
             unless has_image
               assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
               if images[color_file_name] != blank
@@ -118,6 +120,20 @@
               endif
             endunless
           -%}
+          {%- unless has_image -%}
+            {%- comment -%}
+              No real photo exists for this color on this product at all (not
+              even a sibling hardware combo, nor an uploaded swatch file) --
+              fall back to the curated crystal-color swatch rather than
+              leaving the circle blank.
+            {%- endcomment -%}
+            {%- capture curated_swatch_url -%}{% render 'pm-crystal-swatch-url', color_value: value %}{%- endcapture -%}
+            {%- assign curated_swatch_url = curated_swatch_url | strip -%}
+            {%- if curated_swatch_url != blank -%}
+              {%- assign color_image = curated_swatch_url -%}
+              {%- assign has_image = true -%}
+            {%- endif -%}
+          {%- endunless -%}
           <label
             for="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ value | url_encode }}"
             class="variant__button-label color-swatch color-swatch--{{ value | handle }}{% unless product_available %} disabled{% endunless %}"
