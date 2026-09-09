@@ -95,6 +95,19 @@
               if matching_variant and matching_variant.featured_image
                 assign color_image = matching_variant.featured_image | image_url: width: 100
                 assign has_image = true
+              else
+                # The first variant matching this color (by array order) may be a
+                # specific color+hardware combo with no photo of its own, even
+                # though another combo sharing the same color does -- check all of
+                # them rather than showing a blank swatch for an otherwise
+                # photographed color.
+                assign color_variants = product.variants | where: option_key, value
+                for color_variant in color_variants
+                  if has_image == false and color_variant.featured_image
+                    assign color_image = color_variant.featured_image | image_url: width: 100
+                    assign has_image = true
+                  endif
+                endfor
               endif
             endif
 
