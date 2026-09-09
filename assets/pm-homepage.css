@@ -604,7 +604,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
      as the campaign-panel issue earlier in this file). align-items:start
      above removes the stretch itself; this is the belt-and-suspenders
      second half of the fix. */
-  width: 100%; height: auto; aspect-ratio: 4 / 5; margin-bottom: 8px; transition: opacity 0.2s var(--pm-ease);
+  width: 100%; height: auto; aspect-ratio: 4 / 5; margin-bottom: 16px; transition: opacity 0.2s var(--pm-ease);
 }
 .pm-shop-menu-family img,
 .pm-shop-menu-family video { object-fit: cover; display: block; }
