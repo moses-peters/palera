@@ -103,8 +103,12 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-duo-caption p { margin-top: 10px; font-size: clamp(17px, 2vw, 22px); line-height: 1.45; }
 @media (min-width: 900px) {
   .pm-duo-grid { grid-template-columns: 7fr 5fr; align-items: end; gap: clamp(12px, 2vw, 24px); }
-  .pm-duo-image--a { aspect-ratio: 4 / 5; align-self: center; }
-  .pm-duo-image--b { aspect-ratio: 1 / 1; align-self: start; margin-top: clamp(15px, 2vw, 30px); }
+  /* On very wide screens, a 7/12-width column at aspect-ratio 4/5 works
+     out to 1300px+ tall -- capping the height keeps the section from
+     towering over the page on large monitors; object-fit: cover on the
+     media inside still fills whatever box results. */
+  .pm-duo-image--a { aspect-ratio: 4 / 5; align-self: center; max-height: 720px; }
+  .pm-duo-image--b { aspect-ratio: 1 / 1; align-self: start; margin-top: clamp(15px, 2vw, 30px); max-height: 480px; }
   .pm-duo-caption { position: absolute; left: 55%; bottom: clamp(40px, 6vw, 72px); z-index: 2; }
 }
 
