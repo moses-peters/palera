@@ -145,6 +145,7 @@
         },
         "photo-4": {
           "type": "photo",
+          "disabled": true,
           "settings": {
             "product": "shopify://products/clutch-edge-long-silver-blue",
             "image": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
@@ -155,6 +156,7 @@
         },
         "photo-5": {
           "type": "photo",
+          "disabled": true,
           "settings": {
             "product": "shopify://products/amelia-bag-gold",
             "image": "shopify://shop_images/Crystal-Pouch-Gamboge-Gold_1b55fdb2-d958-4e2c-9a1b-80008f18b541.jpg",
@@ -165,6 +167,7 @@
         },
         "photo-6": {
           "type": "photo",
+          "disabled": true,
           "settings": {
             "product": "shopify://products/capri-bag-gold",
             "image": "shopify://shop_images/Phone-Holder-Sparkle-Blue-Gold_1.jpg",
@@ -175,6 +178,7 @@
         },
         "photo_HByhkb": {
           "type": "photo",
+          "disabled": true,
           "settings": {
             "product": "shopify://products/crystal-wallet-rare-pink",
             "image": "shopify://shop_images/pouch-Long-Grey-Multicolor_1.jpg",
