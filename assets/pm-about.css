@@ -21,11 +21,6 @@
 .pm-about-spread-text p:last-child { margin-bottom: 0; }
 @media (min-width: 900px) {
   .pm-about-spread { grid-template-columns: 1.1fr 1fr; align-items: center; }
-  /* At aspect-ratio 4/5 a 1.1fr column on a wide monitor works out to a
-     very tall image next to a much shorter copy block, leaving a big
-     dead gap beside the text -- cap the height so the two columns stay
-     in proportion. */
-  .pm-about-spread-image { max-height: 640px; }
 }
 
 /* Press page reuses .pm-about-spread per mention, alternating which
