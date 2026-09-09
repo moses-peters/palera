@@ -345,7 +345,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-plp-tile:focus-within .pm-plp-swatches { opacity: 1; pointer-events: auto; }
 .pm-plp-swatch {
   width: 16px; height: 16px; border-radius: 3px;
-  background-size: 250%; background-position: center;
+  background-size: 600%; background-position: center;
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   transition: transform 0.15s var(--pm-ease);
