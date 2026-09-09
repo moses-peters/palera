@@ -123,7 +123,7 @@
           <label
             for="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ value | url_encode }}"
             class="variant__button-label color-swatch color-swatch--{{ value | handle }}{% unless product_available %} disabled{% endunless %}"
-            style="background-color: {{ color_swatch_fallback }};{% if has_image %} background-image: url({{ color_image }});{% endif %}"
+            style="{% if has_image %}background-image: url({{ color_image }});{% else %}background-color: {{ color_swatch_fallback }};{% endif %}"
           >
             {{ value | escape }}
           </label>
