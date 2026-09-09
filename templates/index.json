@@ -79,96 +79,6 @@
         "text_right_body": ""
       }
     },
-    "pm-full-bleed-media": {
-      "type": "pm-full-bleed-media",
-      "settings": {
-        "image": "shopify://shop_images/3U7A2898_-_Copy.jpg",
-        "image_mobile": "shopify://shop_images/3U7A2898.jpg",
-        "caption": "",
-        "link_url": ""
-      }
-    },
-    "pm-editorial-duo": {
-      "type": "pm-editorial-duo",
-      "settings": {
-        "image_a": "shopify://shop_images/3U7A2949-2.jpg",
-        "image_b": "shopify://shop_images/3U7A2976.jpg",
-        "tag": "Made By Hand",
-        "copy": "Every piece is handmade, with care in every detail.",
-        "link_label": "",
-        "link_url": ""
-      }
-    },
-    "pm-photo-grid": {
-      "type": "pm-photo-grid",
-      "blocks": {
-        "photo-4": {
-          "type": "photo",
-          "disabled": true,
-          "settings": {
-            "product": "shopify://products/clutch-edge-long-silver-blue",
-            "image": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
-            "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-4.jpg",
-            "link": ""
-          }
-        },
-        "photo-5": {
-          "type": "photo",
-          "disabled": true,
-          "settings": {
-            "product": "shopify://products/amelia-bag-gold",
-            "image": "shopify://shop_images/Crystal-Pouch-Gamboge-Gold_1b55fdb2-d958-4e2c-9a1b-80008f18b541.jpg",
-            "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-5.jpg",
-            "link": ""
-          }
-        },
-        "photo-6": {
-          "type": "photo",
-          "disabled": true,
-          "settings": {
-            "product": "shopify://products/capri-bag-gold",
-            "image": "shopify://shop_images/Phone-Holder-Sparkle-Blue-Gold_1.jpg",
-            "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-6.jpg",
-            "link": ""
-          }
-        },
-        "photo_HByhkb": {
-          "type": "photo",
-          "disabled": true,
-          "settings": {
-            "product": "shopify://products/crystal-wallet-rare-pink",
-            "image": "shopify://shop_images/pouch-Long-Grey-Multicolor_1.jpg",
-            "fallback_label": "",
-            "fallback_asset": "",
-            "link": ""
-          }
-        },
-        "photo-8": {
-          "type": "photo",
-          "disabled": true,
-          "settings": {
-            "product": "shopify://products/mini-milano-n2-sparkle-blue",
-            "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-8.jpg",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "photo-4",
-        "photo-5",
-        "photo-6",
-        "photo_HByhkb",
-        "photo-8"
-      ],
-      "settings": {
-        "eyebrow": "",
-        "heading": ""
-      }
-    },
     "pm-photo-grid-top": {
       "type": "pm-photo-grid",
       "blocks": {
@@ -176,7 +86,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/maxi-roma-0",
-            "image": "shopify://shop_images/Siracusa-CHampagne-Gold_1.jpg",
+            "image": "shopify://shop_images/Siracusa-Black-Gold_2f7facb3-b9b7-460b-b919-00cda8d01a3c.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-1.jpg",
             "link": ""
@@ -207,7 +117,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-pouch",
-            "image": "shopify://shop_images/Diamond-Mini-Roma-Black-Multicolor.jpg",
+            "image": "shopify://shop_images/Santorini-Purple-Gold.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-3.jpg",
             "link": ""
@@ -219,6 +129,92 @@
         "photo_xL8DkK",
         "photo-2",
         "photo-3"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": ""
+      }
+    },
+    "pm-full-bleed-media": {
+      "type": "pm-full-bleed-media",
+      "settings": {
+        "image": "shopify://shop_images/3U7A2898_-_Copy.jpg",
+        "image_mobile": "shopify://shop_images/3U7A2898.jpg",
+        "caption": "",
+        "link_url": ""
+      }
+    },
+    "pm-editorial-duo": {
+      "type": "pm-editorial-duo",
+      "settings": {
+        "image_a": "shopify://shop_images/3U7A2949-2.jpg",
+        "image_b": "shopify://shop_images/3U7A2976.jpg",
+        "tag": "Made By Hand",
+        "copy": "Every piece is handmade, with care in every detail.",
+        "link_label": "",
+        "link_url": ""
+      }
+    },
+    "pm-photo-grid": {
+      "type": "pm-photo-grid",
+      "blocks": {
+        "photo-4": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/clutch-edge-long-silver-blue",
+            "image": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-4.jpg",
+            "link": ""
+          }
+        },
+        "photo-5": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/amelia-bag-gold",
+            "image": "shopify://shop_images/Crystal-Pouch-Gamboge-Gold_1b55fdb2-d958-4e2c-9a1b-80008f18b541.jpg",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-5.jpg",
+            "link": ""
+          }
+        },
+        "photo-6": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/capri-bag-gold",
+            "image": "shopify://shop_images/Phone-Holder-Sparkle-Blue-Gold_1.jpg",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-6.jpg",
+            "link": ""
+          }
+        },
+        "photo_HByhkb": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/crystal-wallet-rare-pink",
+            "image": "shopify://shop_images/Clutch-Edge-Short-Gamboge-Multicolor.jpg",
+            "fallback_label": "",
+            "fallback_asset": "",
+            "link": ""
+          }
+        },
+        "photo-8": {
+          "type": "photo",
+          "disabled": true,
+          "settings": {
+            "product": "shopify://products/mini-milano-n2-sparkle-blue",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-8.jpg",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "photo-4",
+        "photo-5",
+        "photo-6",
+        "photo_HByhkb",
+        "photo-8"
       ],
       "settings": {
         "eyebrow": "",
