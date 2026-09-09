@@ -1,5 +1,5 @@
 <div class="pm-homepage">
-  <section class="pm-photo-grid-section{% if section.id == 'pm-photo-grid' %} pm-photo-grid-section--tight-top{% elsif section.id == 'pm-photo-grid-top' %} pm-photo-grid-section--top{% endif %}">
+  <section class="pm-photo-grid-section{% if section.id contains 'pm-photo-grid-top' %} pm-photo-grid-section--top{% elsif section.id contains 'pm-photo-grid' %} pm-photo-grid-section--tight-top{% endif %}">
     {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
       <div class="pm-section-head pm-reveal">
         {%- if section.settings.eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
