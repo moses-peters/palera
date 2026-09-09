@@ -36,7 +36,7 @@
       <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">View All</a>
       <a href="/collections/aw27" class="pm-shop-menu-links-item">New In</a>
       {%- for category in categories -%}
-        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item">{{ category }}</a>
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-shop-menu-links-item{% if forloop.first %} pm-shop-menu-links-item--group-start{% endif %}">{{ category }}</a>
       {%- endfor -%}
     </nav>
 
