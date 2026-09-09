@@ -308,7 +308,11 @@
                 {%- unless other_value == color_value -%}
                   {%- assign other_variant = product.variants | where: color_option_key, other_value | first -%}
                   {%- assign swatch_css = other_value | split: ' ' | last | handle -%}
-                  {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: product.url | append: '?variant=' | append: other_variant.id -%}
+                  {%- assign swatch_image = '' -%}
+                  {%- if other_variant.featured_image -%}
+                    {%- assign swatch_image = other_variant.featured_image | image_url: width: 100 -%}
+                  {%- endif -%}
+                  {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: product.url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
                   {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
                 {%- endunless -%}
               {%- endfor -%}
@@ -320,7 +324,11 @@
                   {%- if other_base == base_title -%}
                     {%- assign other_color_name = other_product.title | split: ' — ' | last -%}
                     {%- assign swatch_css = other_color_name | split: ' ' | last | handle -%}
-                    {%- assign sibling_entry = other_color_name | append: '::' | append: swatch_css | append: '::' | append: other_product.url -%}
+                    {%- assign swatch_image = '' -%}
+                    {%- if other_product.featured_image -%}
+                      {%- assign swatch_image = other_product.featured_image | image_url: width: 100 -%}
+                    {%- endif -%}
+                    {%- assign sibling_entry = other_color_name | append: '::' | append: swatch_css | append: '::' | append: other_product.url | append: '::' | append: swatch_image -%}
                     {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
                   {%- endif -%}
                 {%- endif -%}
@@ -391,7 +399,8 @@
                 <div class="pm-plp-swatches">
                   {%- for entry in swatch_visible -%}
                     {%- assign swatch_parts = entry | split: '::' -%}
-                    <a href="{{ swatch_parts[2] }}" class="pm-plp-swatch" style="background-color: {{ swatch_parts[1] }};" title="{{ swatch_parts[0] | escape }}" aria-label="{{ swatch_parts[0] | escape }}"></a>
+                    {%- assign swatch_img = swatch_parts[3] -%}
+                    <a href="{{ swatch_parts[2] }}" class="pm-plp-swatch" style="background-color: {{ swatch_parts[1] }};{% if swatch_img != blank %} background-image: url({{ swatch_img }});{% endif %}" title="{{ swatch_parts[0] | escape }}" aria-label="{{ swatch_parts[0] | escape }}"></a>
                   {%- endfor -%}
                   {%- if swatch_overflow > 0 -%}
                     <span class="pm-plp-swatch-more">+{{ swatch_overflow }}</span>
