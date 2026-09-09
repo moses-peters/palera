@@ -313,7 +313,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-plp-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: clamp(28px, 3.4vw, 44px) clamp(12px, 1.6vw, 20px);
+  gap: clamp(28px, 3.4vw, 44px) clamp(20px, 2.4vw, 34px);
 }
 @media (min-width: 640px) { .pm-plp-grid { grid-template-columns: repeat(4, 1fr); } }
 .pm-plp-tile {
