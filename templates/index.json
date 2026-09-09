@@ -117,7 +117,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-pouch",
-            "image": "shopify://shop_images/Diamond-Mini-Roma-Black-Multicolor.jpg",
+            "image": "shopify://shop_images/Santorini-Purple-Gold.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-3.jpg",
             "link": ""
@@ -192,7 +192,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-wallet-rare-pink",
-            "image": "shopify://shop_images/pouch-Long-Grey-Multicolor_1.jpg",
+            "image": "shopify://shop_images/Clutch-Edge-Short-Gamboge-Multicolor.jpg",
             "fallback_label": "",
             "fallback_asset": "",
             "link": ""
