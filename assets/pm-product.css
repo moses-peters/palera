@@ -91,7 +91,18 @@
 }
 .pm-product .variant__button-label:hover { border-color: var(--pm-ink); }
 .pm-product input[data-variant-input]:checked + .variant__button-label {
-  background: var(--pm-ink); border-color: var(--pm-ink); color: var(--pm-paper);
+  /* background-color, not the background shorthand -- the shorthand resets
+     every other background-* longhand (position, size, ...) to its initial
+     value wherever it wins the cascade. This selector's extra
+     [data-variant-input] attribute and :checked pseudo-class give it higher
+     specificity than .color-swatch.variant__button-label's own
+     background-size/background-position rule below, so on a selected color
+     swatch the shorthand was silently resetting background-size to auto and
+     background-position to 0% 0% -- showing whatever sits in a photo's
+     top-left corner (almost always plain white studio background) instead
+     of a centered, filled crop. Confirmed via computed-style inspection and
+     reproduced/fixed in an isolated test before changing this. */
+  background-color: var(--pm-ink); border-color: var(--pm-ink); color: var(--pm-paper);
 }
 .pm-product .variant__button-label.disabled {
   color: var(--pm-line); border-color: var(--pm-line); text-decoration: line-through; cursor: not-allowed;
