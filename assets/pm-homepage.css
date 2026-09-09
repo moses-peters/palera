@@ -589,7 +589,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 48px 64px;
+  gap: clamp(20px, 3vh, 36px) 64px;
   align-content: start;
   align-items: start;
 }
@@ -623,6 +623,20 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-shop-menu-preview-panel video { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
 .pm-shop-menu-preview-name { display: block; margin-top: 10px; font-family: var(--pm-font-serif); font-size: 16px; }
 .pm-shop-menu-preview-desc { margin-top: 4px; font-size: 11px; line-height: 1.5; color: var(--pm-muted); }
+
+@media (min-width: 1051px) {
+  /* Cap both the family tiles and the hover-preview photo to a share
+     of the viewport height, so the whole browse panel (2 tile rows +
+     labels + the preview) fits within one screen on a normal laptop
+     instead of running past the fold. object-fit: cover on the media
+     itself still fills whatever box height results. */
+  .pm-shop-menu-family .pm-placeholder,
+  .pm-shop-menu-family img,
+  .pm-shop-menu-family video { max-height: clamp(110px, 19vh, 200px); }
+  .pm-shop-menu-preview-panel .pm-placeholder,
+  .pm-shop-menu-preview-panel img,
+  .pm-shop-menu-preview-panel video { max-height: clamp(240px, 42vh, 440px); }
+}
 
 @media (max-width: 1050px) {
   .pm-shop-menu { grid-template-columns: 1fr; }
