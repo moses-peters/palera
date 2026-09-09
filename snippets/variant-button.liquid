@@ -112,20 +112,14 @@
             endif
 
           -%}
-          {%- liquid
-            unless has_image
-              assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
-              if images[color_file_name] != blank
-                assign has_image = true
-              endif
-            endunless
-          -%}
           {%- unless has_image -%}
             {%- comment -%}
-              No real photo exists for this color on this product at all (not
-              even a sibling hardware combo, nor an uploaded swatch file) --
-              fall back to the curated crystal-color swatch rather than
-              leaving the circle blank.
+              No real per-variant photo exists for this color on this product
+              (not the variant, nor a sibling hardware combo) -- try the
+              curated crystal-color swatch before the legacy Admin-uploaded
+              swatch-file lookup below, which can silently "succeed" against
+              a stale/placeholder file left over from before real product
+              photos existed and never actually shows anything.
             {%- endcomment -%}
             {%- capture curated_swatch_url -%}{% render 'pm-crystal-swatch-url', color_value: value %}{%- endcapture -%}
             {%- assign curated_swatch_url = curated_swatch_url | strip -%}
@@ -134,6 +128,14 @@
               {%- assign has_image = true -%}
             {%- endif -%}
           {%- endunless -%}
+          {%- liquid
+            unless has_image
+              assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+              if images[color_file_name] != blank
+                assign has_image = true
+              endif
+            endunless
+          -%}
           <label
             for="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ value | url_encode }}"
             class="variant__button-label color-swatch color-swatch--{{ value | handle }}{% unless product_available %} disabled{% endunless %}"
