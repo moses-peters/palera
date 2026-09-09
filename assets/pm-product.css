@@ -100,7 +100,7 @@
 .pm-product .variant__button-label.color-swatch {
   position: relative;
   min-width: 0; width: 38px; height: 38px; padding: 0; border-radius: 50%;
-  background-size: 500%; background-position: center; text-indent: -9999px; overflow: hidden;
+  background-size: cover; background-position: center; text-indent: -9999px; overflow: hidden;
   border: 1px solid var(--pm-line);
   transition: box-shadow 0.2s var(--pm-ease), transform 0.2s var(--pm-ease);
 }
