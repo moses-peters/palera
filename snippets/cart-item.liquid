@@ -1,7 +1,7 @@
 <div class="cart__item" data-key="{{ product.key }}">
   <div class="cart__image">
     {% if product.image != blank %}
-      <a href="{{ product.url }}" class="image-wrap">
+      {% if product.product.id == 9231359869275 or product.product.id == 9231356395867 %}
         {%- render 'image-element',
           img: product,
           alt: product.product.title,
@@ -10,7 +10,18 @@
           sizeVariable: sizeVariable,
           fallback: fallback,
         -%}
-      </a>
+      {% else %}
+        <a href="{{ product.url }}" class="image-wrap">
+          {%- render 'image-element',
+            img: product,
+            alt: product.product.title,
+            widths: '180, 360, 540',
+            sizes: sizes,
+            sizeVariable: sizeVariable,
+            fallback: fallback,
+          -%}
+        </a>
+      {% endif %}
     {% endif %}
   </div>
   <div class="cart__item-details">
