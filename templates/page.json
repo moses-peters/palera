@@ -98,6 +98,7 @@
       "blocks": {
         "mention_01": {
           "type": "mention",
+          "disabled": true,
           "settings": {
             "eyebrow": "Vogue Italia",
             "heading": "Opening: the new boutiques shaping Milan retail",
@@ -108,6 +109,7 @@
         },
         "gallery_01": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Milan Boutique",
             "label_2": "Palera Milano — Storefront",
@@ -128,6 +130,7 @@
         },
         "gallery_02": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "image_1": "shopify://shop_images/p4.webp",
             "label_1": "Palera Milano — La Rinascente",
@@ -144,6 +147,7 @@
           "settings": {
             "eyebrow": "Fashion United",
             "heading": "Palera Milano opens a temporary store at La Rinascente",
+            "image": "shopify://shop_images/P124.avif",
             "link_url": "https://fashionunited.it/news/retail/palera-milano-apre-un-temporary-store-alla-rinascente/2025051426996",
             "link_label": "Read the feature →",
             "text": ""
@@ -151,6 +155,7 @@
         },
         "gallery_03": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Temporary Store",
             "label_2": "Palera Milano — Pop-Up Interior",
@@ -171,6 +176,7 @@
         },
         "gallery_04": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Retail Debut",
             "label_2": "Palera Milano — Storefront Facade",
@@ -191,6 +197,7 @@
         },
         "gallery_05": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Ceremony Bag",
             "label_2": "Palera Milano — Evening Clutch",
@@ -211,6 +218,7 @@
         },
         "gallery_06": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "image_1": "shopify://shop_images/pp5.webp",
             "label_1": "Palera Milano — Everyday Elegance",
@@ -227,6 +235,7 @@
           "settings": {
             "eyebrow": "Fashionality",
             "heading": "Palera Milano SS26: The Bags That Capture the Essence of Handcrafted Radiance",
+            "image": "shopify://shop_images/Roma_BeltU_2.jpg",
             "link_url": "https://www.fashionality.nyc/palera-milano-ss26-the-bags-that-capture-the-essence-of-handcrafted-radiance/",
             "link_label": "Read the feature →",
             "text": ""
@@ -234,6 +243,7 @@
         },
         "gallery_07": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — SS26 Collection",
             "label_2": "Palera Milano — Handcrafted Detail",
@@ -246,6 +256,7 @@
           "settings": {
             "eyebrow": "Hub Style",
             "heading": "Palera Milano accelerates global retail expansion",
+            "image": "shopify://shop_images/P1653.jpg",
             "link_url": "https://hubstyle.it/2026/05/04/palera-milano-accelera-lespansione-retail-globale/",
             "link_label": "Read the feature →",
             "text": ""
@@ -253,6 +264,7 @@
         },
         "gallery_08": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Global Expansion",
             "label_2": "Palera Milano — New Boutique",
@@ -265,6 +277,7 @@
           "settings": {
             "eyebrow": "Fashion Network",
             "heading": "New Openings and Pop-Up Stores: Falconeri, Scholl, Lancôme, Zona20 Milano, Marlù, Palera Milano",
+            "image": "shopify://shop_images/P165.jpg",
             "link_url": "https://it.fashionnetwork.com/news/Nuovi-opening-e-pop-up-store-falconeri-scholl-lancome-zona20-milano-marlu-palera-milano,1829140.html",
             "link_label": "Read the feature →",
             "text": ""
@@ -272,6 +285,7 @@
         },
         "gallery_09": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Pop-Up Store",
             "label_2": "Palera Milano — Seasonal Launch",
@@ -284,6 +298,7 @@
           "settings": {
             "eyebrow": "Beesness",
             "heading": "Palera Milano accelerates global retail expansion",
+            "image": "shopify://shop_images/d88f.avif",
             "link_url": "https://www.beesness.it/2026/05/11/palera-milano-accelera-lespansione-retail-globale/",
             "link_label": "Read the feature →",
             "text": ""
@@ -291,6 +306,7 @@
         },
         "gallery_10": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Retail Expansion",
             "label_2": "Palera Milano — Brand Momentum",
@@ -303,6 +319,7 @@
           "settings": {
             "eyebrow": "Affari Italiani",
             "heading": "Palera Milano accelerates global retail expansion",
+            "image": "shopify://shop_images/esposizione.jpg",
             "link_url": "https://www.affaritaliani.it/milano/milan-show-biz/paler-milano-accelera-espansione-retail-globale.html",
             "link_label": "Read the feature →",
             "text": ""
@@ -310,6 +327,7 @@
         },
         "gallery_11": {
           "type": "gallery",
+          "disabled": true,
           "settings": {
             "label_1": "Palera Milano — Milan Showroom",
             "label_2": "Palera Milano — International Growth",
@@ -319,6 +337,7 @@
         },
         "mention_12": {
           "type": "mention",
+          "disabled": true,
           "settings": {
             "eyebrow": "Press",
             "heading": "More Coverage",
