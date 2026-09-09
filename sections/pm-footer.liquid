@@ -8,6 +8,26 @@
         {%- if section.settings.tagline != blank -%}
           <p class="pm-footer-tagline">{{ section.settings.tagline }}</p>
         {%- endif -%}
+        {%- if section.settings.show_newsletter -%}
+          <div class="pm-footer-newsletter-compact pm-footer-newsletter-compact--brand pm-reveal">
+            {%- if section.settings.newsletter_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.newsletter_eyebrow }}</span>{%- endif -%}
+            <span class="pm-footer-newsletter-compact-heading">{{ section.settings.newsletter_heading }}</span>
+
+            <form class="pm-footer-newsletter-form pm-footer-newsletter-form--compact" data-klaviyo-signup-form data-klaviyo-list-id="{{ section.settings.klaviyo_list_id }}">
+              <label for="FooterNewsletterEmail-{{ section.id }}" class="pm-visually-hidden">Email address</label>
+              <input
+                id="FooterNewsletterEmail-{{ section.id }}"
+                type="email"
+                name="email"
+                class="pm-footer-newsletter-input pm-serif"
+                placeholder="Your email address"
+                required
+              >
+              <button type="submit" class="pm-footer-newsletter-submit">Subscribe</button>
+              <p class="pm-footer-newsletter-message" data-klaviyo-signup-message hidden></p>
+            </form>
+          </div>
+        {%- endif -%}
       </div>
       <div class="pm-footer-cols">
         {%- for block in section.blocks -%}
@@ -42,27 +62,6 @@
         {%- endfor -%}
       </div>
     </div>
-
-    {%- if section.settings.show_newsletter -%}
-      <div class="pm-footer-newsletter-compact pm-reveal">
-        {%- if section.settings.newsletter_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.newsletter_eyebrow }}</span>{%- endif -%}
-        <span class="pm-footer-newsletter-compact-heading">{{ section.settings.newsletter_heading }}</span>
-
-        <form class="pm-footer-newsletter-form pm-footer-newsletter-form--compact" data-klaviyo-signup-form data-klaviyo-list-id="{{ section.settings.klaviyo_list_id }}">
-          <label for="FooterNewsletterEmail-{{ section.id }}" class="pm-visually-hidden">Email address</label>
-          <input
-            id="FooterNewsletterEmail-{{ section.id }}"
-            type="email"
-            name="email"
-            class="pm-footer-newsletter-input pm-serif"
-            placeholder="Your email address"
-            required
-          >
-          <button type="submit" class="pm-footer-newsletter-submit">Subscribe</button>
-          <p class="pm-footer-newsletter-message" data-klaviyo-signup-message hidden></p>
-        </form>
-      </div>
-    {%- endif -%}
 
     <div class="pm-footer-bottom">
       <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>

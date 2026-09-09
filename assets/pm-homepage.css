@@ -454,6 +454,20 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   .pm-footer-newsletter-form--compact { margin-left: 0; width: 100%; }
   .pm-footer-newsletter-form--compact .pm-footer-newsletter-input { flex: 1; width: auto; }
 }
+
+/* Newsletter under the brand name/tagline instead of the wide row it
+   used to share with the bottom bar — stacks in the narrow brand
+   column rather than trying to keep the input+button on one line. */
+.pm-footer-newsletter-compact--brand {
+  flex-direction: column; align-items: flex-start;
+  margin-top: clamp(20px, 3vw, 28px); padding-top: 16px;
+}
+.pm-footer-newsletter-compact--brand .pm-footer-newsletter-form--compact {
+  margin-left: 0; margin-top: 10px; width: 100%;
+}
+.pm-footer-newsletter-compact--brand .pm-footer-newsletter-form--compact .pm-footer-newsletter-input {
+  flex: 1; width: auto;
+}
 .pm-footer-col h4 { margin-bottom: 20px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: #fff; }
 .pm-footer-col ul { list-style: none; margin: 0; padding: 0; }
 .pm-footer-col li { margin-bottom: 12px; font-size: 13px; }

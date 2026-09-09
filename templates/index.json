@@ -102,47 +102,6 @@
     "pm-photo-grid": {
       "type": "pm-photo-grid",
       "blocks": {
-        "photo-1": {
-          "type": "photo",
-          "settings": {
-            "product": "shopify://products/maxi-roma-0",
-            "image": "shopify://shop_images/Siracusa-CHampagne-Gold_1.jpg",
-            "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-1.jpg",
-            "link": ""
-          }
-        },
-        "photo_xL8DkK": {
-          "type": "photo",
-          "settings": {
-            "product": "shopify://products/diamond-maxi-roma-1",
-            "image": "shopify://shop_images/Micro-Bag-Azure-Gold.jpg",
-            "fallback_label": "",
-            "fallback_asset": "",
-            "link": ""
-          }
-        },
-        "photo-2": {
-          "type": "photo",
-          "settings": {
-            "product": "shopify://products/santorini-6",
-            "image": "shopify://shop_images/Amalfi-Camelot-Gold_1.jpg",
-            "image_mobile": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
-            "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-2.jpg",
-            "link": ""
-          }
-        },
-        "photo-3": {
-          "type": "photo",
-          "settings": {
-            "product": "shopify://products/crystal-pouch",
-            "image": "shopify://shop_images/Diamond-Mini-Roma-Black-Multicolor.jpg",
-            "fallback_label": "",
-            "fallback_asset": "pm-drive-grid-3.jpg",
-            "link": ""
-          }
-        },
         "photo-4": {
           "type": "photo",
           "disabled": true,
@@ -199,15 +158,67 @@
         }
       },
       "block_order": [
-        "photo-1",
-        "photo_xL8DkK",
-        "photo-2",
-        "photo-3",
         "photo-4",
         "photo-5",
         "photo-6",
         "photo_HByhkb",
         "photo-8"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": ""
+      }
+    },
+    "pm-photo-grid-top": {
+      "type": "pm-photo-grid",
+      "blocks": {
+        "photo-1": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/maxi-roma-0",
+            "image": "shopify://shop_images/Siracusa-CHampagne-Gold_1.jpg",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-1.jpg",
+            "link": ""
+          }
+        },
+        "photo_xL8DkK": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/diamond-maxi-roma-1",
+            "image": "shopify://shop_images/Micro-Bag-Azure-Gold.jpg",
+            "fallback_label": "",
+            "fallback_asset": "",
+            "link": ""
+          }
+        },
+        "photo-2": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/santorini-6",
+            "image": "shopify://shop_images/Amalfi-Camelot-Gold_1.jpg",
+            "image_mobile": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-2.jpg",
+            "link": ""
+          }
+        },
+        "photo-3": {
+          "type": "photo",
+          "settings": {
+            "product": "shopify://products/crystal-pouch",
+            "image": "shopify://shop_images/Diamond-Mini-Roma-Black-Multicolor.jpg",
+            "fallback_label": "",
+            "fallback_asset": "pm-drive-grid-3.jpg",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "photo-1",
+        "photo_xL8DkK",
+        "photo-2",
+        "photo-3"
       ],
       "settings": {
         "eyebrow": "",
@@ -219,6 +230,7 @@
     "pm-hero",
     "pm-product-pair",
     "pm-image-duo",
+    "pm-photo-grid-top",
     "pm-full-bleed-media",
     "pm-editorial-duo",
     "pm-photo-grid"
