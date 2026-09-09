@@ -127,6 +127,393 @@
 
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
 
+    <script>
+      (function() {
+        /* Fix 1: refreshing the cart reliably, for both the drawer and the /cart
+           page, after an add or a gift-box change, and making the drawer
+           populate reliably on a plain page load too.
+           - The drawer's [data-products] container is always empty in the
+             server-rendered HTML, on every single page load, by theme
+             design -- it depends entirely on theme.CartForm.buildCart()
+             (run once by the theme's own CartDrawer.init()) to populate it
+             afterwards. That call can end up writing into a DETACHED node:
+             this.products is captured once, at construction time, and if
+             anything later swaps out that element, the instance keeps
+             writing to the orphaned old one -- confirmed directly: the
+             fetch always succeeds, but the visible [data-products] stays
+             empty indefinitely.
+           - The first fix attempt worked around this by constructing a
+             brand new theme.CartForm for the drawer on every refresh. That
+             backfired: theme.CartForm's constructor always calls its own
+             init(), which registers a fresh document-level "cart:quantity"
+             listener WITHOUT ever removing the previous instance's -- so
+             every extra instance is a permanent extra listener for the
+             life of the page. Two listeners both reacting to the same
+             single quantity click compounds instead of just duplicating:
+             each one reads (and decrements) whatever the *other* just wrote
+             to the shared qty input, so one plus/minus click can walk the
+             quantity down by more than one step -- observed directly: a
+             single minus click on a line at quantity 2 emptied the entire
+             cart. That is a correctness bug, not just a wasted request, so
+             it cannot ship.
+           - The actual fix: patch theme.CartForm.prototype.cartMarkup once
+             (the method that actually performs the DOM write, called
+             asynchronously after the cart fetch resolves), so that ANY
+             existing instance (the theme's own included) first re-resolves
+             this.products from its own form if the cached element is no
+             longer attached to the page, then proceeds exactly as before.
+             This heals the stale reference in place, on the theme's own
+             single native instance, so no second instance -- and no second
+             listener -- is ever created. */
+        function kgPatchCartFormCartMarkup() {
+          if (kgPatchCartFormCartMarkup._done) { return true; }
+          if (!window.theme || !theme.CartForm || !theme.CartForm.prototype || !theme.CartForm.prototype.cartMarkup) { return false; }
+          var originalCartMarkup = theme.CartForm.prototype.cartMarkup;
+          theme.CartForm.prototype.cartMarkup = function() {
+            /* buildCart() kicks this off via an async fetch
+               (getCartProductMarkup().then(this.cartMarkup.bind(this))), so
+               time passes between buildCart() being called and this
+               actually running -- re-checking staleness back in buildCart()
+               left a real gap (confirmed live: this.products had already
+               gone stale again by the time cartMarkup ran, even though it
+               was valid when buildCart() started). Re-resolving right here,
+               immediately before the synchronous DOM write below, is as
+               late as it can be done and closes that gap. */
+            if (this.form && (!this.products || !document.contains(this.products))) {
+              var freshProducts = this.form.querySelector('[data-products]');
+              if (freshProducts) { this.products = freshProducts; }
+            }
+            return originalCartMarkup.apply(this, arguments);
+          };
+          kgPatchCartFormCartMarkup._done = true;
+          return true;
+        }
+        (function kgWaitForCartForm() {
+          if (!kgPatchCartFormCartMarkup()) { setTimeout(kgWaitForCartForm, 10); }
+        })();
+
+        function kgTriggerCartRefresh() {
+          document.dispatchEvent(new CustomEvent('cart:build'));
+        }
+        document.addEventListener('ajaxProduct:added', function() {
+          setTimeout(kgTriggerCartRefresh, 900);
+        });
+
+        /* Safety net for the drawer's plain-page-load case: the patch above
+           makes the theme's own native buildCart() call self-heal on its
+           NEXT run, but on a plain page load (no add, no gift-box toggle)
+           nothing naturally triggers a next run beyond the theme's own
+           first one. A single extra dispatch right after DOMContentLoaded
+           was not reliable by itself -- confirmed live: something in the
+           page (exact cause not pinned down, likely a delayed/lazy
+           re-render elsewhere on the page swapping the drawer's markup
+           again a few seconds in) can still leave [data-products] empty
+           even after that one retry. Rather than chase the exact timing
+           further, retry a bounded number of times over several seconds --
+           each retry only reaches instances that already exist (no new
+           CartForm, no new listener, see the patch above), so repeating it
+           is cheap and safe, and it naturally stops being useful (a no-op)
+           once the drawer is actually populated or the cart is genuinely
+           empty. */
+        function kgInitialCartRefresh() {
+          if (!document.getElementById('CartDrawerForm')) { return; }
+          var delays = [300, 800, 1500, 2500, 4000, 6000];
+          delays.forEach(function(delay) {
+            setTimeout(kgTriggerCartRefresh, delay);
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', kgInitialCartRefresh);
+        } else {
+          kgInitialCartRefresh();
+        }
+
+
+        /* Fix 1b: clicking the qty +/- steppers in the cart (drawer or the
+           full /cart page) was fully reloading the page back to whatever
+           page you were on -- theme.CartForm.prototype.quantityChanged
+           calls location.reload() unconditionally after every successful
+           (or 422) /cart/change.js response, before it even runs its own
+           this.buildCart() call right after. Patch the prototype in place
+           (never construct a new CartForm -- see the cartMarkup patch
+           above for why that caused a duplicate-listener regression) to
+           drop the reload and let the existing this.buildCart() call --
+           now reliable thanks to the cartMarkup patch above -- update the
+           drawer/page in place instead. Everything else (the 422 alert,
+           the is-empty class toggle, the cart:updated event) behaves
+           exactly as before. */
+        function kgPatchQuantityChanged() {
+          if (kgPatchQuantityChanged._done) { return true; }
+          if (!window.theme || !theme.CartForm || !theme.CartForm.prototype || !theme.CartForm.prototype.quantityChanged) { return false; }
+          theme.CartForm.prototype.quantityChanged = function(evt) {
+            var key = evt.detail[0], qty = evt.detail[1], el = evt.detail[2];
+            if (!key || !qty) { return; }
+            el && el.classList.add('is-loading');
+            theme.cart.changeItem(key, qty).then(function(cart) {
+              var parsedCart = JSON.parse(cart);
+              if (parsedCart.status === 422) {
+                alert(parsedCart.message);
+              } else {
+                var updatedItem = parsedCart.items.find(function(item) { return item.key === key; });
+                if (updatedItem && (evt.type === 'cart:quantity.cart-cart-drawer' || evt.type === 'cart:quantity.cart-header')) {
+                  this.cartItemsUpdated = true;
+                  this.cartItemsUpdated = false;
+                }
+                parsedCart.item_count > 0 ? this.wrapper.classList.remove('is-empty') : this.wrapper.classList.add('is-empty');
+              }
+              el && el.classList.remove('is-loading');
+              this.buildCart();
+              document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: parsedCart } }));
+            }.bind(this)).catch(function() {
+              el && el.classList.remove('is-loading');
+            });
+          };
+          kgPatchQuantityChanged._done = true;
+          return true;
+        }
+        (function kgWaitForQuantityChanged() {
+          if (!kgPatchQuantityChanged()) { setTimeout(kgWaitForQuantityChanged, 10); }
+        })();
+
+
+        /* Fix 1c: the patch above replaces theme.CartForm.prototype.quantityChanged,
+           but that turned out not to be enough -- theme.CartForm.prototype.init()
+           binds it ONCE, at construction time, via
+           document.addEventListener("cart:quantity"+this.namespace,
+           this.quantityChanged.bind(this)). .bind() captures whatever function
+           object theme.CartForm.prototype.quantityChanged pointed to AT THAT
+           MOMENT; reassigning the prototype property afterwards (as the patch
+           above does) has no effect on that already-bound listener, confirmed
+           live: the qty +/- buttons kept fully reloading the page even with the
+           quantityChanged patch active, because the original (unpatched, still
+           reload-calling) bound function is what actually runs.
+           Since we deliberately never construct a second CartForm (that is what
+           caused the v8 duplicate-listener/cart-emptying regression), there is no
+           way to re-bind that listener to a patched function -- so instead we
+           stop the event that listener reacts to from ever being dispatched.
+           theme.QtySelector.prototype._change is what dispatches
+           "cart:quantity"+namespace on every +/- click, and unlike
+           quantityChanged it is looked up dynamically (this._change(...), called
+           from a wrapper bound at QtySelector construction time, but the
+           wrapper itself does a fresh this._change property lookup on every
+           click) -- so patching this prototype method DOES take effect on
+           every existing and future qty stepper, exactly like the cartMarkup
+           patch above. Replacing it here to do the update ourselves (call
+           theme.cart.changeItem directly, then refresh via the same
+           kgTriggerCartRefresh() used elsewhere) means the old, permanently
+           reload-bound listener simply never receives an event to react to.
+           Confirmed nothing else in theme.js listens for "cart:quantity"+
+           namespace, so it is safe to stop dispatching it. */
+        function kgPatchQtySelectorChange() {
+          if (kgPatchQtySelectorChange._done) { return true; }
+          if (!window.theme || !theme.QtySelector || !theme.QtySelector.prototype || !theme.QtySelector.prototype._change) { return false; }
+          theme.QtySelector.prototype._change = function(qty) {
+            if (qty <= this.minValue) { qty = this.minValue; }
+            this.input.value = qty;
+            if (!this.options.isCart) { return; }
+            var key = this.options.key;
+            var qtyWrapperEl = this.wrapper;
+            if (!key || !qty) { return; }
+            qtyWrapperEl && qtyWrapperEl.classList.add('is-loading');
+            var formEl = this.input.closest('form');
+            var cartWrapperEl = formEl ? formEl.parentNode : null;
+            theme.cart.changeItem(key, qty).then(function(cartText) {
+              var parsedCart = JSON.parse(cartText);
+              if (parsedCart.status === 422) {
+                alert(parsedCart.message);
+              } else if (cartWrapperEl) {
+                parsedCart.item_count > 0 ? cartWrapperEl.classList.remove('is-empty') : cartWrapperEl.classList.add('is-empty');
+              }
+              qtyWrapperEl && qtyWrapperEl.classList.remove('is-loading');
+              /* Reducing an item's own qty to 0 removes it exactly like this
+                 used to happen via a full page reload -- reconciliation ran
+                 on that fresh page load (kgInitGiftBoxes, below) and cleaned
+                 up any gift box left orphaned by the removal. Without the
+                 reload, nothing was re-running that check, so an orphaned
+                 gift box could now be left behind (confirmed live). Run the
+                 same reconciliation explicitly after every qty change --
+                 cheap and a no-op when there is nothing to clean up -- then
+                 refresh either way so the qty change itself is reflected. */
+              kgReconcileOrphanGiftBoxes().catch(function() {}).then(function() {
+                kgTriggerCartRefresh();
+              });
+              document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: parsedCart } }));
+            }).catch(function() {
+              qtyWrapperEl && qtyWrapperEl.classList.remove('is-loading');
+            });
+          };
+          kgPatchQtySelectorChange._done = true;
+          return true;
+        }
+        (function kgWaitForQtySelectorChange() {
+          if (!kgPatchQtySelectorChange()) { setTimeout(kgWaitForQtySelectorChange, 10); }
+        })();
+
+        /* Fix 2: cart item thumbnails rely on the AOS scroll-animation library to
+           reveal themselves (opacity 0 -> 1). That animation does not reliably run
+           for items injected via JS (the drawer, and now also the cart page's own
+           gift-box refresh below), leaving correctly-loaded thumbnails invisible.
+           Force every cart thumbnail visible whenever its container's contents
+           change, instead of depending on that animation. Covers every
+           [data-products] container on the page: the drawer's and/or the full
+           cart page's. */
+        function initCartImageFix() {
+          var containers = document.querySelectorAll('[data-products]');
+          if (!containers.length) { return; }
+          function revealImages(root) {
+            root.querySelectorAll('.image-element').forEach(function(el) {
+              el.style.setProperty('opacity', '1', 'important');
+            });
+          }
+          containers.forEach(function(products) {
+            revealImages(products);
+            new MutationObserver(function() { revealImages(products); }).observe(products, { childList: true, subtree: true });
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initCartImageFix);
+        } else {
+          initCartImageFix();
+        }
+
+        /* Fix 3: gift-box checkbox handling, plus three follow-up fixes:
+           - Quantity +/- buttons stopped working after a gift-box add/remove: the
+             previous version of this script replaced [data-products]' innerHTML by
+             hand, which drops the click listeners the theme binds to each quantity
+             button (theme.QtySelector, instantiated by theme.CartForm.reInit()).
+             Refreshing via the theme's own "cart:build" event (kgTriggerCartRefresh,
+             defined in Fix 1 above) goes through that same reInit() and keeps them
+             working, exactly like a native quantity change already does.
+           - A gift box could get left behind after its own item was removed from
+             the cart entirely (the "Remove" link, or reducing quantity to 0 -- both
+             of which cause a full page reload). A reconciliation pass on every page
+             load (kgReconcileOrphanGiftBoxes) now removes any gift-box line whose
+             linked item is no longer in the cart.
+           - A gift box is now tied to its specific cart line via a "_gift_for" line
+             item property (set to that line's cart key) instead of a client-side
+             cookie keyed by product ID. This makes the association precise per
+             line (not per product), lets checkbox state be read back from the live
+             cart instead of a cookie that could go stale, and is what makes the two
+             fixes above possible. It also enforces at most one gift box per line:
+             checking the box is a no-op if that line already has one. */
+        var KG_GIFT_VARIANTS = { '48379481096539': true, '48379488403803': true };
+        function kgFetchCart() {
+          return fetch('/cart.js', { credentials: 'same-origin' }).then(function(r) { return r.json(); });
+        }
+        function kgIsGiftLine(item) {
+          return !!KG_GIFT_VARIANTS[String(item.variant_id)];
+        }
+        function kgFindGiftLineForKey(cart, sourceKey) {
+          return cart.items.filter(function(item) {
+            return kgIsGiftLine(item) && item.properties && item.properties._gift_for === sourceKey;
+          })[0];
+        }
+        function kgRestoreGiftCheckboxes(cart) {
+          var giftForKeys = {};
+          cart.items.forEach(function(item) {
+            if (kgIsGiftLine(item) && item.properties && item.properties._gift_for) {
+              giftForKeys[item.properties._gift_for] = true;
+            }
+          });
+          document.querySelectorAll('.kg_add_gift').forEach(function(el) {
+            el.checked = !!giftForKeys[el.getAttribute('prod-id')];
+          });
+        }
+        function kgAddGiftProduct(variantId, sourceKey) {
+          return fetch('/cart/add.js', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ id: variantId, quantity: 1, properties: { _gift_for: sourceKey } })
+          });
+        }
+        function kgRemoveGiftLine(lineKey) {
+          return fetch('/cart/change.js', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ id: lineKey, quantity: 0 })
+          });
+        }
+        function kgHandleCheckboxChange(evt) {
+          var el = evt.target;
+          if (!el.classList || !el.classList.contains('kg_add_gift')) { return; }
+          var sourceKey = el.getAttribute('prod-id');
+          var variantId = el.value;
+          var checked = el.checked;
+          el.disabled = true;
+          kgFetchCart().then(function(cart) {
+            var existing = kgFindGiftLineForKey(cart, sourceKey);
+            if (checked) {
+              return existing ? null : kgAddGiftProduct(variantId, sourceKey);
+            }
+            return existing ? kgRemoveGiftLine(existing.key) : null;
+          }).then(function() {
+            el.disabled = false;
+            kgTriggerCartRefresh();
+          }).catch(function(e) {
+            el.disabled = false;
+            console.error('Gift box update failed:', e);
+          });
+        }
+        document.addEventListener('change', kgHandleCheckboxChange);
+        function kgReconcileOrphanGiftBoxes() {
+          var removedAny = false;
+          function step() {
+            return kgFetchCart().then(function(cart) {
+              var presentKeys = {};
+              cart.items.forEach(function(item) {
+                if (!kgIsGiftLine(item)) { presentKeys[item.key] = true; }
+              });
+              var orphan = cart.items.filter(function(item) {
+                return kgIsGiftLine(item) && item.properties && item.properties._gift_for && !presentKeys[item.properties._gift_for];
+              })[0];
+              if (orphan) {
+                removedAny = true;
+                return kgRemoveGiftLine(orphan.key).then(step);
+              }
+              return cart;
+            });
+          }
+          return step().then(function(cart) {
+            if (removedAny) { kgTriggerCartRefresh(); }
+            return cart;
+          });
+        }
+        /* The refresh above (kgTriggerCartRefresh, via the theme's own "cart:build")
+           replaces [data-products]' contents with fresh, server-rendered markup --
+           including brand new checkbox elements that always start unchecked. Keep
+           them in sync with the actual cart on every such replacement (not just
+           right after our own add/remove) by re-syncing whenever that markup
+           actually changes, the same pattern Fix 2 above uses for images. */
+        function kgSyncCheckboxesOnMutation() {
+          var containers = document.querySelectorAll('[data-products]');
+          if (!containers.length) { return; }
+          var debounceTimer = null;
+          function scheduleSync() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(function() {
+              kgFetchCart().then(kgRestoreGiftCheckboxes).catch(function() {});
+            }, 50);
+          }
+          containers.forEach(function(products) {
+            new MutationObserver(scheduleSync).observe(products, { childList: true, subtree: true });
+          });
+        }
+        function kgInitGiftBoxes() {
+          kgSyncCheckboxesOnMutation();
+          kgReconcileOrphanGiftBoxes().then(function(cart) {
+            kgRestoreGiftCheckboxes(cart);
+          }).catch(function(e) { console.error('Gift box reconcile failed:', e); });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', kgInitGiftBoxes);
+        } else {
+          kgInitGiftBoxes();
+        }
+      })();
+    </script>
+
     {%- if request.page_type contains 'customers/' -%}
       <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
     {%- endif -%}

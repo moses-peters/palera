@@ -65,15 +65,63 @@
             </div>
           {% endif %}
 
-          <div class="cart__checkout-wrapper">
-            <button type="submit" name="checkout" data-terms-required="{{ settings.cart_terms_conditions_enable }}" class="btn cart__checkout">
-              {{ 'cart.general.checkout' | t }}
-            </button>
+          <div class="cart__checkout-wrapper kg-cart-drawer-actions">
+            <a href="{{ routes.cart_url }}" class="kg-cart-view-bag">View shopping cart</a>
+            <button type="button" class="js-drawer-close kg-cart-continue-shopping">Continue shopping</button>
 
             {% if additional_checkout_buttons and settings.cart_additional_buttons %}
               <div class="additional-checkout-buttons additional-checkout-buttons--vertical">{{ content_for_additional_checkout_buttons }}</div>
             {% endif %}
           </div>
+
+          <style>
+            .kg-cart-drawer-actions {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 10px;
+            }
+            #CartDrawer .kg-cart-drawer-actions .kg-cart-view-bag {
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              text-align: center;
+              background-color: #000;
+              color: #fff;
+              padding: 14px 20px;
+              border-radius: 0;
+              text-decoration: none;
+              font-family: inherit;
+              font-size: 11px;
+              letter-spacing: 0.05em;
+              text-transform: uppercase;
+              font-weight: 700;
+              border: none;
+            }
+            #CartDrawer .kg-cart-drawer-actions .kg-cart-view-bag:hover,
+            #CartDrawer .kg-cart-drawer-actions .kg-cart-view-bag:focus {
+              background-color: #222;
+              color: #fff;
+            }
+            #CartDrawer .kg-cart-drawer-actions .kg-cart-continue-shopping {
+              background: none;
+              border: none;
+              padding: 0;
+              margin: 0;
+              color: #000;
+              text-decoration: underline;
+              font-size: 12px;
+              cursor: pointer;
+              font-family: inherit;
+              text-transform: none;
+              letter-spacing: normal;
+              font-weight: 400;
+            }
+            #CartDrawer .kg-cart-drawer-actions .kg-cart-continue-shopping:hover,
+            #CartDrawer .kg-cart-drawer-actions .kg-cart-continue-shopping:focus {
+              opacity: 0.7;
+            }
+          </style>
         </div>
       </div>
 
