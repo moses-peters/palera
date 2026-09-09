@@ -308,8 +308,9 @@
                 {%- unless other_value == color_value -%}
                   {%- assign other_variant = product.variants | where: color_option_key, other_value | first -%}
                   {%- assign swatch_css = other_value | split: ' ' | last | handle -%}
-                  {%- assign swatch_image = '' -%}
-                  {%- if other_variant.featured_image -%}
+                  {%- capture swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: other_value %}{%- endcapture -%}
+                  {%- assign swatch_image = swatch_image | strip -%}
+                  {%- if swatch_image == blank and other_variant.featured_image -%}
                     {%- assign swatch_image = other_variant.featured_image | image_url: width: 400 -%}
                   {%- endif -%}
                   {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: product.url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
@@ -324,8 +325,9 @@
                   {%- if other_base == base_title -%}
                     {%- assign other_color_name = other_product.title | split: ' — ' | last -%}
                     {%- assign swatch_css = other_color_name | split: ' ' | last | handle -%}
-                    {%- assign swatch_image = '' -%}
-                    {%- if other_product.featured_image -%}
+                    {%- capture swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: other_color_name %}{%- endcapture -%}
+                    {%- assign swatch_image = swatch_image | strip -%}
+                    {%- if swatch_image == blank and other_product.featured_image -%}
                       {%- assign swatch_image = other_product.featured_image | image_url: width: 400 -%}
                     {%- endif -%}
                     {%- assign sibling_entry = other_color_name | append: '::' | append: swatch_css | append: '::' | append: other_product.url | append: '::' | append: swatch_image -%}
@@ -400,7 +402,9 @@
                   {%- for entry in swatch_visible -%}
                     {%- assign swatch_parts = entry | split: '::' -%}
                     {%- assign swatch_img = swatch_parts[3] -%}
-                    <a href="{{ swatch_parts[2] }}" class="pm-plp-swatch" style="background-color: {{ swatch_parts[1] }};{% if swatch_img != blank %} background-image: url({{ swatch_img }});{% endif %}" title="{{ swatch_parts[0] | escape }}" aria-label="{{ swatch_parts[0] | escape }}"></a>
+                    {%- assign swatch_is_curated = false -%}
+                    {%- if swatch_img contains 'pm-swatch-' -%}{%- assign swatch_is_curated = true -%}{%- endif -%}
+                    <a href="{{ swatch_parts[2] }}" class="pm-plp-swatch" style="background-color: {{ swatch_parts[1] }};{% if swatch_img != blank %} background-image: url({{ swatch_img }});{% endif %}{% if swatch_is_curated %} background-size: cover;{% endif %}" title="{{ swatch_parts[0] | escape }}" aria-label="{{ swatch_parts[0] | escape }}"></a>
                   {%- endfor -%}
                   {%- if swatch_overflow > 0 -%}
                     <span class="pm-plp-swatch-more">+{{ swatch_overflow }}</span>

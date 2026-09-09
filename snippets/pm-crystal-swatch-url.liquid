@@ -1,0 +1,22 @@
+{%- comment -%}
+  Usage: {%- capture swatch_bg -%}{% render 'pm-crystal-swatch-url', color_value: value %}{%- endcapture -%}
+  Outputs the asset_url of a curated crystal-close-up swatch matching
+  color_value (see pm-crystal-swatches.liquid), or nothing if no
+  color name in that list is found inside color_value. Matching
+  normalizes both sides (lowercase, spaces/periods/dashes stripped)
+  so "Rare Pink - Gold", "rare-pink-gold" etc. all match "Rare Pink".
+{%- endcomment -%}
+{%- capture pm_swatches_raw -%}{% render 'pm-crystal-swatches' %}{%- endcapture -%}
+{%- assign pm_swatches = pm_swatches_raw | strip | split: ';;' -%}
+{%- assign normalized_value = color_value | downcase | remove: ' ' | remove: '.' | remove: '-' -%}
+{%- assign matched_asset = '' -%}
+{%- for entry in pm_swatches -%}
+  {%- if matched_asset == '' -%}
+    {%- assign parts = entry | split: '|' -%}
+    {%- assign keyword_normalized = parts[0] | downcase | remove: ' ' | remove: '.' | remove: '-' -%}
+    {%- if normalized_value contains keyword_normalized -%}
+      {%- assign matched_asset = parts[1] -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if matched_asset != '' -%}{{ matched_asset | asset_url }}{%- endif -%}

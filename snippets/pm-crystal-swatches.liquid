@@ -1,0 +1,25 @@
+{%- comment -%}
+  Curated crystal-close-up swatches, one per color name (not per
+  product) -- reused across every product that shares that color,
+  since the crystal material itself is the same regardless of which
+  bag/wallet/pouch it's on. Each asset is a hand-picked crop showing
+  clean crystal texture, generated from the brand's own product
+  photography (a sliding-window search for the densest patch of
+  non-background texture, kept to the top ~55% of each photo to stay
+  clear of its reflection).
+
+  Rendered (not included) and captured the same way pm-family-data is,
+  so callers get a raw string to split themselves:
+
+    {%- capture pm_swatches_raw -%}{% render 'pm-crystal-swatches' %}{%- endcapture -%}
+    {%- assign pm_swatches = pm_swatches_raw | strip | split: ';;' -%}
+
+  Format per entry: Keyword|asset-filename.jpg, entries joined by ';;'.
+  ORDER MATTERS: more specific multi-word keywords are listed before
+  the shorter keywords they contain (e.g. "Black Multicolor" before
+  "Black", "Phantom Purple" before "Purple") -- matching is
+  first-match-wins against a normalized (lowercased, punctuation and
+  spaces stripped) product color value, same precedence pattern as
+  pm-family-data's keyword matching.
+{%- endcomment -%}
+{{- 'Black Multicolor|pm-swatch-black-multicolor.jpg;;Purple Multicolor|pm-swatch-purple-multicolor.jpg;;Gamboge Multicolor|pm-swatch-gamboge-multicolor.jpg;;Phantom Purple|pm-swatch-phantom-purple.jpg;;Sparkle Blue|pm-swatch-sparkle-blue.jpg;;Silver Blue|pm-swatch-silver-blue.jpg;;Rare Pink|pm-swatch-rare-pink.jpg;;Transparent White|pm-swatch-t-white.jpg;;T White|pm-swatch-t-white.jpg;;T.White|pm-swatch-t-white.jpg;;Camelot|pm-swatch-camelot.jpg;;Champagne|pm-swatch-champagne.jpg;;Gamboge|pm-swatch-gamboge.jpg;;Green|pm-swatch-green.jpg;;Azure|pm-swatch-azure.jpg;;Red|pm-swatch-red.jpg;;Grey|pm-swatch-grey.jpg;;Gray|pm-swatch-grey.jpg;;Brown|pm-swatch-brown.jpg;;Purple|pm-swatch-purple.jpg;;Gold|pm-swatch-gold.jpg;;Black|pm-swatch-black.jpg' -}}
