@@ -88,16 +88,7 @@
               assign is_main_color_option = true
             endif
 
-          -%}
-          {%- capture curated_swatch_url -%}{% render 'pm-crystal-swatch-url', color_value: value %}{%- endcapture -%}
-          {%- assign curated_swatch_url = curated_swatch_url | strip -%}
-          {%- liquid
-            if curated_swatch_url != blank
-              assign color_image = curated_swatch_url
-              assign has_image = true
-            endif
-
-            if is_main_color_option and has_image == false
+            if is_main_color_option
               assign option_number = color_option_index | plus: 1
               assign option_key = 'option' | append: option_number
               assign matching_variant = product.variants | where: option_key, value | first
