@@ -584,12 +584,12 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-shop-menu-links-item--group-start { margin-top: 14px; }
 
 .pm-shop-menu-grid {
-  max-width: 440px;
+  max-width: 480px;
   margin: 0 auto;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 48px 32px;
+  gap: 48px 56px;
   align-content: start;
   align-items: start;
 }
