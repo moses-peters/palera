@@ -568,9 +568,9 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-shop-menu { position: relative; }
 .pm-shop-menu {
   display: grid;
-  grid-template-columns: clamp(120px, 11vw, 160px) 1fr clamp(200px, 19vw, 260px);
+  grid-template-columns: clamp(140px, 12vw, 190px) 1fr clamp(230px, 21vw, 310px);
   gap: clamp(24px, 3vw, 44px);
-  width: min(92vw, 1200px);
+  width: min(94vw, 1440px);
   margin: 0 auto;
   padding: clamp(28px, 4vw, 44px) var(--pm-pad) clamp(40px, 6vw, 64px);
   border-bottom: 1px solid var(--pm-line);
