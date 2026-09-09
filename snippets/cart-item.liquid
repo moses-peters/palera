@@ -25,17 +25,17 @@
         {{ cart_item_display_title }}
         </a>
       {% endif %}
-      
 
-       {% if  product.product.tags contains 'gift-card' %}
+
+       {% if  product.product.tags contains 'gift-box-eligible' %}
           {% assign productFinalPrice = product.final_price | divided_by: 100 %}
-            {% if productFinalPrice >= 350 %}
-              <input type="checkbox" class="kg_add_gift" prod-id="{{ product.product.id }}" value="48379481096539" /> This is a gift. Include a gift box & card. Free for items above €350.
+            {% if productFinalPrice >= 450 %}
+              <input type="checkbox" class="kg_add_gift" prod-id="{{ product.key }}" value="48379481096539" /> This is a gift. Include a gift box & card. Free for items above €450.
             {% else %}
-               <input type="checkbox" class="kg_add_gift" prod-id="{{ product.product.id }}" value="48379488403803" /> This is a gift. Include a gift box & card - 15 € or free for items above €350.
+               <input type="checkbox" class="kg_add_gift" prod-id="{{ product.key }}" value="48379488403803" /> This is a gift. Include a gift box & card - 15 € or free for items above €450.
           {% endif %}
       {% endif %}
-      
+
       {%- unless product.product.has_only_default_variant -%}
         <div class="cart__item--variants">
           {%- for option in product.options_with_values -%}
@@ -68,7 +68,7 @@
     </div>
     <div class="cart__item-sub">
       <div>
-         {% if product.product.id == 9231359869275 or product.product.id == 9231356395867 %}
+         {% if product.product.id == 9231359869275 or product.product.id == 9231356395867 or product.variant_id == 48379481096539 or product.variant_id == 48379488403803 %}
             <div class="js-qty__wrapper">
           <label for="cart_updates_{{ product.key }}" class="hidden-label">{{ 'cart.label.quantity' | t }}</label>
           <input type="text"
