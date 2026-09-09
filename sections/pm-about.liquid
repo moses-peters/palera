@@ -45,8 +45,11 @@
   </section>
 
   {%- comment -%} ===== Craft / story spread ===== {%- endcomment -%}
+  {%- liquid
+    assign story_focal_y = section.settings.story_focal_y | default: 50
+  -%}
   <section class="pm-about-spread">
-    <div class="pm-about-spread-image pm-reveal">
+    <div class="pm-about-spread-image pm-reveal" style="--pm-focal: 50% {{ story_focal_y }}%;">
       {%- if section.settings.story_video != blank -%}
         {{ section.settings.story_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
       {%- else -%}
@@ -169,6 +172,7 @@
     { "type": "image_picker", "id": "story_image", "label": "Image (desktop)" },
     { "type": "image_picker", "id": "story_image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "story_video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
+    { "type": "range", "id": "story_focal_y", "label": "Crop focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the top (e.g. a face higher in frame)." },
     { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Made By Hand" },
     { "type": "text", "id": "story_heading", "label": "Heading", "default": "Every piece, considered" },
     {
