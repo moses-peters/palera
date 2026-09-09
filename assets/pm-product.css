@@ -255,8 +255,7 @@
   display: flex; flex-direction: column; gap: 10px;
   padding: 16px 0; border-top: 1px solid var(--pm-line); border-bottom: 1px solid var(--pm-line);
 }
-.pm-product-trust-item { display: flex; align-items: baseline; gap: 12px; font-size: 12px; color: var(--pm-muted); }
-.pm-product-trust-mark { font-size: 10px; color: var(--pm-line); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.pm-product-trust-item { font-size: 12px; color: var(--pm-muted); }
 
 /* ===== Sticky add-to-cart bar ===== */
 .pm-sticky-atc {

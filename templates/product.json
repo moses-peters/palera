@@ -105,7 +105,7 @@
         "pm_trust_strip": {
           "type": "custom",
           "settings": {
-            "code": "<div class=\"pm-product-trust\"><div class=\"pm-product-trust-item\"><span class=\"pm-product-trust-mark\">01</span><span>Handcrafted in Italy</span></div><div class=\"pm-product-trust-item\"><span class=\"pm-product-trust-mark\">02</span><span>Hand-Set Crystals, One at a Time</span></div><div class=\"pm-product-trust-item\"><span class=\"pm-product-trust-mark\">03</span><span>Made to Order</span></div><div class=\"pm-product-trust-item\"><span class=\"pm-product-trust-mark\">04</span><span>Complimentary Shipping on Orders Over &euro;350</span></div></div>"
+            "code": "<div class=\"pm-product-trust\"><div class=\"pm-product-trust-item\"><span>Handcrafted in Italy</span></div><div class=\"pm-product-trust-item\"><span>Each bag is made to order, taking about 10 days</span></div><div class=\"pm-product-trust-item\"><span>Complimentary Shipping on Orders Over &euro;350</span></div></div>"
           }
         }
       },
