@@ -1,0 +1,43 @@
+{%- comment -%}
+  Desktop-only prev/next arrow buttons for a horizontally-scrolling
+  row (product recommendations, the Press filmstrip, etc.) — a click
+  alternative to dragging/trackpad-scrolling the row. Render this
+  immediately after the scrollable element, inside a shared
+  `.pm-scroll-row-wrap` wrapper (the buttons position themselves
+  absolutely against that wrapper), and pass `scroll_target` as the
+  scrollable element's own id.
+
+  Hidden on touch devices via CSS (see .pm-scroll-arrow in
+  pm-homepage.css) — swiping is the native gesture there, and a
+  hover-only control would just sit inert.
+{%- endcomment -%}
+<button type="button" class="pm-scroll-arrow pm-scroll-arrow--prev" data-scroll-arrow="prev" data-scroll-target="{{ scroll_target }}" aria-label="Scroll left" aria-controls="{{ scroll_target }}">
+  <svg width="9" height="15" viewBox="0 0 9 15" fill="none" aria-hidden="true"><path d="M7.5 1.5L1.5 7.5L7.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<button type="button" class="pm-scroll-arrow pm-scroll-arrow--next" data-scroll-arrow="next" data-scroll-target="{{ scroll_target }}" aria-label="Scroll right" aria-controls="{{ scroll_target }}">
+  <svg width="9" height="15" viewBox="0 0 9 15" fill="none" aria-hidden="true"><path d="M1.5 1.5L7.5 7.5L1.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<script>
+  (function () {
+    document.querySelectorAll('[data-scroll-arrow]:not([data-scroll-wired])').forEach(function (btn) {
+      btn.setAttribute('data-scroll-wired', '1');
+      var row = document.getElementById(btn.getAttribute('data-scroll-target'));
+      if (!row) return;
+      var isPrev = btn.getAttribute('data-scroll-arrow') === 'prev';
+
+      function update() {
+        var atStart = row.scrollLeft <= 1;
+        var atEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 1;
+        btn.disabled = isPrev ? atStart : atEnd;
+      }
+
+      update();
+      row.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      btn.addEventListener('click', function () {
+        var amount = row.clientWidth * 0.85;
+        row.scrollBy({ left: isPrev ? -amount : amount, behavior: 'smooth' });
+      });
+    });
+  })();
+</script>

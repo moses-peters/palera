@@ -683,3 +683,26 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-press-logo { max-width: 140px; max-height: 40px; width: auto; height: auto; object-fit: contain; filter: grayscale(1); }
 .pm-press-publication { font-size: 16px; }
 .pm-press-title { font-size: 12px; color: var(--pm-muted); line-height: 1.5; }
+
+/* ===== Horizontal-scroll arrow buttons — product recs, Press filmstrip,
+   any other row using pm-scroll-arrows.liquid. Desktop/mouse only: a
+   touch device already scrolls these by swipe, so the buttons would
+   just be inert clutter there. ===== */
+.pm-scroll-row-wrap { position: relative; }
+.pm-scroll-arrow {
+  display: none;
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; border-radius: 50%; padding: 0;
+  align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.8); border: 1px solid var(--pm-line);
+  color: var(--pm-ink); cursor: pointer;
+  opacity: 0.6; transition: opacity 0.2s var(--pm-ease), background-color 0.2s var(--pm-ease);
+  z-index: 3;
+}
+.pm-scroll-arrow:hover { opacity: 1; background: var(--pm-paper); }
+.pm-scroll-arrow:disabled { opacity: 0; pointer-events: none; }
+.pm-scroll-arrow--prev { left: 10px; }
+.pm-scroll-arrow--next { right: 10px; }
+@media (hover: hover) and (pointer: fine) {
+  .pm-scroll-arrow { display: flex; }
+}

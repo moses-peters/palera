@@ -27,12 +27,15 @@
     curated set, not something meant to be reordered per-mention.
   {%- endcomment -%}
   {%- assign editorial_files = 'pm-press-editorial-02.jpg,pm-press-editorial-09.jpg,pm-press-editorial-03.jpg,pm-press-editorial-04.jpg,pm-press-editorial-06.jpg,pm-press-editorial-07.jpg,pm-press-editorial-08.jpg,pm-press-editorial-05.jpg' | split: ',' -%}
-  <div class="pm-press-editorial pm-reveal">
+  <div class="pm-scroll-row-wrap">
+  <div class="pm-press-editorial pm-reveal" id="pm-press-editorial-{{ section.id }}">
     {%- for editorial_file in editorial_files -%}
       <div class="pm-press-editorial-item">
         <img src="{{ editorial_file | asset_url }}" alt="Palera Milano editorial" loading="lazy">
       </div>
     {%- endfor -%}
+  </div>
+  {% render 'pm-scroll-arrows', scroll_target: 'pm-press-editorial-' | append: section.id %}
   </div>
 
   {%- assign mention_index = 0 -%}
