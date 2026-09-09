@@ -78,7 +78,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 
 /* ===== Editorial duo — Jacquemus-style asymmetric split with a floating caption card over the seam ===== */
-.pm-duo { position: relative; padding: clamp(24px, 4vw, 56px) var(--pm-pad); }
+.pm-duo { position: relative; padding: clamp(12px, 2vw, 28px) var(--pm-pad) clamp(24px, 4vw, 56px); }
 .pm-duo-grid { display: grid; grid-template-columns: 1fr; gap: clamp(12px, 2vw, 24px); }
 .pm-duo-image { display: block; position: relative; overflow: hidden; }
 .pm-duo-image img,
