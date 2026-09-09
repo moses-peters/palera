@@ -111,7 +111,6 @@
         "editorial_photo_12": { "type": "editorial_photo", "settings": { "label": "Photo 12", "link": "" } },
         "editorial_photo_13": { "type": "editorial_photo", "settings": { "label": "Photo 13", "link": "" } },
         "editorial_photo_14": { "type": "editorial_photo", "settings": { "label": "Photo 14", "link": "" } },
-        "editorial_photo_15": { "type": "editorial_photo", "settings": { "label": "Photo 15", "link": "" } },
         "mention_01": {
           "type": "mention",
           "disabled": true,
@@ -378,7 +377,6 @@
         "editorial_photo_12",
         "editorial_photo_13",
         "editorial_photo_14",
-        "editorial_photo_15",
         "mention_01",
         "gallery_01",
         "mention_02",
