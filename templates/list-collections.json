@@ -12,15 +12,15 @@
     "main": {
       "type": "pm-shop-browse",
       "settings": {
-        "clutches_image": "shopify://shop_images/3U7A0532.jpg",
-        "accessories_image": "shopify://shop_images/F2.jpg",
-        "pouches_image": "shopify://shop_images/3U7A3493.jpg",
-        "wallets_image": "shopify://shop_images/Wallet_Chain_2.jpg",
-        "maxi_roma_image": "shopify://shop_images/maxi-roma-509829.jpg",
-        "mini_milano_image": "shopify://shop_images/diamond-mini-milano-n2-637445_1.jpg",
-        "mini_roma_image": "shopify://shop_images/mini-roma-899168.jpg",
-        "santorini_image": "shopify://shop_images/santorini-786671_a340a78a-b134-4620-a33b-4da3c5469e34.jpg",
-        "wood_net_hobo_image": "shopify://shop_images/Wood-Net-Bag-Model1.jpg"
+        "clutches_image": "shopify://shop_images/Clutch-Edge-Short-Transparent-White-Gold_c7546c76-dd8c-458b-a597-a57a32b12a3e.jpg",
+        "accessories_image": "shopify://shop_images/Micro-Bag-Azure-Gold.jpg",
+        "pouches_image": "shopify://shop_images/Crystal-Pouch-Champagne_5e14a3e4-e732-4eca-9b3a-1cdf64ff77a2.jpg",
+        "wallets_image": "shopify://shop_images/Crystal-Wallet-Gamboge-Multicolor-Gold.jpg",
+        "maxi_roma_image": "shopify://shop_images/Diamond-Maxi-Roma-Lock-Silver-Blue-Silver_7f40c2fe-e39e-4441-86c0-04e15d432113.jpg",
+        "mini_milano_image": "shopify://shop_images/diamond-mini-milano-n2-157100_a642f550-458d-4ea5-8ff4-5e61778ec833.jpg",
+        "mini_roma_image": "shopify://shop_images/Diamond-Mini-Roma-Black-Multicolor.jpg",
+        "santorini_image": "shopify://shop_images/Santorini-Red-Gold_ede512f0-1835-401e-9a32-3ce9f8359813.jpg",
+        "wood_net_hobo_image": "shopify://shop_images/Wood-Net-Hobo----Light-Brown.jpg"
       }
     }
   },
