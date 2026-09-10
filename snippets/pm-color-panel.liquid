@@ -89,8 +89,14 @@
         window.setTimeout(function () { panel.hidden = true; }, 200);
       }
 
-      document.querySelectorAll('[data-pm-color-panel-target="' + panel.id + '"]').forEach(function (trigger) {
-        trigger.addEventListener('click', openPanel);
+      // Delegated on document, not bound directly to the trigger button --
+      // this panel (and this script) renders inside the gallery column,
+      // which comes BEFORE the variant picker (and its +N button) in the
+      // page source, so the button doesn't exist yet when this script runs.
+      // Direct querySelectorAll here would find nothing to bind to.
+      document.addEventListener('click', function (e) {
+        var trigger = e.target.closest('[data-pm-color-panel-target="' + panel.id + '"]');
+        if (trigger) openPanel();
       });
 
       var closeBtn = panel.querySelector('[data-pm-color-panel-close]');
