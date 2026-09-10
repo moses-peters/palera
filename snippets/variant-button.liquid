@@ -96,17 +96,42 @@
             if is_main_color_option
               assign option_number = color_option_index | plus: 1
               assign option_key = 'option' | append: option_number
-              assign matching_variant = product.variants | where: option_key, value | first
+
+              # On a product with more than one swatch-style axis (e.g. Color AND
+              # Hardware), matching on this axis alone can land on a variant whose
+              # OTHER axis doesn't match what's currently selected -- e.g. picking
+              # the Hardware swatch photo from a "White" colorway instead of the
+              # currently-selected "Black" one. Narrow to variants that also match
+              # every other option's currently-selected value first, before falling
+              # back to a match on this axis alone.
+              assign strict_variants = product.variants
+              for other_option in product.options_with_values
+                unless other_option.name == option.name
+                  assign other_key = 'option' | append: other_option.position
+                  assign strict_variants = strict_variants | where: other_key, other_option.selected_value
+                endunless
+              endfor
+              assign strict_variants = strict_variants | where: option_key, value
+              assign matching_variant = strict_variants | first
+
+              if matching_variant == nil
+                assign matching_variant = product.variants | where: option_key, value | first
+              endif
+
               if matching_variant and matching_variant.featured_image
                 assign color_image = matching_variant.featured_image | image_url: width: 100
                 assign has_image = true
               else
-                # The first variant matching this color (by array order) may be a
-                # specific color+hardware combo with no photo of its own, even
-                # though another combo sharing the same color does -- check all of
-                # them rather than showing a blank swatch for an otherwise
-                # photographed color.
-                assign color_variants = product.variants | where: option_key, value
+                # The best variant found above (by array order) may have no photo
+                # of its own, even though another combo sharing this same axis
+                # value does -- check all of them rather than showing a blank
+                # swatch for an otherwise photographed value. Prefer the strict
+                # (other-axes-matching) set when it has anything, so this fallback
+                # still respects the currently-selected other option(s).
+                assign color_variants = strict_variants
+                if color_variants.size == 0
+                  assign color_variants = product.variants | where: option_key, value
+                endif
                 for color_variant in color_variants
                   if has_image == false and color_variant.featured_image
                     assign color_image = color_variant.featured_image | image_url: width: 100
