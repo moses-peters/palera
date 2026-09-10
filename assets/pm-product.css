@@ -121,7 +121,6 @@
   box-shadow: 0 0 0 1px var(--pm-paper), 0 0 0 2px var(--pm-line);
 }
 .pm-product input[data-variant-input]:checked + .color-swatch.variant__button-label {
-  box-shadow: 0 0 0 2px var(--pm-paper), 0 0 0 3px var(--pm-ink); border-color: transparent;
   transform: none;
 }
 .pm-product .color-swatch.variant__button-label.disabled,
