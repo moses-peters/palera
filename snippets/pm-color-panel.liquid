@@ -25,7 +25,7 @@
 -%}
 {%- if color_option and color_option.values.size > 4 -%}
   {%- assign color_option_key = 'option' | append: color_option.position -%}
-  <div class="pm-color-panel" id="pm-color-panel-{{ section_id }}-{{ product.id }}" data-pm-color-panel role="dialog" aria-label="{{ 'products.general.color_swatch_trigger' | t }}" hidden>
+  <div class="pm-color-panel" id="pm-color-panel-{{ section_id }}-{{ product.id }}" data-pm-color-panel role="dialog" aria-label="{{ 'products.general.color_swatch_trigger' | t }}" hidden style="display: none; pointer-events: none;">
     <div class="pm-color-panel-head">
       <span class="pm-eyebrow">View other colors</span>
       <button type="button" class="pm-color-panel-close" data-pm-color-panel-close aria-label="Close">&times;</button>
@@ -83,11 +83,17 @@
 
       function openPanel() {
         panel.hidden = false;
+        panel.style.display = 'block';
+        panel.style.pointerEvents = 'auto';
         requestAnimationFrame(function () { panel.classList.add('pm-is-open'); });
       }
       function closePanel() {
         panel.classList.remove('pm-is-open');
-        window.setTimeout(function () { panel.hidden = true; }, 200);
+        window.setTimeout(function () {
+          panel.hidden = true;
+          panel.style.display = 'none';
+          panel.style.pointerEvents = 'none';
+        }, 200);
       }
 
       // Delegated on document, not bound directly to the trigger button --
