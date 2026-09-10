@@ -42,6 +42,25 @@
     {%- endif -%}
   </label>
   {%- assign option_index = forloop.index -%}
+  {%- liquid
+    # Cap the visible row at 4 color swatches (only the option literally named
+    # "Color" -- Hardware and any other swatch-enabled option almost never has
+    # more than a couple of values, so this never truncates those). Anything
+    # past the 4th is only shown inside the <template> panel below that the
+    # +N button opens, not inline here.
+    assign swatch_trigger_check = 'products.general.color_swatch_trigger' | t | downcase
+    assign option_name_check = option.name | downcase
+    assign is_true_color_option = false
+    if option_name_check == swatch_trigger_check
+      assign is_true_color_option = true
+    elsif swatch_trigger_check == 'color' and option_name_check == 'colour'
+      assign is_true_color_option = true
+    endif
+    assign color_overflow_count = 0
+    if is_true_color_option and option.values.size > 4
+      assign color_overflow_count = option.values.size | minus: 4
+    endif
+  -%}
   <fieldset class="variant-input-wrap"
     name="{{ option.name }}"
     data-index="option{{ option_index }}"
@@ -49,6 +68,7 @@
     id="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}">
     <legend class="hide">{{ option.name }}</legend>
     {%- for value in option.values -%}
+      {%- if color_overflow_count > 0 and forloop.index > 4 -%}{%- continue -%}{%- endif -%}
       {%- liquid
         assign product_available = true
         if product.options.size == 1
@@ -164,5 +184,115 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
+    {%- if color_overflow_count > 0 -%}
+      <button type="button" class="pm-color-more" data-pm-color-more data-pm-color-panel-source="pm-color-panel-tpl-{{ section_id }}-{{ product.id }}">
+        +{{ color_overflow_count }}
+      </button>
+      <template id="pm-color-panel-tpl-{{ section_id }}-{{ product.id }}">
+        <div class="pm-color-panel">
+          <div class="pm-color-panel-backdrop" data-pm-color-panel-close></div>
+          <div class="pm-color-panel-sheet">
+            <div class="pm-color-panel-head">
+              <span class="pm-eyebrow">View other colors</span>
+              <button type="button" class="pm-color-panel-close" data-pm-color-panel-close aria-label="Close">&times;</button>
+            </div>
+            <div class="pm-color-panel-grid">
+              {%- for panel_value in option.values -%}
+                {%- liquid
+                  assign panel_has_image = false
+                  assign panel_strict_variants = product.variants
+                  for other_option in product.options_with_values
+                    unless other_option.name == option.name
+                      assign panel_other_key = 'option' | append: other_option.position
+                      assign panel_strict_variants = panel_strict_variants | where: panel_other_key, other_option.selected_value
+                    endunless
+                  endfor
+                  assign panel_strict_variants = panel_strict_variants | where: option_key, panel_value
+                  assign panel_matching_variant = panel_strict_variants | first
+                  if panel_matching_variant == nil
+                    assign panel_matching_variant = product.variants | where: option_key, panel_value | first
+                  endif
+
+                  if panel_matching_variant and panel_matching_variant.featured_image
+                    assign panel_image = panel_matching_variant.featured_image | image_url: width: 300
+                    assign panel_has_image = true
+                  else
+                    assign panel_fallback_variants = panel_strict_variants
+                    if panel_fallback_variants.size == 0
+                      assign panel_fallback_variants = product.variants | where: option_key, panel_value
+                    endif
+                    for panel_fallback_variant in panel_fallback_variants
+                      if panel_has_image == false and panel_fallback_variant.featured_image
+                        assign panel_image = panel_fallback_variant.featured_image | image_url: width: 300
+                        assign panel_has_image = true
+                      endif
+                    endfor
+                  endif
+                -%}
+                <button
+                  type="button"
+                  class="pm-color-panel-tile{% if option.selected_value == panel_value %} is-selected{% endif %}"
+                  data-pm-color-panel-tile
+                  data-pm-color-panel-radio="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ panel_value | url_encode }}"
+                >
+                  <span class="pm-color-panel-tile-image"{% if panel_has_image %} style="background-image: url({{ panel_image }});"{% endif %}></span>
+                  <span class="pm-color-panel-tile-name">{{ panel_value | escape }}</span>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </template>
+    {%- endif -%}
   </fieldset>
 </div>
+
+{%- if color_overflow_count > 0 -%}
+  <script>
+    (function () {
+      if (window.__pmColorPanelWired) return;
+      window.__pmColorPanelWired = true;
+
+      var openPanel = null;
+
+      document.addEventListener('click', function (e) {
+        var trigger = e.target.closest('[data-pm-color-more]');
+        if (trigger) {
+          if (openPanel) closePanel();
+          var tpl = document.getElementById(trigger.getAttribute('data-pm-color-panel-source'));
+          if (!tpl) return;
+          var node = tpl.content.firstElementChild.cloneNode(true);
+          document.body.appendChild(node);
+          openPanel = node;
+          requestAnimationFrame(function () { node.classList.add('pm-is-open'); });
+
+          node.querySelectorAll('[data-pm-color-panel-close]').forEach(function (closeEl) {
+            closeEl.addEventListener('click', closePanel);
+          });
+          node.querySelectorAll('[data-pm-color-panel-tile]').forEach(function (tile) {
+            tile.addEventListener('click', function () {
+              var radio = document.getElementById(tile.getAttribute('data-pm-color-panel-radio'));
+              if (radio) radio.click();
+              closePanel();
+            });
+          });
+          return;
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && openPanel) closePanel();
+      });
+
+      function closePanel() {
+        if (!openPanel) return;
+        var node = openPanel;
+        openPanel = null;
+        node.classList.remove('pm-is-open');
+        window.setTimeout(function () {
+          if (node.parentNode) node.parentNode.removeChild(node);
+        }, 200);
+      }
+    })();
+  </script>
+{%- endif -%}

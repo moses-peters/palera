@@ -136,6 +136,51 @@
 .pm-product .color-swatch.variant__button-label:hover.disabled,
 .pm-product .variant__button-label.color-swatch:hover.disabled { transform: none; box-shadow: none; }
 
+/* ===== "+N" more-colors button and its overlay drawer. The drawer itself
+   (.pm-color-panel and everything inside it) only ever exists in the DOM
+   while open -- variant-button.liquid clones it from a <template> on click
+   and removes it entirely on close, rather than toggling a hidden/visible
+   state on a permanent element. A previous version relied on CSS/attribute
+   toggling to keep it closed and that state failed to apply, leaving an
+   invisible full-column overlay silently swallowing every click on the
+   real swatches. Not possible with this approach: closed means gone. ===== */
+.pm-color-more {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid var(--pm-line); background: var(--pm-paper); color: var(--pm-ink);
+  font-size: 11px; letter-spacing: 0.02em; cursor: pointer;
+  transition: border-color 0.2s var(--pm-ease);
+}
+.pm-color-more:hover { border-color: var(--pm-ink); }
+
+.pm-color-panel { position: fixed; inset: 0; z-index: 999; opacity: 0; transition: opacity 0.25s var(--pm-ease); }
+.pm-color-panel.pm-is-open { opacity: 1; }
+.pm-color-panel-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); border: none; padding: 0; }
+.pm-color-panel-sheet {
+  position: absolute; top: 0; right: 0; height: 100%; width: min(420px, 90vw);
+  background: var(--pm-paper); padding: clamp(20px, 3vw, 32px);
+  overflow-y: auto; transform: translateX(24px); transition: transform 0.25s var(--pm-ease);
+}
+.pm-color-panel.pm-is-open .pm-color-panel-sheet { transform: translateX(0); }
+.pm-color-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(20px, 3vw, 28px); }
+.pm-color-panel-close {
+  border: none; background: none; padding: 0; margin: 0;
+  font-size: 26px; line-height: 1; color: var(--pm-ink); cursor: pointer;
+}
+.pm-color-panel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 2vw, 18px); }
+.pm-color-panel-tile {
+  display: flex; flex-direction: column; gap: 8px;
+  border: none; background: none; padding: 0; margin: 0; cursor: pointer; text-align: left;
+}
+.pm-color-panel-tile-image {
+  aspect-ratio: 1 / 1; background-color: var(--pm-sable);
+  background-size: cover; background-position: center;
+  border: 1px solid var(--pm-line); transition: border-color 0.2s var(--pm-ease);
+}
+.pm-color-panel-tile:hover .pm-color-panel-tile-image { border-color: var(--pm-ink); }
+.pm-color-panel-tile.is-selected .pm-color-panel-tile-image { border-color: var(--pm-ink); box-shadow: 0 0 0 1px var(--pm-ink); }
+.pm-color-panel-tile-name { font-size: 12px; color: var(--pm-ink); }
+
 /* ===== Quantity ===== */
 .pm-product .product__quantity { display: flex; align-items: center; gap: 14px; }
 .pm-product .product__quantity label {
