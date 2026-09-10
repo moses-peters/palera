@@ -136,10 +136,13 @@
 .pm-product .color-swatch.variant__button-label:hover.disabled,
 .pm-product .variant__button-label.color-swatch:hover.disabled { transform: none; box-shadow: none; }
 
-/* ===== "+N" more-colors button and its overlay panel — Jacquemus-style:
-   opens over the main product gallery (this panel is rendered inside the
-   same .product-single__sticky wrapper as product-images) rather than a
-   dropdown, so it never fights the page for space. ===== */
+/* ===== "+N" more-colors button and its overlay panel: opens over the
+   right-hand info column (title/price/variant picker/description) rather
+   than a small dropdown, so it never fights the page for space.
+   pm-color-panel-anchor establishes the positioning context the panel's
+   position: absolute measures against, since that column has no
+   positioning of its own otherwise. ===== */
+.pm-color-panel-anchor { position: relative; }
 .pm-color-more {
   display: inline-flex; align-items: center; justify-content: center;
   width: 38px; height: 38px; border-radius: 50%;

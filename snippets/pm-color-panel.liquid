@@ -1,13 +1,14 @@
 {%- comment -%}
   "View other colors" panel — opened by the +N button in variant-button.liquid
   when a product has more than 4 colors. Renders every color as a bigger
-  tile (real photo + name) in a panel that overlays the main product
-  gallery on the left, Jacquemus-style, rather than a dropdown.
+  tile (real photo + name) in a panel that overlays the right-hand info
+  column (title/price/variant picker/description) rather than a dropdown.
 
   Rendered once per product (from product-template.liquid, inside the same
-  wrapper as the image gallery so position: absolute here overlays exactly
-  that column) — independent of variant-button.liquid's own render, so it
-  needs its own copy of the "find this color's real photo" lookup rather
+  wrapper as that info column, tagged pm-color-panel-anchor, so
+  position: absolute here overlays exactly that column) — independent of
+  variant-button.liquid's own render, so it needs its own copy of the
+  "find this color's real photo" lookup rather
   than sharing state across the isolated render scopes.
 {%- endcomment -%}
 {%- liquid
