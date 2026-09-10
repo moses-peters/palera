@@ -136,48 +136,6 @@
 .pm-product .color-swatch.variant__button-label:hover.disabled,
 .pm-product .variant__button-label.color-swatch:hover.disabled { transform: none; box-shadow: none; }
 
-/* ===== "+N" more-colors button and its overlay panel: opens over the
-   right-hand info column (title/price/variant picker/description) rather
-   than a small dropdown, so it never fights the page for space.
-   pm-color-panel-anchor establishes the positioning context the panel's
-   position: absolute measures against, since that column has no
-   positioning of its own otherwise. ===== */
-.pm-color-panel-anchor { position: relative; }
-.pm-color-more {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid var(--pm-line); background: var(--pm-paper); color: var(--pm-ink);
-  font-size: 11px; letter-spacing: 0.02em; cursor: pointer;
-  transition: border-color 0.2s var(--pm-ease);
-}
-.pm-color-more:hover { border-color: var(--pm-ink); }
-
-.pm-color-panel {
-  position: absolute; inset: 0; z-index: 20;
-  background: var(--pm-paper); padding: clamp(20px, 3vw, 40px);
-  overflow-y: auto; opacity: 0; transition: opacity 0.25s var(--pm-ease);
-}
-.pm-color-panel[hidden] { display: none; }
-.pm-color-panel.pm-is-open { opacity: 1; }
-.pm-color-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(20px, 3vw, 32px); }
-.pm-color-panel-close {
-  border: none; background: none; padding: 0; margin: 0;
-  font-size: 26px; line-height: 1; color: var(--pm-ink); cursor: pointer;
-}
-.pm-color-panel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 2vw, 20px); }
-.pm-color-panel-tile {
-  display: flex; flex-direction: column; gap: 8px;
-  border: none; background: none; padding: 0; margin: 0; cursor: pointer; text-align: left;
-}
-.pm-color-panel-tile-image {
-  aspect-ratio: 1 / 1; background-color: var(--pm-sable);
-  background-size: cover; background-position: center;
-  border: 1px solid var(--pm-line); transition: border-color 0.2s var(--pm-ease);
-}
-.pm-color-panel-tile:hover .pm-color-panel-tile-image { border-color: var(--pm-ink); }
-.pm-color-panel-tile.is-selected .pm-color-panel-tile-image { border-color: var(--pm-ink); box-shadow: 0 0 0 1px var(--pm-ink); }
-.pm-color-panel-tile-name { font-size: 12px; color: var(--pm-ink); }
-
 /* ===== Quantity ===== */
 .pm-product .product__quantity { display: flex; align-items: center; gap: 14px; }
 .pm-product .product__quantity label {

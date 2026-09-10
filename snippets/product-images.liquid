@@ -107,8 +107,7 @@
                   data-product-thumb
                   class="product__thumb"
                   data-index="{{ forloop.index0 }}"
-                  data-id="{{ media.id }}"
-                  data-alt="{{ media.alt | escape }}">
+                  data-id="{{ media.id }}">
                   <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: media.preview_image.aspect_ratio }}%;">
                     {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
                       <span class="product__thumb-icon">
@@ -166,51 +165,6 @@
 
   <script type="application/json" id="ModelJson-{{ section_id }}">
     {{ product.media | where: 'media_type', 'model' | json }}
-  </script>
-
-  {%- comment -%}
-    Color has no per-variant image assigned in Shopify -- instead, each
-    photo's alt text names the color it shows (per the merchant's own
-    workflow). The theme's built-in variant-image swap only fires off a
-    real variant.featured_media, so it never runs for Color at all. This
-    finds the thumbnail whose alt text matches the newly-selected color
-    and clicks it -- clicking a thumbnail already navigates the main
-    slider via Flickity's thumb/main sync, same as a real user click,
-    so no direct access to the slider instance is needed here. Hardware
-    keeps working through the built-in mechanism (its images ARE
-    assigned per variant) and is untouched by this.
-  {%- endcomment -%}
-  <script>
-    (function () {
-      var container = document.currentScript.closest('[data-product-images]');
-      if (!container || container.hasAttribute('data-pm-color-image-wired')) return;
-      container.setAttribute('data-pm-color-image-wired', '1');
-
-      var colorField = document.querySelector('[data-handle="color"]');
-      if (!colorField) return;
-      var colorOptionKey = colorField.getAttribute('data-index');
-
-      function normalize(str) {
-        return (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-      }
-
-      document.addEventListener('variant:change', function (e) {
-        if (!e.detail || e.detail.index !== colorOptionKey || !e.detail.value) return;
-        var normalizedColor = normalize(e.detail.value);
-        if (!normalizedColor) return;
-
-        var thumbs = container.querySelectorAll('[data-product-thumb]');
-        var match = null;
-        for (var i = 0; i < thumbs.length; i++) {
-          var alt = normalize(thumbs[i].getAttribute('data-alt'));
-          if (alt && (alt === normalizedColor || alt.indexOf(normalizedColor) !== -1 || normalizedColor.indexOf(alt) !== -1)) {
-            match = thumbs[i];
-            break;
-          }
-        }
-        if (match) match.click();
-      });
-    })();
   </script>
 {%- else -%}
   <div class="product__photos product__photos-{{ section_id }}">

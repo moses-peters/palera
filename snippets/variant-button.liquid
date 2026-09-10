@@ -42,25 +42,6 @@
     {%- endif -%}
   </label>
   {%- assign option_index = forloop.index -%}
-  {%- liquid
-    # Cap the visible row at 4 color swatches (only the option literally named
-    # "Color" -- Hardware and any other swatch-enabled option almost never has
-    # more than a couple of values, so this never truncates those). Anything
-    # past the 4th is only shown inside the "view other colors" panel
-    # (pm-color-panel.liquid) that the +N button opens, not inline here.
-    assign swatch_trigger_check = 'products.general.color_swatch_trigger' | t | downcase
-    assign option_name_check = option.name | downcase
-    assign is_true_color_option = false
-    if option_name_check == swatch_trigger_check
-      assign is_true_color_option = true
-    elsif swatch_trigger_check == 'color' and option_name_check == 'colour'
-      assign is_true_color_option = true
-    endif
-    assign color_overflow_count = 0
-    if is_true_color_option and option.values.size > 4
-      assign color_overflow_count = option.values.size | minus: 4
-    endif
-  -%}
   <fieldset class="variant-input-wrap"
     name="{{ option.name }}"
     data-index="option{{ option_index }}"
@@ -68,7 +49,6 @@
     id="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}">
     <legend class="hide">{{ option.name }}</legend>
     {%- for value in option.values -%}
-      {%- if color_overflow_count > 0 and forloop.index > 4 -%}{%- continue -%}{%- endif -%}
       {%- liquid
         assign product_available = true
         if product.options.size == 1
@@ -184,10 +164,5 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
-    {%- if color_overflow_count > 0 -%}
-      <button type="button" class="pm-color-more" data-pm-color-more data-pm-color-panel-target="pm-color-panel-{{ section_id }}-{{ product.id }}" aria-haspopup="dialog" aria-controls="pm-color-panel-{{ section_id }}-{{ product.id }}">
-        +{{ color_overflow_count }}
-      </button>
-    {%- endif -%}
   </fieldset>
 </div>
