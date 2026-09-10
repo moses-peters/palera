@@ -98,6 +98,7 @@
               fallback: fallback,
               mobile_layout: mobile_layout,
             -%}
+            {%- unless isModal -%}{% render 'pm-color-panel', product: product, section_id: section_id %}{%- endunless -%}
           </div>
         {%- endif -%}
 
@@ -457,6 +458,7 @@
               fallback: fallback,
               mobile_layout: mobile_layout,
             -%}
+            {%- unless isModal -%}{% render 'pm-color-panel', product: product, section_id: section_id %}{%- endunless -%}
           </div>
         {%- endunless -%}
       </div>

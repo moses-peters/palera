@@ -1,0 +1,108 @@
+{%- comment -%}
+  "View other colors" panel — opened by the +N button in variant-button.liquid
+  when a product has more than 4 colors. Renders every color as a bigger
+  tile (real photo + name) in a panel that overlays the main product
+  gallery on the left, Jacquemus-style, rather than a dropdown.
+
+  Rendered once per product (from product-template.liquid, inside the same
+  wrapper as the image gallery so position: absolute here overlays exactly
+  that column) — independent of variant-button.liquid's own render, so it
+  needs its own copy of the "find this color's real photo" lookup rather
+  than sharing state across the isolated render scopes.
+{%- endcomment -%}
+{%- liquid
+  assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+  assign color_option = nil
+  for option in product.options_with_values
+    assign option_name_downcased = option.name | downcase
+    if color_option == nil and option_name_downcased == swatch_trigger
+      assign color_option = option
+    elsif color_option == nil and swatch_trigger == 'color' and option_name_downcased == 'colour'
+      assign color_option = option
+    endif
+  endfor
+-%}
+{%- if color_option and color_option.values.size > 4 -%}
+  {%- assign color_option_key = 'option' | append: color_option.position -%}
+  <div class="pm-color-panel" id="pm-color-panel-{{ section_id }}-{{ product.id }}" data-pm-color-panel role="dialog" aria-label="{{ 'products.general.color_swatch_trigger' | t }}" hidden>
+    <div class="pm-color-panel-head">
+      <span class="pm-eyebrow">View other colors</span>
+      <button type="button" class="pm-color-panel-close" data-pm-color-panel-close aria-label="Close">&times;</button>
+    </div>
+    <div class="pm-color-panel-grid">
+      {%- for value in color_option.values -%}
+        {%- liquid
+          assign has_image = false
+          assign strict_variants = product.variants
+          for other_option in product.options_with_values
+            unless other_option.name == color_option.name
+              assign other_key = 'option' | append: other_option.position
+              assign strict_variants = strict_variants | where: other_key, other_option.selected_value
+            endunless
+          endfor
+          assign strict_variants = strict_variants | where: color_option_key, value
+          assign matching_variant = strict_variants | first
+          if matching_variant == nil
+            assign matching_variant = product.variants | where: color_option_key, value | first
+          endif
+
+          if matching_variant and matching_variant.featured_image
+            assign color_image = matching_variant.featured_image | image_url: width: 300
+            assign has_image = true
+          else
+            assign fallback_variants = strict_variants
+            if fallback_variants.size == 0
+              assign fallback_variants = product.variants | where: color_option_key, value
+            endif
+            for fallback_variant in fallback_variants
+              if has_image == false and fallback_variant.featured_image
+                assign color_image = fallback_variant.featured_image | image_url: width: 300
+                assign has_image = true
+              endif
+            endfor
+          endif
+        -%}
+        <button
+          type="button"
+          class="pm-color-panel-tile{% if color_option.selected_value == value %} is-selected{% endif %}"
+          data-pm-color-panel-tile
+          data-pm-color-panel-radio="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ color_option.name | handleize }}-{{ value | url_encode }}"
+        >
+          <span class="pm-color-panel-tile-image"{% if has_image %} style="background-image: url({{ color_image }});"{% endif %}></span>
+          <span class="pm-color-panel-tile-name">{{ value | escape }}</span>
+        </button>
+      {%- endfor -%}
+    </div>
+  </div>
+  <script>
+    (function () {
+      var panel = document.getElementById('pm-color-panel-{{ section_id }}-{{ product.id }}');
+      if (!panel || panel.hasAttribute('data-pm-wired')) return;
+      panel.setAttribute('data-pm-wired', '1');
+
+      function openPanel() {
+        panel.hidden = false;
+        requestAnimationFrame(function () { panel.classList.add('pm-is-open'); });
+      }
+      function closePanel() {
+        panel.classList.remove('pm-is-open');
+        window.setTimeout(function () { panel.hidden = true; }, 200);
+      }
+
+      document.querySelectorAll('[data-pm-color-panel-target="' + panel.id + '"]').forEach(function (trigger) {
+        trigger.addEventListener('click', openPanel);
+      });
+
+      var closeBtn = panel.querySelector('[data-pm-color-panel-close]');
+      if (closeBtn) closeBtn.addEventListener('click', closePanel);
+
+      panel.querySelectorAll('[data-pm-color-panel-tile]').forEach(function (tile) {
+        tile.addEventListener('click', function () {
+          var radio = document.getElementById(tile.getAttribute('data-pm-color-panel-radio'));
+          if (radio) radio.click();
+          closePanel();
+        });
+      });
+    })();
+  </script>
+{%- endif -%}
