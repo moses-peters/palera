@@ -76,15 +76,20 @@
             assign color_swatch_fallback = value | split: ' ' | last | handle
             assign has_image = false
 
-            # Only the option literally named "Color" uses the per-variant photo lookup.
-            # Anything else that's swatch-enabled (e.g. "Chain Color") keeps the original
-            # shared swatch-file behavior instead.
+            # The option literally named "Color" and any "Hardware" option both use
+            # the per-variant photo lookup -- each of their values already has a real
+            # product photo (a specific bag color, or a specific hardware finish)
+            # rather than a swatch-file-friendly plain color. Anything else that's
+            # swatch-enabled (e.g. "Chain Color") keeps the original shared
+            # swatch-file behavior instead.
             assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
             assign option_name_downcased = option.name | downcase
             assign is_main_color_option = false
             if option_name_downcased == swatch_trigger
               assign is_main_color_option = true
             elsif swatch_trigger == 'color' and option_name_downcased == 'colour'
+              assign is_main_color_option = true
+            elsif option_name_downcased contains 'hardware'
               assign is_main_color_option = true
             endif
 
