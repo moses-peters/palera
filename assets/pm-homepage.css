@@ -704,7 +704,14 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-scroll-arrow:hover { opacity: 1; background: var(--pm-paper); }
 .pm-scroll-arrow:disabled { opacity: 0; pointer-events: none; }
 .pm-scroll-arrow--prev { left: 10px; }
-.pm-scroll-arrow--next { right: 10px; }
+/* Extra offset (vs. --prev's 10px) -- rows using this component span
+   edge-to-edge with no outer margin, so at 10px the next-arrow sits
+   right where a browser's vertical scrollbar renders. The scrollbar
+   still lets CSS :hover register underneath it (matching what looked
+   like a working hover), but it intercepts the actual click, which is
+   what made this one arrow look broken while its own click handler
+   (confirmed working via a direct .click() call) was fine all along. */
+.pm-scroll-arrow--next { right: 26px; }
 @media (hover: hover) and (pointer: fine) {
   .pm-scroll-arrow { display: flex; }
 }
