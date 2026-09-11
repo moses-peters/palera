@@ -56,13 +56,14 @@
       row.scrollTo({ left: target, behavior: 'smooth' });
     }
 
-    // Capture phase, not bubble -- something else in the row's own
-    // ancestor chain (most likely drag-to-scroll click-suppression logic
-    // reacting to the scrollable container) is intercepting/cancelling
-    // clicks before they'd otherwise bubble back up to a document-level
-    // listener. Capture on document fires before any listener closer to
-    // the actual target gets a chance to stop it.
-    document.addEventListener('click', function (e) {
+    // window, not document -- confirmed via a live diagnostic that some
+    // other script on this page has its own capture-phase click listener
+    // on window that calls stopPropagation() (not stopImmediatePropagation),
+    // which still lets every OTHER window-level listener see the click but
+    // stops it from ever reaching document or anything below. Attaching
+    // here too, at the same level, means that stopPropagation() call can't
+    // affect this listener regardless of registration order.
+    window.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-scroll-arrow]');
       if (btn) scrollRow(btn);
     }, true);
