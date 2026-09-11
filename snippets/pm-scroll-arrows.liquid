@@ -56,16 +56,25 @@
       row.scrollTo({ left: target, behavior: 'smooth' });
     }
 
-    // window, not document -- confirmed via a live diagnostic that some
-    // other script on this page has its own capture-phase click listener
-    // on window that calls stopPropagation() (not stopImmediatePropagation),
-    // which still lets every OTHER window-level listener see the click but
-    // stops it from ever reaching document or anything below. Attaching
-    // here too, at the same level, means that stopPropagation() call can't
-    // affect this listener regardless of registration order.
-    window.addEventListener('click', function (e) {
+    // mousedown + keydown, not click -- a live diagnostic showed an
+    // identical window-level capture listener for 'click' never firing at
+    // all here, even though window-level capture listeners aren't supposed
+    // to be affected by a sibling's plain stopPropagation(). That points to
+    // some other script calling stopImmediatePropagation() on 'click'
+    // specifically, ahead of this script (it's most likely loaded in
+    // <head>, before this renders in <body>) -- which no amount of
+    // reordering or re-targeting a 'click' listener can out-race. Using a
+    // different event type entirely sidesteps it: 'mousedown' for mouse
+    // users, 'keydown' (Enter/Space) for keyboard users -- neither is what
+    // a "close this on an outside click" style handler would normally hook.
+    window.addEventListener('mousedown', function (e) {
       var btn = e.target.closest('[data-scroll-arrow]');
       if (btn) scrollRow(btn);
+    }, true);
+    window.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+      var btn = e.target && e.target.closest && e.target.closest('[data-scroll-arrow]');
+      if (btn) { e.preventDefault(); scrollRow(btn); }
     }, true);
 
     // Prev/next auto-hide at either end of the row -- delegated the same
