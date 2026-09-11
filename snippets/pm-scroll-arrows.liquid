@@ -10,6 +10,19 @@
   Hidden on touch devices via CSS (see .pm-scroll-arrow in
   pm-homepage.css) — swiping is the native gesture there, and a
   hover-only control would just sit inert.
+
+  Click handling is delegated on `document` rather than bound to each
+  button directly. This store runs a translation app that rewrites
+  DOM elements carrying visible/accessible English text (these
+  buttons' aria-label) to swap in translated copy — that replaces the
+  actual button node in the page, silently detaching any listener
+  that had been attached directly to the original element (hover
+  still works afterward since that's just a CSS class match, which is
+  what made this look like a positioning/CSS bug rather than a
+  listener-loss bug). A delegated listener on document keeps working
+  against the replacement node since it re-resolves the clicked
+  element and its target row fresh on every click instead of holding
+  a reference captured once at page load.
 {%- endcomment -%}
 <button type="button" class="pm-scroll-arrow pm-scroll-arrow--prev" data-scroll-arrow="prev" data-scroll-target="{{ scroll_target }}" aria-label="Scroll left" aria-controls="{{ scroll_target }}">
   <svg width="9" height="15" viewBox="0 0 9 15" fill="none" aria-hidden="true"><path d="M7.5 1.5L1.5 7.5L7.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -19,45 +32,67 @@
 </button>
 <script>
   (function () {
-    document.querySelectorAll('[data-scroll-arrow]:not([data-scroll-wired])').forEach(function (btn) {
-      btn.setAttribute('data-scroll-wired', '1');
+    if (window.__pmScrollArrowsDelegated) return;
+    window.__pmScrollArrowsDelegated = true;
+
+    function scrollRow(btn) {
       var row = document.getElementById(btn.getAttribute('data-scroll-target'));
       if (!row) return;
       var isPrev = btn.getAttribute('data-scroll-arrow') === 'prev';
+      var children = row.children;
+      var current = row.scrollLeft;
+      var target = null;
+      if (isPrev) {
+        for (var i = children.length - 1; i >= 0; i--) {
+          if (children[i].offsetLeft < current - 1) { target = children[i].offsetLeft; break; }
+        }
+        if (target === null) target = 0;
+      } else {
+        for (var j = 0; j < children.length; j++) {
+          if (children[j].offsetLeft > current + 1) { target = children[j].offsetLeft; break; }
+        }
+        if (target === null) target = row.scrollWidth;
+      }
+      row.scrollTo({ left: target, behavior: 'smooth' });
+    }
 
-      function update() {
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-scroll-arrow]');
+      if (btn) scrollRow(btn);
+    });
+
+    // Prev/next auto-hide at either end of the row -- delegated the same
+    // way (capture phase, since scroll doesn't bubble) so it keeps working
+    // even if the row or buttons get replaced later.
+    function updateArrows(row) {
+      var id = row.id;
+      if (!id) return;
+      document.querySelectorAll('[data-scroll-target="' + id + '"]').forEach(function (btn) {
+        var isPrev = btn.getAttribute('data-scroll-arrow') === 'prev';
         var atStart = row.scrollLeft <= 1;
         var atEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 1;
         btn.disabled = isPrev ? atStart : atEnd;
-      }
-
-      update();
-      row.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
-      btn.addEventListener('click', function () {
-        // Both rows use scroll-snap-type: x mandatory -- scrolling by an
-        // arbitrary pixel amount (the previous approach) fights the
-        // browser's own snap behavior, which can cancel or reverse a
-        // smooth scroll before it settles anywhere, making the button
-        // look like it does nothing. Scrolling directly to the next/prev
-        // item's own offset instead cooperates with snap-align: start on
-        // those items rather than fighting it.
-        var children = row.children;
-        var current = row.scrollLeft;
-        var target = null;
-        if (isPrev) {
-          for (var i = children.length - 1; i >= 0; i--) {
-            if (children[i].offsetLeft < current - 1) { target = children[i].offsetLeft; break; }
-          }
-          if (target === null) target = 0;
-        } else {
-          for (var j = 0; j < children.length; j++) {
-            if (children[j].offsetLeft > current + 1) { target = children[j].offsetLeft; break; }
-          }
-          if (target === null) target = row.scrollWidth;
-        }
-        row.scrollTo({ left: target, behavior: 'smooth' });
       });
+    }
+
+    document.addEventListener('scroll', function (e) {
+      var row = e.target;
+      if (row && row.nodeType === 1 && row.hasAttribute && row.id && row.getAttribute('data-scroll-arrow') === null) {
+        updateArrows(row);
+      }
+    }, true);
+
+    window.addEventListener('resize', function () {
+      document.querySelectorAll('[data-scroll-arrow]').forEach(function (btn) {
+        var row = document.getElementById(btn.getAttribute('data-scroll-target'));
+        if (row) updateArrows(row);
+      });
+    });
+
+    // Initial state for rows already on the page.
+    document.querySelectorAll('[data-scroll-arrow]').forEach(function (btn) {
+      var row = document.getElementById(btn.getAttribute('data-scroll-target'));
+      if (row) updateArrows(row);
     });
   })();
 </script>
