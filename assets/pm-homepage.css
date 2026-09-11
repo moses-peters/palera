@@ -392,6 +392,13 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 .pm-plp-tile:hover .pm-plp-tile-image img,
 .pm-plp-tile:hover .pm-plp-tile-image video { transform: scale(1.04); }
+/* Hover video (see data-pm-hover-video) — the video sits on top of the
+   still image, hidden until JS adds pm-is-playing (hover on desktop,
+   scroll-into-view on touch — see the script), then it crossfades in
+   while the still image fades out underneath. */
+.pm-plp-tile-image[data-pm-hover-video] video { opacity: 0; }
+.pm-plp-tile-image[data-pm-hover-video].pm-is-playing video { opacity: 1; }
+.pm-plp-tile-image[data-pm-hover-video].pm-is-playing img { opacity: 0; }
 /* Hover swap to the tile's second photo — plain CSS :hover, no JS
    needed (unlike the video above, which needs JS to control playback).
    The alt image sits on top of the base one (see the markup) and
