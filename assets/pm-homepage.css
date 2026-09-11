@@ -394,6 +394,13 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-plp-tile-image[data-pm-hover-video] video { opacity: 0; }
 .pm-plp-tile-image[data-pm-hover-video].pm-is-playing video { opacity: 1; }
 .pm-plp-tile-image[data-pm-hover-video].pm-is-playing img { opacity: 0; }
+/* Hover swap to the tile's second photo — plain CSS :hover, no JS
+   needed (unlike the video above, which needs JS to control playback).
+   The alt image sits on top of the base one (see the markup) and
+   crossfades in on hover, same transition as everything else here. */
+.pm-plp-tile-image[data-pm-hover-image] .pm-plp-tile-image-alt { opacity: 0; }
+.pm-plp-tile:hover .pm-plp-tile-image[data-pm-hover-image] .pm-plp-tile-image-alt { opacity: 1; }
+.pm-plp-tile:hover .pm-plp-tile-image[data-pm-hover-image] img:not(.pm-plp-tile-image-alt) { opacity: 0; }
 .pm-plp-campaign-tile { grid-column: span 2; }
 .pm-plp-campaign-tile--vertical { grid-column: span 1; }
 .pm-plp-campaign-tile .pm-plp-tile-image { aspect-ratio: 16 / 9; }

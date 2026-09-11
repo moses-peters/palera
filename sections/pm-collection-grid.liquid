@@ -345,6 +345,34 @@
             {%- endif -%}
 
             {%- comment -%}
+              Hover swap to the second photo — the reference behavior is
+              a quick "next angle" preview on hover, before a shopper
+              even opens the product. When Color is a real variant option
+              (color_option set), "the sequence" means that variant's own
+              photos, found via attached_to_variant? since a variant has
+              no images list of its own; otherwise (the far more common
+              case here — each color is its own product) it's just this
+              product's own image list. Skipped whenever a hover video is
+              already showing, so the two effects never fight each other.
+            {%- endcomment -%}
+            {%- assign tile_secondary_image = nil -%}
+            {%- if tile_video == nil -%}
+              {%- if color_option -%}
+                {%- assign variant_image_count = 0 -%}
+                {%- for img in product.images -%}
+                  {%- if img | attached_to_variant?: tile_variant -%}
+                    {%- assign variant_image_count = variant_image_count | plus: 1 -%}
+                    {%- if variant_image_count == 2 -%}
+                      {%- assign tile_secondary_image = img -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- else -%}
+                {%- assign tile_secondary_image = product.images[1] -%}
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- comment -%}
               The outer tile is a plain div, not an <a>, so the sibling
               swatch links below aren't nested inside another <a> —
               browsers silently mangle nested anchors (auto-closing the
@@ -355,7 +383,7 @@
             {%- endcomment -%}
             <div class="pm-plp-tile pm-reveal{% if tile_video %} pm-plp-tile--has-video{% endif %}" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
               <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
-                <div class="pm-plp-tile-image"{% if tile_video %} data-pm-hover-video{% endif %}>
+                <div class="pm-plp-tile-image"{% if tile_video %} data-pm-hover-video{% elsif tile_secondary_image %} data-pm-hover-image{% endif %}>
                   {%- if tile_image -%}
                     <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: tile_name }}" loading="lazy">
                   {%- else -%}
@@ -363,6 +391,8 @@
                   {%- endif -%}
                   {%- if tile_video -%}
                     {{ tile_video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'none', image_size: '900x' }}
+                  {%- elsif tile_secondary_image -%}
+                    <img src="{{ tile_secondary_image | image_url: width: 900 }}" alt="" loading="lazy" class="pm-plp-tile-image-alt" aria-hidden="true">
                   {%- endif -%}
                 </div>
                 <div class="pm-plp-tile-info">
