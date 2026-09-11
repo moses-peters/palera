@@ -316,35 +316,6 @@
             {%- assign swatch_overflow = swatch_list.size | minus: swatch_visible.size -%}
 
             {%- comment -%}
-              Hover video — there's no dedicated "hover video" field on a
-              real Shopify product, so this looks for a video already
-              sitting in the product's own media (Admin → product →
-              Media → Add video) whose alt text is tagged "video". Tiles
-              are per-color (see above); a product's media is normally
-              specific to that same color already since each color here
-              is usually its own product, so this naturally lines up.
-              Falls back to the first video in the product's media if
-              none is explicitly tagged, and to nothing (just the still
-              image) if the product has no video at all.
-            {%- endcomment -%}
-            {%- assign tile_video = nil -%}
-            {%- for media_item in product.media -%}
-              {%- if media_item.media_type == 'video' -%}
-                {%- assign alt_downcase = media_item.alt | downcase -%}
-                {%- if tile_video == nil and alt_downcase contains 'video' -%}
-                  {%- assign tile_video = media_item -%}
-                {%- endif -%}
-              {%- endif -%}
-            {%- endfor -%}
-            {%- if tile_video == nil -%}
-              {%- for media_item in product.media -%}
-                {%- if tile_video == nil and media_item.media_type == 'video' -%}
-                  {%- assign tile_video = media_item -%}
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endif -%}
-
-            {%- comment -%}
               Hover swap to the second photo — the reference behavior is
               a quick "next angle" preview on hover, before a shopper
               even opens the product. When Color is a real variant option
@@ -352,24 +323,23 @@
               photos, found via attached_to_variant? since a variant has
               no images list of its own; otherwise (the far more common
               case here — each color is its own product) it's just this
-              product's own image list. Skipped whenever a hover video is
-              already showing, so the two effects never fight each other.
+              product's own image list. Applies to every tile, including
+              ones with a hover video in their media — the second photo
+              is what should show here now, not the video.
             {%- endcomment -%}
             {%- assign tile_secondary_image = nil -%}
-            {%- if tile_video == nil -%}
-              {%- if color_option -%}
-                {%- assign variant_image_count = 0 -%}
-                {%- for img in product.images -%}
-                  {%- if img | attached_to_variant?: tile_variant -%}
-                    {%- assign variant_image_count = variant_image_count | plus: 1 -%}
-                    {%- if variant_image_count == 2 -%}
-                      {%- assign tile_secondary_image = img -%}
-                    {%- endif -%}
+            {%- if color_option -%}
+              {%- assign variant_image_count = 0 -%}
+              {%- for img in product.images -%}
+                {%- if img | attached_to_variant?: tile_variant -%}
+                  {%- assign variant_image_count = variant_image_count | plus: 1 -%}
+                  {%- if variant_image_count == 2 -%}
+                    {%- assign tile_secondary_image = img -%}
                   {%- endif -%}
-                {%- endfor -%}
-              {%- else -%}
-                {%- assign tile_secondary_image = product.images[1] -%}
-              {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- assign tile_secondary_image = product.images[1] -%}
             {%- endif -%}
 
             {%- comment -%}
@@ -381,17 +351,15 @@
               the family filter script) targets .pm-plp-tile by class,
               not by tag, so nothing else needed to change for this.
             {%- endcomment -%}
-            <div class="pm-plp-tile pm-reveal{% if tile_video %} pm-plp-tile--has-video{% endif %}" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
+            <div class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
               <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
-                <div class="pm-plp-tile-image"{% if tile_video %} data-pm-hover-video{% elsif tile_secondary_image %} data-pm-hover-image{% endif %}>
+                <div class="pm-plp-tile-image"{% if tile_secondary_image %} data-pm-hover-image{% endif %}>
                   {%- if tile_image -%}
                     <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: tile_name }}" loading="lazy">
                   {%- else -%}
                     {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
                   {%- endif -%}
-                  {%- if tile_video -%}
-                    {{ tile_video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'none', image_size: '900x' }}
-                  {%- elsif tile_secondary_image -%}
+                  {%- if tile_secondary_image -%}
                     <img src="{{ tile_secondary_image | image_url: width: 900 }}" alt="" loading="lazy" class="pm-plp-tile-image-alt" aria-hidden="true">
                   {%- endif -%}
                 </div>
@@ -571,53 +539,6 @@
       if (initialLink) applyFilter(initialFamily, initialLink.textContent.trim());
     }
 
-    {%- comment -%}
-      Hover video — a tile with data-pm-hover-video has both a still
-      image and a <video> layered on top of it (see the tile markup
-      above); this only ever toggles pm-is-playing and calls
-      play()/pause(), CSS handles the actual crossfade. Desktop (real
-      hover) plays on mouseenter, pauses+rewinds on mouseleave. Touch
-      devices can't hover, so there the same video plays automatically
-      once its tile scrolls to roughly the middle of the screen instead
-      — the closest touch equivalent to "look at it, see it move" —
-      and pauses again once it scrolls back out.
-    {%- endcomment -%}
-    var hoverVideoTiles = Array.prototype.slice.call(grid.querySelectorAll('[data-pm-hover-video]'));
-    if (hoverVideoTiles.length) {
-      var supportsHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-      function playTile(tile) {
-        var video = tile.querySelector('video');
-        if (!video) return;
-        tile.classList.add('pm-is-playing');
-        video.play().catch(function () {});
-      }
-      function stopTile(tile) {
-        var video = tile.querySelector('video');
-        if (!video) return;
-        tile.classList.remove('pm-is-playing');
-        video.pause();
-        video.currentTime = 0;
-      }
-
-      if (supportsHover) {
-        hoverVideoTiles.forEach(function (tile) {
-          tile.addEventListener('mouseenter', function () { playTile(tile); });
-          tile.addEventListener('mouseleave', function () { stopTile(tile); });
-        });
-      } else if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              playTile(entry.target);
-            } else {
-              stopTile(entry.target);
-            }
-          });
-        }, { threshold: 0.6 });
-        hoverVideoTiles.forEach(function (tile) { observer.observe(tile); });
-      }
-    }
   })();
 </script>
 
