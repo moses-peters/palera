@@ -47,8 +47,9 @@
     {%- assign display_products = collections.all.products -%}
   {%- endunless -%}
   {%- if display_products.size > 0 -%}
+    {%- assign rec_grid_id = 'pm-rec-grid-' | append: section.id -%}
     <div class="pm-scroll-row-wrap">
-    <div class="pm-rec-grid" id="pm-rec-grid-{{ section.id }}">
+    <div class="pm-rec-grid" id="{{ rec_grid_id }}">
       {%- assign shown_count = 0 -%}
       {%- for rec_product in display_products -%}
         {%- if shown_count >= number_of_products -%}{%- break -%}{%- endif -%}
@@ -104,7 +105,7 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
-    {% render 'pm-scroll-arrows', scroll_target: 'pm-rec-grid-' | append: section.id %}
+    {% render 'pm-scroll-arrows', scroll_target: rec_grid_id %}
     </div>
   {%- endif -%}
 </div>

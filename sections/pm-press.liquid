@@ -36,8 +36,9 @@
     above links to.
   {%- endcomment -%}
   {%- assign editorial_link_blocks = section.blocks | where: 'type', 'editorial_photo' -%}
+  {%- assign press_editorial_id = 'pm-press-editorial-' | append: section.id -%}
   <div class="pm-scroll-row-wrap">
-  <div class="pm-press-editorial pm-reveal" id="pm-press-editorial-{{ section.id }}">
+  <div class="pm-press-editorial pm-reveal" id="{{ press_editorial_id }}">
     {%- for editorial_file in editorial_files -%}
       {%- assign link_block = editorial_link_blocks[forloop.index0] -%}
       {%- assign link_url = link_block.settings.link -%}
@@ -48,7 +49,7 @@
       </div>
     {%- endfor -%}
   </div>
-  {% render 'pm-scroll-arrows', scroll_target: 'pm-press-editorial-' | append: section.id %}
+  {% render 'pm-scroll-arrows', scroll_target: press_editorial_id %}
   </div>
 
   {%- assign mention_index = 0 -%}
