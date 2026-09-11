@@ -56,10 +56,16 @@
       row.scrollTo({ left: target, behavior: 'smooth' });
     }
 
+    // Capture phase, not bubble -- something else in the row's own
+    // ancestor chain (most likely drag-to-scroll click-suppression logic
+    // reacting to the scrollable container) is intercepting/cancelling
+    // clicks before they'd otherwise bubble back up to a document-level
+    // listener. Capture on document fires before any listener closer to
+    // the actual target gets a chance to stop it.
     document.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-scroll-arrow]');
       if (btn) scrollRow(btn);
-    });
+    }, true);
 
     // Prev/next auto-hide at either end of the row -- delegated the same
     // way (capture phase, since scroll doesn't bubble) so it keeps working
