@@ -35,8 +35,28 @@
       row.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', update);
       btn.addEventListener('click', function () {
-        var amount = row.clientWidth * 0.85;
-        row.scrollBy({ left: isPrev ? -amount : amount, behavior: 'smooth' });
+        // Both rows use scroll-snap-type: x mandatory -- scrolling by an
+        // arbitrary pixel amount (the previous approach) fights the
+        // browser's own snap behavior, which can cancel or reverse a
+        // smooth scroll before it settles anywhere, making the button
+        // look like it does nothing. Scrolling directly to the next/prev
+        // item's own offset instead cooperates with snap-align: start on
+        // those items rather than fighting it.
+        var children = row.children;
+        var current = row.scrollLeft;
+        var target = null;
+        if (isPrev) {
+          for (var i = children.length - 1; i >= 0; i--) {
+            if (children[i].offsetLeft < current - 1) { target = children[i].offsetLeft; break; }
+          }
+          if (target === null) target = 0;
+        } else {
+          for (var j = 0; j < children.length; j++) {
+            if (children[j].offsetLeft > current + 1) { target = children[j].offsetLeft; break; }
+          }
+          if (target === null) target = row.scrollWidth;
+        }
+        row.scrollTo({ left: target, behavior: 'smooth' });
       });
     });
   })();
