@@ -5,19 +5,10 @@
   assign focal_y_left = section.settings.focal_y_left | default: 50
   assign focal_x_right = section.settings.focal_x_right | default: 50
   assign focal_y_right = section.settings.focal_y_right | default: 50
-
-  assign left_duo_bg = nil
-  assign right_duo_bg = nil
-  if section.settings.left_content_type == 'text' and section.settings.image_right != blank
-    assign left_duo_bg = section.settings.image_right | image_url: width: 800
-  endif
-  if section.settings.right_content_type == 'text' and section.settings.image_left != blank
-    assign right_duo_bg = section.settings.image_left | image_url: width: 800
-  endif
 -%}
 <div class="pm-homepage">
   <div class="pm-image-duo">
-    <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal{% if section.settings.left_content_type == 'text' %} pm-image-duo-half--text{% endif %}" style="--pm-focal: {{ focal_x_left }}% {{ focal_y_left }}%;{% if left_duo_bg %} --pm-duo-bg: url('{{ left_duo_bg }}');{% endif %}">
+    <a href="{{ section.settings.link_left | default: '#' }}" class="pm-image-duo-half pm-reveal{% if section.settings.left_content_type == 'text' %} pm-image-duo-half--text{% endif %}" style="--pm-focal: {{ focal_x_left }}% {{ focal_y_left }}%;">
       {%- if section.settings.left_content_type == 'text' -%}
         <div class="pm-image-duo-text">
           {%- if section.settings.text_left_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.text_left_eyebrow }}</span>{%- endif -%}
@@ -38,7 +29,7 @@
       {%- endif -%}
       {%- if section.settings.left_content_type != 'text' and section.settings.caption_left != blank -%}<span class="pm-image-duo-caption">{{ section.settings.caption_left }}</span>{%- endif -%}
     </a>
-    <a href="{{ section.settings.link_right | default: '#' }}" class="pm-image-duo-half pm-reveal{% if section.settings.right_content_type == 'text' %} pm-image-duo-half--text{% endif %}" style="transition-delay: 120ms; --pm-focal: {{ focal_x_right }}% {{ focal_y_right }}%;{% if right_duo_bg %} --pm-duo-bg: url('{{ right_duo_bg }}');{% endif %}">
+    <a href="{{ section.settings.link_right | default: '#' }}" class="pm-image-duo-half pm-reveal{% if section.settings.right_content_type == 'text' %} pm-image-duo-half--text{% endif %}" style="transition-delay: 120ms; --pm-focal: {{ focal_x_right }}% {{ focal_y_right }}%;">
       {%- if section.settings.right_content_type == 'text' -%}
         <div class="pm-image-duo-text">
           {%- if section.settings.text_right_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.text_right_eyebrow }}</span>{%- endif -%}
