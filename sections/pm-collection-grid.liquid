@@ -318,17 +318,43 @@
             {%- comment -%}
               Hover swap to the second photo — the reference behavior is
               a quick "next angle" preview on hover, before a shopper
-              even opens the product. Shopify Liquid has no built-in way
-              to fetch "the images attached to this specific variant" as
-              a list (a variant only exposes a single featured_image,
-              not a gallery) — this previously tried a fabricated
-              `attached_to_variant?` filter for the real-Color-variant
-              case, which doesn't exist in Shopify Liquid and silently
-              failed theme validation, blocking every deploy of this
-              file. Using the product's own image list for every case
-              instead — a real, valid list — sidesteps that entirely.
+              even opens the product, for THIS tile's own color. Each
+              image's alt text carries a "#color_<handle>" tag (e.g.
+              "Champagne - Side #color_champagne") set in Shopify Admin,
+              which is the real signal to filter by — Shopify Liquid has
+              no built-in way to ask "which images belong to this
+              variant" (a variant only exposes a single featured_image,
+              not a gallery; an earlier version of this tried a
+              fabricated `attached_to_variant?` filter that doesn't
+              exist in Shopify Liquid at all and silently failed theme
+              validation, blocking every deploy of this file).
+
+              Matching strips spaces/hyphens/underscores/# from both the
+              tag and the color name before comparing, so "Silver Blue"
+              still matches "#color_silver_blue" or "#color-silverblue"
+              or any other separator a merchant happens to type — only
+              the letters need to line up.
             {%- endcomment -%}
-            {%- assign tile_secondary_image = product.images[1] -%}
+            {%- assign tile_color_for_tag = color_value -%}
+            {%- if color_option == nil -%}{%- assign tile_color_for_tag = tile_color_name -%}{%- endif -%}
+            {%- assign tile_color_tag = tile_color_for_tag | downcase | remove: ' ' | remove: '-' | remove: '_' -%}
+            {%- assign tile_secondary_image = nil -%}
+            {%- if tile_color_tag != blank -%}
+              {%- assign color_tag_needle = 'color' | append: tile_color_tag -%}
+              {%- assign color_match_count = 0 -%}
+              {%- for img in product.images -%}
+                {%- assign img_alt_normalized = img.alt | downcase | remove: ' ' | remove: '-' | remove: '_' | remove: '#' -%}
+                {%- if img_alt_normalized contains color_tag_needle -%}
+                  {%- assign color_match_count = color_match_count | plus: 1 -%}
+                  {%- if color_match_count == 2 -%}
+                    {%- assign tile_secondary_image = img -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if tile_secondary_image == nil -%}
+              {%- assign tile_secondary_image = product.images[1] -%}
+            {%- endif -%}
 
             {%- comment -%}
               The outer tile is a plain div, not an <a>, so the sibling
