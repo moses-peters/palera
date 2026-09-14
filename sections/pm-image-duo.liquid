@@ -53,6 +53,44 @@
   </div>
 </div>
 
+<script>
+  (function () {
+    // Shrink-to-fit for the text panel — the box itself is meant to
+    // stay exactly the same size as the photo beside it (aspect-ratio
+    // set in CSS), so instead of letting a longer heading/body grow
+    // that box, this measures the text's natural height against the
+    // box's actual height and scales the whole text block down just
+    // enough to fit inside it. Left alone entirely (scale: 1) for
+    // shorter copy that already fits.
+    function fitText(el) {
+      el.style.transform = 'none';
+      var box = el.parentElement;
+      var naturalHeight = el.scrollHeight;
+      var availableHeight = box.clientHeight;
+      if (naturalHeight <= availableHeight || availableHeight === 0) return;
+      var scale = Math.max(0.55, (availableHeight / naturalHeight) * 0.97);
+      el.style.transform = 'scale(' + scale + ')';
+    }
+
+    function fitAll() {
+      document.querySelectorAll('.pm-image-duo-text').forEach(fitText);
+    }
+
+    fitAll();
+    // Custom fonts (see pm-fonts.liquid) can finish loading after this
+    // first pass, changing the text's real line height/wrapping --
+    // re-measure once they're active so the fit reflects the actual
+    // rendered font, not a fallback's metrics.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitAll);
+    }
+    window.addEventListener('resize', function () {
+      clearTimeout(window.__pmImageDuoFitTimer);
+      window.__pmImageDuoFitTimer = setTimeout(fitAll, 150);
+    });
+  })();
+</script>
+
 {% schema %}
 {
   "name": "PM: Image duo",
