@@ -83,9 +83,9 @@
         "statement_text": "There is something extraordinary about creating by hand. Every crystal handbag we make begins not on a factory line, but in the hands of artisans who transform hundreds of individual crystals into a piece that feels timeless.",
         "story_video": "shopify://files/videos/WhatsApp Video 2026-08-28 at 15.30.14 (1).mp4",
         "story_focal_y": 25,
-        "story_eyebrow": "Made By Hand",
-        "story_heading": "Every piece, considered",
-        "story_text": "<p>From the very start, the aim was to create an accessory that could reflect light with the same magic and intensity — something that could be carried and worn all year long.</p><p>Today, we're continually exploring unexpected combinations: luminous crystals paired with rich wood, brass, and leather that bring depth and character to every design.</p>",
+        "story_eyebrow": "PALERA MILANO",
+        "story_heading": "A new expression of Italian craftsmanship",
+        "story_text": "<p>Palera Milano is a Milanese brand founded in 2021 by<br/>Patrick Touma and Valeriia Khrapko, created from a simple fascination: to capture light and carry it.</p><p>The idea began in Sicily, where the founders were<br/>captivated by the way sunlight danced across the deep blue Mediterranean. <br/><br/>Back in Milan, Valeriia began experimenting with materials, shapes and techniques to recreate that feeling in a handbag, something luminous,<br/>distinctive and made to be worn.</p><p>After months of sketching, cutting and refining<br/>countless prototypes, she developed Palera Milano’s signature handcrafted crystal technique. The first bag created using this technique was the <strong>Mini Milano N2</strong>, the piece that became the starting point for the brand.<br/><br/><br/><br/></p>",
         "duo_video_a": "shopify://files/videos/SnapInsta.to_AQP8Op8-T9hfXn-2nn1KfIc8XUI8SgW5dcLz-YsUCL9kYihuz0IesHB8LEg4im0ueEo0rnkWgV--tmyLxLDeR-0f.mp4",
         "duo_eyebrow": "",
         "duo_copy": "Thank you for being part of this journey. Your appreciation for artistry and thoughtful design allows us to continue pushing the boundaries of what a crystal handbag can be.",
@@ -97,20 +97,104 @@
     "pm_press_Rh8dKz": {
       "type": "pm-press",
       "blocks": {
-        "editorial_photo_01": { "type": "editorial_photo", "settings": { "label": "Photo 1", "link": "" } },
-        "editorial_photo_02": { "type": "editorial_photo", "settings": { "label": "Photo 2", "link": "" } },
-        "editorial_photo_03": { "type": "editorial_photo", "settings": { "label": "Photo 3", "link": "" } },
-        "editorial_photo_04": { "type": "editorial_photo", "settings": { "label": "Photo 4", "link": "" } },
-        "editorial_photo_05": { "type": "editorial_photo", "settings": { "label": "Photo 5", "link": "" } },
-        "editorial_photo_06": { "type": "editorial_photo", "settings": { "label": "Photo 6", "link": "" } },
-        "editorial_photo_07": { "type": "editorial_photo", "settings": { "label": "Photo 7", "link": "" } },
-        "editorial_photo_08": { "type": "editorial_photo", "settings": { "label": "Photo 8", "link": "" } },
-        "editorial_photo_09": { "type": "editorial_photo", "settings": { "label": "Photo 9", "link": "" } },
-        "editorial_photo_10": { "type": "editorial_photo", "settings": { "label": "Photo 10", "link": "" } },
-        "editorial_photo_11": { "type": "editorial_photo", "settings": { "label": "Photo 11", "link": "" } },
-        "editorial_photo_12": { "type": "editorial_photo", "settings": { "label": "Photo 12", "link": "" } },
-        "editorial_photo_13": { "type": "editorial_photo", "settings": { "label": "Photo 13", "link": "" } },
-        "editorial_photo_14": { "type": "editorial_photo", "settings": { "label": "Photo 14", "link": "" } },
+        "editorial_photo_01": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 1",
+            "link": ""
+          }
+        },
+        "editorial_photo_02": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 2",
+            "link": ""
+          }
+        },
+        "editorial_photo_03": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 3",
+            "link": ""
+          }
+        },
+        "editorial_photo_04": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 4",
+            "link": ""
+          }
+        },
+        "editorial_photo_05": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 5",
+            "link": ""
+          }
+        },
+        "editorial_photo_06": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 6",
+            "link": ""
+          }
+        },
+        "editorial_photo_07": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 7",
+            "link": ""
+          }
+        },
+        "editorial_photo_08": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 8",
+            "link": ""
+          }
+        },
+        "editorial_photo_09": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 9",
+            "link": ""
+          }
+        },
+        "editorial_photo_10": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 10",
+            "link": ""
+          }
+        },
+        "editorial_photo_11": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 11",
+            "link": ""
+          }
+        },
+        "editorial_photo_12": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 12",
+            "link": ""
+          }
+        },
+        "editorial_photo_13": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 13",
+            "link": ""
+          }
+        },
+        "editorial_photo_14": {
+          "type": "editorial_photo",
+          "settings": {
+            "label": "Photo 14",
+            "link": ""
+          }
+        },
         "mention_01": {
           "type": "mention",
           "disabled": true,
