@@ -56,21 +56,37 @@
       row.scrollTo({ left: target, behavior: 'smooth' });
     }
 
-    // mousedown + keydown, not click -- a live diagnostic showed an
-    // identical window-level capture listener for 'click' never firing at
-    // all here, even though window-level capture listeners aren't supposed
-    // to be affected by a sibling's plain stopPropagation(). That points to
-    // some other script calling stopImmediatePropagation() on 'click'
-    // specifically, ahead of this script (it's most likely loaded in
-    // <head>, before this renders in <body>) -- which no amount of
-    // reordering or re-targeting a 'click' listener can out-race. Using a
-    // different event type entirely sidesteps it: 'mousedown' for mouse
-    // users, 'keydown' (Enter/Space) for keyboard users -- neither is what
-    // a "close this on an outside click" style handler would normally hook.
-    window.addEventListener('mousedown', function (e) {
-      var btn = e.target.closest('[data-scroll-arrow]');
-      if (btn) scrollRow(btn);
-    }, true);
+    // mousedown/pointerdown + keydown, not click -- a live diagnostic
+    // showed an identical window-level capture listener for 'click' never
+    // firing at all here, even though window-level capture listeners
+    // aren't supposed to be affected by a sibling's plain
+    // stopPropagation(). That points to some other script calling
+    // stopImmediatePropagation() on 'click' specifically, ahead of this
+    // script (it's most likely loaded in <head>, before this renders in
+    // <body>) -- which no amount of reordering or re-targeting a 'click'
+    // listener can out-race. Switching to 'mousedown' alone still didn't
+    // work on the Press page specifically (confirmed live: real physical
+    // clicks did nothing, even though a synthetic mousedown dispatched
+    // from the console did reach this same listener) -- so whatever's
+    // intercepting real input is hooking mousedown too, just not on every
+    // page. Also listening on 'pointerdown' -- a newer, unified event
+    // that fires before 'mousedown' and that older "close on outside
+    // click" style scripts (typically written before the Pointer Events
+    // API existed) are much less likely to hook -- as one more way for a
+    // real click to reach this code before anything else can stop it.
+    // 'pointerdown' and 'mousedown' both fire for the same physical
+    // click, in that order -- without a guard, a click that reaches both
+    // would double-trigger scrollRow (skipping an extra item). Whichever
+    // fires first "claims" the click; the other, arriving within the same
+    // physical click, is ignored as a duplicate.
+    var lastPressAt = -1000;
+    function handlePress(e) {
+      if (e.timeStamp - lastPressAt < 50) return;
+      var btn = e.target && e.target.closest && e.target.closest('[data-scroll-arrow]');
+      if (btn) { lastPressAt = e.timeStamp; scrollRow(btn); }
+    }
+    window.addEventListener('pointerdown', handlePress, true);
+    window.addEventListener('mousedown', handlePress, true);
     window.addEventListener('keydown', function (e) {
       if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
       var btn = e.target && e.target.closest && e.target.closest('[data-scroll-arrow]');
