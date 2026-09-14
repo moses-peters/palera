@@ -34,13 +34,13 @@
     <div class="pm-duo-caption pm-reveal" style="transition-delay: 300ms">
       <span class="pm-eyebrow">{{ section.settings.tag }}</span>
       {%- comment -%}
-        "Bold" and "Effortless" bolded, and a hard break after the first
-        sentence for a clean two-line read, per request -- tied to this
-        exact copy text rather than the field generically, so if the
-        copy is ever rewritten these replacements simply stop matching
-        anything (harmless) rather than bolding/breaking the wrong words.
+        A hard break after the first sentence for a clean two-line read
+        -- tied to this exact copy text rather than the field
+        generically, so if the copy is ever rewritten this replacement
+        simply stops matching anything (harmless) rather than breaking
+        it in the wrong place.
       {%- endcomment -%}
-      <p class="pm-serif">{{ section.settings.copy | replace: 'Bold', '<strong>Bold</strong>' | replace: 'Effortless', '<strong>Effortless</strong>' | replace: '. ', '.<br>' }}</p>
+      <p class="pm-serif">{{ section.settings.copy | replace: '. ', '.<br>' }}</p>
       {%- if section.settings.link_label != blank -%}
         <a href="{{ section.settings.link_url }}" class="pm-link" style="margin-top: 16px;">{{ section.settings.link_label }}</a>
       {%- endif -%}
