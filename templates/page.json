@@ -43,7 +43,7 @@
         "story_spread_Nx2Pqe": {
           "type": "story_spread",
           "settings": {
-            "reverse": false
+            "reverse": true
           }
         },
         "value_Km4B8y": {
