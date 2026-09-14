@@ -168,7 +168,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 .pm-image-duo-text h2 {
   font-style: italic; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.15;
-  margin: 0 auto 30px; max-width: 22ch; position: relative; z-index: 1;
+  margin: 0 auto 37px; max-width: 22ch; position: relative; z-index: 1;
 }
 .pm-image-duo-text-body {
   font-size: clamp(16px, 1.3vw, 18px); line-height: 1.75; color: var(--pm-ink);
