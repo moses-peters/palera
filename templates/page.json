@@ -40,6 +40,13 @@
     "pm_about_Ch6rqK": {
       "type": "pm-about",
       "blocks": {
+        "text_statement_f77Rch": {
+          "type": "text_statement",
+          "settings": {
+            "mark": "Handcrafted in Italy",
+            "text": "Made in Italy is not simply part of our identity. It is part of how each piece is made.\nOur handbags are designed, assembled and finished in Italy by skilled artisans, with careful attention to the details that cannot be replicated by mass production.\nThe result is a piece that feels personal, because it is."
+          }
+        },
         "story_spread_Nx2Pqe": {
           "type": "story_spread",
           "settings": {
@@ -80,6 +87,7 @@
         }
       },
       "block_order": [
+        "text_statement_f77Rch",
         "story_spread_Nx2Pqe",
         "value_Km4B8y",
         "value_ELRjVn",
