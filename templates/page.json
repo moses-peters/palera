@@ -50,6 +50,10 @@
             "reverse": true
           }
         },
+        "text_statement_Bq7Lmv": {
+          "type": "text_statement",
+          "settings": {}
+        },
         "value_Km4B8y": {
           "type": "value",
           "settings": {
@@ -81,6 +85,7 @@
       },
       "block_order": [
         "story_spread_Nx2Pqe",
+        "text_statement_Bq7Lmv",
         "value_Km4B8y",
         "value_ELRjVn",
         "value_WjUnQq",

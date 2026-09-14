@@ -107,6 +107,22 @@
     </section>
   {%- endfor -%}
 
+  {%- comment -%}
+    ===== Text statements =====
+    Plain centered text blocks (no image) — same idea as the story
+    spreads above, added as blocks so any number can be placed here,
+    between the story spreads and the Lifestyle duo. Reuses the
+    founding statement's own look (a small mark above a larger line)
+    rather than inventing a new style.
+  {%- endcomment -%}
+  {%- assign text_statement_blocks = section.blocks | where: 'type', 'text_statement' -%}
+  {%- for block in text_statement_blocks -%}
+    <section class="pm-statement pm-reveal" {{ block.shopify_attributes }}>
+      {%- if block.settings.mark != blank -%}<p class="pm-statement-mark">{{ block.settings.mark }}</p>{%- endif -%}
+      <p class="pm-serif pm-statement-quote">{{ block.settings.text }}</p>
+    </section>
+  {%- endfor -%}
+
   {%- comment -%} ===== Lifestyle duo ===== {%- endcomment -%}
   <section class="pm-duo">
     <div class="pm-duo-grid">
@@ -255,6 +271,15 @@
         { "type": "text", "id": "heading", "label": "Heading" },
         { "type": "richtext", "id": "text", "label": "Text" },
         { "type": "checkbox", "id": "reverse", "label": "Mirror layout (text on left, photo on right)", "default": false }
+      ]
+    },
+    {
+      "type": "text_statement",
+      "name": "Text statement",
+      "settings": [
+        { "type": "paragraph", "content": "A plain centered text block, no image — same look as the \"Founding statement\" near the top of the page. Renders between the story spreads and the Lifestyle duo." },
+        { "type": "text", "id": "mark", "label": "Small mark (optional)", "info": "Shown above the main line, e.g. a name or the brand mark." },
+        { "type": "textarea", "id": "text", "label": "Text" }
       ]
     },
     {
