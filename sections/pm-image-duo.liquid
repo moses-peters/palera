@@ -68,7 +68,14 @@
       var naturalHeight = el.scrollHeight;
       var availableHeight = box.clientHeight;
       if (naturalHeight <= availableHeight || availableHeight === 0) return;
-      var scale = Math.max(0.55, (availableHeight / naturalHeight) * 0.97);
+      // Floor lowered from an earlier 0.55 -- on a narrow phone, a
+      // portrait 4/5 box wraps this same copy into far more, much
+      // narrower lines than on desktop, so it can need to shrink well
+      // past what 0.55 allowed and still ended up clipped by this
+      // panel's overflow: hidden. Fitting completely (even if that
+      // means noticeably smaller text) beats any part of it being cut
+      // off; 0.35 is the point past which it stops being legible.
+      var scale = Math.max(0.35, (availableHeight / naturalHeight) * 0.96);
       el.style.transform = 'scale(' + scale + ')';
     }
 
