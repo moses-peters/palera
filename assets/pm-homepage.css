@@ -97,7 +97,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   background: var(--pm-paper);
   border: 1px solid var(--pm-line);
   padding: clamp(24px, 3vw, 40px);
-  max-width: 340px;
+  max-width: 440px;
 }
 .pm-duo-caption .pm-eyebrow { margin-bottom: 10px; display: block; }
 .pm-duo-caption p { margin-top: 10px; font-size: clamp(17px, 2vw, 22px); line-height: 1.45; }
