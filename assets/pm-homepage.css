@@ -570,6 +570,21 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-photo-tile:focus-visible .pm-photo-tile-caption { opacity: 1; }
 .pm-photo-tile-name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
 .pm-photo-tile-price { font-size: 11px; color: rgba(255, 255, 255, 0.8); }
+/* Mobile only — the 2-column wrapping grid becomes a single
+   horizontally-scrollable row of smaller tiles instead, so every
+   photo sits on one line and swiping (the native mobile gesture, same
+   as the Press filmstrip/recommendations rows) reveals the rest,
+   rather than stacking into several rows. Desktop (640px+) keeps the
+   existing grid untouched. */
+@media (max-width: 639px) {
+  .pm-photo-grid {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    gap: clamp(12px, 3.5vw, 20px);
+  }
+  .pm-photo-grid::-webkit-scrollbar { display: none; }
+  .pm-photo-tile { flex: 0 0 auto; width: 58%; scroll-snap-align: start; }
+}
 
 /* ===== "Shop" browse section — quick links | family grid | hover preview =====
    Real taxonomy: "family" = a specific product line (Maxi Roma and Mini
