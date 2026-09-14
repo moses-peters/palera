@@ -97,7 +97,11 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   background: var(--pm-paper);
   border: 1px solid var(--pm-line);
   padding: clamp(24px, 3vw, 40px);
-  max-width: 440px;
+  /* Wider, not taller — with longer copy this used to wrap into many
+     narrow lines and stretch well past the photos beside it. Widening
+     the box instead keeps it reading as a compact card rather than a
+     tall column of text. */
+  max-width: 620px;
 }
 .pm-duo-caption .pm-eyebrow { margin-bottom: 10px; display: block; }
 .pm-duo-caption p { margin-top: 10px; font-size: clamp(17px, 2vw, 22px); line-height: 1.45; }
