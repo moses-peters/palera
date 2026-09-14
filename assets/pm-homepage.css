@@ -104,7 +104,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   max-width: 620px;
 }
 .pm-duo-caption .pm-eyebrow { margin-bottom: 10px; display: block; }
-.pm-duo-caption p { margin-top: 10px; font-size: clamp(17px, 2vw, 22px); line-height: 1.45; }
+.pm-duo-caption p { margin-top: 10px; font-size: clamp(15px, 1.8vw, 19px); line-height: 1.45; }
 @media (min-width: 900px) {
   .pm-duo-grid { grid-template-columns: 7fr 5fr; align-items: end; gap: clamp(12px, 2vw, 24px); }
   .pm-duo-image--a { aspect-ratio: 4 / 5; align-self: center; }
