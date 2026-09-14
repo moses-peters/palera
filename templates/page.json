@@ -40,6 +40,12 @@
     "pm_about_Ch6rqK": {
       "type": "pm-about",
       "blocks": {
+        "story_spread_Nx2Pqe": {
+          "type": "story_spread",
+          "settings": {
+            "reverse": false
+          }
+        },
         "value_Km4B8y": {
           "type": "value",
           "settings": {
@@ -70,6 +76,7 @@
         }
       },
       "block_order": [
+        "story_spread_Nx2Pqe",
         "value_Km4B8y",
         "value_ELRjVn",
         "value_WjUnQq",
