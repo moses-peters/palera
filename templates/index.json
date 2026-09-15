@@ -28,7 +28,7 @@
             "product": "shopify://products/clutch-mini-champagne",
             "image": "shopify://shop_images/F2.jpg",
             "image_mobile": "shopify://shop_images/3U7A2740-2.jpg",
-            "fallback_label": "Crystal Pouch",
+            "fallback_label": "Clutch Micro Bag",
             "fallback_asset": "pm-drive-product-a.jpg",
             "link": "",
             "focal_x": 50,
@@ -40,7 +40,7 @@
           "settings": {
             "product": "shopify://products/crystal-pouch",
             "video": "shopify://files/videos/copy_566BB479-5B3C-478C-9DA9-7D9329401B21.mov",
-            "fallback_label": "Diamond Mini Roma",
+            "fallback_label": "",
             "fallback_asset": "pm-drive-product-b.jpg",
             "link": "",
             "focal_x": 50,
