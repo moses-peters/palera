@@ -12,7 +12,7 @@
 -%}
 <div class="pm-homepage">
   <section class="pm-hero">
-    <a href="{{ section.settings.link_url | default: '#' }}" class="pm-hero-media" style="--pm-focal: {{ focal_x }}% {{ focal_y }}%;">
+    <a href="{{ section.settings.link_url | default: '/collections/aw27' }}" class="pm-hero-media" style="--pm-focal: {{ focal_x }}% {{ focal_y }}%;">
       {%- if section.settings.video != blank -%}
         {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1800x' }}
       {%- else -%}
