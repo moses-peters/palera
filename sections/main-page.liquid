@@ -1,19 +1,26 @@
 {%- comment -%}
   Generic fallback for any page on the default template. About Us and
   Press don't use this — they're rendered by the enabled pm-about and
-  pm-press sections in page.json, which check page.handle themselves.
-  This section stays disabled in page.json; it only matters if it's
-  ever re-enabled for a page with no dedicated section of its own.
+  pm-press sections in page.json instead, which is why it's scoped
+  away from those two handles specifically here rather than left to
+  render everywhere: this section is now enabled in page.json (every
+  other page on the default template, e.g. the legal pages, has no
+  dedicated section of its own and needs something to actually show
+  its title/body content), and without this guard it would stack a
+  second, empty title header above About Us's own hero and above
+  Press's own layout.
 {%- endcomment -%}
-<div class="page-width page-width--narrow page-content">
-  {%- render 'breadcrumbs' -%}
-  <header class="section-header">
-    <h1 class="section-header__title">{{ page.title }}</h1>
-  </header>
-  <div class="rte rte--nomargin">
-    {{ page.content }}
+{%- unless page.handle == 'about-us' or page.handle == 'press' -%}
+  <div class="page-width page-width--narrow page-content">
+    {%- render 'breadcrumbs' -%}
+    <header class="section-header">
+      <h1 class="section-header__title">{{ page.title }}</h1>
+    </header>
+    <div class="rte rte--nomargin">
+      {{ page.content }}
+    </div>
   </div>
-</div>
+{%- endunless -%}
 
 {% schema %}
 {

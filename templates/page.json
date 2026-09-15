@@ -11,7 +11,7 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "disabled": true,
+      "disabled": false,
       "custom_css": [
         "input,select,textarea {border-color: black !important;}",
         "p[data-spam-detection-disclaimer],small {display: none;}"

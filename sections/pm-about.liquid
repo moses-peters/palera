@@ -1,16 +1,17 @@
 {%- comment -%}
-  This section is the one actually rendered for the site's default page
-  template (templates/page.json), where it sits enabled while the
-  generic main-page section is disabled — meaning it renders
-  unconditionally for EVERY page using that template, not just About
-  Us. Press uses the same template (see pm-press.liquid, enabled
-  alongside this one), so this section renders nothing on the Press
-  page — checking page.handle here is what keeps About's own content
-  (hero video, Lifestyle duo, etc.) from also showing there.
+  This section is enabled (alongside pm-press, disabled main-page)
+  on the site's default page template (templates/page.json), which
+  every page without its own specific template falls back to -- not
+  just About Us. It used to render its content for every page except
+  'press', which meant any other page sharing this default template
+  (e.g. the Privacy Policy / Terms of Sale / etc. pages created later)
+  silently got About Us's own content (hero video, founding statement,
+  Lifestyle duo...) instead of showing nothing and falling through to
+  their own page.content. Checking specifically for page.handle ==
+  'about-us' instead of excluding just 'press' is what keeps this
+  section's content scoped to the actual About Us page alone.
 {%- endcomment -%}
-{%- if page.handle == 'press' -%}
-  {%- comment -%} Press content lives in the PM: Press section instead. {%- endcomment -%}
-{%- else -%}
+{%- if page.handle == 'about-us' -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 {{ 'pm-about.css' | asset_url | stylesheet_tag }}
 
