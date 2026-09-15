@@ -192,6 +192,12 @@
   cursor: pointer;
 }
 .pm-product .collapsible-content__inner { padding: 0 0 20px; font-size: 14px; line-height: 1.7; color: var(--pm-muted); }
+/* theme.css.liquid's base .collapsible-trigger-btn--borders+.collapsible-content
+   .collapsible-content__inner rule (3 classes) outranks a plain
+   .pm-product .collapsible-content__inner override (2 classes), so the
+   side/bottom border it adds around expanded tab content needs this
+   exact same selector shape, just scoped under .pm-product, to win. */
+.pm-product .collapsible-trigger-btn--borders + .collapsible-content .collapsible-content__inner { border: none; }
 .pm-product .collapsible-content__inner p { margin-bottom: 12px; }
 
 /* ===== Description (non-tab) ===== */
