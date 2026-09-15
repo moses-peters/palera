@@ -121,7 +121,10 @@
         }
         .pm-mobile-shop-family{
           color:inherit;
-          flex:0 0 clamp(110px, 30vw, 140px);
+          /* Sized so roughly 2 full tiles plus half of a third show at
+             once (was tuned for ~3 fully visible) -- a partial tile at
+             the edge is the visual cue that the row scrolls. */
+          flex:0 0 clamp(130px, 34vw, 155px);
           scroll-snap-align:start;
           text-decoration:none;
         }
