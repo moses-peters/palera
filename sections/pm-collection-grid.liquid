@@ -49,6 +49,20 @@
   typed on the live variants.
 {%- endcomment -%}
 {%- assign aw27_colors = 'Gamboge,Gamboge Multi,Gambodge,Gambodge Multi,Azure,Azure Multi,Grey,Grey Multi,Sparkle Blue Multi,Purple,Purple Multi,Camelot,Transparent White Multi,Rare Pink Multi,Black Multi' | split: ',' -%}
+{%- comment -%}
+  Liquid's if/unless conditions don't allow a filter chained onto the
+  right-hand side of a comparison operator ("a == b | downcase" is a
+  syntax error, not just b unfiltered) -- only the left operand can
+  carry filters. So every aw27_colors entry is normalized here, once,
+  into its own array, and every comparison below is between two
+  already-normalized plain values with no filters inside the if at all.
+{%- endcomment -%}
+{%- assign aw27_colors_norm_raw = '' -%}
+{%- for raw_color in aw27_colors -%}
+  {%- assign raw_color_norm = raw_color | strip | downcase -%}
+  {%- assign aw27_colors_norm_raw = aw27_colors_norm_raw | append: raw_color_norm | append: ',' -%}
+{%- endfor -%}
+{%- assign aw27_colors_norm = aw27_colors_norm_raw | split: ',' -%}
 {%- assign grid_products = collection.products -%}
 {%- assign real_aw27_ids = '' -%}
 {%- if is_aw27_page -%}
@@ -100,8 +114,8 @@
       {%- for count_color_value in color_option.values -%}
         {%- assign count_color_matches = false -%}
         {%- assign count_color_value_norm = count_color_value | strip | downcase -%}
-        {%- for aw27_color in aw27_colors -%}
-          {%- if count_color_value_norm == aw27_color | strip | downcase -%}{%- assign count_color_matches = true -%}{%- endif -%}
+        {%- for aw27_color_norm in aw27_colors_norm -%}
+          {%- if count_color_value_norm == aw27_color_norm -%}{%- assign count_color_matches = true -%}{%- endif -%}
         {%- endfor -%}
         {%- if count_product_tagged or count_color_matches -%}
           {%- assign total_tile_count = total_tile_count | plus: 1 -%}
@@ -114,8 +128,8 @@
       {%- endif -%}
       {%- assign count_color_matches = false -%}
       {%- assign count_tile_color_name_norm = count_tile_color_name | downcase -%}
-      {%- for aw27_color in aw27_colors -%}
-        {%- if count_tile_color_name_norm == aw27_color | strip | downcase -%}{%- assign count_color_matches = true -%}{%- endif -%}
+      {%- for aw27_color_norm in aw27_colors_norm -%}
+        {%- if count_tile_color_name_norm == aw27_color_norm -%}{%- assign count_color_matches = true -%}{%- endif -%}
       {%- endfor -%}
       {%- if count_product_tagged or count_color_matches -%}
         {%- assign total_tile_count = total_tile_count | plus: 1 -%}
@@ -380,8 +394,8 @@
               {%- endif -%}
               {%- assign tile_color_matches_aw27 = false -%}
               {%- assign tile_color_name_norm = tile_color_name | downcase -%}
-              {%- for aw27_color in aw27_colors -%}
-                {%- if tile_color_name_norm == aw27_color | strip | downcase -%}{%- assign tile_color_matches_aw27 = true -%}{%- endif -%}
+              {%- for aw27_color_norm in aw27_colors_norm -%}
+                {%- if tile_color_name_norm == aw27_color_norm -%}{%- assign tile_color_matches_aw27 = true -%}{%- endif -%}
               {%- endfor -%}
               {%- unless tile_product_tagged or tile_color_matches_aw27 -%}
                 {%- continue -%}
