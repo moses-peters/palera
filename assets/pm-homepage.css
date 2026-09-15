@@ -161,13 +161,16 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   transition: transform 1.1s var(--pm-ease);
 }
 .pm-image-duo-half:hover img, .pm-image-duo-half:hover video { transform: scale(1.03); }
+/* Same look as .pm-product-pair-caption, not just the same hover
+   behavior — a full-width gradient bar along the bottom with plain
+   (not tiny/uppercase/letter-spaced) text, instead of small stamped
+   corner text. */
 .pm-image-duo-caption {
-  position: absolute; left: clamp(14px, 2vw, 24px); bottom: clamp(14px, 2vw, 24px); z-index: 2;
+  position: absolute; inset: auto 0 0 0; z-index: 2;
+  padding: clamp(16px, 2.4vw, 28px);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
   color: #fff;
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
-  /* Hover-revealed, same as the Product pair tiles' own caption
-     (.pm-product-pair-caption), instead of always showing. */
+  font-size: clamp(15px, 1.8vw, 20px);
   opacity: 0; transition: opacity 0.3s var(--pm-ease);
 }
 .pm-image-duo-half:hover .pm-image-duo-caption,
