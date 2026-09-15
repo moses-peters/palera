@@ -63,7 +63,27 @@
   {%- assign aw27_colors_norm_raw = aw27_colors_norm_raw | append: raw_color_norm | append: ',' -%}
 {%- endfor -%}
 {%- assign aw27_colors_norm = aw27_colors_norm_raw | split: ',' -%}
-{%- assign grid_products = collection.products -%}
+{%- comment -%}
+  grid_products used to be built as an array of real Product objects
+  (collection.products concat'd with the storewide scan results), but
+  neither paginate nor a plain for-limit loop could actually get
+  collections.all.products into array form via slice/concat -- both
+  silently produced zero extra items even though the for loop itself
+  demonstrably ran (confirmed via a scan_iterations debug counter).
+  collections.all.products appears to be a lazy/special type that
+  doesn't support being sliced into a real array at all.
+
+  Sidestepping that entirely: build a plain comma-joined STRING of
+  product handles instead (the same append-based string-building this
+  file already uses reliably for real_aw27_ids), then resolve each
+  handle to its actual product via all_products[handle] -- Shopify's
+  direct global hash lookup by handle, which has no pagination cap
+  since it's a single-item lookup, not an array operation.
+{%- endcomment -%}
+{%- assign grid_handles_raw = '' -%}
+{%- for base_product in collection.products -%}
+  {%- assign grid_handles_raw = grid_handles_raw | append: base_product.handle | append: ',' -%}
+{%- endfor -%}
 {%- assign real_aw27_ids = '' -%}
 {%- if is_aw27_page -%}
   {%- for real_product in collection.products -%}
@@ -75,26 +95,29 @@
     needed -- and paginate turned out not to work here at all: it's
     tied to the current template's own paginated resource via the
     request's ?page= state, and a *second*, unrelated collection
-    paginated inside the same render silently produced nothing, even
-    through a real for loop -- confirmed via a debug marker showing
-    zero items added either way). limit: 250 is Shopify's real hard
-    ceiling for a single for loop regardless of paginate; a store
+    paginated inside the same render silently produced nothing). 250
+    is Shopify's real hard ceiling for a single for loop; a store
     beyond that would need real multi-page pagination, which isn't
     possible to do transparently in a single render.
   {%- endcomment -%}
-  {%- assign extra_products = '' | split: ',' -%}
   {%- assign scan_source = collections.all.products -%}
   {%- assign scan_iterations = 0 -%}
   {%- for scan_product in scan_source limit: 250 -%}
     {%- assign scan_iterations = scan_iterations | plus: 1 -%}
-    {%- assign scan_single = scan_source | slice: forloop.index0, 1 -%}
-    {%- assign extra_products = extra_products | concat: scan_single -%}
+    {%- assign scan_id_needle = ',' | append: scan_product.id | append: ',' -%}
+    {%- assign scan_already_tagged = false -%}
+    {%- if real_aw27_ids contains scan_id_needle -%}{%- assign scan_already_tagged = true -%}{%- endif -%}
+    {%- unless scan_already_tagged -%}
+      {%- assign grid_handles_raw = grid_handles_raw | append: scan_product.handle | append: ',' -%}
+    {%- endunless -%}
   {%- endfor -%}
-  {%- assign grid_products = collection.products | concat: extra_products | uniq -%}
 {%- endif -%}
+{%- assign grid_handles = grid_handles_raw | split: ',' -%}
 
 {%- assign total_tile_count = 0 -%}
-{%- for product in grid_products -%}
+{%- for product_handle in grid_handles -%}
+  {%- assign product = all_products[product_handle] -%}
+  {%- unless product -%}{%- continue -%}{%- endunless -%}
   {%- assign color_option = nil -%}
   {%- for option in product.options_with_values -%}
     {%- assign option_name_downcase = option.name | downcase -%}
@@ -153,7 +176,7 @@
   Temporary debug marker -- remove once the AW27 color-matching issue is
   confirmed fixed. Not visible on the rendered page, only in View Source.
 {%- endcomment -%}
-<!-- AW27-DEBUG handle="{{ collection.handle }}" is_aw27_page={{ is_aw27_page }} total_tile_count={{ total_tile_count }} grid_products_size={{ grid_products.size }} collection_products_size={{ collection.products.size }} extra_products_size={{ extra_products.size }} scan_iterations={{ scan_iterations }} all_products_size={{ collections.all.products.size }} -->
+<!-- AW27-DEBUG handle="{{ collection.handle }}" is_aw27_page={{ is_aw27_page }} total_tile_count={{ total_tile_count }} grid_handles_size={{ grid_handles.size }} collection_products_size={{ collection.products.size }} scan_iterations={{ scan_iterations }} all_products_size={{ collections.all.products.size }} -->
 
 <div class="pm-homepage">
   {%- comment -%}
@@ -315,7 +338,9 @@
 
         {%- assign scoped_break_index = -1 -%}
         {%- assign tile_index = 0 -%}
-        {%- for product in grid_products -%}
+        {%- for product_handle in grid_handles -%}
+          {%- assign product = all_products[product_handle] -%}
+          {%- unless product -%}{%- continue -%}{%- endunless -%}
           {%- comment -%}
             No real per-family Collection exists to filter against, so
             sort each product into one of the 9 real families by matching
@@ -447,8 +472,9 @@
               {%- endfor -%}
             {%- else -%}
               {%- assign base_title = product.title | split: ' — ' | first -%}
-              {%- for other_product in grid_products -%}
-                {%- if other_product.id != product.id -%}
+              {%- for other_handle in grid_handles -%}
+                {%- assign other_product = all_products[other_handle] -%}
+                {%- if other_product and other_product.id != product.id -%}
                   {%- assign other_base = other_product.title | split: ' — ' | first -%}
                   {%- if other_base == base_title -%}
                     {%- assign other_color_name = other_product.title | split: ' — ' | last -%}
