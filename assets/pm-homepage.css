@@ -167,11 +167,6 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    the (unscaled) parent box so the visual scaling reads as "the text
    got smaller to fit," not "the box got smaller." */
 .pm-image-duo-text { transform-origin: center center; }
-.pm-image-duo-text::before {
-  content: "”"; position: absolute; top: clamp(-28px, -3vw, -10px); left: 50%; transform: translateX(-50%);
-  font-family: var(--pm-font-serif); font-size: clamp(140px, 16vw, 240px); line-height: 1;
-  color: var(--pm-ink); opacity: 0.06; pointer-events: none;
-}
 .pm-image-duo-text .pm-eyebrow {
   color: var(--pm-ink); margin-bottom: 18px;
 }
@@ -185,7 +180,6 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 .pm-image-duo-text-body p { margin: 0; }
 .pm-image-duo-text-body p + p { margin-top: 14px; }
-.pm-image-duo-half--text:hover .pm-image-duo-text::before { transform: translateX(-50%) translateY(4px); transition: transform 1.2s var(--pm-ease); }
 @media (min-width: 640px) { .pm-image-duo { grid-template-columns: 1fr 1fr; } .pm-image-duo-half { aspect-ratio: 16 / 10; } }
 
 /* ===== Brand statement — stark full-bleed, YSL register ===== */
