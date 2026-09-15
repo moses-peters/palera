@@ -38,12 +38,6 @@
     </div>
   </section>
 
-  {%- comment -%} ===== Founding statement ===== {%- endcomment -%}
-  <section class="pm-statement pm-reveal">
-    <p class="pm-statement-mark">{{ section.settings.statement_mark }}</p>
-    <p class="pm-serif pm-statement-quote">{{ section.settings.statement_text }}</p>
-  </section>
-
   {%- comment -%} ===== Craft / story spread ===== {%- endcomment -%}
   {%- liquid
     assign story_focal_y = section.settings.story_focal_y | default: 50
@@ -70,6 +64,12 @@
       <h2 class="pm-serif">{{ section.settings.story_heading }}</h2>
       <div class="pm-about-spread-text">{{ section.settings.story_text }}</div>
     </div>
+  </section>
+
+  {%- comment -%} ===== Founding statement ===== {%- endcomment -%}
+  <section class="pm-statement pm-reveal">
+    <p class="pm-statement-mark">{{ section.settings.statement_mark }}</p>
+    <p class="pm-serif pm-statement-quote">{{ section.settings.statement_text }}</p>
   </section>
 
   {%- comment -%}
