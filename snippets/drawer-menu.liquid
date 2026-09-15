@@ -36,6 +36,28 @@
         .pm-mobile-nav-screen[hidden]{
           display:none;
         }
+        /* Jacquemus's reference covers the full screen for the Shop
+           panel rather than staying at the drawer's normal 350px width
+           -- overriding both width/max-width and the open transform
+           (which is normally translateX(-/+350px), an amount now wrong
+           once the width itself changes) so the panel slides fully
+           into view instead of stopping 350px short. */
+        .drawer--right.pm-shop-panel-active{
+          width:100%;
+          max-width:100%;
+          right:-100%;
+        }
+        .drawer--right.pm-shop-panel-active.drawer--is-open{
+          transform:translateX(-100%);
+        }
+        .drawer--left.pm-shop-panel-active{
+          width:100%;
+          max-width:100%;
+          left:-100%;
+        }
+        .drawer--left.pm-shop-panel-active.drawer--is-open{
+          transform:translateX(100%);
+        }
         .pm-mobile-shop-trigger{
           cursor:pointer;
           font:inherit;
@@ -346,6 +368,10 @@
       document.querySelectorAll('[data-mobile-nav-screen]').forEach(function (el) {
         el.hidden = el.dataset.mobileNavScreen !== name;
       });
+      var drawer = document.getElementById('NavDrawer');
+      if (drawer) {
+        drawer.classList.toggle('pm-shop-panel-active', name === 'shop');
+      }
     }
 
     function bindMobileNavScreens() {
