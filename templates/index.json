@@ -165,8 +165,8 @@
         "photo-4": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/clutch-edge-long-silver-blue",
-            "variant_color": "",
+            "product": "micro-long",
+            "variant_color": "Black",
             "image": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-4.jpg",
@@ -176,8 +176,8 @@
         "photo-5": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/amelia-bag-gold",
-            "variant_color": "",
+            "product": "crystal-pouch",
+            "variant_color": "Gamboge",
             "image": "shopify://shop_images/Crystal-Pouch-Gamboge-Gold_1b55fdb2-d958-4e2c-9a1b-80008f18b541.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-5.jpg",
@@ -187,8 +187,8 @@
         "photo-6": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/capri-bag-gold",
-            "variant_color": "",
+            "product": "phone-holder",
+            "variant_color": "Sparkle Blue Multi",
             "image": "shopify://shop_images/Phone-Holder-Sparkle-Blue-Gold_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-6.jpg",
@@ -198,8 +198,8 @@
         "photo_HByhkb": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/crystal-wallet-rare-pink",
-            "variant_color": "",
+            "product": "clutch-edge-short-copy",
+            "variant_color": "Gamboge Multi",
             "image": "shopify://shop_images/Clutch-Edge-Short-Gamboge-Multicolor.jpg",
             "fallback_label": "",
             "fallback_asset": "",
