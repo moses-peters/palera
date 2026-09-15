@@ -85,7 +85,8 @@
         "photo-1": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/maxi-roma-0",
+            "product": "siracusa",
+            "variant_color": "Black",
             "image": "shopify://shop_images/Siracusa-Black-Gold_2f7facb3-b9b7-460b-b919-00cda8d01a3c.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-1.jpg",
@@ -96,6 +97,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/diamond-maxi-roma-1",
+            "variant_color": "",
             "image": "shopify://shop_images/Micro-Bag-Azure-Gold.jpg",
             "fallback_label": "",
             "fallback_asset": "",
@@ -106,6 +108,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/santorini-6",
+            "variant_color": "",
             "image": "shopify://shop_images/Amalfi-Camelot-Gold_1.jpg",
             "image_mobile": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
             "fallback_label": "",
@@ -117,6 +120,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-pouch",
+            "variant_color": "",
             "image": "shopify://shop_images/Santorini-Purple-Gold.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-3.jpg",
@@ -162,6 +166,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/clutch-edge-long-silver-blue",
+            "variant_color": "",
             "image": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-4.jpg",
@@ -172,6 +177,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/amelia-bag-gold",
+            "variant_color": "",
             "image": "shopify://shop_images/Crystal-Pouch-Gamboge-Gold_1b55fdb2-d958-4e2c-9a1b-80008f18b541.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-5.jpg",
@@ -182,6 +188,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/capri-bag-gold",
+            "variant_color": "",
             "image": "shopify://shop_images/Phone-Holder-Sparkle-Blue-Gold_1.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-6.jpg",
@@ -192,6 +199,7 @@
           "type": "photo",
           "settings": {
             "product": "shopify://products/crystal-wallet-rare-pink",
+            "variant_color": "",
             "image": "shopify://shop_images/Clutch-Edge-Short-Gamboge-Multicolor.jpg",
             "fallback_label": "",
             "fallback_asset": "",
@@ -203,6 +211,7 @@
           "disabled": true,
           "settings": {
             "product": "shopify://products/mini-milano-n2-sparkle-blue",
+            "variant_color": "",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-8.jpg",
             "link": ""
