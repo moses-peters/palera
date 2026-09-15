@@ -21,8 +21,36 @@
   further down both use the real tile count instead of the product
   count.
 {%- endcomment -%}
+{%- comment -%}
+  AW27 is a real Shopify collection (products tagged/added to it show
+  every one of their colors normally, same as any other collection),
+  but "AW27-ness" for several products actually lives at the color
+  level, not the product level — Shopify collections can't express
+  "just this one variant of this product" at all, so a product like
+  Clutch Micro Bag (Black is not AW27, Azure Multi is) can never fully
+  belong to a real collection. The fix: on the AW27 page specifically,
+  also scan every product in the store for this exact list of color
+  names, and pull in just those matching colors as extra tiles —
+  additive to, never replacing, whatever's already properly in the
+  real collection. Everywhere else this page's normal single-collection
+  behavior is untouched.
+{%- endcomment -%}
+{%- assign is_aw27_page = false -%}
+{%- if collection.handle == 'aw27' -%}
+  {%- assign is_aw27_page = true -%}
+{%- endif -%}
+{%- assign aw27_colors = 'Gamboge,Gamboge Multi,Azure,Azure Multi,Grey,Grey Multi,Sparkle Blue Multi,Purple,Purple Multi,Camelot,Transparent White Multi,Rare Pink Multi,Black Multi' | split: ',' -%}
+{%- assign grid_products = collection.products -%}
+{%- assign real_aw27_ids = '' -%}
+{%- if is_aw27_page -%}
+  {%- for real_product in collection.products -%}
+    {%- assign real_aw27_ids = real_aw27_ids | append: ',' | append: real_product.id | append: ',' -%}
+  {%- endfor -%}
+  {%- assign grid_products = collection.products | concat: collections.all.products | uniq -%}
+{%- endif -%}
+
 {%- assign total_tile_count = 0 -%}
-{%- for product in collection.products -%}
+{%- for product in grid_products -%}
   {%- assign color_option = nil -%}
   {%- for option in product.options_with_values -%}
     {%- assign option_name_downcase = option.name | downcase -%}
@@ -30,11 +58,45 @@
       {%- assign color_option = option -%}
     {%- endif -%}
   {%- endfor -%}
-  {%- if color_option -%}
-    {%- assign total_tile_count = total_tile_count | plus: color_option.values.size -%}
+  {%- unless is_aw27_page -%}
+    {%- if color_option -%}
+      {%- assign total_tile_count = total_tile_count | plus: color_option.values.size -%}
+    {%- else -%}
+      {%- assign total_tile_count = total_tile_count | plus: 1 -%}
+    {%- endif -%}
   {%- else -%}
-    {%- assign total_tile_count = total_tile_count | plus: 1 -%}
-  {%- endif -%}
+    {%- comment -%}
+      AW27 page: count only tiles that will actually render below —
+      every color of an already-tagged product, or just the specific
+      colors matching the AW27 list for everything else. Mirrors the
+      inclusion check in the main render loop further down.
+    {%- endcomment -%}
+    {%- assign count_product_id_needle = ',' | append: product.id | append: ',' -%}
+    {%- assign count_product_tagged = real_aw27_ids contains count_product_id_needle -%}
+    {%- if color_option -%}
+      {%- for count_color_value in color_option.values -%}
+        {%- assign count_color_matches = false -%}
+        {%- for aw27_color in aw27_colors -%}
+          {%- if count_color_value == aw27_color -%}{%- assign count_color_matches = true -%}{%- endif -%}
+        {%- endfor -%}
+        {%- if count_product_tagged or count_color_matches -%}
+          {%- assign total_tile_count = total_tile_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- assign count_tile_color_name = '' -%}
+      {%- if product.title contains ' — ' -%}
+        {%- assign count_tile_color_name = product.title | split: ' — ' | last -%}
+      {%- endif -%}
+      {%- assign count_color_matches = false -%}
+      {%- for aw27_color in aw27_colors -%}
+        {%- if count_tile_color_name == aw27_color -%}{%- assign count_color_matches = true -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if count_product_tagged or count_color_matches -%}
+        {%- assign total_tile_count = total_tile_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endunless -%}
 {%- endfor -%}
 
 <div class="pm-homepage">
@@ -92,7 +154,14 @@
   </div>
 
   <div class="pm-collection-grid-wrap">
-    {%- if collection.products.size == 0 -%}
+    {%- comment -%}
+      total_tile_count (not collection.products.size) so the AW27
+      page's own extra color-matched tiles count too — otherwise a real
+      AW27 collection with 0 products of its own would show the
+      "coming soon" placeholder even when other products' matching
+      colors would actually have something to show.
+    {%- endcomment -%}
+    {%- if total_tile_count == 0 -%}
       {%- if collection.handle == 'aw27' -%}
         {%- comment -%}
           Coded placeholder spots, not a text message — so the page
@@ -190,7 +259,7 @@
 
         {%- assign scoped_break_index = -1 -%}
         {%- assign tile_index = 0 -%}
-        {%- for product in collection.products -%}
+        {%- for product in grid_products -%}
           {%- comment -%}
             No real per-family Collection exists to filter against, so
             sort each product into one of the 9 real families by matching
@@ -236,7 +305,6 @@
           {%- endif -%}
 
           {%- for color_value in color_values -%}
-            {%- assign tile_index = tile_index | plus: 1 -%}
             {%- comment -%}
               tile_name is the product title with any " — Color" suffix
               stripped — colors here are baked into the product's own
@@ -261,6 +329,30 @@
                 {%- assign tile_color_name = product.title | split: ' — ' | last -%}
               {%- endif -%}
             {%- endif -%}
+
+            {%- comment -%}
+              AW27 inclusion check (see the setup comment near the top)
+              -- on every other page this is skipped entirely and every
+              color renders same as always. On the AW27 page, a tile
+              only renders if its product is genuinely in the real
+              collection (all its colors show, unfiltered) or this
+              specific color is one of the named AW27 colors. tile_index
+              only increments for tiles that actually render, so it
+              still lines up with total_tile_count above.
+            {%- endcomment -%}
+            {%- if is_aw27_page -%}
+              {%- assign tile_product_id_needle = ',' | append: product.id | append: ',' -%}
+              {%- assign tile_product_tagged = real_aw27_ids contains tile_product_id_needle -%}
+              {%- assign tile_color_matches_aw27 = false -%}
+              {%- for aw27_color in aw27_colors -%}
+                {%- if tile_color_name == aw27_color -%}{%- assign tile_color_matches_aw27 = true -%}{%- endif -%}
+              {%- endfor -%}
+              {%- unless tile_product_tagged or tile_color_matches_aw27 -%}
+                {%- continue -%}
+              {%- endunless -%}
+            {%- endif -%}
+            {%- assign tile_index = tile_index | plus: 1 -%}
+
             {%- assign tile_image = tile_variant.featured_image | default: product.featured_image -%}
             {%- assign tile_price = tile_variant.price | default: product.price -%}
 
@@ -294,7 +386,7 @@
               {%- endfor -%}
             {%- else -%}
               {%- assign base_title = product.title | split: ' — ' | first -%}
-              {%- for other_product in collection.products -%}
+              {%- for other_product in grid_products -%}
                 {%- if other_product.id != product.id -%}
                   {%- assign other_base = other_product.title | split: ' — ' | first -%}
                   {%- if other_base == base_title -%}
