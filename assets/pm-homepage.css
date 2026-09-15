@@ -166,7 +166,12 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   color: #fff;
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+  /* Hover-revealed, same as the Product pair tiles' own caption
+     (.pm-product-pair-caption), instead of always showing. */
+  opacity: 0; transition: opacity 0.3s var(--pm-ease);
 }
+.pm-image-duo-half:hover .pm-image-duo-caption,
+.pm-image-duo-half:focus-visible .pm-image-duo-caption { opacity: 1; }
 /* An editorial "page" instead of a plain color block — a large
    watermark quote mark, a serif italic line, a thin rule that grows
    in on reveal, and a slim monogram anchored to the corner so it
