@@ -46,7 +46,17 @@
   {%- for real_product in collection.products -%}
     {%- assign real_aw27_ids = real_aw27_ids | append: ',' | append: real_product.id | append: ',' -%}
   {%- endfor -%}
-  {%- assign grid_products = collection.products | concat: collections.all.products | uniq -%}
+  {%- comment -%}
+    collections.all.products is capped at 50 without an explicit
+    paginate tag -- this store has well over that across every family,
+    so the color scan below would silently miss most of the catalog
+    without this. 250 is Shopify's own hard ceiling per page; a store
+    beyond that would need real multi-page pagination, which isn't
+    possible to do transparently in a single render.
+  {%- endcomment -%}
+  {%- paginate collections.all.products by 250 -%}
+    {%- assign grid_products = collection.products | concat: collections.all.products | uniq -%}
+  {%- endpaginate -%}
 {%- endif -%}
 
 {%- assign total_tile_count = 0 -%}
