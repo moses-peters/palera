@@ -390,10 +390,6 @@
                     {%- endunless -%}
                   {%- when 'inventory_status' -%}
                     {%- render 'product-inventory', product: product, current_variant: current_variant, block: block -%}
-                  {%- when 'share' -%}
-                    <div class="product-block" {{ block.shopify_attributes }}>
-                      {%- render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product -%}
-                    </div>
                   {%- when 'complementary_products' -%}
                     <div class="product-block" {{ block.shopify_attributes }}>
                       {%- render 'product-complementary', block: block, product: product, type: 'block', image_style: block.settings.image_style -%}
