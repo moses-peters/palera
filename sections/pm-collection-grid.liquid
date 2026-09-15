@@ -82,7 +82,11 @@
       inclusion check in the main render loop further down.
     {%- endcomment -%}
     {%- assign count_product_id_needle = ',' | append: product.id | append: ',' -%}
-    {%- assign count_product_tagged = real_aw27_ids contains count_product_id_needle -%}
+    {%- comment -%} contains only works inside if/unless, not assign -- see the identical fix note further down. {%- endcomment -%}
+    {%- assign count_product_tagged = false -%}
+    {%- if real_aw27_ids contains count_product_id_needle -%}
+      {%- assign count_product_tagged = true -%}
+    {%- endif -%}
     {%- if color_option -%}
       {%- for count_color_value in color_option.values -%}
         {%- assign count_color_matches = false -%}
@@ -352,7 +356,11 @@
             {%- endcomment -%}
             {%- if is_aw27_page -%}
               {%- assign tile_product_id_needle = ',' | append: product.id | append: ',' -%}
-              {%- assign tile_product_tagged = real_aw27_ids contains tile_product_id_needle -%}
+              {%- comment -%} contains only works inside if/unless, not assign -- caused a theme validation error blocking this whole file's deploy the first time. {%- endcomment -%}
+              {%- assign tile_product_tagged = false -%}
+              {%- if real_aw27_ids contains tile_product_id_needle -%}
+                {%- assign tile_product_tagged = true -%}
+              {%- endif -%}
               {%- assign tile_color_matches_aw27 = false -%}
               {%- for aw27_color in aw27_colors -%}
                 {%- if tile_color_name == aw27_color -%}{%- assign tile_color_matches_aw27 = true -%}{%- endif -%}
