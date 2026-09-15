@@ -76,6 +76,26 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   object-fit: cover;
   object-position: var(--pm-focal, 50% 50%);
 }
+/* Bottom caption — a small line above a bordered "button" line below,
+   both centered near the bottom of the hero photo. Not a real <button>
+   (the whole hero photo is already one link, see pm-hero-media), just
+   styled to read as one. */
+.pm-hero-caption {
+  position: absolute; left: 50%; bottom: clamp(24px, 5.5vw, 64px); transform: translateX(-50%);
+  z-index: 2; width: 100%; max-width: 90%;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  text-align: center;
+}
+.pm-hero-caption-eyebrow {
+  color: #fff; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+}
+.pm-hero-caption-button {
+  background: rgba(255, 255, 255, 0.94); color: var(--pm-ink);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: 15px 30px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  white-space: nowrap;
+}
 
 /* ===== Editorial duo — Jacquemus-style asymmetric split with a floating caption card over the seam ===== */
 .pm-duo { position: relative; padding: clamp(12px, 2vw, 28px) var(--pm-pad) clamp(24px, 4vw, 56px); }

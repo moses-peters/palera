@@ -27,6 +27,16 @@
           {%- endif -%}
         </picture>
       {%- endif -%}
+      {%- if section.settings.overlay_eyebrow != blank or section.settings.overlay_label != blank -%}
+        <div class="pm-hero-caption">
+          {%- if section.settings.overlay_eyebrow != blank -%}
+            <span class="pm-hero-caption-eyebrow">{{ section.settings.overlay_eyebrow }}</span>
+          {%- endif -%}
+          {%- if section.settings.overlay_label != blank -%}
+            <span class="pm-hero-caption-button">{{ section.settings.overlay_label }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </a>
   </section>
 </div>
@@ -42,7 +52,10 @@
     { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "url", "id": "link_url", "label": "Link" },
     { "type": "range", "id": "focal_x", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's left side." },
-    { "type": "range", "id": "focal_y", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's top." }
+    { "type": "range", "id": "focal_y", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's top." },
+    { "type": "header", "content": "Bottom caption (optional)" },
+    { "type": "text", "id": "overlay_eyebrow", "label": "Small line above", "default": "Autumn Winter 2027" },
+    { "type": "text", "id": "overlay_label", "label": "Boxed line below", "default": "Shop the New Collection" }
   ],
   "presets": [{ "name": "PM: Hero" }]
 }
