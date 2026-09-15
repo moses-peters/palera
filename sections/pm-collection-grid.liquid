@@ -124,6 +124,12 @@
   {%- endunless -%}
 {%- endfor -%}
 
+{%- comment -%}
+  Temporary debug marker -- remove once the AW27 color-matching issue is
+  confirmed fixed. Not visible on the rendered page, only in View Source.
+{%- endcomment -%}
+<!-- AW27-DEBUG handle="{{ collection.handle }}" is_aw27_page={{ is_aw27_page }} total_tile_count={{ total_tile_count }} grid_products_size={{ grid_products.size }} collection_products_size={{ collection.products.size }} all_products_size={{ collections.all.products.size }} -->
+
 <div class="pm-homepage">
   {%- comment -%}
     Category sub-nav — the reference (Gucci) shows a row of bag-type tabs
