@@ -96,8 +96,8 @@
         "photo_xL8DkK": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/diamond-maxi-roma-1",
-            "variant_color": "",
+            "product": "clutch-micro-bag",
+            "variant_color": "Azure Multi",
             "image": "shopify://shop_images/Micro-Bag-Azure-Gold.jpg",
             "fallback_label": "",
             "fallback_asset": "",
@@ -107,8 +107,8 @@
         "photo-2": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/santorini-6",
-            "variant_color": "",
+            "product": "amalfi",
+            "variant_color": "Camelot",
             "image": "shopify://shop_images/Amalfi-Camelot-Gold_1.jpg",
             "image_mobile": "shopify://shop_images/Mirco-Long-Black-Multicolor_1.jpg",
             "fallback_label": "",
@@ -119,8 +119,8 @@
         "photo-3": {
           "type": "photo",
           "settings": {
-            "product": "shopify://products/crystal-pouch",
-            "variant_color": "",
+            "product": "santorini-6",
+            "variant_color": "Purple",
             "image": "shopify://shop_images/Santorini-Purple-Gold.jpg",
             "fallback_label": "",
             "fallback_asset": "pm-drive-grid-3.jpg",
