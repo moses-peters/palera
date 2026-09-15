@@ -122,6 +122,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
      on desktop, unchanged. */
   aspect-ratio: 4 / 5;
 }
+/* Same look as .pm-product-pair-caption -- name revealed on hover
+   rather than only shown in the static caption box beside the photos. */
+.pm-duo-hover-caption {
+  position: absolute; inset: auto 0 0 0; z-index: 2;
+  padding: clamp(14px, 2vw, 24px);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  color: #fff;
+  font-size: clamp(14px, 1.6vw, 18px);
+  opacity: 0; transition: opacity 0.3s var(--pm-ease);
+}
+.pm-duo-image:hover .pm-duo-hover-caption,
+.pm-duo-image:focus-visible .pm-duo-hover-caption { opacity: 1; }
 .pm-duo-caption {
   background: var(--pm-paper);
   border: 1px solid var(--pm-line);
@@ -243,6 +255,18 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-cinema-media { display: block; position: relative; height: 70vh; height: 70dvh; max-height: 820px; min-height: 320px; overflow: hidden; }
 .pm-cinema-media img, .pm-cinema-media video { width: 100%; height: 100%; object-fit: cover; }
 .pm-cinema-caption { padding-top: 20px; text-align: center; }
+/* Same look as .pm-product-pair-caption -- name revealed on hover
+   rather than shown as a static line below the photo. */
+.pm-cinema-hover-caption {
+  position: absolute; inset: auto 0 0 0; z-index: 2;
+  padding: clamp(16px, 2.4vw, 28px);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  color: #fff;
+  font-size: clamp(15px, 1.8vw, 20px);
+  opacity: 0; transition: opacity 0.3s var(--pm-ease);
+}
+.pm-cinema-media:hover .pm-cinema-hover-caption,
+.pm-cinema-media:focus-visible .pm-cinema-hover-caption { opacity: 1; }
 
 /* ===== Spotlight products — light card, product floats (contain, not cover), small badge ===== */
 .pm-spotlight { padding: clamp(64px, 9vw, 120px) var(--pm-pad); }

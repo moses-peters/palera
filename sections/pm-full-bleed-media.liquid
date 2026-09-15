@@ -15,6 +15,9 @@
           {%- endif -%}
         </picture>
       {%- endif -%}
+      {%- if section.settings.hover_label != blank -%}
+        <span class="pm-cinema-hover-caption">{{ section.settings.hover_label }}</span>
+      {%- endif -%}
     </a>
     {%- if section.settings.caption != blank -%}
       <p class="pm-eyebrow pm-cinema-caption">{{ section.settings.caption }}</p>
@@ -30,6 +33,7 @@
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video", "label": "Video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "caption", "label": "Caption", "default": "Identity 1, 2026" },
+    { "type": "text", "id": "hover_label", "label": "Hover name", "info": "Shown over the photo when hovered — e.g. the product name." },
     { "type": "url", "id": "link_url", "label": "Link" }
   ],
   "presets": [{ "name": "PM: Full-bleed media" }]

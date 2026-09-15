@@ -148,6 +148,7 @@
         "image": "shopify://shop_images/3U7A2898_-_Copy.jpg",
         "image_mobile": "shopify://shop_images/3U7A2898.jpg",
         "caption": "",
+        "hover_label": "Amalfi",
         "link_url": "https://paleramilano.com/products/amalfi?variant=53993835397467"
       }
     },
@@ -158,6 +159,7 @@
         "image_b": "shopify://shop_images/3U7A2976.jpg",
         "tag": "",
         "copy": "Bold enough to stand alone. \n\nEffortless enough to wear every day.",
+        "hover_label": "Clutch Edge - Short",
         "link_label": "",
         "link_url": "https://paleramilano.com/products/clutch-edge-short-copy?variant=54050115387739"
       }

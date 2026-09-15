@@ -14,6 +14,9 @@
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
         {%- endif -%}
+        {%- if section.settings.hover_label != blank -%}
+          <span class="pm-duo-hover-caption">{{ section.settings.hover_label }}</span>
+        {%- endif -%}
       </a>
       <a href="{{ section.settings.link_url | default: '#' }}" class="pm-duo-image pm-duo-image--b pm-reveal" style="transition-delay: 150ms">
         {%- if section.settings.video_b != blank -%}
@@ -27,6 +30,9 @@
           </picture>
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
+        {%- endif -%}
+        {%- if section.settings.hover_label != blank -%}
+          <span class="pm-duo-hover-caption">{{ section.settings.hover_label }}</span>
         {%- endif -%}
       </a>
     </div>
@@ -60,6 +66,7 @@
     { "type": "video", "id": "video_b", "label": "Small offset video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
     { "type": "text", "id": "tag", "label": "Tag", "default": "Made By Hand" },
     { "type": "textarea", "id": "copy", "label": "Copy", "default": "Every crystal is set individually, so no two pieces catch the light the same way." },
+    { "type": "text", "id": "hover_label", "label": "Hover name", "info": "Shown over both photos when hovered — e.g. the product name." },
     { "type": "text", "id": "link_label", "label": "Link label" },
     { "type": "url", "id": "link_url", "label": "Link" }
   ],
