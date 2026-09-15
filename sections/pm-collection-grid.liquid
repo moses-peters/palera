@@ -76,10 +76,24 @@
     without this. 250 is Shopify's own hard ceiling per page; a store
     beyond that would need real multi-page pagination, which isn't
     possible to do transparently in a single render.
+
+    paginate only actually resolves its widened array through a real
+    for loop -- referencing collections.all.products via a plain assign
+    inside the block (no for) silently evaluated as empty here, so the
+    concat below added nothing (confirmed via a debug marker: grid and
+    collection product counts came back identical). Rebuilding the
+    merged array through an explicit for + slice + concat instead --
+    slice pulls each product out as its own one-item array, which is
+    what concat actually needs to append a single object.
   {%- endcomment -%}
+  {%- assign extra_products = '' | split: ',' -%}
   {%- paginate collections.all.products by 250 -%}
-    {%- assign grid_products = collection.products | concat: collections.all.products | uniq -%}
+    {%- for scan_product in collections.all.products -%}
+      {%- assign scan_single = collections.all.products | slice: forloop.index0, 1 -%}
+      {%- assign extra_products = extra_products | concat: scan_single -%}
+    {%- endfor -%}
   {%- endpaginate -%}
+  {%- assign grid_products = collection.products | concat: extra_products | uniq -%}
 {%- endif -%}
 
 {%- assign total_tile_count = 0 -%}
@@ -142,7 +156,7 @@
   Temporary debug marker -- remove once the AW27 color-matching issue is
   confirmed fixed. Not visible on the rendered page, only in View Source.
 {%- endcomment -%}
-<!-- AW27-DEBUG handle="{{ collection.handle }}" is_aw27_page={{ is_aw27_page }} total_tile_count={{ total_tile_count }} grid_products_size={{ grid_products.size }} collection_products_size={{ collection.products.size }} all_products_size={{ collections.all.products.size }} -->
+<!-- AW27-DEBUG handle="{{ collection.handle }}" is_aw27_page={{ is_aw27_page }} total_tile_count={{ total_tile_count }} grid_products_size={{ grid_products.size }} collection_products_size={{ collection.products.size }} extra_products_size={{ extra_products.size }} all_products_size={{ collections.all.products.size }} -->
 
 <div class="pm-homepage">
   {%- comment -%}
