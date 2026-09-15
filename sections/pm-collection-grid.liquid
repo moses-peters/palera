@@ -21,103 +21,8 @@
   further down both use the real tile count instead of the product
   count.
 {%- endcomment -%}
-{%- comment -%}
-  AW27 is a real Shopify collection (products tagged/added to it show
-  every one of their colors normally, same as any other collection),
-  but "AW27-ness" for several products actually lives at the color
-  level, not the product level — Shopify collections can't express
-  "just this one variant of this product" at all, so a product like
-  Clutch Micro Bag (Black is not AW27, Azure Multi is) can never fully
-  belong to a real collection. The fix: on the AW27 page specifically,
-  also scan every product in the store for this exact list of color
-  names, and pull in just those matching colors as extra tiles —
-  additive to, never replacing, whatever's already properly in the
-  real collection. Everywhere else this page's normal single-collection
-  behavior is untouched.
-{%- endcomment -%}
-{%- assign is_aw27_page = false -%}
-{%- if collection.handle == 'aw27' -%}
-  {%- assign is_aw27_page = true -%}
-{%- endif -%}
-{%- comment -%}
-  Matched case/whitespace-insensitively below (not exact string equality)
-  -- a variant option value typed into Shopify Admin with different
-  capitalization, a stray space, or a spelling variant (e.g. "Gambodge"
-  vs "Gamboge") would otherwise silently fail to match and just never
-  show up, with no visible error anywhere. Both spellings of Gamboge are
-  listed outright since it's genuinely ambiguous which one is actually
-  typed on the live variants.
-{%- endcomment -%}
-{%- assign aw27_colors = 'Gamboge,Gamboge Multi,Gambodge,Gambodge Multi,Azure,Azure Multi,Grey,Grey Multi,Sparkle Blue Multi,Purple,Purple Multi,Camelot,Transparent White Multi,Rare Pink Multi,Black Multi' | split: ',' -%}
-{%- comment -%}
-  Liquid's if/unless conditions don't allow a filter chained onto the
-  right-hand side of a comparison operator ("a == b | downcase" is a
-  syntax error, not just b unfiltered) -- only the left operand can
-  carry filters. So every aw27_colors entry is normalized here, once,
-  into its own array, and every comparison below is between two
-  already-normalized plain values with no filters inside the if at all.
-{%- endcomment -%}
-{%- assign aw27_colors_norm_raw = '' -%}
-{%- for raw_color in aw27_colors -%}
-  {%- assign raw_color_norm = raw_color | strip | downcase -%}
-  {%- assign aw27_colors_norm_raw = aw27_colors_norm_raw | append: raw_color_norm | append: ',' -%}
-{%- endfor -%}
-{%- assign aw27_colors_norm = aw27_colors_norm_raw | split: ',' -%}
-{%- comment -%}
-  grid_products used to be built as an array of real Product objects
-  (collection.products concat'd with the storewide scan results), but
-  neither paginate nor a plain for-limit loop could actually get
-  collections.all.products into array form via slice/concat -- both
-  silently produced zero extra items even though the for loop itself
-  demonstrably ran (confirmed via a scan_iterations debug counter).
-  collections.all.products appears to be a lazy/special type that
-  doesn't support being sliced into a real array at all.
-
-  Sidestepping that entirely: build a plain comma-joined STRING of
-  product handles instead (the same append-based string-building this
-  file already uses reliably for real_aw27_ids), then resolve each
-  handle to its actual product via all_products[handle] -- Shopify's
-  direct global hash lookup by handle, which has no pagination cap
-  since it's a single-item lookup, not an array operation.
-{%- endcomment -%}
-{%- assign grid_handles_raw = '' -%}
-{%- for base_product in collection.products -%}
-  {%- assign grid_handles_raw = grid_handles_raw | append: base_product.handle | append: ',' -%}
-{%- endfor -%}
-{%- assign real_aw27_ids = '' -%}
-{%- if is_aw27_page -%}
-  {%- for real_product in collection.products -%}
-    {%- assign real_aw27_ids = real_aw27_ids | append: ',' | append: real_product.id | append: ',' -%}
-  {%- endfor -%}
-  {%- comment -%}
-    collections.all.products is capped at 50 by default; a for loop's
-    own limit: parameter raises that cap directly (no paginate tag
-    needed -- and paginate turned out not to work here at all: it's
-    tied to the current template's own paginated resource via the
-    request's ?page= state, and a *second*, unrelated collection
-    paginated inside the same render silently produced nothing). 250
-    is Shopify's real hard ceiling for a single for loop; a store
-    beyond that would need real multi-page pagination, which isn't
-    possible to do transparently in a single render.
-  {%- endcomment -%}
-  {%- assign scan_source = collections.all.products -%}
-  {%- assign scan_iterations = 0 -%}
-  {%- for scan_product in scan_source limit: 250 -%}
-    {%- assign scan_iterations = scan_iterations | plus: 1 -%}
-    {%- assign scan_id_needle = ',' | append: scan_product.id | append: ',' -%}
-    {%- assign scan_already_tagged = false -%}
-    {%- if real_aw27_ids contains scan_id_needle -%}{%- assign scan_already_tagged = true -%}{%- endif -%}
-    {%- unless scan_already_tagged -%}
-      {%- assign grid_handles_raw = grid_handles_raw | append: scan_product.handle | append: ',' -%}
-    {%- endunless -%}
-  {%- endfor -%}
-{%- endif -%}
-{%- assign grid_handles = grid_handles_raw | split: ',' -%}
-
 {%- assign total_tile_count = 0 -%}
-{%- for product_handle in grid_handles -%}
-  {%- assign product = all_products[product_handle] -%}
-  {%- unless product -%}{%- continue -%}{%- endunless -%}
+{%- for product in collection.products -%}
   {%- assign color_option = nil -%}
   {%- for option in product.options_with_values -%}
     {%- assign option_name_downcase = option.name | downcase -%}
@@ -125,58 +30,12 @@
       {%- assign color_option = option -%}
     {%- endif -%}
   {%- endfor -%}
-  {%- unless is_aw27_page -%}
-    {%- if color_option -%}
-      {%- assign total_tile_count = total_tile_count | plus: color_option.values.size -%}
-    {%- else -%}
-      {%- assign total_tile_count = total_tile_count | plus: 1 -%}
-    {%- endif -%}
+  {%- if color_option -%}
+    {%- assign total_tile_count = total_tile_count | plus: color_option.values.size -%}
   {%- else -%}
-    {%- comment -%}
-      AW27 page: count only tiles that will actually render below —
-      every color of an already-tagged product, or just the specific
-      colors matching the AW27 list for everything else. Mirrors the
-      inclusion check in the main render loop further down.
-    {%- endcomment -%}
-    {%- assign count_product_id_needle = ',' | append: product.id | append: ',' -%}
-    {%- comment -%} contains only works inside if/unless, not assign -- see the identical fix note further down. {%- endcomment -%}
-    {%- assign count_product_tagged = false -%}
-    {%- if real_aw27_ids contains count_product_id_needle -%}
-      {%- assign count_product_tagged = true -%}
-    {%- endif -%}
-    {%- if color_option -%}
-      {%- for count_color_value in color_option.values -%}
-        {%- assign count_color_matches = false -%}
-        {%- assign count_color_value_norm = count_color_value | strip | downcase -%}
-        {%- for aw27_color_norm in aw27_colors_norm -%}
-          {%- if count_color_value_norm == aw27_color_norm -%}{%- assign count_color_matches = true -%}{%- endif -%}
-        {%- endfor -%}
-        {%- if count_product_tagged or count_color_matches -%}
-          {%- assign total_tile_count = total_tile_count | plus: 1 -%}
-        {%- endif -%}
-      {%- endfor -%}
-    {%- else -%}
-      {%- assign count_tile_color_name = '' -%}
-      {%- if product.title contains ' — ' -%}
-        {%- assign count_tile_color_name = product.title | split: ' — ' | last | strip -%}
-      {%- endif -%}
-      {%- assign count_color_matches = false -%}
-      {%- assign count_tile_color_name_norm = count_tile_color_name | downcase -%}
-      {%- for aw27_color_norm in aw27_colors_norm -%}
-        {%- if count_tile_color_name_norm == aw27_color_norm -%}{%- assign count_color_matches = true -%}{%- endif -%}
-      {%- endfor -%}
-      {%- if count_product_tagged or count_color_matches -%}
-        {%- assign total_tile_count = total_tile_count | plus: 1 -%}
-      {%- endif -%}
-    {%- endif -%}
-  {%- endunless -%}
+    {%- assign total_tile_count = total_tile_count | plus: 1 -%}
+  {%- endif -%}
 {%- endfor -%}
-
-{%- comment -%}
-  Temporary debug marker -- remove once the AW27 color-matching issue is
-  confirmed fixed. Not visible on the rendered page, only in View Source.
-{%- endcomment -%}
-<!-- AW27-DEBUG handle="{{ collection.handle }}" is_aw27_page={{ is_aw27_page }} total_tile_count={{ total_tile_count }} grid_handles_size={{ grid_handles.size }} collection_products_size={{ collection.products.size }} scan_iterations={{ scan_iterations }} all_products_size={{ collections.all.products.size }} -->
 
 <div class="pm-homepage">
   {%- comment -%}
@@ -233,14 +92,7 @@
   </div>
 
   <div class="pm-collection-grid-wrap">
-    {%- comment -%}
-      total_tile_count (not collection.products.size) so the AW27
-      page's own extra color-matched tiles count too — otherwise a real
-      AW27 collection with 0 products of its own would show the
-      "coming soon" placeholder even when other products' matching
-      colors would actually have something to show.
-    {%- endcomment -%}
-    {%- if total_tile_count == 0 -%}
+    {%- if collection.products.size == 0 -%}
       {%- if collection.handle == 'aw27' -%}
         {%- comment -%}
           Coded placeholder spots, not a text message — so the page
@@ -338,9 +190,7 @@
 
         {%- assign scoped_break_index = -1 -%}
         {%- assign tile_index = 0 -%}
-        {%- for product_handle in grid_handles -%}
-          {%- assign product = all_products[product_handle] -%}
-          {%- unless product -%}{%- continue -%}{%- endunless -%}
+        {%- for product in collection.products -%}
           {%- comment -%}
             No real per-family Collection exists to filter against, so
             sort each product into one of the 9 real families by matching
@@ -386,6 +236,7 @@
           {%- endif -%}
 
           {%- for color_value in color_values -%}
+            {%- assign tile_index = tile_index | plus: 1 -%}
             {%- comment -%}
               tile_name is the product title with any " — Color" suffix
               stripped — colors here are baked into the product's own
@@ -401,44 +252,15 @@
             {%- if color_option -%}
               {%- assign tile_variant = product.variants | where: color_option_key, color_value | first -%}
               {%- assign tile_price_varies = false -%}
-              {%- assign tile_color_name = color_value | strip -%}
+              {%- assign tile_color_name = color_value -%}
             {%- else -%}
               {%- assign tile_variant = product.selected_or_first_available_variant -%}
               {%- assign tile_price_varies = product.price_varies -%}
               {%- assign tile_color_name = '' -%}
               {%- if product.title contains ' — ' -%}
-                {%- assign tile_color_name = product.title | split: ' — ' | last | strip -%}
+                {%- assign tile_color_name = product.title | split: ' — ' | last -%}
               {%- endif -%}
             {%- endif -%}
-
-            {%- comment -%}
-              AW27 inclusion check (see the setup comment near the top)
-              -- on every other page this is skipped entirely and every
-              color renders same as always. On the AW27 page, a tile
-              only renders if its product is genuinely in the real
-              collection (all its colors show, unfiltered) or this
-              specific color is one of the named AW27 colors. tile_index
-              only increments for tiles that actually render, so it
-              still lines up with total_tile_count above.
-            {%- endcomment -%}
-            {%- if is_aw27_page -%}
-              {%- assign tile_product_id_needle = ',' | append: product.id | append: ',' -%}
-              {%- comment -%} contains only works inside if/unless, not assign -- caused a theme validation error blocking this whole file's deploy the first time. {%- endcomment -%}
-              {%- assign tile_product_tagged = false -%}
-              {%- if real_aw27_ids contains tile_product_id_needle -%}
-                {%- assign tile_product_tagged = true -%}
-              {%- endif -%}
-              {%- assign tile_color_matches_aw27 = false -%}
-              {%- assign tile_color_name_norm = tile_color_name | downcase -%}
-              {%- for aw27_color_norm in aw27_colors_norm -%}
-                {%- if tile_color_name_norm == aw27_color_norm -%}{%- assign tile_color_matches_aw27 = true -%}{%- endif -%}
-              {%- endfor -%}
-              {%- unless tile_product_tagged or tile_color_matches_aw27 -%}
-                {%- continue -%}
-              {%- endunless -%}
-            {%- endif -%}
-            {%- assign tile_index = tile_index | plus: 1 -%}
-
             {%- assign tile_image = tile_variant.featured_image | default: product.featured_image -%}
             {%- assign tile_price = tile_variant.price | default: product.price -%}
 
@@ -472,9 +294,8 @@
               {%- endfor -%}
             {%- else -%}
               {%- assign base_title = product.title | split: ' — ' | first -%}
-              {%- for other_handle in grid_handles -%}
-                {%- assign other_product = all_products[other_handle] -%}
-                {%- if other_product and other_product.id != product.id -%}
+              {%- for other_product in collection.products -%}
+                {%- if other_product.id != product.id -%}
                   {%- assign other_base = other_product.title | split: ' — ' | first -%}
                   {%- if other_base == base_title -%}
                     {%- assign other_color_name = other_product.title | split: ' — ' | last -%}
