@@ -43,40 +43,113 @@
           {%- assign tile_url = product.url | append: '?variant=' | append: selected_variant.id -%}
         {%- endif -%}
         {%- assign tile_price = selected_variant.price | default: product.price -%}
-        <a href="{{ tile_url | default: block.settings.link | default: '#' }}" class="pm-photo-tile pm-reveal" style="transition-delay: {{ forloop.index0 | modulo: 4 | times: 90 }}ms">
-          {%- if block.settings.video != blank -%}
-            {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
-          {%- elsif tile_image -%}
-            {%- comment -%}
-              A <picture> with a max-width source, not two <img>s shown/
-              hidden by CSS, so only the one image that actually matches
-              the visitor's screen is ever downloaded. Falls back to the
-              same desktop image on mobile when no mobile override is set.
-            {%- endcomment -%}
-            <picture>
-              {%- if tile_image_mobile -%}
-                <source media="(max-width: 639px)" srcset="{{ tile_image_mobile | image_url: width: 900 }}">
+
+        {%- comment -%}
+          Sibling color swatches — identical approach to the Shop grid
+          (pm-collection-grid.liquid): a real Color option's other
+          values when this product has one, otherwise other products in
+          the store sharing this one's base title (colors baked into
+          separate products' titles, the more common case here).
+        {%- endcomment -%}
+        {%- assign color_option = nil -%}
+        {%- if product -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign option_name_downcase = option.name | downcase -%}
+            {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+              {%- assign color_option = option -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- assign swatch_siblings = '' -%}
+        {%- if color_option -%}
+          {%- assign color_option_key = 'option' | append: color_option.position -%}
+          {%- assign current_color_value = selected_variant[color_option_key] -%}
+          {%- for other_value in color_option.values -%}
+            {%- unless other_value == current_color_value -%}
+              {%- assign other_variant = product.variants | where: color_option_key, other_value | first -%}
+              {%- assign swatch_css = other_value | split: ' ' | last | handle -%}
+              {%- capture swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: other_value %}{%- endcapture -%}
+              {%- assign swatch_image = swatch_image | strip -%}
+              {%- if swatch_image == blank and other_variant.featured_image -%}
+                {%- assign swatch_image = other_variant.featured_image | image_url: width: 400 -%}
               {%- endif -%}
-              <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_alt }}" loading="lazy">
-            </picture>
-          {%- else -%}
-            <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">
-          {%- endif -%}
-          {%- if product.title != blank or block.settings.fallback_label != blank -%}
-            <span class="pm-photo-tile-caption">
-              <span class="pm-photo-tile-name">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}{%- if product.title contains ' — ' %} <span class="pm-tile-color">{{ product.title | split: ' — ' | last }}</span>{%- endif -%}</span>
-              {%- if tile_price -%}
-                <span class="pm-photo-tile-price">
-                  {%- if selected_variant == nil or block.settings.variant_color == blank -%}
-                    {%- if product.price_varies -%}From {{ tile_price | money }}{%- else -%}{{ tile_price | money }}{%- endif -%}
-                  {%- else -%}
-                    {{ tile_price | money }}
-                  {%- endif -%}
-                </span>
+              {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: product.url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
+              {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- elsif product -%}
+          {%- assign base_title = product.title | split: ' — ' | first -%}
+          {%- for other_product in collections.all.products -%}
+            {%- if other_product.id != product.id -%}
+              {%- assign other_base = other_product.title | split: ' — ' | first -%}
+              {%- if other_base == base_title -%}
+                {%- assign other_color_name = other_product.title | split: ' — ' | last -%}
+                {%- assign swatch_css = other_color_name | split: ' ' | last | handle -%}
+                {%- capture swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: other_color_name %}{%- endcapture -%}
+                {%- assign swatch_image = swatch_image | strip -%}
+                {%- if swatch_image == blank and other_product.featured_image -%}
+                  {%- assign swatch_image = other_product.featured_image | image_url: width: 400 -%}
+                {%- endif -%}
+                {%- assign sibling_entry = other_color_name | append: '::' | append: swatch_css | append: '::' | append: other_product.url | append: '::' | append: swatch_image -%}
+                {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
               {%- endif -%}
-            </span>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- assign swatch_list = swatch_siblings | split: ';;' -%}
+        {%- assign swatch_visible = swatch_list | slice: 0, 4 -%}
+        {%- assign swatch_overflow = swatch_list.size | minus: swatch_visible.size -%}
+
+        <div class="pm-photo-tile pm-plp-tile pm-reveal" style="transition-delay: {{ forloop.index0 | modulo: 4 | times: 90 }}ms">
+          <a href="{{ tile_url | default: block.settings.link | default: '#' }}" class="pm-plp-tile-link">
+            {%- if block.settings.video != blank -%}
+              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
+            {%- elsif tile_image -%}
+              {%- comment -%}
+                A <picture> with a max-width source, not two <img>s shown/
+                hidden by CSS, so only the one image that actually matches
+                the visitor's screen is ever downloaded. Falls back to the
+                same desktop image on mobile when no mobile override is set.
+              {%- endcomment -%}
+              <picture>
+                {%- if tile_image_mobile -%}
+                  <source media="(max-width: 639px)" srcset="{{ tile_image_mobile | image_url: width: 900 }}">
+                {%- endif -%}
+                <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_alt }}" loading="lazy">
+              </picture>
+            {%- else -%}
+              <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">
+            {%- endif -%}
+            {%- if product.title != blank or block.settings.fallback_label != blank -%}
+              <div class="pm-plp-tile-info">
+                <span class="pm-plp-tile-name">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}{%- if product.title contains ' — ' %} <span class="pm-tile-color">{{ product.title | split: ' — ' | last }}</span>{%- endif -%}</span>
+                {%- if tile_price -%}
+                  <span class="pm-plp-tile-price">
+                    {%- if selected_variant == nil or block.settings.variant_color == blank -%}
+                      {%- if product.price_varies -%}From {{ tile_price | money }}{%- else -%}{{ tile_price | money }}{%- endif -%}
+                    {%- else -%}
+                      {{ tile_price | money }}
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </a>
+          {%- if swatch_visible.size > 0 -%}
+            <div class="pm-plp-swatches">
+              {%- for entry in swatch_visible -%}
+                {%- assign swatch_parts = entry | split: '::' -%}
+                {%- assign swatch_img = swatch_parts[3] -%}
+                {%- assign swatch_is_curated = false -%}
+                {%- if swatch_img contains 'pm-swatch-' -%}{%- assign swatch_is_curated = true -%}{%- endif -%}
+                <a href="{{ swatch_parts[2] }}" class="pm-plp-swatch" style="background-color: {{ swatch_parts[1] }};{% if swatch_img != blank %} background-image: url({{ swatch_img }});{% endif %}{% if swatch_is_curated %} background-size: cover;{% endif %}" title="{{ swatch_parts[0] | escape }}" aria-label="{{ swatch_parts[0] | escape }}"></a>
+              {%- endfor -%}
+              {%- if swatch_overflow > 0 -%}
+                <span class="pm-plp-swatch-more">+{{ swatch_overflow }}</span>
+              {%- endif -%}
+            </div>
           {%- endif -%}
-        </a>
+        </div>
       {%- endfor -%}
     </div>
   </section>
