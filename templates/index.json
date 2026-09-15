@@ -16,7 +16,10 @@
         "image_mobile": "shopify://shop_images/Ban2.jpg",
         "link_url": "",
         "focal_x": 50,
-        "focal_y": 80
+        "focal_y": 80,
+        "overlay_eyebrow": "Autumn Winter 2027",
+        "overlay_label": "Shop the New Collection",
+        "overlay_link_url": ""
       }
     },
     "pm-product-pair": {
@@ -70,7 +73,7 @@
         "right_content_type": "image",
         "image_right": "shopify://shop_images/F1.jpg",
         "image_right_mobile": "shopify://shop_images/3U7A3534.jpg",
-        "caption_right": "",
+        "caption_right": "Siracusa",
         "link_right": "",
         "focal_x_right": 50,
         "focal_y_right": 50,
