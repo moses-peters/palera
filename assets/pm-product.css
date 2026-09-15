@@ -270,7 +270,7 @@
 /* ===== Trust strip (custom block, block_order in templates/product.json) ===== */
 .pm-product-trust {
   display: flex; flex-direction: column; gap: 10px;
-  padding: 16px 0; border-top: 1px solid var(--pm-line); border-bottom: 1px solid var(--pm-line);
+  padding: 16px 0;
 }
 .pm-product-trust-item { font-size: 12px; color: var(--pm-muted); }
 
