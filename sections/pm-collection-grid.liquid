@@ -39,7 +39,16 @@
 {%- if collection.handle == 'aw27' -%}
   {%- assign is_aw27_page = true -%}
 {%- endif -%}
-{%- assign aw27_colors = 'Gamboge,Gamboge Multi,Azure,Azure Multi,Grey,Grey Multi,Sparkle Blue Multi,Purple,Purple Multi,Camelot,Transparent White Multi,Rare Pink Multi,Black Multi' | split: ',' -%}
+{%- comment -%}
+  Matched case/whitespace-insensitively below (not exact string equality)
+  -- a variant option value typed into Shopify Admin with different
+  capitalization, a stray space, or a spelling variant (e.g. "Gambodge"
+  vs "Gamboge") would otherwise silently fail to match and just never
+  show up, with no visible error anywhere. Both spellings of Gamboge are
+  listed outright since it's genuinely ambiguous which one is actually
+  typed on the live variants.
+{%- endcomment -%}
+{%- assign aw27_colors = 'Gamboge,Gamboge Multi,Gambodge,Gambodge Multi,Azure,Azure Multi,Grey,Grey Multi,Sparkle Blue Multi,Purple,Purple Multi,Camelot,Transparent White Multi,Rare Pink Multi,Black Multi' | split: ',' -%}
 {%- assign grid_products = collection.products -%}
 {%- assign real_aw27_ids = '' -%}
 {%- if is_aw27_page -%}
@@ -90,8 +99,9 @@
     {%- if color_option -%}
       {%- for count_color_value in color_option.values -%}
         {%- assign count_color_matches = false -%}
+        {%- assign count_color_value_norm = count_color_value | strip | downcase -%}
         {%- for aw27_color in aw27_colors -%}
-          {%- if count_color_value == aw27_color -%}{%- assign count_color_matches = true -%}{%- endif -%}
+          {%- if count_color_value_norm == aw27_color | strip | downcase -%}{%- assign count_color_matches = true -%}{%- endif -%}
         {%- endfor -%}
         {%- if count_product_tagged or count_color_matches -%}
           {%- assign total_tile_count = total_tile_count | plus: 1 -%}
@@ -100,11 +110,12 @@
     {%- else -%}
       {%- assign count_tile_color_name = '' -%}
       {%- if product.title contains ' — ' -%}
-        {%- assign count_tile_color_name = product.title | split: ' — ' | last -%}
+        {%- assign count_tile_color_name = product.title | split: ' — ' | last | strip -%}
       {%- endif -%}
       {%- assign count_color_matches = false -%}
+      {%- assign count_tile_color_name_norm = count_tile_color_name | downcase -%}
       {%- for aw27_color in aw27_colors -%}
-        {%- if count_tile_color_name == aw27_color -%}{%- assign count_color_matches = true -%}{%- endif -%}
+        {%- if count_tile_color_name_norm == aw27_color | strip | downcase -%}{%- assign count_color_matches = true -%}{%- endif -%}
       {%- endfor -%}
       {%- if count_product_tagged or count_color_matches -%}
         {%- assign total_tile_count = total_tile_count | plus: 1 -%}
@@ -334,13 +345,13 @@
             {%- if color_option -%}
               {%- assign tile_variant = product.variants | where: color_option_key, color_value | first -%}
               {%- assign tile_price_varies = false -%}
-              {%- assign tile_color_name = color_value -%}
+              {%- assign tile_color_name = color_value | strip -%}
             {%- else -%}
               {%- assign tile_variant = product.selected_or_first_available_variant -%}
               {%- assign tile_price_varies = product.price_varies -%}
               {%- assign tile_color_name = '' -%}
               {%- if product.title contains ' — ' -%}
-                {%- assign tile_color_name = product.title | split: ' — ' | last -%}
+                {%- assign tile_color_name = product.title | split: ' — ' | last | strip -%}
               {%- endif -%}
             {%- endif -%}
 
@@ -362,8 +373,9 @@
                 {%- assign tile_product_tagged = true -%}
               {%- endif -%}
               {%- assign tile_color_matches_aw27 = false -%}
+              {%- assign tile_color_name_norm = tile_color_name | downcase -%}
               {%- for aw27_color in aw27_colors -%}
-                {%- if tile_color_name == aw27_color -%}{%- assign tile_color_matches_aw27 = true -%}{%- endif -%}
+                {%- if tile_color_name_norm == aw27_color | strip | downcase -%}{%- assign tile_color_matches_aw27 = true -%}{%- endif -%}
               {%- endfor -%}
               {%- unless tile_product_tagged or tile_color_matches_aw27 -%}
                 {%- continue -%}
