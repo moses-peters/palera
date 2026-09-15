@@ -12,7 +12,17 @@
 -%}
 <div class="pm-homepage">
   <section class="pm-hero">
-    <a href="{{ section.settings.link_url | default: '/collections/aw27' }}" class="pm-hero-media" style="--pm-focal: {{ focal_x }}% {{ focal_y }}%;">
+    {%- comment -%}
+      The photo and the caption button are two separate links now (the
+      button used to sit inside the photo's own link, sharing one
+      destination) — the photo can point somewhere else while the
+      button below stays pinned to its own link regardless. The
+      caption itself has pointer-events: none so its empty space (the
+      eyebrow line, the gaps) lets clicks pass through to the photo
+      underneath; only the button re-enables pointer-events, so it's
+      the one actual clickable spot within the caption.
+    {%- endcomment -%}
+    <a href="{{ section.settings.link_url | default: '#' }}" class="pm-hero-media" style="--pm-focal: {{ focal_x }}% {{ focal_y }}%;">
       {%- if section.settings.video != blank -%}
         {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1800x' }}
       {%- else -%}
@@ -27,17 +37,17 @@
           {%- endif -%}
         </picture>
       {%- endif -%}
-      {%- if section.settings.overlay_eyebrow != blank or section.settings.overlay_label != blank -%}
-        <div class="pm-hero-caption">
-          {%- if section.settings.overlay_eyebrow != blank -%}
-            <span class="pm-hero-caption-eyebrow">{{ section.settings.overlay_eyebrow }}</span>
-          {%- endif -%}
-          {%- if section.settings.overlay_label != blank -%}
-            <span class="pm-hero-caption-button">{{ section.settings.overlay_label }}</span>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
     </a>
+    {%- if section.settings.overlay_eyebrow != blank or section.settings.overlay_label != blank -%}
+      <div class="pm-hero-caption">
+        {%- if section.settings.overlay_eyebrow != blank -%}
+          <span class="pm-hero-caption-eyebrow">{{ section.settings.overlay_eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.overlay_label != blank -%}
+          <a href="{{ section.settings.overlay_link_url | default: '/collections/aw27' }}" class="pm-hero-caption-button">{{ section.settings.overlay_label }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
   </section>
 </div>
 
@@ -55,7 +65,8 @@
     { "type": "range", "id": "focal_y", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's top." },
     { "type": "header", "content": "Bottom caption (optional)" },
     { "type": "text", "id": "overlay_eyebrow", "label": "Small line above", "default": "Autumn Winter 2027" },
-    { "type": "text", "id": "overlay_label", "label": "Boxed line below", "default": "Shop the New Collection" }
+    { "type": "text", "id": "overlay_label", "label": "Boxed line below", "default": "Shop the New Collection" },
+    { "type": "url", "id": "overlay_link_url", "label": "Boxed line link", "info": "Defaults to /collections/aw27. This is separate from the Link setting above, which is the rest of the photo's own link." }
   ],
   "presets": [{ "name": "PM: Hero" }]
 }
