@@ -135,7 +135,10 @@
         <li class="mobile-nav__item appear-animation appear-delay-4">
           <a href="{{ section.settings.about_us_url | default: '/pages/about-us' }}" class="mobile-nav__link mobile-nav__link--top-level">About Us</a>
         </li>
-        {%- assign animation_row = 4 -%}
+        <li class="mobile-nav__item appear-animation appear-delay-5">
+          <a href="{{ section.settings.press_url | default: '/pages/press' }}" class="mobile-nav__link mobile-nav__link--top-level">Seen In</a>
+        </li>
+        {%- assign animation_row = 5 -%}
 
         {%- assign have_secondary_list = false -%}
         {%- if section.settings.toolbar_menu != blank or shop.customer_accounts_enabled -%}

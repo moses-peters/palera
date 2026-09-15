@@ -197,7 +197,7 @@
 
             {%- if logo_alignment == 'left' and section.settings.main_menu_alignment != 'left-drawer' -%}
               <div class="header-item header-item--navigation{% if section.settings.main_menu_alignment == 'left-center' %} text-center{% endif %}" {% unless disable_aria %}role="navigation" aria-label="Primary"{% endunless %}>
-                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url -%}
+                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url, press_url: section.settings.press_url -%}
               </div>
             {%- endif -%}
 
@@ -213,10 +213,10 @@
                     </div>
                   {%- endif -%}
                 {%- endif -%}
-                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url -%}
+                {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url, press_url: section.settings.press_url -%}
 
                 {%- if section.settings.main_menu_alignment == 'center-left' -%}
-                  {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url -%}
+                  {%- render 'header-desktop-nav', about_us_url: section.settings.about_us_url, aw27_url: section.settings.aw27_url, press_url: section.settings.press_url -%}
                 {%- endif -%}
 
                 <div class="site-nav{% unless section.settings.main_menu_alignment == 'center-drawer' %} medium-up--hide{% endunless %}">
@@ -272,13 +272,19 @@
       "type": "url",
       "id": "about_us_url",
       "label": "About Us link",
-      "info": "Nav is fixed to Home / New In / Shop / About Us. Set where About Us points to."
+      "info": "Nav is fixed to Home / New In / Shop / About Us / Seen In. Set where About Us points to."
     },
     {
       "type": "url",
       "id": "aw27_url",
       "label": "New In link",
       "info": "Defaults to /collections/aw27. Override if the New In collection ends up with a different handle."
+    },
+    {
+      "type": "url",
+      "id": "press_url",
+      "label": "Seen In link",
+      "info": "Defaults to /pages/press. Override if the Press page ends up with a different handle."
     },
     {
       "type": "checkbox",
