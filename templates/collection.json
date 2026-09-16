@@ -180,18 +180,6 @@
             "link": "https://paleramilano.com/products/mini-roma-1?variant=53716984430939"
           }
         },
-        "fam-wallets-2": {
-          "type": "editorial_break",
-          "settings": {
-            "show_on": "family",
-            "family": "santorini",
-            "orientation": "vertical",
-            "image": "shopify://shop_images/santorini-861385.webp",
-            "video_url": "",
-            "caption": "",
-            "link": "https://paleramilano.com/products/santorini-6?variant=54057608905051"
-          }
-        },
         "fam-maxi-roma-1": {
           "type": "editorial_break",
           "settings": {
@@ -235,18 +223,6 @@
             "family": "mini-roma",
             "orientation": "vertical",
             "image": "shopify://shop_images/IMG_3.webp",
-            "video_url": "",
-            "caption": "",
-            "link": ""
-          }
-        },
-        "fam-santorini-1": {
-          "type": "editorial_break",
-          "settings": {
-            "show_on": "shop_all",
-            "family": "santorini",
-            "orientation": "horizontal",
-            "image": "shopify://shop_images/How_2.jpg",
             "video_url": "",
             "caption": "",
             "link": ""
@@ -340,12 +316,10 @@
         "fam-pouches-1",
         "fam-pouches-2",
         "fam-wallets-1",
-        "fam-wallets-2",
         "fam-maxi-roma-1",
         "fam-maxi-roma-2",
         "fam-mini-milano-1",
         "fam-mini-roma-2",
-        "fam-santorini-1",
         "fam-santorini-2",
         "fam-wood-net-hobo-2",
         "aw-1",
