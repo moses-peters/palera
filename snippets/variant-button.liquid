@@ -200,7 +200,19 @@
             class="variant__button-label color-swatch color-swatch--{{ value | handle }}{% unless product_available %} disabled{% endunless %}"
             style="{% if is_hardware_swatch %}background: {{ hardware_css }};{% elsif has_image %}background-image: url({{ color_image }});{% else %}background-color: {{ color_swatch_fallback }};{% endif %}"
           >
-            {{ value | escape }}
+            {%- comment -%}
+              This label's own text-indent:-9999px (theme.css.liquid)
+              is the classic way to hide this text visually while
+              keeping it readable to screen readers, but it isn't
+              reliable on every iOS Safari configuration -- confirmed
+              on one such phone, the label text stayed visible,
+              clipped mid-word by the swatch circle's overflow:hidden,
+              instead of being pushed off-screen. Wrapping it in the
+              theme's own clip-based visually-hidden utility as a
+              second, more robust hiding mechanism that doesn't rely
+              on shifting text position at all.
+            {%- endcomment -%}
+            <span class="pm-visually-hidden">{{ value | escape }}</span>
           </label>
         {%- else -%}
           <label
