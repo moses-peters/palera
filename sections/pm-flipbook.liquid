@@ -192,6 +192,29 @@
         nextBtn.addEventListener('click', function () { flip(1); });
 
         {%- comment -%}
+          Swipe left/right to change pages -- mainly for mobile
+          fullscreen, where the prev/next buttons are hidden entirely
+          to save space, but harmless to enable everywhere (desktop
+          touchscreens included) since it doesn't replace the buttons,
+          just adds another way to flip. Only counts as a swipe when
+          the horizontal movement clearly dominates the vertical, so an
+          up/down scroll gesture on the inline (non-fullscreen) view
+          isn't mistaken for a page turn.
+        {%- endcomment -%}
+        var touchStartX = 0;
+        var touchStartY = 0;
+        root.addEventListener('touchstart', function (e) {
+          touchStartX = e.changedTouches[0].clientX;
+          touchStartY = e.changedTouches[0].clientY;
+        }, { passive: true });
+        root.addEventListener('touchend', function (e) {
+          var deltaX = e.changedTouches[0].clientX - touchStartX;
+          var deltaY = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY) * 1.5) return;
+          flip(deltaX < 0 ? 1 : -1);
+        }, { passive: true });
+
+        {%- comment -%}
           A fixed-position overlay covering the whole viewport, toggled
           purely with a CSS class -- not the browser's real Fullscreen
           API, since iOS Safari (the one device this was specifically
@@ -318,13 +341,24 @@
       height: min(72vh, calc(94vw / var(--pm-flipbook-ratio, 0.72)));
     }
     .pm-flipbook-wrap.is-fullscreen { padding: 10px; }
+    {%- comment -%}
+      The prev/next/count row is dropped entirely in mobile fullscreen
+      -- swipe (see the touchstart/touchend handlers above) replaces it
+      as the way to change pages, and the vertical space it used to
+      take is given back to the page image itself.
+    {%- endcomment -%}
+    .pm-flipbook-wrap.is-fullscreen .pm-flipbook-controls { display: none; }
     .pm-flipbook-wrap.is-fullscreen .pm-flipbook {
-      max-width: 97vw;
-      height: min(88vh, calc(97vw / var(--pm-flipbook-ratio, 0.72)));
+      max-width: 98vw;
+      height: min(94vh, calc(98vw / var(--pm-flipbook-ratio, 0.72)));
     }
     .pm-flipbook-wrap.is-fullscreen .pm-flipbook-rotate-hint {
       position: fixed; top: clamp(16px, 3vw, 28px); left: 50%; transform: translateX(-50%);
       margin: 0; color: rgba(255, 255, 255, 0.8); z-index: 10000;
+    }
+    .pm-flipbook-wrap.is-fullscreen .pm-flipbook-close {
+      width: 28px; height: 28px; font-size: 12px;
+      top: clamp(10px, 2vw, 16px); right: clamp(10px, 2vw, 16px);
     }
   }
 </style>
