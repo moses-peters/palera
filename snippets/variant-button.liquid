@@ -150,6 +150,26 @@
               endif
             endunless
           -%}
+          {%- comment -%}
+            Neither a variant photo nor a theme asset file named after
+            this color exists for several of Palera's own custom crystal
+            color names (Camelot, Phantom, Gamboge, anything ending in
+            "Multi", etc.) -- without this, color_swatch_fallback below
+            just uses the color's last word as a raw CSS background-color
+            value, which is only ever right by coincidence (works for
+            "Rare Pink", breaks for "Gamboge Multi" or "Camelot" outright,
+            rendering a blank circle). Reuses the same curated
+            crystal-close-up swatch photos already used correctly on the
+            collection grid, via pm-crystal-swatch-url.
+          {%- endcomment -%}
+          {%- unless has_image -%}
+            {%- capture pm_swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: value %}{%- endcapture -%}
+            {%- assign pm_swatch_image = pm_swatch_image | strip -%}
+            {%- if pm_swatch_image != blank -%}
+              {%- assign color_image = pm_swatch_image -%}
+              {%- assign has_image = true -%}
+            {%- endif -%}
+          {%- endunless -%}
           <label
             for="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ value | url_encode }}"
             class="variant__button-label color-swatch color-swatch--{{ value | handle }}{% unless product_available %} disabled{% endunless %}"
