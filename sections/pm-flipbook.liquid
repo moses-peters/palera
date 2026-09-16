@@ -76,7 +76,7 @@
           }
           return pdfDoc.getPage(pageNumber).then(function (page) {
             var baseViewport = page.getViewport({ scale: 1 });
-            var scale = 1400 / baseViewport.width;
+            var scale = 2200 / baseViewport.width;
             var viewport = page.getViewport({ scale: scale });
             var canvas = document.createElement('canvas');
             canvas.width = viewport.width;
@@ -167,7 +167,7 @@
 {%- endif -%}
 
 <style>
-  .pm-flipbook-wrap { max-width: 720px; margin: 0 auto; padding: clamp(32px, 6vw, 64px) var(--pm-pad); text-align: center; }
+  .pm-flipbook-wrap { max-width: 1200px; margin: 0 auto; padding: clamp(32px, 6vw, 64px) var(--pm-pad); text-align: center; }
   .pm-flipbook-heading { margin-bottom: clamp(20px, 3vw, 32px); }
   .pm-flipbook {
     position: relative; width: 100%; aspect-ratio: var(--pm-flipbook-ratio, 0.72);
