@@ -104,11 +104,6 @@
     },
     "content_for_index": [],
     "blocks": {
-      "13019466082614940324": {
-        "type": "shopify://apps/product-colors-linkify/blocks/app-embed-block/1fdc741b-f4ed-4b8c-aee7-aa5e4ad76aa8",
-        "disabled": false,
-        "settings": {}
-      },
       "10746902591489815047": {
         "type": "shopify://apps/use-google-fonts-custom-fonts/blocks/app-embed/2caf2c68-0038-455e-b0b9-066a7c2ad923",
         "disabled": false,
@@ -306,6 +301,11 @@
           "wrapper_selector": ".site-nav__icons, .drawer__scrollable, #Footer-footer2 .footer__collapsible, .site-footer .grid",
           "custom_css": "@media only screen and (min-width: 600px) {\n.site-nav__icons {\ndisplay:flex!important;\nalign-items: center!important;\n}\n.gt_selector {\norder:-1!important;\nwidth:100px!important;\nheight:30px!important;\n}\n}\n\n.gt_selector {\ncolor:white!important;\nborder:unset!important;\n}\n\n.site-header--stuck .gt_selector {\ncolor:black!important;\n}\n\n.drawer__scrollable .gt_selector {\ncolor:black!important;\nwidth:100px!important;\n}\n\n.footer__collapsible .gt_selector {\ncolor:black!important;\nfont-size: 12px;\nfont-family: Helvetica, Arial, serif;\n}\n\n@media only screen and (max-width: 600px) {\n.site-nav__icons .gt_selector {\ndisplay:none!important;\n}\n}\n\n.site-footer .grid .gt_selector {\ncolor:black!important;\nmargin-left:45px!important;\nwidth:100px!important;\nfont-size:12px!important;\n}"
         }
+      },
+      "13019466082614940324": {
+        "type": "shopify://apps/linkify-product-colors/blocks/app-embed-block/1fdc741b-f4ed-4b8c-aee7-aa5e4ad76aa8",
+        "disabled": true,
+        "settings": {}
       }
     }
   },
