@@ -33,6 +33,7 @@
     {%- endif -%}
     {%- if pdf_src != blank -%}
       <button type="button" class="pm-flipbook-close" data-pm-flipbook-close aria-label="Exit fullscreen" hidden>✕</button>
+      <p class="pm-flipbook-rotate-hint">Rotate your phone horizontally for the best view</p>
       <div class="pm-flipbook" data-pm-flipbook data-pdf-src="{{ pdf_src }}">
         <div class="pm-flipbook-page-layer" data-pm-flipbook-layer="back"></div>
         <div class="pm-flipbook-page-layer" data-pm-flipbook-layer="front"></div>
@@ -75,40 +76,22 @@
         var fullPageCanvasCache = {}; // real PDF page number -> rendered canvas
         var croppedImageCache = {}; // virtual index -> { url, ratio }
         var isFlipping = false;
-        var isMobile = window.matchMedia('(max-width: 768px)').matches;
 
         {%- comment -%}
-          Each lookbook PDF page is laid out as a wide two-photo spread
-          (one whole photo left, one whole photo right) -- fine on a
-          wide screen, but squeezed into a narrow vertical mobile
-          viewport both photos end up tiny. On mobile only, a page
-          whose own aspect ratio is wide (landscape-shaped, the
-          signature of a spread rather than a single portrait design)
-          gets split into two virtual pages -- left half, right half --
-          each flipped to on its own, cropped from one shared rendered
-          canvas rather than re-rendering the PDF page twice.
+          Splitting each spread into left/right virtual pages on mobile
+          (shipped earlier) turned out not to be what was wanted -- the
+          real page count (16) needs to stay 16 on every device, just
+          shown bigger on mobile. virtualPages is kept as a concept
+          (rather than reverting to raw page numbers everywhere) since
+          getVirtualImage/showPage/flip all already key off it, but
+          every entry is 'full' now, on every device.
         {%- endcomment -%}
         function buildVirtualPages() {
-          var pagePromises = [];
           for (var i = 1; i <= pdfDoc.numPages; i++) {
-            pagePromises.push((function (pageNumber) {
-              return pdfDoc.getPage(pageNumber).then(function (page) {
-                var vp = page.getViewport({ scale: 1 });
-                return { pageNumber: pageNumber, ratio: vp.width / vp.height };
-              });
-            })(i));
+            virtualPages.push({ page: i, part: 'full' });
           }
-          return Promise.all(pagePromises).then(function (infos) {
-            infos.forEach(function (info) {
-              if (isMobile && info.ratio > 1.2) {
-                virtualPages.push({ page: info.pageNumber, part: 'left' });
-                virtualPages.push({ page: info.pageNumber, part: 'right' });
-              } else {
-                virtualPages.push({ page: info.pageNumber, part: 'full' });
-              }
-            });
-            pageCount = virtualPages.length;
-          });
+          pageCount = virtualPages.length;
+          return Promise.resolve();
         }
 
         function renderFullPageCanvas(pageNumber) {
@@ -287,6 +270,7 @@
   .pm-flipbook-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .pm-flipbook-page-count { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pm-muted); min-width: 70px; }
   .pm-flipbook-empty { padding: 60px var(--pm-pad); text-align: center; color: var(--pm-muted); }
+  .pm-flipbook-rotate-hint { display: none; }
 
   /* ===== Fullscreen (a fixed overlay toggled by class, not the real
      Fullscreen API -- see the JS comment on setFullscreen for why) ===== */
@@ -314,13 +298,21 @@
   .pm-flipbook-wrap.is-fullscreen .pm-flipbook-close:not([hidden]) { display: block; }
 
   /* ===== Mobile sizing -- desktop is untouched by anything below.
-     Nothing above makes the flipbook grow with available viewport
-     HEIGHT, only width, so on a tall phone screen it can end up
-     looking small with empty space above/below even though it fills
-     the width. These make both the inline and fullscreen views size
-     off whichever of height/width is more limiting instead. ===== */
-  @media (max-width: 768px) {
+     Scoped to portrait specifically (not just a width breakpoint): a
+     landscape spread page fit to a narrow PORTRAIT screen's width
+     always leaves empty space above/below (its shape just doesn't
+     match a tall narrow screen) -- rotating the phone to landscape
+     gives a wide-enough viewport that the same sizing desktop already
+     uses (confirmed working well) applies on its own, no separate
+     "rotated" mode needed. This block (and the rotate hint below) only
+     ever apply in portrait, so landscape mobile is identical to
+     desktop automatically. ===== */
+  @media (max-width: 768px) and (orientation: portrait) {
     .pm-flipbook-wrap { padding: 16px 12px; }
+    .pm-flipbook-rotate-hint {
+      display: block; margin-bottom: 16px; font-size: 11px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--pm-muted);
+    }
     .pm-flipbook-wrap:not(.is-fullscreen) .pm-flipbook {
       width: auto; max-width: 94vw; margin: 0 auto;
       height: min(72vh, calc(94vw / var(--pm-flipbook-ratio, 0.72)));
@@ -329,6 +321,10 @@
     .pm-flipbook-wrap.is-fullscreen .pm-flipbook {
       max-width: 97vw;
       height: min(88vh, calc(97vw / var(--pm-flipbook-ratio, 0.72)));
+    }
+    .pm-flipbook-wrap.is-fullscreen .pm-flipbook-rotate-hint {
+      position: fixed; top: clamp(16px, 3vw, 28px); left: 50%; transform: translateX(-50%);
+      margin: 0; color: rgba(255, 255, 255, 0.8); z-index: 10000;
     }
   }
 </style>
