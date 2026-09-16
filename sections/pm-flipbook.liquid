@@ -32,6 +32,7 @@
       <h1 class="pm-serif pm-flipbook-heading">{{ section.settings.heading }}</h1>
     {%- endif -%}
     {%- if pdf_src != blank -%}
+      <button type="button" class="pm-flipbook-close" data-pm-flipbook-close aria-label="Exit fullscreen" hidden>✕</button>
       <div class="pm-flipbook" data-pm-flipbook data-pdf-src="{{ pdf_src }}">
         <div class="pm-flipbook-page-layer" data-pm-flipbook-layer="back"></div>
         <div class="pm-flipbook-page-layer" data-pm-flipbook-layer="front"></div>
@@ -41,6 +42,7 @@
         <button type="button" class="pm-flipbook-btn" data-pm-flipbook-prev aria-label="Previous page" disabled>‹</button>
         <span class="pm-flipbook-page-count" data-pm-flipbook-count></span>
         <button type="button" class="pm-flipbook-btn" data-pm-flipbook-next aria-label="Next page" disabled>›</button>
+        <button type="button" class="pm-flipbook-btn pm-flipbook-btn--fullscreen" data-pm-flipbook-fullscreen aria-label="View fullscreen">⛶</button>
       </div>
     {%- else -%}
       <p class="pm-flipbook-empty">Upload a PDF in the theme editor to show it here.</p>
@@ -63,16 +65,55 @@
         var prevBtn = wrap.querySelector('[data-pm-flipbook-prev]');
         var nextBtn = wrap.querySelector('[data-pm-flipbook-next]');
         var countEl = wrap.querySelector('[data-pm-flipbook-count]');
+        var fullscreenBtn = wrap.querySelector('[data-pm-flipbook-fullscreen]');
+        var closeBtn = wrap.querySelector('[data-pm-flipbook-close]');
 
         var pdfDoc = null;
+        var virtualPages = []; // [{ page: <1-based PDF page>, part: 'full' | 'left' | 'right' }, ...]
         var pageCount = 0;
-        var currentIndex = 0; // 0-based
-        var pageImageCache = {};
+        var currentIndex = 0; // 0-based, into virtualPages
+        var fullPageCanvasCache = {}; // real PDF page number -> rendered canvas
+        var croppedImageCache = {}; // virtual index -> { url, ratio }
         var isFlipping = false;
+        var isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-        function renderPageToImage(pageNumber) {
-          if (pageImageCache[pageNumber]) {
-            return Promise.resolve(pageImageCache[pageNumber]);
+        {%- comment -%}
+          Each lookbook PDF page is laid out as a wide two-photo spread
+          (one whole photo left, one whole photo right) -- fine on a
+          wide screen, but squeezed into a narrow vertical mobile
+          viewport both photos end up tiny. On mobile only, a page
+          whose own aspect ratio is wide (landscape-shaped, the
+          signature of a spread rather than a single portrait design)
+          gets split into two virtual pages -- left half, right half --
+          each flipped to on its own, cropped from one shared rendered
+          canvas rather than re-rendering the PDF page twice.
+        {%- endcomment -%}
+        function buildVirtualPages() {
+          var pagePromises = [];
+          for (var i = 1; i <= pdfDoc.numPages; i++) {
+            pagePromises.push((function (pageNumber) {
+              return pdfDoc.getPage(pageNumber).then(function (page) {
+                var vp = page.getViewport({ scale: 1 });
+                return { pageNumber: pageNumber, ratio: vp.width / vp.height };
+              });
+            })(i));
+          }
+          return Promise.all(pagePromises).then(function (infos) {
+            infos.forEach(function (info) {
+              if (isMobile && info.ratio > 1.2) {
+                virtualPages.push({ page: info.pageNumber, part: 'left' });
+                virtualPages.push({ page: info.pageNumber, part: 'right' });
+              } else {
+                virtualPages.push({ page: info.pageNumber, part: 'full' });
+              }
+            });
+            pageCount = virtualPages.length;
+          });
+        }
+
+        function renderFullPageCanvas(pageNumber) {
+          if (fullPageCanvasCache[pageNumber]) {
+            return Promise.resolve(fullPageCanvasCache[pageNumber]);
           }
           return pdfDoc.getPage(pageNumber).then(function (page) {
             var baseViewport = page.getViewport({ scale: 1 });
@@ -83,10 +124,35 @@
             canvas.height = viewport.height;
             var ctx = canvas.getContext('2d');
             return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
-              var dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-              pageImageCache[pageNumber] = { url: dataUrl, ratio: baseViewport.width / baseViewport.height };
-              return pageImageCache[pageNumber];
+              fullPageCanvasCache[pageNumber] = canvas;
+              return canvas;
             });
+          });
+        }
+
+        function getVirtualImage(virtualIndex) {
+          if (croppedImageCache[virtualIndex]) {
+            return Promise.resolve(croppedImageCache[virtualIndex]);
+          }
+          var entry = virtualPages[virtualIndex];
+          return renderFullPageCanvas(entry.page).then(function (canvas) {
+            var resultCanvas = canvas;
+            if (entry.part !== 'full') {
+              var halfWidth = Math.round(canvas.width / 2);
+              var cropped = document.createElement('canvas');
+              cropped.width = halfWidth;
+              cropped.height = canvas.height;
+              var ctx = cropped.getContext('2d');
+              var sourceX = entry.part === 'left' ? 0 : halfWidth;
+              ctx.drawImage(canvas, sourceX, 0, halfWidth, canvas.height, 0, 0, halfWidth, canvas.height);
+              resultCanvas = cropped;
+            }
+            var imageData = {
+              url: resultCanvas.toDataURL('image/jpeg', 0.9),
+              ratio: resultCanvas.width / resultCanvas.height
+            };
+            croppedImageCache[virtualIndex] = imageData;
+            return imageData;
           });
         }
 
@@ -102,13 +168,13 @@
         }
 
         function showPage(index) {
-          renderPageToImage(index + 1).then(function (imageData) {
+          getVirtualImage(index).then(function (imageData) {
             setLayerImage(frontLayer, imageData);
             root.classList.add('is-ready');
             updateButtons();
             // Prefetch neighbors so the next flip has no visible delay.
-            if (index + 2 <= pageCount) renderPageToImage(index + 2);
-            if (index > 0) renderPageToImage(index);
+            if (index + 1 < pageCount) getVirtualImage(index + 1);
+            if (index > 0) getVirtualImage(index - 1);
           });
         }
 
@@ -118,7 +184,7 @@
           if (targetIndex < 0 || targetIndex >= pageCount) return;
 
           isFlipping = true;
-          renderPageToImage(targetIndex + 1).then(function (imageData) {
+          getVirtualImage(targetIndex).then(function (imageData) {
             setLayerImage(backLayer, imageData);
             var flipClass = direction > 0 ? 'is-flipping-next' : 'is-flipping-prev';
             root.classList.add(flipClass);
@@ -141,7 +207,30 @@
 
         prevBtn.addEventListener('click', function () { flip(-1); });
         nextBtn.addEventListener('click', function () { flip(1); });
+
+        {%- comment -%}
+          A fixed-position overlay covering the whole viewport, toggled
+          purely with a CSS class -- not the browser's real Fullscreen
+          API, since iOS Safari (the one device this was specifically
+          asked to also work on) doesn't support requestFullscreen on
+          ordinary elements at all, only on <video>. This overlay
+          approach works identically everywhere instead of needing a
+          separate, untestable fallback path for iOS.
+        {%- endcomment -%}
+        function setFullscreen(on) {
+          wrap.classList.toggle('is-fullscreen', on);
+          closeBtn.hidden = !on;
+          document.body.classList.toggle('pm-flipbook-lock-scroll', on);
+          fullscreenBtn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'View fullscreen');
+        }
+        fullscreenBtn.addEventListener('click', function () { setFullscreen(true); });
+        closeBtn.addEventListener('click', function () { setFullscreen(false); });
+
         document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && wrap.classList.contains('is-fullscreen')) {
+            setFullscreen(false);
+            return;
+          }
           if (!wrap.contains(document.activeElement) && document.activeElement !== document.body) return;
           if (e.key === 'ArrowRight') flip(1);
           if (e.key === 'ArrowLeft') flip(-1);
@@ -150,7 +239,8 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         pdfjsLib.getDocument(pdfSrc).promise.then(function (doc) {
           pdfDoc = doc;
-          pageCount = doc.numPages;
+          return buildVirtualPages();
+        }).then(function () {
           showPage(0);
         });
       }
@@ -197,6 +287,31 @@
   .pm-flipbook-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .pm-flipbook-page-count { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pm-muted); min-width: 70px; }
   .pm-flipbook-empty { padding: 60px var(--pm-pad); text-align: center; color: var(--pm-muted); }
+
+  /* ===== Fullscreen (a fixed overlay toggled by class, not the real
+     Fullscreen API -- see the JS comment on setFullscreen for why) ===== */
+  body.pm-flipbook-lock-scroll { overflow: hidden; }
+  .pm-flipbook-wrap.is-fullscreen {
+    position: fixed; inset: 0; z-index: 9999; max-width: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: clamp(16px, 4vw, 40px); background: #000;
+  }
+  .pm-flipbook-wrap.is-fullscreen .pm-flipbook-heading { display: none; }
+  .pm-flipbook-wrap.is-fullscreen .pm-flipbook {
+    width: auto; height: min(82vh, calc(90vw / var(--pm-flipbook-ratio, 0.72)));
+    max-width: 90vw; box-shadow: none;
+  }
+  .pm-flipbook-wrap.is-fullscreen .pm-flipbook-controls .pm-flipbook-page-count,
+  .pm-flipbook-wrap.is-fullscreen .pm-flipbook-btn { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+  .pm-flipbook-wrap.is-fullscreen .pm-flipbook-btn:hover:not(:disabled) { background: #fff; color: #000; }
+  .pm-flipbook-close {
+    display: none; position: fixed; top: clamp(16px, 3vw, 28px); right: clamp(16px, 3vw, 28px); z-index: 10000;
+    background: none; border: 1px solid rgba(255, 255, 255, 0.4); color: #fff;
+    width: 40px; height: 40px; font-size: 16px; cursor: pointer;
+    transition: background 0.2s var(--pm-ease), color 0.2s var(--pm-ease);
+  }
+  .pm-flipbook-close:hover { background: #fff; color: #000; }
+  .pm-flipbook-wrap.is-fullscreen .pm-flipbook-close:not([hidden]) { display: block; }
 </style>
 
 {% schema %}
