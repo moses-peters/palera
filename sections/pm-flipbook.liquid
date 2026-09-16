@@ -5,12 +5,13 @@
   reachable only by whoever has the direct URL.
 
   The two current lookbooks (SS26, AW27) are bundled directly as theme
-  assets (pm-lookbook-ss26.pdf / pm-lookbook-aw27.pdf) rather than
-  uploaded through Admin's file picker, so each page works the moment
-  its template is assigned with no manual upload step. The file picker
-  setting is still there too, as an override -- whichever is set wins,
-  so a future season's PDF can be swapped in from Admin without a code
-  change if wanted.
+  assets (pm-lookbook-ss26.pdf / pm-lookbook-aw27.pdf), referenced by
+  filename via the pdf_asset_filename setting -- there's no Shopify
+  schema setting type for a generic file upload (a "file" type setting
+  doesn't validate; text/URL/image/video are what's actually
+  supported), so swapping in a future season's PDF means uploading it
+  to the theme's Assets and updating this filename, not a plain Admin
+  file picker.
 
   Renders the PDF's pages as images via pdf.js, then flips between them
   with a real CSS 3D page-turn (rotateY on the current page, revealing
@@ -22,9 +23,7 @@
   dependency to pin a version of blind.
 {%- endcomment -%}
 {%- assign pdf_src = '' -%}
-{%- if section.settings.pdf_file != blank -%}
-  {%- assign pdf_src = section.settings.pdf_file.url -%}
-{%- elsif section.settings.pdf_asset_filename != blank -%}
+{%- if section.settings.pdf_asset_filename != blank -%}
   {%- assign pdf_src = section.settings.pdf_asset_filename | asset_url -%}
 {%- endif -%}
 <div class="pm-homepage">
@@ -205,8 +204,7 @@
   "name": "PM: Flipbook",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading" },
-    { "type": "text", "id": "pdf_asset_filename", "label": "Bundled PDF filename", "info": "Filename of a PDF already uploaded to the theme's Assets (e.g. pm-lookbook-ss26.pdf). Used automatically unless a PDF is uploaded below." },
-    { "type": "file", "id": "pdf_file", "label": "PDF file (override)", "info": "Upload a PDF here to use it instead of the bundled asset filename above." }
+    { "type": "text", "id": "pdf_asset_filename", "label": "Bundled PDF filename", "info": "Filename of a PDF uploaded to the theme's Assets (e.g. pm-lookbook-ss26.pdf)." }
   ],
   "presets": [{ "name": "PM: Flipbook" }]
 }
