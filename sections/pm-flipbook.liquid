@@ -341,20 +341,28 @@
       height: min(72vh, calc(94vw / var(--pm-flipbook-ratio, 0.72)));
     }
     .pm-flipbook-wrap.is-fullscreen { padding: 10px; }
-    {%- comment -%}
-      The prev/next/count row is dropped entirely in mobile fullscreen
-      -- swipe (see the touchstart/touchend handlers above) replaces it
-      as the way to change pages, and the vertical space it used to
-      take is given back to the page image itself.
-    {%- endcomment -%}
+    .pm-flipbook-wrap.is-fullscreen .pm-flipbook-rotate-hint {
+      position: fixed; top: clamp(16px, 3vw, 28px); left: 50%; transform: translateX(-50%);
+      margin: 0; color: rgba(255, 255, 255, 0.8); z-index: 10000;
+    }
+  }
+
+  {%- comment -%}
+    Touch-device fullscreen simplification -- keyed off pointer:coarse
+    (a real touchscreen) rather than orientation/width, specifically so
+    it stays in effect when a phone is rotated to landscape. The
+    portrait-only block above still handles portrait-specific SIZING
+    (a landscape spread needs different math on a narrow-vs-wide
+    screen), but hiding the buttons in favor of swipe and shrinking the
+    close button should hold regardless of which way the phone is held
+    -- max-width keeps this from also matching a touchscreen desktop
+    monitor, which would still want the normal button controls.
+  {%- endcomment -%}
+  @media (pointer: coarse) and (max-width: 950px) {
     .pm-flipbook-wrap.is-fullscreen .pm-flipbook-controls { display: none; }
     .pm-flipbook-wrap.is-fullscreen .pm-flipbook {
       max-width: 98vw;
       height: min(94vh, calc(98vw / var(--pm-flipbook-ratio, 0.72)));
-    }
-    .pm-flipbook-wrap.is-fullscreen .pm-flipbook-rotate-hint {
-      position: fixed; top: clamp(16px, 3vw, 28px); left: 50%; transform: translateX(-50%);
-      margin: 0; color: rgba(255, 255, 255, 0.8); z-index: 10000;
     }
     .pm-flipbook-wrap.is-fullscreen .pm-flipbook-close {
       width: 28px; height: 28px; font-size: 12px;
