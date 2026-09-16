@@ -17,7 +17,7 @@
           "settings": {
             "show_on": "family",
             "family": "clutches",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/Clutch_Micro_Mobile_2df61ccd-dd1f-4493-b16d-5152042b7c75.jpg",
             "video_url": "",
             "caption": ""
@@ -39,7 +39,7 @@
           "settings": {
             "show_on": "family",
             "family": "clutch-micro",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/Clutch_Micro_Desktop.jpg",
             "video_url": "",
             "caption": ""
@@ -50,7 +50,7 @@
           "settings": {
             "show_on": "family",
             "family": "pouches",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/3U7A9837_e73755ad-5651-480d-867e-0b69168e0fca.jpg",
             "video_url": "",
             "caption": ""
@@ -116,7 +116,7 @@
           "settings": {
             "show_on": "family",
             "family": "mini-milano",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/mini-milano-n2-788224_9f3d6d36-d3f9-4f5f-a1ed-074764b3ac40.jpg",
             "video_url": "",
             "caption": ""
@@ -138,7 +138,7 @@
           "settings": {
             "show_on": "family",
             "family": "mini-roma",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/WhatsApp_Image_2026-08-28_at_11.31.04.jpg",
             "video_url": "",
             "caption": ""
@@ -193,7 +193,7 @@
           "settings": {
             "show_on": "family",
             "family": "santorini",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/santorini-667310_7e077142-54ae-4376-b134-197dddb4dcbc.jpg",
             "video_url": "",
             "caption": ""
@@ -204,7 +204,7 @@
           "settings": {
             "show_on": "family",
             "family": "wood-net-hobo",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/Wood_Net_Hobo.jpg",
             "video_url": "",
             "caption": ""
@@ -270,7 +270,7 @@
           "settings": {
             "show_on": "shop_all",
             "family": "wood-net-hobo",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/3U7A9773_1.jpg",
             "video_url": "",
             "caption": ""
@@ -303,7 +303,7 @@
           "settings": {
             "show_on": "aw27",
             "family": "clutches",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "image": "shopify://shop_images/3U7A3278.jpg",
             "video_url": "",
             "caption": ""
@@ -367,9 +367,7 @@
         "back_label": "All Families",
         "back_url": "",
         "line_label": "",
-        "empty_label": "New pieces for this family are on the way.",
-        "aw27_banner_image": "shopify://shop_images/3U7A2976.jpg",
-        "aw27_banner_link": ""
+        "empty_label": "New pieces for this family are on the way."
       }
     }
   },
