@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "pm-flipbook",
+      "settings": {
+        "heading": "Identity 2, 2025 — SS26",
+        "pdf_asset_filename": "pm-lookbook-ss26.pdf"
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,213 @@
+{%- comment -%}
+  Standalone PDF flipbook viewer -- built for pages that are never
+  linked in any nav menu (e.g. a merchant creates /pages/ss26 and
+  /pages/aw27, each on its own preset of this section) so they're
+  reachable only by whoever has the direct URL.
+
+  The two current lookbooks (SS26, AW27) are bundled directly as theme
+  assets (pm-lookbook-ss26.pdf / pm-lookbook-aw27.pdf) rather than
+  uploaded through Admin's file picker, so each page works the moment
+  its template is assigned with no manual upload step. The file picker
+  setting is still there too, as an override -- whichever is set wins,
+  so a future season's PDF can be swapped in from Admin without a code
+  change if wanted.
+
+  Renders the PDF's pages as images via pdf.js, then flips between them
+  with a real CSS 3D page-turn (rotateY on the current page, revealing
+  the next/previous one underneath) rather than a plain slide/fade --
+  this is its own hand-built flip rather than a third-party flipbook
+  library, since a wrong version/CDN path for an unfamiliar library
+  would fail silently with no way to test it here; pdf.js alone is
+  enough to build the whole effect and is a much safer, long-established
+  dependency to pin a version of blind.
+{%- endcomment -%}
+{%- assign pdf_src = '' -%}
+{%- if section.settings.pdf_file != blank -%}
+  {%- assign pdf_src = section.settings.pdf_file.url -%}
+{%- elsif section.settings.pdf_asset_filename != blank -%}
+  {%- assign pdf_src = section.settings.pdf_asset_filename | asset_url -%}
+{%- endif -%}
+<div class="pm-homepage">
+  <div class="pm-flipbook-wrap">
+    {%- if section.settings.heading != blank -%}
+      <h1 class="pm-serif pm-flipbook-heading">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if pdf_src != blank -%}
+      <div class="pm-flipbook" data-pm-flipbook data-pdf-src="{{ pdf_src }}">
+        <div class="pm-flipbook-page-layer" data-pm-flipbook-layer="back"></div>
+        <div class="pm-flipbook-page-layer" data-pm-flipbook-layer="front"></div>
+        <div class="pm-flipbook-loading" data-pm-flipbook-loading>Loading…</div>
+      </div>
+      <div class="pm-flipbook-controls">
+        <button type="button" class="pm-flipbook-btn" data-pm-flipbook-prev aria-label="Previous page" disabled>‹</button>
+        <span class="pm-flipbook-page-count" data-pm-flipbook-count></span>
+        <button type="button" class="pm-flipbook-btn" data-pm-flipbook-next aria-label="Next page" disabled>›</button>
+      </div>
+    {%- else -%}
+      <p class="pm-flipbook-empty">Upload a PDF in the theme editor to show it here.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- if pdf_src != blank -%}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer onload="window.pmFlipbookPdfjsReady && window.pmFlipbookPdfjsReady()"></script>
+  <script>
+    (function () {
+      function setUpFlipbook(root) {
+        if (root.dataset.pmFlipbookBound) return;
+        root.dataset.pmFlipbookBound = 'true';
+
+        var pdfSrc = root.dataset.pdfSrc;
+        var backLayer = root.querySelector('[data-pm-flipbook-layer="back"]');
+        var frontLayer = root.querySelector('[data-pm-flipbook-layer="front"]');
+        var wrap = root.closest('.pm-flipbook-wrap');
+        var prevBtn = wrap.querySelector('[data-pm-flipbook-prev]');
+        var nextBtn = wrap.querySelector('[data-pm-flipbook-next]');
+        var countEl = wrap.querySelector('[data-pm-flipbook-count]');
+
+        var pdfDoc = null;
+        var pageCount = 0;
+        var currentIndex = 0; // 0-based
+        var pageImageCache = {};
+        var isFlipping = false;
+
+        function renderPageToImage(pageNumber) {
+          if (pageImageCache[pageNumber]) {
+            return Promise.resolve(pageImageCache[pageNumber]);
+          }
+          return pdfDoc.getPage(pageNumber).then(function (page) {
+            var baseViewport = page.getViewport({ scale: 1 });
+            var scale = 1400 / baseViewport.width;
+            var viewport = page.getViewport({ scale: scale });
+            var canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            var ctx = canvas.getContext('2d');
+            return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+              var dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+              pageImageCache[pageNumber] = { url: dataUrl, ratio: baseViewport.width / baseViewport.height };
+              return pageImageCache[pageNumber];
+            });
+          });
+        }
+
+        function updateButtons() {
+          prevBtn.disabled = currentIndex <= 0;
+          nextBtn.disabled = currentIndex >= pageCount - 1;
+          countEl.textContent = (currentIndex + 1) + ' / ' + pageCount;
+        }
+
+        function setLayerImage(layer, imageData) {
+          layer.style.backgroundImage = 'url(' + imageData.url + ')';
+          root.style.setProperty('--pm-flipbook-ratio', imageData.ratio);
+        }
+
+        function showPage(index) {
+          renderPageToImage(index + 1).then(function (imageData) {
+            setLayerImage(frontLayer, imageData);
+            root.classList.add('is-ready');
+            updateButtons();
+            // Prefetch neighbors so the next flip has no visible delay.
+            if (index + 2 <= pageCount) renderPageToImage(index + 2);
+            if (index > 0) renderPageToImage(index);
+          });
+        }
+
+        function flip(direction) {
+          if (isFlipping) return;
+          var targetIndex = currentIndex + direction;
+          if (targetIndex < 0 || targetIndex >= pageCount) return;
+
+          isFlipping = true;
+          renderPageToImage(targetIndex + 1).then(function (imageData) {
+            setLayerImage(backLayer, imageData);
+            var flipClass = direction > 0 ? 'is-flipping-next' : 'is-flipping-prev';
+            root.classList.add(flipClass);
+
+            var onEnd = function () {
+              frontLayer.removeEventListener('transitionend', onEnd);
+              root.classList.remove(flipClass);
+              frontLayer.style.transition = 'none';
+              setLayerImage(frontLayer, imageData);
+              // Force reflow so the transition re-enables cleanly for the next flip.
+              void frontLayer.offsetWidth;
+              frontLayer.style.transition = '';
+              currentIndex = targetIndex;
+              updateButtons();
+              isFlipping = false;
+            };
+            frontLayer.addEventListener('transitionend', onEnd);
+          });
+        }
+
+        prevBtn.addEventListener('click', function () { flip(-1); });
+        nextBtn.addEventListener('click', function () { flip(1); });
+        document.addEventListener('keydown', function (e) {
+          if (!wrap.contains(document.activeElement) && document.activeElement !== document.body) return;
+          if (e.key === 'ArrowRight') flip(1);
+          if (e.key === 'ArrowLeft') flip(-1);
+        });
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        pdfjsLib.getDocument(pdfSrc).promise.then(function (doc) {
+          pdfDoc = doc;
+          pageCount = doc.numPages;
+          showPage(0);
+        });
+      }
+
+      function initAll() {
+        if (typeof pdfjsLib === 'undefined') return;
+        document.querySelectorAll('[data-pm-flipbook]').forEach(setUpFlipbook);
+      }
+
+      window.pmFlipbookPdfjsReady = initAll;
+      if (typeof pdfjsLib !== 'undefined') initAll();
+    })();
+  </script>
+{%- endif -%}
+
+<style>
+  .pm-flipbook-wrap { max-width: 720px; margin: 0 auto; padding: clamp(32px, 6vw, 64px) var(--pm-pad); text-align: center; }
+  .pm-flipbook-heading { margin-bottom: clamp(20px, 3vw, 32px); }
+  .pm-flipbook {
+    position: relative; width: 100%; aspect-ratio: var(--pm-flipbook-ratio, 0.72);
+    margin: 0 auto; perspective: 2400px; background: var(--pm-sable, #f2f2f2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  }
+  .pm-flipbook-page-layer {
+    position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center;
+    background-color: #fff; backface-visibility: hidden; transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  .pm-flipbook-page-layer[data-pm-flipbook-layer="back"] { z-index: 1; }
+  .pm-flipbook-page-layer[data-pm-flipbook-layer="front"] { z-index: 2; transform-origin: right center; transform: rotateY(0deg); }
+  .pm-flipbook.is-flipping-next .pm-flipbook-page-layer[data-pm-flipbook-layer="front"] { transform: rotateY(-150deg); box-shadow: -20px 0 40px rgba(0, 0, 0, 0.2); }
+  .pm-flipbook.is-flipping-prev .pm-flipbook-page-layer[data-pm-flipbook-layer="front"] { transform-origin: left center; transform: rotateY(150deg); box-shadow: 20px 0 40px rgba(0, 0, 0, 0.2); }
+  .pm-flipbook-loading {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pm-muted); z-index: 3;
+    background: var(--pm-sable, #f2f2f2); transition: opacity 0.3s var(--pm-ease); pointer-events: none;
+  }
+  .pm-flipbook.is-ready .pm-flipbook-loading { opacity: 0; }
+  .pm-flipbook-controls { margin-top: clamp(20px, 3vw, 32px); display: flex; align-items: center; justify-content: center; gap: 20px; }
+  .pm-flipbook-btn {
+    background: none; border: 1px solid var(--pm-line); width: 40px; height: 40px; cursor: pointer;
+    font-size: 18px; color: var(--pm-ink); transition: background 0.2s var(--pm-ease), color 0.2s var(--pm-ease);
+  }
+  .pm-flipbook-btn:hover:not(:disabled) { background: var(--pm-ink); color: #fff; }
+  .pm-flipbook-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .pm-flipbook-page-count { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pm-muted); min-width: 70px; }
+  .pm-flipbook-empty { padding: 60px var(--pm-pad); text-align: center; color: var(--pm-muted); }
+</style>
+
+{% schema %}
+{
+  "name": "PM: Flipbook",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "pdf_asset_filename", "label": "Bundled PDF filename", "info": "Filename of a PDF already uploaded to the theme's Assets (e.g. pm-lookbook-ss26.pdf). Used automatically unless a PDF is uploaded below." },
+    { "type": "file", "id": "pdf_file", "label": "PDF file (override)", "info": "Upload a PDF here to use it instead of the bundled asset filename above." }
+  ],
+  "presets": [{ "name": "PM: Flipbook" }]
+}
+{% endschema %}

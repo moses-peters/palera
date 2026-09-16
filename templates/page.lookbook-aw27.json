@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "pm-flipbook",
+      "settings": {
+        "heading": "Identity 1, 2026 — AW27",
+        "pdf_asset_filename": "pm-lookbook-aw27.pdf"
+      }
+    }
+  },
+  "order": ["main"]
+}
