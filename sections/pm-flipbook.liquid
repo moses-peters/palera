@@ -215,26 +215,69 @@
         }, { passive: true });
 
         {%- comment -%}
-          A fixed-position overlay covering the whole viewport, toggled
-          purely with a CSS class -- not the browser's real Fullscreen
-          API, since iOS Safari (the one device this was specifically
-          asked to also work on) doesn't support requestFullscreen on
-          ordinary elements at all, only on <video>. This overlay
-          approach works identically everywhere instead of needing a
-          separate, untestable fallback path for iOS.
+          The CSS-class overlay (position:fixed, covers the viewport)
+          is always applied regardless of device -- it's what makes
+          .is-fullscreen actually look full-screen. On top of that,
+          touch devices also try the browser's REAL Fullscreen API,
+          which additionally hides the browser's own chrome (Safari/
+          Chrome's URL bar and toolbar) -- desktop deliberately never
+          calls this, unchanged from before. Android Chrome and most
+          other touch browsers support it on any element; iOS Safari
+          doesn't (only <video> gets real fullscreen there), so the
+          request silently does nothing there and it's left with the
+          CSS overlay alone, exactly as it worked previously. A
+          fullscreenchange listener keeps state in sync if the OS/
+          browser's own back gesture exits real fullscreen without
+          going through our close button.
         {%- endcomment -%}
-        function setFullscreen(on) {
+        function isTouchDevice() {
+          return window.matchMedia('(pointer: coarse)').matches;
+        }
+
+        function applyFullscreenState(on) {
           wrap.classList.toggle('is-fullscreen', on);
           closeBtn.hidden = !on;
           document.body.classList.toggle('pm-flipbook-lock-scroll', on);
           fullscreenBtn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'View fullscreen');
         }
-        fullscreenBtn.addEventListener('click', function () { setFullscreen(true); });
-        closeBtn.addEventListener('click', function () { setFullscreen(false); });
+
+        function enterFullscreen() {
+          applyFullscreenState(true);
+          if (!isTouchDevice()) return;
+          var request = wrap.requestFullscreen || wrap.webkitRequestFullscreen;
+          if (!request) return;
+          try {
+            var result = request.call(wrap);
+            if (result && result.catch) result.catch(function () {});
+          } catch (e) {}
+        }
+
+        function exitFullscreen() {
+          var fsElement = document.fullscreenElement || document.webkitFullscreenElement;
+          var exit = document.exitFullscreen || document.webkitExitFullscreen;
+          if (fsElement && exit) {
+            try {
+              var result = exit.call(document);
+              if (result && result.catch) result.catch(function () {});
+            } catch (e) {}
+          }
+          applyFullscreenState(false);
+        }
+
+        fullscreenBtn.addEventListener('click', enterFullscreen);
+        closeBtn.addEventListener('click', exitFullscreen);
+
+        function onNativeFullscreenChange() {
+          if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            applyFullscreenState(false);
+          }
+        }
+        document.addEventListener('fullscreenchange', onNativeFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', onNativeFullscreenChange);
 
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape' && wrap.classList.contains('is-fullscreen')) {
-            setFullscreen(false);
+            exitFullscreen();
             return;
           }
           if (!wrap.contains(document.activeElement) && document.activeElement !== document.body) return;
@@ -295,8 +338,9 @@
   .pm-flipbook-empty { padding: 60px var(--pm-pad); text-align: center; color: var(--pm-muted); }
   .pm-flipbook-rotate-hint { display: none; }
 
-  /* ===== Fullscreen (a fixed overlay toggled by class, not the real
-     Fullscreen API -- see the JS comment on setFullscreen for why) ===== */
+  /* ===== Fullscreen (a fixed overlay toggled by class; touch devices
+     also request the browser's real Fullscreen API on top of this --
+     see the JS comment on enterFullscreen for why) ===== */
   body.pm-flipbook-lock-scroll { overflow: hidden; }
   .pm-flipbook-wrap.is-fullscreen {
     position: fixed; inset: 0; z-index: 9999; max-width: none;
