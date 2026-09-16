@@ -93,6 +93,28 @@
               assign is_main_color_option = true
             endif
 
+            # Hardware/Chain Color is always literally Gold or Silver, on
+            # every product -- a plain, consistent metallic swatch reads
+            # better here than each product's own photo (which varies in
+            # lighting/crop) or a flat "gold"/"silver" CSS keyword (which
+            # looks flat, not metallic). Skips the whole photo lookup
+            # below entirely when this is the case.
+            assign is_hardware_swatch = false
+            assign value_downcased = value | downcase
+            if option_name_downcased contains 'hardware' or option_name_downcased contains 'chain color'
+              if value_downcased == 'gold'
+                assign is_hardware_swatch = true
+                assign hardware_css = 'linear-gradient(135deg, #d3b56a 0%, #f7ecc7 22%, #a9822f 50%, #f7ecc7 78%, #d3b56a 100%)'
+              elsif value_downcased == 'silver'
+                assign is_hardware_swatch = true
+                assign hardware_css = 'linear-gradient(135deg, #c6c6c6 0%, #f5f5f5 22%, #9a9a9a 50%, #f5f5f5 78%, #c6c6c6 100%)'
+              endif
+            endif
+
+            if is_hardware_swatch
+              assign is_main_color_option = false
+            endif
+
             if is_main_color_option
               assign option_number = color_option_index | plus: 1
               assign option_key = 'option' | append: option_number
@@ -143,7 +165,7 @@
 
           -%}
           {%- liquid
-            unless has_image
+            unless has_image or is_hardware_swatch
               assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
               if images[color_file_name] != blank
                 assign has_image = true
@@ -160,9 +182,12 @@
             "Rare Pink", breaks for "Gamboge Multi" or "Camelot" outright,
             rendering a blank circle). Reuses the same curated
             crystal-close-up swatch photos already used correctly on the
-            collection grid, via pm-crystal-swatch-url.
+            collection grid, via pm-crystal-swatch-url. Skipped for
+            Hardware/Chain Color -- its own plain gold/silver gradient
+            takes over instead, otherwise "Gold" would match the curated
+            crystal-swatch list's own unrelated "Gold" bag-color photo.
           {%- endcomment -%}
-          {%- unless has_image -%}
+          {%- unless has_image or is_hardware_swatch -%}
             {%- capture pm_swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: value %}{%- endcapture -%}
             {%- assign pm_swatch_image = pm_swatch_image | strip -%}
             {%- if pm_swatch_image != blank -%}
@@ -173,7 +198,7 @@
           <label
             for="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ value | url_encode }}"
             class="variant__button-label color-swatch color-swatch--{{ value | handle }}{% unless product_available %} disabled{% endunless %}"
-            style="{% if has_image %}background-image: url({{ color_image }});{% else %}background-color: {{ color_swatch_fallback }};{% endif %}"
+            style="{% if is_hardware_swatch %}background: {{ hardware_css }};{% elsif has_image %}background-image: url({{ color_image }});{% else %}background-color: {{ color_swatch_fallback }};{% endif %}"
           >
             {{ value | escape }}
           </label>
