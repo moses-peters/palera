@@ -312,6 +312,25 @@
   }
   .pm-flipbook-close:hover { background: #fff; color: #000; }
   .pm-flipbook-wrap.is-fullscreen .pm-flipbook-close:not([hidden]) { display: block; }
+
+  /* ===== Mobile sizing -- desktop is untouched by anything below.
+     Nothing above makes the flipbook grow with available viewport
+     HEIGHT, only width, so on a tall phone screen it can end up
+     looking small with empty space above/below even though it fills
+     the width. These make both the inline and fullscreen views size
+     off whichever of height/width is more limiting instead. ===== */
+  @media (max-width: 768px) {
+    .pm-flipbook-wrap { padding: 16px 12px; }
+    .pm-flipbook-wrap:not(.is-fullscreen) .pm-flipbook {
+      width: auto; max-width: 94vw; margin: 0 auto;
+      height: min(72vh, calc(94vw / var(--pm-flipbook-ratio, 0.72)));
+    }
+    .pm-flipbook-wrap.is-fullscreen { padding: 10px; }
+    .pm-flipbook-wrap.is-fullscreen .pm-flipbook {
+      max-width: 97vw;
+      height: min(88vh, calc(97vw / var(--pm-flipbook-ratio, 0.72)));
+    }
+  }
 </style>
 
 {% schema %}
