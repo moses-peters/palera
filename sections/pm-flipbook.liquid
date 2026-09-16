@@ -199,15 +199,29 @@
           just adds another way to flip. Only counts as a swipe when
           the horizontal movement clearly dominates the vertical, so an
           up/down scroll gesture on the inline (non-fullscreen) view
-          isn't mistaken for a page turn.
+          isn't mistaken for a page turn -- and only when exactly one
+          finger was on the screen for the whole gesture, so a two-
+          finger pinch-to-zoom is never misread as a swipe (the browser
+          fires touchstart/touchend for pinches too, and one of the two
+          fingers alone can easily cross the horizontal-distance
+          threshold below). touchmove watches for a second finger
+          joining mid-gesture, since a pinch can start as a single
+          touch a moment before the other finger lands.
         {%- endcomment -%}
         var touchStartX = 0;
         var touchStartY = 0;
+        var touchIsSingleFinger = false;
         root.addEventListener('touchstart', function (e) {
-          touchStartX = e.changedTouches[0].clientX;
-          touchStartY = e.changedTouches[0].clientY;
+          touchIsSingleFinger = e.touches.length === 1;
+          if (!touchIsSingleFinger) return;
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        root.addEventListener('touchmove', function (e) {
+          if (e.touches.length > 1) touchIsSingleFinger = false;
         }, { passive: true });
         root.addEventListener('touchend', function (e) {
+          if (!touchIsSingleFinger) return;
           var deltaX = e.changedTouches[0].clientX - touchStartX;
           var deltaY = e.changedTouches[0].clientY - touchStartY;
           if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY) * 1.5) return;
