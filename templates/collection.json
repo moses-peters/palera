@@ -36,18 +36,6 @@
             "link": "https://paleramilano.com/products/clutch-edge-short-copy?variant=53645613171035"
           }
         },
-        "sa-3": {
-          "type": "editorial_break",
-          "settings": {
-            "show_on": "family",
-            "family": "clutch-micro",
-            "orientation": "vertical",
-            "image": "shopify://shop_images/Clutch_Micro_Desktop.jpg",
-            "video_url": "",
-            "caption": "",
-            "link": ""
-          }
-        },
         "sa-4": {
           "type": "editorial_break",
           "settings": {
@@ -304,7 +292,6 @@
       "block_order": [
         "sa-1",
         "sa-2",
-        "sa-3",
         "sa-4",
         "sa-5",
         "sa-6",
