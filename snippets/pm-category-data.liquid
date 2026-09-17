@@ -1,0 +1,26 @@
+{%- comment -%}
+  Single source of truth for which of the 4 shop-menu categories
+  (Clutches, Accessories, Mini Bags, Fits A Phone) each product belongs
+  to. Unlike pm-family-data (keyword matching against product.title),
+  this is an EXACT product-title lookup -- several products share a
+  common prefix but land in different categories (e.g. "Clutch Edge -
+  Short" is Clutches but "Clutch Edge - Airpod" is Accessories), so
+  keyword matching would misclassify them. Every surface that filters
+  by category (desktop Shop menu, mobile Shop panel, the collection
+  grid's own filtering) should pull from this rather than keeping its
+  own copy.
+
+  Rendered, not included, for the same reason as pm-family-data (some
+  shops disable the include tag outright). Callers capture the output
+  and split it themselves:
+
+    {%- capture pm_categories_raw -%}{% render 'pm-category-data' %}{%- endcapture -%}
+    {%- assign pm_categories = pm_categories_raw | strip | split: ';;' -%}
+
+  Format per entry: Exact product title|category handle. Match by
+  comparing product.title (stripped, downcased) against the title half
+  (also stripped, downcased) -- not a contains/keyword match. A
+  product not listed here simply has no category and won't appear
+  under any category filter.
+{%- endcomment -%}
+{{- 'Diamond Amalfi|fits-a-phone;;Siracusa|fits-a-phone;;Phone Holder|fits-a-phone;;Mini Roma Lock|fits-a-phone;;Micro Long|fits-a-phone;;Pouch Long|fits-a-phone;;Amalfi|fits-a-phone;;Crystal Pouch - Wood|mini-bags;;Clutch Edge - Short|clutches;;Clutch Edge - Airpod - Wood - Crystal|accessories;;Clutch Edge - Airpod|accessories;;Diamond Maxi Roma Lock|fits-a-phone;;Diamond Roma Belt-U|fits-a-phone;;Wallet Chain|accessories;;Maxi Crystal Wood - Pouch|fits-a-phone;;Crystal Wallet - Wood|accessories;;Clutch Mini Bag|clutches;;Capri Baby Wood|mini-bags;;Capri Baby|mini-bags;;Wood Net Hobo|fits-a-phone;;Crystal Pouch|mini-bags;;Clutch Mini Wood - Crystal|clutches;;Crystal Wallet|accessories;;Amelia Bag|fits-a-phone;;Mirage Necklace|accessories;;Necklace Agate|accessories;;Necklace Agate Heart|accessories;;Necklace Crystal Heart|accessories;;Clutch Edge-Long|clutches;;Necklace Crystal|accessories;;Maxi Roma|fits-a-phone;;Santorini-Lock|fits-a-phone;;Capri Bag|clutches;;Clutch Wood-Crystal|clutches;;Amelia Wood-Crystal|fits-a-phone;;Roma Belt-U|fits-a-phone;;Mini Roma - UAE|mini-bags;;Clutch Micro Bag|clutches;;Belt|accessories;;Maxi Roma-Lock|fits-a-phone;;Mirage Multi-Necklace|accessories;;Mirage Necklace-Crystal|accessories;;Diamond Mini Milano N2|mini-bags;;Mini Milano N2|mini-bags;;Diamond Maxi Roma|fits-a-phone;;Diamond Mini Roma|mini-bags;;Diamond Santorini|fits-a-phone;;Santorini|fits-a-phone;;Mini Roma|mini-bags' -}}

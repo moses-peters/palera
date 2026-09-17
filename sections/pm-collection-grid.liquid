@@ -9,6 +9,8 @@
 {%- endcomment -%}
 {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
 {%- assign pm_families = pm_families_raw | strip | split: ';;' -%}
+{%- capture pm_categories_raw -%}{% render 'pm-category-data' %}{%- endcapture -%}
+{%- assign pm_categories = pm_categories_raw | strip | split: ';;' -%}
 
 {%- comment -%}
   Every bag is one Shopify product with a Color option holding several
@@ -196,6 +198,30 @@
           {%- endfor -%}
 
           {%- comment -%}
+            Category (Clutches/Accessories/Mini Bags/Fits A Phone, from
+            the Shop menu quick links) is an exact product-title match
+            against pm-category-data, not a keyword match -- several
+            products share a common prefix but land in different
+            categories (e.g. "Clutch Edge - Short" is Clutches but
+            "Clutch Edge - Airpod" is Accessories), so keyword matching
+            would misclassify them. One category per product, applied
+            to every color tile it produces below. A product not listed
+            in pm-category-data simply has no category and won't appear
+            under any category filter.
+          {%- endcomment -%}
+          {%- assign tile_category = '' -%}
+          {%- assign title_normalized = product.title | strip | downcase -%}
+          {%- for category_entry in pm_categories -%}
+            {%- if tile_category == '' -%}
+              {%- assign category_parts = category_entry | split: '|' -%}
+              {%- assign category_title_normalized = category_parts[0] | strip | downcase -%}
+              {%- if title_normalized == category_title_normalized -%}
+                {%- assign tile_category = category_parts[1] -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- comment -%}
             Each bag is one product with a Color option holding several
             variants — split it into one tile per color (see the
             pre-count comment above the piece-count computation).
@@ -346,7 +372,7 @@
               the family filter script) targets .pm-plp-tile by class,
               not by tag, so nothing else needed to change for this.
             {%- endcomment -%}
-            <div class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
+            <div class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" data-category="{{ tile_category }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
               <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
                 <div class="pm-plp-tile-image"{% if tile_secondary_image %} data-pm-hover-image{% endif %}>
                   {%- if tile_image -%}
@@ -532,6 +558,31 @@
     if (initialFamily) {
       var initialLink = nav.querySelector('[data-family-filter="' + initialFamily + '"]');
       if (initialLink) applyFilter(initialFamily, initialLink.textContent.trim());
+    }
+
+    {%- comment -%}
+      Category links (Clutches/Accessories/Mini Bags/Fits A Phone, from
+      the desktop Shop menu and mobile Shop panel) work the same way as
+      family links -- a real navigation to this page with ?category=...,
+      read and applied client-side on arrival since there's no real
+      per-category Shopify Collection behind them either. Independent
+      of the family filter above (a URL only ever carries one or the
+      other in practice); campaign/editorial tiles aren't scoped to any
+      category, so they're just hidden outright rather than shown
+      alongside an unrelated category's products.
+    {%- endcomment -%}
+    function applyCategoryFilter(categoryHandle) {
+      allTiles.forEach(function (tile) {
+        if (tile.classList.contains('pm-plp-campaign-tile')) {
+          tile.classList.add('pm-is-hidden');
+          return;
+        }
+        tile.classList.toggle('pm-is-hidden', tile.getAttribute('data-category') !== categoryHandle);
+      });
+    }
+    var initialCategory = new URLSearchParams(window.location.search).get('category');
+    if (initialCategory) {
+      applyCategoryFilter(initialCategory);
     }
 
   })();

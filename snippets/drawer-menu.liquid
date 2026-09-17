@@ -311,7 +311,7 @@
           <a href="{{ all_products_url }}">View All</a>
           <a href="/collections/aw27">New In</a>
           {%- for category in shop_categories -%}
-            <a href="{{ all_products_url }}">{{ category }}</a>
+            <a href="{{ all_products_url }}?category={{ category | handle }}">{{ category }}</a>
           {%- endfor -%}
         </div>
         <div class="pm-mobile-shop-families">
