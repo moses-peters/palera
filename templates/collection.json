@@ -84,18 +84,6 @@
             "link": "https://paleramilano.com/products/maxi-roma-lock?variant=53717863661915"
           }
         },
-        "fam-clutches-1": {
-          "type": "editorial_break",
-          "settings": {
-            "show_on": "family",
-            "family": "maxi-roma",
-            "orientation": "vertical",
-            "image": "shopify://shop_images/maxi-roma-437454.jpg",
-            "video_url": "",
-            "caption": "",
-            "link": ""
-          }
-        },
         "fam-clutches-2": {
           "type": "editorial_break",
           "settings": {
@@ -204,18 +192,6 @@
             "link": "https://paleramilano.com/products/hobo-wood-bag?variant=52408582832475"
           }
         },
-        "fam-mini-roma-2": {
-          "type": "editorial_break",
-          "settings": {
-            "show_on": "shop_all",
-            "family": "mini-roma",
-            "orientation": "vertical",
-            "image": "shopify://shop_images/IMG_3.webp",
-            "video_url": "",
-            "caption": "",
-            "link": ""
-          }
-        },
         "fam-santorini-2": {
           "type": "editorial_break",
           "settings": {
@@ -237,7 +213,7 @@
             "image": "shopify://shop_images/3U7A3250-2.jpg",
             "video_url": "",
             "caption": "",
-            "link": ""
+            "link": "https://paleramilano.com/products/crystal-pouch?variant=54054453346651"
           }
         },
         "aw-1": {
@@ -296,7 +272,6 @@
         "sa-5",
         "sa-6",
         "sa-7",
-        "fam-clutches-1",
         "fam-clutches-2",
         "fam-accessories-1",
         "fam-accessories-2",
@@ -306,7 +281,6 @@
         "fam-maxi-roma-1",
         "fam-maxi-roma-2",
         "fam-mini-milano-1",
-        "fam-mini-roma-2",
         "fam-santorini-2",
         "fam-wood-net-hobo-2",
         "aw-1",
