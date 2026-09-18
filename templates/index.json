@@ -29,8 +29,8 @@
           "type": "product",
           "settings": {
             "product": "shopify://products/clutch-mini-champagne",
-            "image": "shopify://shop_images/F2.jpg",
-            "image_mobile": "shopify://shop_images/3U7A2740-2.jpg",
+            "image": "shopify://shop_images/F2_1.jpg",
+            "image_mobile": "shopify://shop_images/3U7A2740-2_0ee722a8-3398-4153-918c-ec0f630e25af.jpg",
             "fallback_label": "Clutch Micro Bag",
             "fallback_asset": "pm-drive-product-a.jpg",
             "link": "https://paleramilano.com/products/clutch-micro-bag?variant=54057112600923",
