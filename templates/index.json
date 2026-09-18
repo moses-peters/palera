@@ -12,8 +12,8 @@
     "pm-hero": {
       "type": "pm-hero",
       "settings": {
-        "image": "shopify://shop_images/Ban1.jpg",
-        "image_mobile": "shopify://shop_images/Ban2.jpg",
+        "image": "shopify://shop_images/Ban1_1.jpg",
+        "image_mobile": "shopify://shop_images/Ban2_1.jpg",
         "link_url": "https://paleramilano.com/products/santorini-6?variant=54057608970587",
         "focal_x": 50,
         "focal_y": 80,
