@@ -7,7 +7,23 @@
       {%- assign focal_y = block.settings.focal_y | default: 50 -%}
       <a href="{{ product.url | default: block.settings.link | default: '#' }}" class="pm-product-pair-half pm-reveal" style="transition-delay: {{ forloop.index0 | times: 120 }}ms; --pm-focal: {{ focal_x }}% {{ focal_y }}%;">
         {%- if block.settings.video != blank -%}
-          {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1400x' }}
+          {%- comment -%}
+            The Liquid video object only exposes an HLS manifest plus a
+            single 1080p/7.2Mbps MP4 fallback for this asset — there's no
+            smaller MP4 rendition to select in Liquid. Rather than guess,
+            we don't request the file at all on mobile: preload="none" and
+            no autoplay attribute in the markup means the browser fetches
+            nothing but the (already-tiny) poster image. The script below
+            starts the video itself on desktop widths once the page is
+            ready, which streams the adaptive HLS rendition (starts at
+            480p, steps up) instead of the flat 1080p file.
+          {%- endcomment -%}
+          {%- assign pm_video = block.settings.video -%}
+          <video class="pm-tile-video" muted loop playsinline preload="none" poster="{{ pm_video.preview_image | image_url: width: 1400 }}" data-pm-autoplay-video>
+            {%- for pm_src in pm_video.sources -%}
+              <source src="{{ pm_src.url }}" type="{{ pm_src.mime_type }}">
+            {%- endfor -%}
+          </video>
         {%- elsif tile_image -%}
           <picture>
             {%- if block.settings.image_mobile -%}
@@ -30,6 +46,52 @@
     {%- endfor -%}
   </div>
 </div>
+
+<script>
+(function () {
+  var attemptPlay = function (v) {
+    var p = v.play();
+    if (p && p.catch) {
+      p.catch(function () {
+        // Rejected — usually the implicit load() this browser fires from
+        // preload="none" interrupting itself. canplay (and the resume
+        // triggers below) will ask again once real data / focus is back.
+      });
+    }
+  };
+
+  var startDesktopVideos = function () {
+    if (!window.matchMedia('(min-width: 750px)').matches) return;
+    document.querySelectorAll('[data-pm-autoplay-video]').forEach(function (v) {
+      if (v.paused === false) return;
+      if (!v.hasAttribute('data-pm-started')) {
+        v.setAttribute('data-pm-started', '');
+        if (v.readyState < 3) {
+          v.addEventListener('canplay', function () { attemptPlay(v); }, { once: true });
+        }
+      }
+      attemptPlay(v);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startDesktopVideos);
+  } else {
+    startDesktopVideos();
+  }
+  window.addEventListener('resize', startDesktopVideos);
+
+  // Some browsers pause/throttle background-tab video to save power. If
+  // the tab was hidden and comes back, or regains focus, nudge it again
+  // instead of leaving the poster frozen on screen. This is a bonus
+  // safety net only — the initial call above is never gated on
+  // document.hidden, since a real visitor's tab is visible from the
+  // first paint.
+  document.addEventListener('visibilitychange', startDesktopVideos);
+  window.addEventListener('focus', startDesktopVideos);
+  window.addEventListener('pageshow', startDesktopVideos);
+})();
+</script>
 
 {% schema %}
 {
