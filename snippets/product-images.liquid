@@ -11,7 +11,7 @@
   assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
   assign first_3d_model = product.media | where: 'media_type', 'model' | first
 
-  # Product images and thumbnails on the main product template should load early
+  # Thumbnails on the main product template should load early (small, always visible)
   if context == 'main-product'
     assign loading = 'eager'
   endif
@@ -32,6 +32,21 @@
           id="ProductPhotos-{{ section_id }}"
         >
           {%- for media in product.media -%}
+            {%- comment -%}
+              Only the first slide needs to be eager — it's the only one
+              visible on page load. The theme previously eager-loaded every
+              slide (every color-variant photo, at two widths each), which on
+              a product with several colors meant 2MB+ of images nobody was
+              looking at yet on every single product-page visit, mobile
+              included. Slides 2+ now load natively lazily, the moment the
+              visitor actually swipes to them.
+            {%- endcomment -%}
+            {%- liquid
+              assign slide_loading = 'lazy'
+              if context == 'main-product' and forloop.index0 == 0
+                assign slide_loading = 'eager'
+              endif
+            -%}
             {%- render 'media',
               section_id: section_id,
               media: media,
@@ -47,7 +62,7 @@
               sizes: sizes,
               sizeVariable: sizeVariable,
               fallback: fallback,
-              loading: loading,
+              loading: slide_loading,
               mobile_layout: mobile_layout
             -%}
           {%- endfor -%}
@@ -173,21 +188,3 @@
     </div>
   </div>
 {%- endunless -%}
-{% comment %}
-
-This file has been rewritten to preserve the original behavior.
-
----
-Changes:
-- from: |-
-    {%- render 'image-element',
-                          img: media.preview_image,
-                          alt: media.alt | escape | split: '#' | first,
-                          widths: '120, 360, 540, 720',
-                          sizeVariable: '80px',
-                          loading: loading,
-                        -%}
-  to: "{%- render 'image-element', img: media.preview_image, alt: media.alt, split:
-    '#', widths: '120, 360, 540, 720', sizeVariable: '80px', loading: loading -%}"
-  position: 5967..6121
-{% endcomment %}
