@@ -8,21 +8,40 @@
       <a href="{{ product.url | default: block.settings.link | default: '#' }}" class="pm-product-pair-half pm-reveal" style="transition-delay: {{ forloop.index0 | times: 120 }}ms; --pm-focal: {{ focal_x }}% {{ focal_y }}%;">
         {%- if block.settings.video != blank -%}
           {%- comment -%}
-            The Liquid video object only exposes an HLS manifest plus a
-            single 1080p/7.2Mbps MP4 fallback for this asset — there's no
-            smaller MP4 rendition to select in Liquid. Rather than guess,
-            we don't request the file at all on mobile: preload="none" and
-            no autoplay attribute in the markup means the browser fetches
-            nothing but the (already-tiny) poster image. The script below
-            starts the video itself on desktop widths once the page is
-            ready, which streams the adaptive HLS rendition (starts at
-            480p, steps up) instead of the flat 1080p file.
+            Responsive <source> tags, no JS. Liquid only exposes two
+            renditions on this video object (HLS + the flat 1080p MP4) —
+            it does not expose the smaller MP4 renditions Shopify also
+            generates, even though they exist (confirmed via the Admin
+            API). We reconstruct the small MP4's URL from the 1080p
+            one, since Shopify's CDN filenames only differ in the
+            rendition label and share the same job id. If that pattern
+            ever doesn't match (e.g. a differently-encoded replacement
+            video), pm_sd_url safely falls back to the same 1080p file
+            instead of a broken link — heavier, never broken.
+
+            Native autoplay + muted + playsinline is the one approach
+            that has reliably worked across every browser we've tried
+            (this is what the original site used) — the previous
+            JS-triggered play() attempt was fixing a real bandwidth
+            problem but kept breaking playback on real devices, so
+            we're back to the reliable native approach and getting the
+            bandwidth saving from the source itself instead: mobile
+            gets a real ~480p/1.5Mbps file (~4.5MB for this video)
+            instead of the flat 1080p/7.2Mbps one (~22MB) — an ~80%
+            cut, still playing natively and automatically everywhere.
           {%- endcomment -%}
           {%- assign pm_video = block.settings.video -%}
-          <video class="pm-tile-video" muted loop playsinline preload="none" poster="{{ pm_video.preview_image | image_url: width: 1400 }}" data-pm-autoplay-video>
-            {%- for pm_src in pm_video.sources -%}
-              <source src="{{ pm_src.url }}" type="{{ pm_src.mime_type }}">
-            {%- endfor -%}
+          {%- assign pm_hd_source = pm_video.sources | where: 'format', 'mp4' | first -%}
+          {%- assign pm_hls_source = pm_video.sources | where: 'format', 'm3u8' | first -%}
+          {%- assign pm_sd_url = pm_hd_source.url | replace: 'HD-1080p-7.2Mbps', 'SD-480p-1.5Mbps' -%}
+          <video class="pm-tile-video" autoplay muted loop playsinline preload="auto" poster="{{ pm_video.preview_image | image_url: width: 1400 }}">
+            {%- if pm_hls_source -%}
+              <source media="(min-width: 750px)" src="{{ pm_hls_source.url }}" type="{{ pm_hls_source.mime_type }}">
+            {%- endif -%}
+            {%- if pm_hd_source -%}
+              <source media="(min-width: 750px)" src="{{ pm_hd_source.url }}" type="{{ pm_hd_source.mime_type }}">
+              <source src="{{ pm_sd_url }}" type="{{ pm_hd_source.mime_type }}">
+            {%- endif -%}
           </video>
         {%- elsif tile_image -%}
           <picture>
@@ -46,52 +65,6 @@
     {%- endfor -%}
   </div>
 </div>
-
-<script>
-(function () {
-  var attemptPlay = function (v) {
-    var p = v.play();
-    if (p && p.catch) {
-      p.catch(function () {
-        // Rejected — usually the implicit load() this browser fires from
-        // preload="none" interrupting itself. canplay (and the resume
-        // triggers below) will ask again once real data / focus is back.
-      });
-    }
-  };
-
-  var startDesktopVideos = function () {
-    if (!window.matchMedia('(min-width: 750px)').matches) return;
-    document.querySelectorAll('[data-pm-autoplay-video]').forEach(function (v) {
-      if (v.paused === false) return;
-      if (!v.hasAttribute('data-pm-started')) {
-        v.setAttribute('data-pm-started', '');
-        if (v.readyState < 3) {
-          v.addEventListener('canplay', function () { attemptPlay(v); }, { once: true });
-        }
-      }
-      attemptPlay(v);
-    });
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startDesktopVideos);
-  } else {
-    startDesktopVideos();
-  }
-  window.addEventListener('resize', startDesktopVideos);
-
-  // Some browsers pause/throttle background-tab video to save power. If
-  // the tab was hidden and comes back, or regains focus, nudge it again
-  // instead of leaving the poster frozen on screen. This is a bonus
-  // safety net only — the initial call above is never gated on
-  // document.hidden, since a real visitor's tab is visible from the
-  // first paint.
-  document.addEventListener('visibilitychange', startDesktopVideos);
-  window.addEventListener('focus', startDesktopVideos);
-  window.addEventListener('pageshow', startDesktopVideos);
-})();
-</script>
 
 {% schema %}
 {
