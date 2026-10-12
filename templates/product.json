@@ -105,7 +105,7 @@
         "pm_trust_strip": {
           "type": "custom",
           "settings": {
-            "code": "<div class=\"pm-product-trust\"><div class=\"pm-product-trust-item\"><span>Handcrafted in Italy</span></div><div class=\"pm-product-trust-item\"><span>Each bag is made to order, taking about 10 days</span></div><div class=\"pm-product-trust-item\"><span>Complimentary Shipping on Orders Over &euro;350</span></div></div>"
+            "code": "{%- assign pm_trust_days_text = 'taking about 10 days' -%}{%- if product.title == 'Micro Long' or product.title == 'Phone Holder' -%}{%- assign pm_trust_days_text = 'taking about 3 weeks' -%}{%- endif -%}<div class=\"pm-product-trust\"><div class=\"pm-product-trust-item\"><span>Handcrafted in Italy</span></div><div class=\"pm-product-trust-item\"><span>Each bag is made to order, {{ pm_trust_days_text }}</span></div><div class=\"pm-product-trust-item\"><span>Complimentary Shipping on Orders Over &euro;350</span></div></div>"
           }
         }
       },
