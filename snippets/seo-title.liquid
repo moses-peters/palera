@@ -22,9 +22,9 @@
 {%- capture seo_title -%}
   {{ base_title }}
   {%- if current_tags -%}
-    {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
+    {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
   {%- endif -%}
-  {%- if current_page > 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
-  {%- unless base_title contains shop.name -%} &ndash; {{ shop.name }}{%- endunless -%}
+  {%- if current_page > 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
+  {%- unless base_title contains shop.name %} &ndash; {{ shop.name }}{%- endunless -%}
 {%- endcapture -%}
 <title>{{ seo_title | strip_newlines | strip }}</title>
