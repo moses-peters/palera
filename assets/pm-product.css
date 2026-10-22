@@ -199,6 +199,40 @@
    exact same selector shape, just scoped under .pm-product, to win. */
 .pm-product .collapsible-trigger-btn--borders + .collapsible-content .collapsible-content__inner { border: none; }
 .pm-product .collapsible-content__inner p { margin-bottom: 12px; }
+/* Shipping/contact tab headings (h3) — theme.css.liquid's base .rte h1-h6
+   rule sets a 60px top margin meant for full-page content, which read as
+   an oversized gap between sections inside this narrow accordion. Small,
+   uppercase, ink-colored labels instead, in line with how the rest of
+   this theme marks section headings (pm-eyebrow etc). */
+.pm-product .collapsible-content__inner h3 {
+  margin: 22px 0 8px; font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--pm-ink);
+}
+.pm-product .collapsible-content__inner h3:first-child { margin-top: 0; }
+/* Shipping fees table — horizontally scrollable on narrow screens
+   instead of squeezing 4 columns to fit, since it's inside a ~350px
+   accordion on mobile, not the full page width. */
+.pm-product .pm-shipping-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 2px 0 16px; }
+.pm-product .pm-shipping-table { width: 100%; min-width: 440px; border-collapse: collapse; font-size: 13px; color: var(--pm-ink); }
+.pm-product .pm-shipping-table th,
+.pm-product .pm-shipping-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--pm-line); white-space: nowrap; }
+.pm-product .pm-shipping-table th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--pm-muted); }
+.pm-product .pm-shipping-table tr:last-child td { border-bottom: none; }
+/* Ask a Question form — labels/inputs were inheriting plain theme.css
+   defaults (dense, no color distinction from the body copy around
+   them); styled to match the rest of the accordion content instead. */
+.pm-product .collapsible-content__inner .form-vertical label {
+  display: block; margin-bottom: 6px;
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pm-muted);
+}
+.pm-product .collapsible-content__inner .form-vertical .grid--small { margin-bottom: 0; }
+.pm-product .collapsible-content__inner .form-vertical input.input-full,
+.pm-product .collapsible-content__inner .form-vertical textarea.input-full {
+  font-size: 14px; color: var(--pm-ink); border-color: var(--pm-line); margin-bottom: 18px;
+}
+.pm-product .collapsible-content__inner .form-vertical .btn {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+}
 
 /* ===== Description (non-tab) ===== */
 .pm-product .product-block .rte { font-size: 14px; line-height: 1.8; color: var(--pm-muted); }
@@ -282,4 +316,7 @@
 
 @media (max-width: 749px) {
   .pm-product .product-single__meta { max-width: none; padding-top: 24px; }
+  .pm-product .collapsible-content__inner { font-size: 13px; }
+  .pm-product .pm-shipping-table { font-size: 12px; }
+  .pm-product .pm-shipping-table th, .pm-product .pm-shipping-table td { padding: 7px 8px; }
 }
