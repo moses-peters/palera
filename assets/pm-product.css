@@ -250,6 +250,15 @@
 .pm-product .pm-recaptcha-disclaimer, .pm-product .pm-recaptcha-disclaimer * {
   font-size: 11px; font-style: italic; color: var(--pm-muted);
 }
+.pm-product .pm-shipping-policy-link {
+  margin: 26px 0 0; font-size: 11px; font-style: normal;
+  text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-ink);
+}
+.pm-product .pm-shipping-policy-link a {
+  color: var(--pm-ink); text-decoration: underline; text-underline-offset: 3px;
+  transition: opacity 0.2s var(--pm-ease);
+}
+.pm-product .pm-shipping-policy-link a:hover { opacity: 0.6; }
 
 /* ===== Description (non-tab) ===== */
 .pm-product .product-block .rte { font-size: 14px; line-height: 1.8; color: var(--pm-muted); }
