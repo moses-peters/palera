@@ -243,6 +243,10 @@
 .pm-product .collapsible-content__inner .form-vertical .btn {
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
 }
+.pm-product .pm-contact-email-note {
+  margin: 18px 0 0; font-size: 12px; color: var(--pm-muted);
+}
+.pm-product .pm-contact-email-note a { color: var(--pm-ink); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ===== Description (non-tab) ===== */
 .pm-product .product-block .rte { font-size: 14px; line-height: 1.8; color: var(--pm-muted); }
