@@ -33,9 +33,15 @@
 .pm-faq .index-section--faq .rte { font-size: 13px; line-height: 1.8; color: var(--pm-muted); }
 
 /* Question accordions */
+/* theme.css.liquid positions the circle icon with position:absolute;
+   left:0 (not a flex child), and the stock .collapsible-trigger--inline
+   padding (40px on the left) is what actually reserves its space --
+   dropping that padding for a plain 18px 0 left the icon sitting on
+   top of the question text. Keep the left padding, just restyle the
+   rest. */
 .pm-faq .collapsible-trigger--inline {
-  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 18px 0; border: none; border-bottom: 1px solid var(--pm-line);
+  width: 100%;
+  padding: 18px 0 18px 40px; border: none; border-bottom: 1px solid var(--pm-line);
   background: transparent; font-size: 14px; letter-spacing: 0.01em; color: var(--pm-ink);
   text-align: left; cursor: pointer;
 }
@@ -49,6 +55,6 @@
 
 @media (max-width: 749px) {
   .pm-faq { padding-top: clamp(32px, 8vw, 56px); }
-  .pm-faq .collapsible-trigger--inline { font-size: 13px; padding: 16px 0; }
+  .pm-faq .collapsible-trigger--inline { font-size: 13px; padding: 16px 0 16px 36px; }
   .pm-faq .collapsible-content__inner--faq { font-size: 12.5px; }
 }
