@@ -35,15 +35,15 @@
             {{ 'contact.form.send' | t }}
           </button>
 
+          <p class="pm-contact-email-note">Or email us at <a href="mailto:clientservice@paleramilano.com">clientservice@paleramilano.com</a></p>
+
           {% comment %}
             Remove the following three lines of code to remove the note
             about being protected by Google's reCAPTCHA service.
             By removing it, the small reCAPTCHA widget will appear in the
             bottom right corner of the page.
           {% endcomment %}
-          {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
-
-          <p class="pm-contact-email-note">Or email us at <a href="mailto:clientservice@paleramilano.com">clientservice@paleramilano.com</a></p>
+          <div class="pm-recaptcha-disclaimer">{{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}</div>
         </div>
       </div>
     </div>
