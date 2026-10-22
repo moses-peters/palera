@@ -1,6 +1,7 @@
+{{ 'pm-faq.css' | asset_url | stylesheet_tag }}
 {%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
 
-<div class="page-width page-width--narrow">
+<div class="page-width page-width--narrow pm-faq">
 
   {%- if section.settings.title != blank -%}
     <header class="section-header">

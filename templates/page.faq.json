@@ -121,7 +121,7 @@
           "type": "question",
           "settings": {
             "title": "Can I cancel my order?",
-            "text": "<p>Please check our<a href=\"https://paleramilano.myshopify.com/pages/return-refund\">return & refund policy</a></p>"
+            "text": "<p>Please check our <a href=\"https://paleramilano.myshopify.com/pages/return-refund\">return &amp; refund policy</a>.</p><p>For all cancellations, refer to our refund and exchange policy or email us at <a href=\"mailto:clientservice@paleramilano.com\">clientservice@paleramilano.com</a>.</p>"
           }
         },
         "b87169da-fc6d-4094-863e-c9c8978a0787": {

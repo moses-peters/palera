@@ -1,0 +1,54 @@
+/* FAQ page — the stock Impulse faq.liquid section ships with generic
+   theme typography/spacing (page-width, section-header__title, plain
+   .rte), which never got pulled into the pm- design language the rest
+   of the site uses (ink/muted palette, serif italic headings, hairline
+   borders, letter-spaced small-caps labels). This brings it in line
+   with the product page accordions and the rest of the site, scoped
+   under .pm-faq (added in sections/faq.liquid) so nothing outside the
+   FAQ page is affected. */
+.pm-faq {
+  max-width: 760px; margin: 0 auto;
+  padding: clamp(48px, 6vw, 88px) var(--pm-pad) clamp(64px, 8vw, 120px);
+  font-family: var(--pm-font-sans); color: var(--pm-ink); background: var(--pm-paper);
+}
+
+/* "FAQs" page title */
+.pm-faq .section-header { margin-bottom: clamp(32px, 4vw, 56px); text-align: center; }
+.pm-faq .section-header__title {
+  font-family: var(--pm-font-serif); font-style: italic; font-weight: 400;
+  font-size: clamp(28px, 4vw, 42px); letter-spacing: 0.01em; color: var(--pm-ink);
+  text-transform: none;
+}
+
+/* Group dividers ("WHAT IS PALERA MILANO" etc, rendered as rich-text
+   blocks between groups of questions) — small-caps eyebrow label,
+   matching .pm-eyebrow used site-wide, instead of the stock theme's
+   big bold .h2 utility class. */
+.pm-faq .index-section--faq { margin: 48px 0 8px; }
+.pm-faq .index-section--faq:first-of-type { margin-top: 0; }
+.pm-faq .index-section--faq .h2 {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.22em;
+  color: var(--pm-muted); margin: 0 0 4px;
+}
+.pm-faq .index-section--faq .rte { font-size: 13px; line-height: 1.8; color: var(--pm-muted); }
+
+/* Question accordions */
+.pm-faq .collapsible-trigger--inline {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px 0; border: none; border-bottom: 1px solid var(--pm-line);
+  background: transparent; font-size: 14px; letter-spacing: 0.01em; color: var(--pm-ink);
+  text-align: left; cursor: pointer;
+}
+.pm-faq .collapsible-content__inner--faq {
+  padding: 4px 0 22px; font-size: 13px; line-height: 1.9; letter-spacing: 0.01em; color: var(--pm-muted);
+}
+.pm-faq .collapsible-content__inner--faq p { margin-bottom: 14px; }
+.pm-faq .collapsible-content__inner--faq p:last-child { margin-bottom: 0; }
+.pm-faq .collapsible-content__inner--faq a { color: var(--pm-ink); text-decoration: underline; text-underline-offset: 2px; }
+.pm-faq .collapsible-content__inner--faq strong { color: var(--pm-ink); }
+
+@media (max-width: 749px) {
+  .pm-faq { padding-top: clamp(32px, 8vw, 56px); }
+  .pm-faq .collapsible-trigger--inline { font-size: 13px; padding: 16px 0; }
+  .pm-faq .collapsible-content__inner--faq { font-size: 12.5px; }
+}
