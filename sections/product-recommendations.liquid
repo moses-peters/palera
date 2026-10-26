@@ -70,10 +70,12 @@
         {%- if rec_product.id != product.id -%}
           {%- assign shown_count = shown_count | plus: 1 -%}
           {%- comment -%}
-            Sibling color count (the "+5" in the reference) — same
-            title-prefix matching used on the Shop grid, since most
-            colors here are separate products (e.g. "Maxi Roma —
-            Black" / "Maxi Roma — Red"), not real variants.
+            Sibling color count (the "+5" in the reference). Most
+            products here use a real Color variant (one product page,
+            all colors within) -- for those, siblings are just this
+            product's other color values. The title-prefix fallback
+            below only matters for the rarer case where a color is
+            still its own separate product (e.g. "Maxi Roma — Red").
           {%- endcomment -%}
           {%- assign rec_color_option = nil -%}
           {%- for option in rec_product.options_with_values -%}
@@ -84,6 +86,24 @@
           {%- endfor -%}
           {%- if rec_color_option -%}
             {%- assign sibling_count = rec_color_option.values.size | minus: 1 -%}
+            {%- comment -%}
+              Picking a random color per product (rather than always
+              whatever sits first in variant position -- usually the
+              same color, e.g. White, on every product) so the row
+              doesn't look monotonous. Variant images + alt text are
+              already set up correctly per color in Admin, so this
+              just has to find the variant for the color `sample`
+              picked and use its own image/price directly.
+            {%- endcomment -%}
+            {%- assign rec_color_key = 'option' | append: rec_color_option.position -%}
+            {%- assign rec_color_value = rec_color_option.values | sample -%}
+            {%- assign rec_variant = rec_product.variants | where: rec_color_key, rec_color_value | first -%}
+            {%- assign rec_tile_image = rec_variant.featured_image | default: rec_product.featured_image -%}
+            {%- assign rec_tile_price = rec_variant.price | default: rec_product.price -%}
+            {%- assign rec_tile_price_prefix = '' -%}
+            {%- assign rec_tile_name = rec_product.title -%}
+            {%- assign rec_tile_color_name = rec_color_value -%}
+            {%- assign rec_tile_url = rec_product.url | append: '?variant=' | append: rec_variant.id -%}
           {%- else -%}
             {%- assign rec_base_title = rec_product.title | split: ' — ' | first -%}
             {%- assign sibling_count = 0 -%}
@@ -95,25 +115,33 @@
                 {%- endif -%}
               {%- endif -%}
             {%- endfor -%}
+            {%- assign rec_tile_image = rec_product.featured_image -%}
+            {%- assign rec_tile_price = rec_product.price -%}
+            {%- assign rec_tile_price_prefix = '' -%}
+            {%- if rec_product.price_varies -%}{%- assign rec_tile_price_prefix = 'From ' -%}{%- endif -%}
+            {%- assign rec_tile_name = rec_base_title -%}
+            {%- assign rec_tile_color_name = '' -%}
+            {%- if rec_product.title contains ' — ' -%}
+              {%- assign rec_tile_color_name = rec_product.title | split: ' — ' | last -%}
+            {%- endif -%}
+            {%- assign rec_tile_url = rec_product.url -%}
           {%- endif -%}
-          <a href="{{ rec_product.url }}" class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
+          <a href="{{ rec_tile_url }}" class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
             <div class="pm-rec-tile-image">
-              {%- if rec_product.featured_image -%}
-                <img src="{{ rec_product.featured_image | image_url: width: 800 }}" alt="{{ rec_product.featured_image.alt | escape | default: rec_product.title }}" loading="lazy">
+              {%- if rec_tile_image -%}
+                <img src="{{ rec_tile_image | image_url: width: 800 }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy">
               {%- else -%}
                 {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
               {%- endif -%}
             </div>
             <div class="pm-rec-tile-info">
               <div class="pm-rec-tile-row">
-                <span class="pm-rec-tile-name">{{ rec_product.title | split: ' — ' | first }}{%- if rec_product.title contains ' — ' %} <span class="pm-tile-color">{{ rec_product.title | split: ' — ' | last }}</span>{%- endif -%}</span>
+                <span class="pm-rec-tile-name">{{ rec_tile_name }}{%- if rec_tile_color_name != blank %} <span class="pm-tile-color">{{ rec_tile_color_name }}</span>{%- endif -%}</span>
                 {%- if sibling_count > 0 -%}
                   <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
                 {%- endif -%}
               </div>
-              <span class="pm-rec-tile-price">
-                {%- if rec_product.price_varies -%}From {{ rec_product.price | money }}{%- else -%}{{ rec_product.price | money }}{%- endif -%}
-              </span>
+              <span class="pm-rec-tile-price">{{ rec_tile_price_prefix }}{{ rec_tile_price | money }}</span>
             </div>
           </a>
         {%- endif -%}
@@ -142,9 +170,9 @@
       "type": "range",
       "id": "related_count",
       "label": "t:sections.product-recommendations.settings.related_count.label",
-      "default": 8,
+      "default": 6,
       "min": 2,
-      "max": 8,
+      "max": 6,
       "step": 1
     }
   ],

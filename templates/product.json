@@ -251,7 +251,7 @@
       "type": "product-recommendations",
       "settings": {
         "product_recommendations_heading": "You may also like",
-        "related_count": 8
+        "related_count": 6
       }
     },
     "recently-viewed": {
