@@ -4,6 +4,8 @@
   if recommendations.products and recommendations.products_count > 0
     assign related_collection = recommendations
   endif
+
+  assign complementary_products = product.metafields.shopify--discovery--product_recommendation.complementary_products.value
 -%}
 
 {%- comment -%}
@@ -45,6 +47,19 @@
   {%- unless related_collection.products_count > 0 -%}
     {%- assign display_products = collections.all.products -%}
   {%- endunless -%}
+  {%- comment -%}
+    Complementary products, set per-product in the Search & Discovery
+    app (Admin > Apps > Search & Discovery > Recommendations), take
+    priority over both Shopify's generic "related" engine and the
+    Shop All fallback above -- a merchant's deliberate pairing beats
+    an algorithm's guess or a plain grab-bag. Falls through to
+    whichever of those two already applied when a product has none
+    configured, so this is safe to ship before every product has
+    complementary products set.
+  {%- endcomment -%}
+  {%- if complementary_products.size > 0 -%}
+    {%- assign display_products = complementary_products -%}
+  {%- endif -%}
   {%- if display_products.size > 0 -%}
     {%- assign rec_grid_id = 'pm-rec-grid-' | append: section.id -%}
     <div class="pm-scroll-row-wrap">
