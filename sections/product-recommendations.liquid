@@ -87,16 +87,22 @@
           {%- if rec_color_option -%}
             {%- assign sibling_count = rec_color_option.values.size | minus: 1 -%}
             {%- comment -%}
-              Picking a random color per product (rather than always
-              whatever sits first in variant position -- usually the
-              same color, e.g. White, on every product) so the row
-              doesn't look monotonous. Variant images + alt text are
-              already set up correctly per color in Admin, so this
-              just has to find the variant for the color `sample`
-              picked and use its own image/price directly.
+              Showcasing a different color per product (rather than
+              always whatever sits first in variant position --
+              usually the same color, e.g. White, on every product)
+              so the row doesn't look monotonous. Cycles through this
+              product's own color list using the tile's position in
+              the row (forloop.index0 modulo how many colors this
+              product has) instead of the `sample` filter -- plain
+              array indexing, guaranteed to work everywhere. Variant
+              images + alt text are already set up correctly per
+              color in Admin, so this just has to find the variant
+              for whichever color the index lands on and use its own
+              image/price directly.
             {%- endcomment -%}
             {%- assign rec_color_key = 'option' | append: rec_color_option.position -%}
-            {%- assign rec_color_value = rec_color_option.values | sample -%}
+            {%- assign rec_color_index = forloop.index0 | modulo: rec_color_option.values.size -%}
+            {%- assign rec_color_value = rec_color_option.values[rec_color_index] -%}
             {%- assign rec_variant = rec_product.variants | where: rec_color_key, rec_color_value | first -%}
             {%- assign rec_tile_image = rec_variant.featured_image | default: rec_product.featured_image -%}
             {%- assign rec_tile_price = rec_variant.price | default: rec_product.price -%}
@@ -104,7 +110,32 @@
             {%- assign rec_tile_name = rec_product.title -%}
             {%- assign rec_tile_color_name = rec_color_value -%}
             {%- assign rec_tile_url = rec_product.url | append: '?variant=' | append: rec_variant.id -%}
+            {%- comment -%}
+              Swatches for this product's other colors, shown on
+              hover same as the Shop grid (pm-plp-swatches/pm-plp-
+              swatch, reused as-is) -- encoded as
+              name::css-color::url::image, joined with ';;'.
+            {%- endcomment -%}
+            {%- assign rec_swatch_siblings = '' -%}
+            {%- for other_value in rec_color_option.values -%}
+              {%- unless other_value == rec_color_value -%}
+                {%- assign other_rec_variant = rec_product.variants | where: rec_color_key, other_value | first -%}
+                {%- assign rec_swatch_css = other_value | split: ' ' | last | handle -%}
+                {%- capture rec_swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: other_value %}{%- endcapture -%}
+                {%- assign rec_swatch_image = rec_swatch_image | strip -%}
+                {%- if rec_swatch_image == blank and other_rec_variant.featured_image -%}
+                  {%- assign rec_swatch_image = other_rec_variant.featured_image | image_url: width: 400 -%}
+                {%- endif -%}
+                {%- assign rec_sibling_entry = other_value | append: '::' | append: rec_swatch_css | append: '::' | append: rec_product.url | append: '?variant=' | append: other_rec_variant.id | append: '::' | append: rec_swatch_image -%}
+                {%- assign rec_swatch_siblings = rec_swatch_siblings | append: rec_sibling_entry | append: ';;' -%}
+              {%- endunless -%}
+            {%- endfor -%}
+            {%- assign rec_swatch_list = rec_swatch_siblings | split: ';;' -%}
+            {%- assign rec_swatch_visible = rec_swatch_list | slice: 0, 4 -%}
+            {%- assign rec_swatch_overflow = rec_swatch_list.size | minus: rec_swatch_visible.size -%}
           {%- else -%}
+            {%- assign rec_swatch_visible = '' | split: ';;' -%}
+            {%- assign rec_swatch_overflow = 0 -%}
             {%- assign rec_base_title = rec_product.title | split: ' — ' | first -%}
             {%- assign sibling_count = 0 -%}
             {%- for sibling_product in collections.all.products -%}
@@ -126,24 +157,46 @@
             {%- endif -%}
             {%- assign rec_tile_url = rec_product.url -%}
           {%- endif -%}
-          <a href="{{ rec_tile_url }}" class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
-            <div class="pm-rec-tile-image">
-              {%- if rec_tile_image -%}
-                <img src="{{ rec_tile_image | image_url: width: 800 }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy">
-              {%- else -%}
-                {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
-              {%- endif -%}
-            </div>
-            <div class="pm-rec-tile-info">
-              <div class="pm-rec-tile-row">
-                <span class="pm-rec-tile-name">{{ rec_tile_name }}{%- if rec_tile_color_name != blank %} <span class="pm-tile-color">{{ rec_tile_color_name }}</span>{%- endif -%}</span>
-                {%- if sibling_count > 0 -%}
-                  <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
+          {%- comment -%}
+            Outer element is a plain div, not an <a>, so the swatch
+            links below aren't nested inside another <a> -- browsers
+            silently mangle nested anchors. Same pattern already used
+            on the Shop grid (pm-plp-tile).
+          {%- endcomment -%}
+          <div class="pm-rec-tile pm-reveal" style="transition-delay: {{ forloop.index0 | times: 70 }}ms">
+            <a href="{{ rec_tile_url }}" class="pm-rec-tile-link">
+              <div class="pm-rec-tile-image">
+                {%- if rec_tile_image -%}
+                  <img src="{{ rec_tile_image | image_url: width: 800 }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy">
+                {%- else -%}
+                  {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
                 {%- endif -%}
               </div>
-              <span class="pm-rec-tile-price">{{ rec_tile_price_prefix }}{{ rec_tile_price | money }}</span>
-            </div>
-          </a>
+              <div class="pm-rec-tile-info">
+                <div class="pm-rec-tile-row">
+                  <span class="pm-rec-tile-name">{{ rec_tile_name }}{%- if rec_tile_color_name != blank %} <span class="pm-tile-color">{{ rec_tile_color_name }}</span>{%- endif -%}</span>
+                  {%- if sibling_count > 0 -%}
+                    <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
+                  {%- endif -%}
+                </div>
+                <span class="pm-rec-tile-price">{{ rec_tile_price_prefix }}{{ rec_tile_price | money }}</span>
+              </div>
+            </a>
+            {%- if rec_swatch_visible.size > 0 -%}
+              <div class="pm-plp-swatches">
+                {%- for entry in rec_swatch_visible -%}
+                  {%- assign rec_swatch_parts = entry | split: '::' -%}
+                  {%- assign rec_swatch_img = rec_swatch_parts[3] -%}
+                  {%- assign rec_swatch_is_curated = false -%}
+                  {%- if rec_swatch_img contains 'pm-swatch-' -%}{%- assign rec_swatch_is_curated = true -%}{%- endif -%}
+                  <a href="{{ rec_swatch_parts[2] }}" class="pm-plp-swatch" style="background-color: {{ rec_swatch_parts[1] }};{% if rec_swatch_img != blank %} background-image: url({{ rec_swatch_img }});{% endif %}{% if rec_swatch_is_curated %} background-size: cover;{% endif %}" title="{{ rec_swatch_parts[0] | escape }}" aria-label="{{ rec_swatch_parts[0] | escape }}"></a>
+                {%- endfor -%}
+                {%- if rec_swatch_overflow > 0 -%}
+                  <span class="pm-plp-swatch-more">+{{ rec_swatch_overflow }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
         {%- endif -%}
       {%- endfor -%}
     </div>

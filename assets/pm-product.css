@@ -301,7 +301,8 @@
   scrollbar-width: none;
 }
 .pm-rec-grid::-webkit-scrollbar { display: none; }
-.pm-rec-tile { display: block; flex: 0 0 clamp(230px, 68vw, 280px); scroll-snap-align: start; box-shadow: none; }
+.pm-rec-tile { position: relative; flex: 0 0 clamp(230px, 68vw, 280px); scroll-snap-align: start; box-shadow: none; }
+.pm-rec-tile-link { display: block; }
 .pm-rec-tile-image {
   position: relative; aspect-ratio: 4 / 5; overflow: hidden;
 }
@@ -311,6 +312,12 @@
   transition: transform 0.4s var(--pm-ease);
 }
 .pm-rec-tile:hover .pm-rec-tile-image img { transform: scale(1.03); }
+/* Swatches reuse the Shop grid's pm-plp-swatches/pm-plp-swatch
+   classes as-is (same absolute top-right positioning "on top" of the
+   image) -- only the hover/focus reveal needs its own rule here,
+   since that one in pm-homepage.css is scoped to .pm-plp-tile. */
+.pm-rec-tile:hover .pm-plp-swatches,
+.pm-rec-tile:focus-within .pm-plp-swatches { opacity: 1; pointer-events: auto; }
 .pm-rec-tile-info { margin-top: 12px; }
 .pm-rec-tile-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .pm-rec-tile-name {
