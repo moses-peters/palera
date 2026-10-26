@@ -122,7 +122,7 @@
         "photo-3": {
           "type": "photo",
           "settings": {
-            "product": "santorini-6",
+            "product": "santorini",
             "variant_color": "Purple",
             "image": "shopify://shop_images/Santorini-Purple-Gold.jpg",
             "fallback_label": "",
