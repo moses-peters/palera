@@ -315,7 +315,14 @@ body.pm-drawer-open { overflow: hidden; }
   border-top: 1px solid var(--pm-line);
 }
 .pm-product-description .pm-eyebrow { display: block; margin-bottom: 14px; color: var(--pm-ink); }
-.pm-product-description .rte { max-width: 46em; }
+/* Body copy set in the same serif as the headings, not the site's
+   sans -- reads as elegant editorial prose rather than UI text, a
+   common luxury-fashion treatment for product descriptions
+   specifically (buttons/labels/nav stay in the sans as before). */
+.pm-product-description .rte {
+  max-width: 46em;
+  font-family: var(--pm-font-serif); font-size: 15px; line-height: 1.85; letter-spacing: 0.005em;
+}
 /* Same quiet serif heading treatment as the shipping/contact tabs
    above, applied here too in case a product's own description (set per
    product in Admin) includes subheadings — same !important guard
