@@ -4,14 +4,22 @@
   font-family: var(--pm-font-sans); color: var(--pm-muted); background: var(--pm-paper);
 }
 .pm-policy-title {
-  font-family: var(--pm-font-serif); font-style: italic; font-weight: 400;
+  font-family: var(--pm-font-serif) !important; font-weight: 400 !important; font-style: normal !important;
+  text-transform: none !important;
   font-size: clamp(28px, 4vw, 42px); letter-spacing: 0.01em; color: var(--pm-ink);
   text-align: center; margin: 0 0 clamp(32px, 4vw, 48px);
 }
 .pm-policy-body { font-size: 14px; line-height: 1.9; letter-spacing: 0.01em; }
 .pm-policy-body p { margin-bottom: 16px; }
+/* !important on the typography properties is deliberate here: the
+   theme's "Capitalize headers" setting (Theme settings > Typography)
+   adds a same-specificity [data-type_header_capitalize=true] h1..h6
+   rule that forces uppercase/bold everywhere, including inside pasted
+   policy content -- without !important this is a load-order coin
+   flip, not a real override. */
 .pm-policy-body h1, .pm-policy-body h2, .pm-policy-body h3, .pm-policy-body h4 {
-  font-family: var(--pm-font-serif); font-style: italic; font-weight: 400;
+  font-family: var(--pm-font-serif) !important; font-weight: 400 !important; font-style: normal !important;
+  text-transform: none !important;
   color: var(--pm-ink); letter-spacing: 0.01em; margin: 40px 0 14px;
 }
 .pm-policy-body h1:first-child, .pm-policy-body h2:first-child, .pm-policy-body h3:first-child { margin-top: 0; }
