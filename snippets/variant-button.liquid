@@ -42,6 +42,25 @@
     {%- endif -%}
   </label>
   {%- assign option_index = forloop.index -%}
+  {%- liquid
+    # "See all colors" drawer -- only for the main Color option (not
+    # Hardware/Chain Color, which only ever has 2 values anyway), and
+    # only when there are more values than fit in the compact row.
+    assign swatch_trigger_check = 'products.general.color_swatch_trigger' | t | downcase
+    assign option_name_downcased_check = option.name | downcase
+    assign is_color_option_group = false
+    if option_name_downcased_check == swatch_trigger_check
+      assign is_color_option_group = true
+    elsif swatch_trigger_check == 'color' and option_name_downcased_check == 'colour'
+      assign is_color_option_group = true
+    endif
+
+    assign color_visible_limit = 4
+    assign show_color_expand = false
+    if is_color_option_group and option.values.size > color_visible_limit
+      assign show_color_expand = true
+    endif
+  -%}
   <fieldset class="variant-input-wrap"
     name="{{ option.name }}"
     data-index="option{{ option_index }}"
@@ -56,7 +75,7 @@
         endif
       -%}
       <div
-        class="variant-input"
+        class="variant-input{% if show_color_expand and forloop.index > color_visible_limit %} pm-color-input--hidden{% endif %}"
         data-index="option{{ option_index }}"
         data-value="{{ value | escape }}">
         <input type="radio"
@@ -221,5 +240,49 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
+    {%- if show_color_expand -%}
+      {%- assign extra_color_count = option.values.size | minus: color_visible_limit -%}
+      <div class="variant-input variant-input--more">
+        <button type="button" class="pm-color-more" data-pm-color-more data-pm-color-drawer-target="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">
+          <span class="pm-visually-hidden">Show all {{ option.values.size }} colors</span>
+          <span aria-hidden="true">+{{ extra_color_count }}</span>
+        </button>
+      </div>
+    {%- endif -%}
   </fieldset>
+
+  {%- if show_color_expand -%}
+    <div class="pm-color-drawer" data-pm-color-drawer id="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}" hidden>
+      <div class="pm-color-drawer__overlay" data-pm-color-drawer-close></div>
+      <div class="pm-color-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ option.name | escape }}">
+        <div class="pm-color-drawer__header">
+          <span class="pm-color-drawer__title">{{ option.name }}</span>
+          <button type="button" class="pm-color-drawer__close" data-pm-color-drawer-close aria-label="Close">&times;</button>
+        </div>
+        <div class="pm-color-drawer__grid">
+          {%- for value in option.values -%}
+            {%- assign has_image = false -%}
+            {%- capture color_image_raw -%}{% render 'pm-color-swatch-image', product: product, option: option, value: value, color_option_index: color_option_index, width: 300 %}{%- endcapture -%}
+            {%- assign color_image = color_image_raw | strip -%}
+            {%- unless color_image != blank -%}
+              {%- capture pm_swatch_image_raw -%}{% render 'pm-crystal-swatch-url', color_value: value %}{%- endcapture -%}
+              {%- assign pm_swatch_image = pm_swatch_image_raw | strip -%}
+              {%- if pm_swatch_image != blank -%}
+                {%- assign color_image = pm_swatch_image -%}
+              {%- endif -%}
+            {%- endunless -%}
+            {%- if color_image != blank -%}
+              {%- assign has_image = true -%}
+            {%- endif -%}
+            {%- assign color_swatch_fallback = value | split: ' ' | last | handle -%}
+            {%- capture target_input_id -%}ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ value | url_encode }}{%- endcapture -%}
+            <button type="button" class="pm-color-drawer__tile" data-pm-color-pick data-target="{{ target_input_id }}">
+              <span class="pm-color-drawer__swatch" style="{% if has_image %}background-image: url({{ color_image }});{% else %}background-color: {{ color_swatch_fallback }};{% endif %}"></span>
+              <span class="pm-color-drawer__name">{{ value }}</span>
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
 </div>

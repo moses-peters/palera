@@ -1,0 +1,51 @@
+{%- comment -%}
+  Resolves the real product photo for a single Color option value, at
+  whatever width is asked for -- same matching-variant logic
+  variant-button.liquid uses for the small swatch circles (narrow to
+  variants that also match every other currently-selected option
+  first, then fall back to a looser match), pulled out so the "see
+  all colors" drawer can request a larger size of the exact same
+  photo instead of duplicating this logic a second time.
+
+  Usage:
+    {%- capture color_image_raw -%}{% render 'pm-color-swatch-image', product: product, option: option, value: value, color_option_index: color_option_index, width: 300 %}{%- endcapture -%}
+    {%- assign color_image = color_image_raw | strip -%}
+
+  Blank output means no real photo was found for this value -- caller
+  should fall back to the curated crystal-swatch image or a flat CSS
+  color, same as variant-button.liquid does.
+{%- endcomment -%}
+{%- liquid
+  assign option_number = color_option_index | plus: 1
+  assign option_key = 'option' | append: option_number
+
+  assign strict_variants = product.variants
+  for other_option in product.options_with_values
+    unless other_option.name == option.name
+      assign other_key = 'option' | append: other_option.position
+      assign strict_variants = strict_variants | where: other_key, other_option.selected_value
+    endunless
+  endfor
+  assign strict_variants = strict_variants | where: option_key, value
+  assign matching_variant = strict_variants | first
+
+  if matching_variant == nil
+    assign matching_variant = product.variants | where: option_key, value | first
+  endif
+
+  assign resolved_image = ''
+  if matching_variant and matching_variant.featured_image
+    assign resolved_image = matching_variant.featured_image | image_url: width: width
+  else
+    assign color_variants = strict_variants
+    if color_variants.size == 0
+      assign color_variants = product.variants | where: option_key, value
+    endif
+    for color_variant in color_variants
+      if resolved_image == '' and color_variant.featured_image
+        assign resolved_image = color_variant.featured_image | image_url: width: width
+      endif
+    endfor
+  endif
+-%}
+{{- resolved_image -}}

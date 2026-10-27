@@ -139,6 +139,67 @@
 .pm-product .color-swatch.variant__button-label:hover.disabled,
 .pm-product .variant__button-label.color-swatch:hover.disabled { transform: none; box-shadow: none; }
 
+/* ===== "See all colors" — compact row of the first 4 swatches, a
+   "+N" circle in place of the rest, and a full-screen drawer (opened
+   by that button) showing every color as a larger tile with its name
+   underneath, Jacquemus-style. ===== */
+.pm-product .pm-color-input--hidden { display: none; }
+.pm-product .pm-color-more {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid var(--pm-line); background: var(--pm-paper); color: var(--pm-ink);
+  font-size: 11px; letter-spacing: 0.01em; cursor: pointer;
+  transition: border-color 0.2s var(--pm-ease);
+}
+.pm-product .pm-color-more:hover { border-color: var(--pm-ink); }
+
+.pm-color-drawer { position: fixed; inset: 0; z-index: 1001; }
+.pm-color-drawer[hidden] { display: none; }
+.pm-color-drawer__overlay {
+  position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4);
+  opacity: 0; transition: opacity 0.25s var(--pm-ease);
+}
+.pm-color-drawer__panel {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(420px, 100%);
+  background: var(--pm-paper); box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12);
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 0.3s var(--pm-ease);
+}
+.pm-color-drawer--open .pm-color-drawer__overlay { opacity: 1; }
+.pm-color-drawer--open .pm-color-drawer__panel { transform: translateX(0); }
+.pm-color-drawer__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px var(--pm-pad, 24px); border-bottom: 1px solid var(--pm-line);
+}
+.pm-color-drawer__title {
+  font-family: var(--pm-font-serif); font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink);
+}
+.pm-color-drawer__close {
+  background: none; border: none; font-size: 22px; line-height: 1; color: var(--pm-ink); cursor: pointer; padding: 4px;
+}
+.pm-color-drawer__grid {
+  flex: 1 1 auto; overflow-y: auto;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  padding: 20px var(--pm-pad, 24px) 32px;
+}
+.pm-color-drawer__tile {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: none; border: none; padding: 0; cursor: pointer;
+}
+.pm-color-drawer__swatch {
+  display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: 4px;
+  background-color: var(--pm-sable); background-size: cover; background-position: center;
+  border: 1px solid var(--pm-line); transition: border-color 0.2s var(--pm-ease);
+}
+.pm-color-drawer__tile:hover .pm-color-drawer__swatch { border-color: var(--pm-ink); }
+.pm-color-drawer__name {
+  font-size: 11px; letter-spacing: 0.02em; color: var(--pm-ink); text-align: center;
+}
+@media (max-width: 420px) {
+  .pm-color-drawer__grid { grid-template-columns: repeat(2, 1fr); }
+}
+body.pm-color-drawer-open { overflow: hidden; }
+
 /* ===== Quantity ===== */
 .pm-product .product__quantity { display: flex; align-items: center; gap: 14px; }
 .pm-product .product__quantity label {
