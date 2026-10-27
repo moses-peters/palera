@@ -1,6 +1,17 @@
+{%- comment -%}
+  description_override (optional): the product-template.liquid caller
+  splits product.description at the "Materials & dimensions" heading
+  and passes just the part before it here, so that section can show
+  in its own "Product Details" drawer instead (see product-template.liquid,
+  right after the 'contact' block case). Falls back to the full
+  product.description when not provided, or when no such heading
+  exists in this product's description yet.
+{%- endcomment -%}
 {% capture description %}
   {%- if product.empty? -%}
     {{ 'home_page.onboarding.product_description' | t }}
+  {%- elsif description_override != blank -%}
+    {{ description_override }}
   {%- else -%}
     {{ product.description }}
   {%- endif -%}
