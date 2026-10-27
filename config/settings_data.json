@@ -55,7 +55,7 @@
     "button_style": "round",
     "icon_weight": "2px",
     "icon_linecaps": "miter",
-    "pm_font_pairing": "playfair_jost",
+    "pm_font_pairing": "helvetica",
     "product_save_amount": false,
     "vendor_enable": false,
     "quick_shop_enable": true,

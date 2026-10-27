@@ -9,7 +9,16 @@
 {%- endcomment -%}
 {%- liquid
   assign pairing = settings.pm_font_pairing | default: 'cormorant_inter'
+  assign needs_google_fonts = true
   case pairing
+    when 'helvetica'
+      # Helvetica Neue ships on macOS/iOS; Arial is a near-identical
+      # metric-compatible fallback everywhere else, so no webfont file
+      # is needed at all -- same stack for both heading and body
+      # (no serif in this pairing).
+      assign needs_google_fonts = false
+      assign serif_stack = "'Helvetica Neue', Helvetica, Arial, sans-serif"
+      assign sans_stack = "'Helvetica Neue', Helvetica, Arial, sans-serif"
     when 'playfair_jost'
       assign google_families = 'Playfair+Display:wght@400;600;700&family=Jost:wght@400;500'
       assign serif_stack = "'Playfair Display', ui-serif, Georgia, serif"
@@ -32,9 +41,11 @@
       assign sans_stack = "'Inter', ui-sans-serif, system-ui, sans-serif"
   endcase
 -%}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ google_families }}&display=swap">
+{%- if needs_google_fonts -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ google_families }}&display=swap">
+{%- endif -%}
 {%- style -%}
   :root {
     --pm-font-serif: {{ serif_stack }};

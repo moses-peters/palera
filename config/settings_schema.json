@@ -585,6 +585,10 @@
           {
             "value": "bodoni_montserrat",
             "label": "Bodoni Moda + Montserrat — bold Vogue-style"
+          },
+          {
+            "value": "helvetica",
+            "label": "Helvetica — clean, minimal, no serif"
           }
         ],
         "default": "cormorant_inter"
