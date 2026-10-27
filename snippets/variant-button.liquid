@@ -43,9 +43,12 @@
   </label>
   {%- assign option_index = forloop.index -%}
   {%- liquid
-    # "See all colors" drawer -- only for the main Color option (not
-    # Hardware/Chain Color, which only ever has 2 values anyway), and
-    # only when there are more values than fit in the compact row.
+    # "View the colors" drawer -- on every product with the main Color
+    # option (not Hardware/Chain Color, which only ever has 2 values
+    # anyway) and more than one value. color_visible_limit only caps
+    # how many swatch circles show inline, so the row doesn't get
+    # crowded on products with a lot of colors -- the link itself
+    # always shows, regardless of count.
     assign swatch_trigger_check = 'products.general.color_swatch_trigger' | t | downcase
     assign option_name_downcased_check = option.name | downcase
     assign is_color_option_group = false
@@ -57,7 +60,7 @@
 
     assign color_visible_limit = 4
     assign show_color_expand = false
-    if is_color_option_group and option.values.size > color_visible_limit
+    if is_color_option_group and option.values.size > 1
       assign show_color_expand = true
     endif
   -%}
@@ -240,16 +243,13 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
-    {%- if show_color_expand -%}
-      {%- assign extra_color_count = option.values.size | minus: color_visible_limit -%}
-      <div class="variant-input variant-input--more">
-        <button type="button" class="pm-color-more" data-pm-drawer-open="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">
-          <span class="pm-visually-hidden">Show all {{ option.values.size }} colors</span>
-          <span aria-hidden="true">+{{ extra_color_count }}</span>
-        </button>
-      </div>
-    {%- endif -%}
   </fieldset>
+
+  {%- if show_color_expand -%}
+    <div class="pm-color-view-row">
+      <button type="button" class="pm-color-view-link" data-pm-drawer-open="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">View the colors</button>
+    </div>
+  {%- endif -%}
 
   {%- if show_color_expand -%}
     <div class="pm-drawer" data-pm-drawer id="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}" hidden>

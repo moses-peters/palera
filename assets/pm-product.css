@@ -139,19 +139,23 @@
 .pm-product .color-swatch.variant__button-label:hover.disabled,
 .pm-product .variant__button-label.color-swatch:hover.disabled { transform: none; box-shadow: none; }
 
-/* ===== "See all colors" — compact row of the first 4 swatches, a
-   "+N" circle in place of the rest, and a full-screen drawer (opened
-   by that button) showing every color as a larger tile with its name
+/* ===== "View the colors" — compact row of the first 4 swatches, a
+   hairline, and a right-aligned text link under it (shown on every
+   product with more than one color, not just overflow cases) that
+   opens a drawer showing every color as a larger tile with its name
    underneath, Jacquemus-style. ===== */
 .pm-product .pm-color-input--hidden { display: none; }
-.pm-product .pm-color-more {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid var(--pm-line); background: var(--pm-paper); color: var(--pm-ink);
-  font-size: 11px; letter-spacing: 0.01em; cursor: pointer;
-  transition: border-color 0.2s var(--pm-ease);
+.pm-color-view-row {
+  border-top: 1px solid var(--pm-line);
+  margin-top: 10px; padding-top: 10px; text-align: right;
 }
-.pm-product .pm-color-more:hover { border-color: var(--pm-ink); }
+.pm-color-view-link {
+  background: none; border: none; padding: 0; margin: 0; cursor: pointer;
+  font-family: var(--pm-font-sans); font-size: 12px; letter-spacing: 0.01em; color: var(--pm-ink);
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--pm-line);
+  transition: text-decoration-color 0.2s var(--pm-ease);
+}
+.pm-color-view-link:hover { text-decoration-color: var(--pm-ink); }
 
 /* Generic drawer shell, shared by the color picker above and the
    Shipping/Ask a Question info panels below -- same slide-in-from-the-
