@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "pm-eu-withdrawal-form",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

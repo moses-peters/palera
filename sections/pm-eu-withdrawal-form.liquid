@@ -1,0 +1,141 @@
+{%- comment -%}
+  Replaces the EU Widerruf Button app with an in-house online
+  withdrawal function, per Article 11a of the EU Consumer Rights
+  Directive as amended by Directive (EU) 2023/2673 (in force 19 June
+  2026): traders who sell online must provide a withdrawal function
+  the customer can submit electronically, and acknowledge receipt
+  without delay.
+
+  Submits through Shopify's native 'contact' form (same mechanism as
+  the product page's Ask a Question form) so the shop is still
+  notified by email, no app required. On success, also fires a
+  Klaviyo client-side event ('EU Withdrawal Request Submitted') via
+  the public Client API (same safe, key-free approach already used
+  for newsletter signup in pm-klaviyo-signup.js.liquid) -- a Klaviyo
+  Flow listening for that event sends the customer their automatic
+  acknowledgment email, satisfying "acknowledge receipt without
+  delay" without needing a second code path.
+{%- endcomment -%}
+{{ 'pm-page.css' | asset_url | stylesheet_tag }}
+{{ 'pm-product.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-policy">
+  <h1 class="pm-policy-title">Withdrawal Form</h1>
+  <div class="pm-policy-body rte">
+    <p>If you wish to withdraw from your contract of sale, you may use this form. We will acknowledge receipt of your withdrawal by email without delay.</p>
+
+    <h2>To</h2>
+    <p>
+      Palera Milano S.r.l.<br>
+      Via Vallarsa 26, 20139 Milan (MI), Italy<br>
+      {{ 'mailto:clientservice@paleramilano.com' | link_to: 'clientservice@paleramilano.com' }}
+    </p>
+
+    {%- form 'contact', id: 'pm-eu-withdrawal-form' -%}
+      <input type="hidden" name="contact[subject]" value="EU Withdrawal Request">
+      <div class="form-vertical">
+        <div class="grid grid--small">
+          <div class="grid__item medium-up--one-half">
+            <label for="EuWithdrawName">Full name *</label>
+            <input type="text" id="EuWithdrawName" class="input-full" name="contact[name]" required value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+          </div>
+          <div class="grid__item medium-up--one-half">
+            <label for="EuWithdrawEmail">Email address on the order *</label>
+            <input type="email" id="EuWithdrawEmail" class="input-full" name="contact[email]" required value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+          </div>
+        </div>
+
+        <label for="EuWithdrawOrder">Order number *</label>
+        <input type="text" id="EuWithdrawOrder" class="input-full" name="contact[order_number]" required placeholder="e.g. #1234">
+
+        <label for="EuWithdrawAddress">Your address *</label>
+        <textarea rows="2" id="EuWithdrawAddress" class="input-full" name="contact[address]" required></textarea>
+
+        <label for="EuWithdrawItems">Item(s) you wish to withdraw from *</label>
+        <textarea rows="3" id="EuWithdrawItems" class="input-full" name="contact[items]" required placeholder="Product name(s), color, etc."></textarea>
+
+        <div class="grid grid--small">
+          <div class="grid__item medium-up--one-half">
+            <label for="EuWithdrawOrdered">Date ordered</label>
+            <input type="date" id="EuWithdrawOrdered" class="input-full" name="contact[date_ordered]">
+          </div>
+          <div class="grid__item medium-up--one-half">
+            <label for="EuWithdrawReceived">Date received</label>
+            <input type="date" id="EuWithdrawReceived" class="input-full" name="contact[date_received]">
+          </div>
+        </div>
+
+        <label class="pm-withdraw-declaration">
+          <input type="checkbox" required>
+          I hereby give notice that I withdraw from my contract of sale of the above goods.
+        </label>
+
+        <input type="hidden" name="contact[body]" value="EU withdrawal request. See order number, items, and dates above.">
+
+        <button type="submit" class="btn" data-pm-withdraw-submit>Submit Withdrawal Request</button>
+      </div>
+
+      {%- if form.posted_successfully? -%}
+        <p class="note note--success" data-pm-withdraw-success>Your withdrawal request has been received. A confirmation email is on its way to you, and our team will follow up with next steps.</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        {{ form.errors | default_errors }}
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var form = document.getElementById('pm-eu-withdrawal-form');
+    if (!form || form.dataset.pmWithdrawBound) return;
+    form.dataset.pmWithdrawBound = 'true';
+
+    form.addEventListener('submit', function () {
+      {%- comment -%}
+        Fires right before the native Shopify form submission
+        navigates away -- fire-and-forget is fine here since the
+        acknowledgment email is driven by Klaviyo processing this
+        event server-side, not by anything the browser needs to wait
+        for. Same public Client API / company_id pattern as the
+        newsletter signup, so no private key is ever exposed.
+      {%- endcomment -%}
+      try {
+        var email = form.querySelector('[name="contact[email]"]').value;
+        var name = form.querySelector('[name="contact[name]"]').value;
+        var orderNumber = form.querySelector('[name="contact[order_number]"]').value;
+        fetch('https://a.klaviyo.com/client/events/?company_id={{ settings.klaviyo_public_api_key | default: "UwummL" }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/vnd.api+json',
+            'revision': '2024-10-15'
+          },
+          body: JSON.stringify({
+            data: {
+              type: 'event',
+              attributes: {
+                properties: { OrderNumber: orderNumber },
+                metric: { data: { type: 'metric', attributes: { name: 'EU Withdrawal Request Submitted' } } },
+                profile: { data: { type: 'profile', attributes: { email: email, first_name: name } } }
+              }
+            }
+          }),
+          keepalive: true
+        });
+      } catch (e) {}
+    });
+  })();
+</script>
+
+<style>
+  .pm-withdraw-declaration { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; font-size: 13px; line-height: 1.6; color: var(--pm-muted); cursor: pointer; }
+  .pm-withdraw-declaration input { margin-top: 3px; flex-shrink: 0; }
+</style>
+
+{% schema %}
+{
+  "name": "PM: EU Withdrawal Form",
+  "settings": []
+}
+{% endschema %}
