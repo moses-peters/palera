@@ -220,15 +220,12 @@ body.pm-drawer-open { overflow: hidden; }
   display: inline-block; width: auto; vertical-align: top;
   margin: 0 28px 20px 0; padding: 0; border: none;
 }
-/* Hairline + breathing room above the row, same divider convention
-   used elsewhere on the product page (see .pm-product-description).
-   Put on the block that comes right before the row, not on the
-   trigger itself -- a border-top on an inline-block trigger only
-   spans that element's own (narrow) width, not the full row, which
-   drew a short stray line instead of a clean divider. */
+/* Breathing room above the row -- plain spacing, no divider line.
+   (A border here, on either the trigger or the block before it, kept
+   rendering as a short stray line instead of a clean full-width rule,
+   so dropping the line entirely rather than keep chasing it.) */
 .pm-product .product-block:has(+ .product-block--tab) {
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--pm-line);
 }
 .pm-info-trigger {
   background: none; border: none; padding: 0; margin: 0; cursor: pointer;
