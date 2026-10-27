@@ -22,6 +22,8 @@
 <div class="pm-policy">
   <h1 class="pm-policy-title">Withdrawal Form</h1>
   <div class="pm-policy-body rte">
+    <p>We want you to be completely satisfied. If you're not happy with your purchase, you can return or exchange it within 14 days of delivery &mdash; no questions asked.</p>
+    <p>You can return or exchange your item by filling the form below.</p>
     <p>If you wish to withdraw from your contract of sale, you may use this form. We will acknowledge receipt of your withdrawal by email without delay.</p>
 
     <h2>To</h2>
@@ -129,6 +131,32 @@
 </script>
 
 <style>
+  {%- comment -%}
+    The product page's Ask a Question form has this same refined
+    (underline, not boxed) input treatment, but it's scoped to
+    .collapsible-content__inner .form-vertical specifically -- this
+    page isn't inside that accordion wrapper, so it fell back to
+    theme.css.liquid's plain boxed input default. Same look, scoped
+    to .pm-policy-body instead.
+  {%- endcomment -%}
+  .pm-policy-body .form-vertical label {
+    display: block; margin-bottom: 8px;
+    font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-muted);
+  }
+  .pm-policy-body .form-vertical .grid--small { margin-bottom: 0; }
+  .pm-policy-body .form-vertical input.input-full,
+  .pm-policy-body .form-vertical textarea.input-full {
+    font-size: 14px; color: var(--pm-ink); background: transparent;
+    border: none; border-bottom: 1px solid var(--pm-line); border-radius: 0;
+    padding: 8px 2px; margin-bottom: 22px; transition: border-color 0.2s var(--pm-ease);
+  }
+  .pm-policy-body .form-vertical input.input-full:focus,
+  .pm-policy-body .form-vertical textarea.input-full:focus {
+    outline: none; border-bottom-color: var(--pm-ink);
+  }
+  .pm-policy-body .form-vertical .btn {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; margin-top: 8px;
+  }
   .pm-withdraw-declaration { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; font-size: 13px; line-height: 1.6; color: var(--pm-muted); cursor: pointer; }
   .pm-withdraw-declaration input { margin-top: 3px; flex-shrink: 0; }
 </style>
