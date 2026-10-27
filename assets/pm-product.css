@@ -204,9 +204,17 @@
    oversized gap in this narrow accordion. Set in the site's serif
    (--pm-font-serif, used for headings elsewhere — see .pm-serif) in a
    quiet italic rather than bold uppercase, for the same boutique-editorial
-   tone as the rest of the site instead of a generic form/FAQ look. */
+   tone as the rest of the site instead of a generic form/FAQ look.
+   !important on the typography properties for the same reason as
+   pm-policy.css/pm-page.css: the theme's "Capitalize headers" setting
+   (Theme settings > Typography) adds a same-specificity
+   [data-type_header_capitalize=true] h1..h6 rule that forces
+   uppercase/bold everywhere, including here — without !important this
+   is a load-order coin flip, not a real override. */
 .pm-product .collapsible-content__inner h3 {
-  margin: 30px 0 10px; font-family: var(--pm-font-serif); font-style: italic; font-weight: 400;
+  margin: 30px 0 10px;
+  font-family: var(--pm-font-serif) !important; font-style: italic !important; font-weight: 400 !important;
+  text-transform: none !important;
   font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink);
 }
 .pm-product .collapsible-content__inner h3:first-child { margin-top: 0; }
@@ -269,6 +277,25 @@
 }
 .pm-product-description .pm-eyebrow { display: block; margin-bottom: 14px; }
 .pm-product-description .rte { max-width: 46em; }
+/* Same quiet italic serif heading treatment as the shipping/contact tabs
+   above, applied here too in case a product's own description (set per
+   product in Admin) includes subheadings — same !important guard
+   against the Capitalize Headers setting. */
+.pm-product-description .rte h1,
+.pm-product-description .rte h2,
+.pm-product-description .rte h3,
+.pm-product-description .rte h4 {
+  margin: 24px 0 10px;
+  font-family: var(--pm-font-serif) !important; font-style: italic !important; font-weight: 400 !important;
+  text-transform: none !important;
+  font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink);
+}
+.pm-product-description .rte h1:first-child,
+.pm-product-description .rte h2:first-child,
+.pm-product-description .rte h3:first-child,
+.pm-product-description .rte h4:first-child { margin-top: 0; }
+.pm-product-description .rte a { color: var(--pm-ink); text-decoration: underline; text-underline-offset: 2px; }
+.pm-product-description .rte strong { color: var(--pm-ink); }
 
 /* ===== Recommendations ("You may also like") — own dedicated markup
    (pm-rec-*), not shared with any other section, dropped down here
