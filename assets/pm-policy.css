@@ -35,3 +35,36 @@
   .pm-policy-body { font-size: 13px; }
   .pm-policy-title { font-size: 26px; }
 }
+
+/* Shared refined (underline, not boxed) form styling for any form
+   nested inside a .pm-policy-body wrapper -- same treatment as the
+   product page's Ask a Question form, scoped here since that one is
+   scoped to .collapsible-content__inner specifically. Used by the EU
+   withdrawal form and the Contact page. */
+.pm-policy-body .form-vertical label {
+  display: block; margin-bottom: 8px;
+  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-muted);
+}
+.pm-policy-body .form-vertical input.input-full,
+.pm-policy-body .form-vertical textarea.input-full {
+  font-size: 14px; color: var(--pm-ink); background: transparent;
+  border: none; border-bottom: 1px solid var(--pm-line); border-radius: 0;
+  padding: 8px 2px; margin-bottom: 22px; transition: border-color 0.2s var(--pm-ease);
+  width: 100%; font-family: var(--pm-font-sans);
+}
+.pm-policy-body .form-vertical input.input-full:focus,
+.pm-policy-body .form-vertical textarea.input-full:focus {
+  outline: none; border-bottom-color: var(--pm-ink);
+}
+.pm-policy-body .form-vertical .btn {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; margin-top: 8px;
+}
+/* Plain CSS Grid instead of the theme's .grid/.grid__item classes --
+   those rely on a negative-margin layout trick that needs a parent
+   with matching compensating padding, which a .pm-policy wrapper
+   doesn't have, so using them pushes the whole page into horizontal
+   scroll. */
+.pm-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+@media (max-width: 749px) {
+  .pm-form-row { grid-template-columns: 1fr; }
+}

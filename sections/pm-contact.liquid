@@ -1,0 +1,69 @@
+{%- comment -%}
+  Replaces the stock "contact-form" section (plain Impulse markup, no
+  brand styling at all -- same issue the legal pages and withdrawal
+  form had) with the .pm-policy wrapper used everywhere else, so the
+  Contact page matches the rest of the site instead of looking like
+  the theme default.
+{%- endcomment -%}
+{{ 'pm-policy.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-policy">
+  {%- if section.settings.title != blank -%}
+    <h1 class="pm-policy-title">{{ section.settings.title }}</h1>
+  {%- endif -%}
+
+  <div class="pm-policy-body rte">
+    {%- if section.settings.text != blank -%}
+      {{ section.settings.text }}
+    {%- endif -%}
+
+    {%- form 'contact', id: 'contact-' | append: section.id -%}
+      {%- if form.posted_successfully? -%}
+        <p class="note note--success">{{ 'contact.form.post_success' | t }}</p>
+      {%- endif -%}
+
+      {{ form.errors | default_errors }}
+
+      <div class="form-vertical">
+        <div class="pm-form-row">
+          <div>
+            <label for="ContactFormName-{{ section.id }}">{{ 'contact.form.name' | t }}</label>
+            <input type="text" id="ContactFormName-{{ section.id }}" class="input-full" name="contact[name]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+          </div>
+          <div>
+            <label for="ContactFormEmail-{{ section.id }}">{{ 'contact.form.email' | t }}</label>
+            <input type="email" id="ContactFormEmail-{{ section.id }}" class="input-full" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+          </div>
+        </div>
+
+        {%- if section.settings.show_phone -%}
+          <label for="ContactFormPhone-{{ section.id }}">{{ 'contact.form.phone' | t }}</label>
+          <input type="tel" id="ContactFormPhone-{{ section.id }}" class="input-full" name="contact[phone]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+        {%- endif -%}
+
+        <label for="ContactFormMessage-{{ section.id }}">{{ 'contact.form.message' | t }}</label>
+        <textarea rows="5" id="ContactFormMessage-{{ section.id }}" class="input-full" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+        <label for="contact-form-submit-{{ section.id }}" class="hidden-label">{{ 'contact.form.send' | t }}</label>
+        <button type="submit" id="contact-form-submit-{{ section.id }}" class="btn">
+          {{ 'contact.form.send' | t }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PM: Contact form",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Contact us" },
+    { "type": "richtext", "id": "text", "label": "Intro text" },
+    { "type": "checkbox", "id": "show_phone", "label": "Show phone number field" }
+  ],
+  "presets": [{ "name": "PM: Contact form" }],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}
