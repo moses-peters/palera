@@ -29,7 +29,8 @@
       {{ section.settings.text }}
     {%- endif -%}
 
-    {%- form 'contact', id: 'contact-' | append: section.id -%}
+    {%- assign form_id = 'contact-' | append: section.id -%}
+    {%- form 'contact', id: form_id -%}
       {%- if form.posted_successfully? -%}
         <p class="note note--success">{{ 'contact.form.post_success' | t }}</p>
       {%- endif -%}
