@@ -145,6 +145,14 @@
    opens a drawer showing every color as a larger tile with its name
    underneath, Jacquemus-style. ===== */
 .pm-product .pm-color-input--hidden { display: none; }
+.pm-color-more {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid var(--pm-line); background: var(--pm-paper); color: var(--pm-ink);
+  font-size: 11px; letter-spacing: 0.01em; cursor: pointer;
+  transition: border-color 0.2s var(--pm-ease);
+}
+.pm-color-more:hover { border-color: var(--pm-ink); }
 /* .variant-input-wrap (the swatches' own fieldset) is already a flex
    row (display: flex; flex-wrap: wrap) -- margin-left: auto on this
    link, as a sibling flex item after the swatches, pushes it to the

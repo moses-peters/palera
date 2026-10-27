@@ -243,6 +243,15 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
+    {%- if is_color_option_group and option.values.size > color_visible_limit -%}
+      {%- assign extra_color_count = option.values.size | minus: color_visible_limit -%}
+      <div class="variant-input variant-input--more">
+        <button type="button" class="pm-color-more" data-pm-drawer-open="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">
+          <span class="pm-visually-hidden">Show all {{ option.values.size }} colors</span>
+          <span aria-hidden="true">+{{ extra_color_count }}</span>
+        </button>
+      </div>
+    {%- endif -%}
     {%- if show_color_expand -%}
       <button type="button" class="pm-color-view-link" data-pm-drawer-open="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">View the colors</button>
     {%- endif -%}
