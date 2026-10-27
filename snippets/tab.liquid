@@ -1,3 +1,8 @@
+{%- comment -%}
+  Plain text trigger + slide-in drawer (shared .pm-drawer shell, see
+  pm-product.css/pm-product.js) instead of an inline-expanding
+  accordion -- same pattern as the "see all colors" swatch picker.
+{%- endcomment -%}
 {%- liquid
   assign output_tab = true
   if title == blank and content == blank
@@ -5,17 +10,15 @@
   endif
 -%}
 {%- if output_tab -%}
-  <div class="collapsibles-wrapper collapsibles-wrapper--border-bottom">
-    <button type="button"
-      class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height{% if force_open %} is-open{% endif %}" aria-controls="Product-content-{{ id }}"
-      {% if force_open %}aria-expanded="true"{% endif %}>
-      {{ title }}
-      {%- render 'collapsible-icons' -%}
-    </button>
-    <div id="Product-content-{{ id }}"
-      class="collapsible-content collapsible-content--all{% if force_open %} is-open{% endif %}"
-      {% if force_open %}style="height: auto;"{% endif %}>
-      <div class="collapsible-content__inner rte">
+  <button type="button" class="pm-info-trigger" data-pm-drawer-open="pm-info-drawer-{{ id }}">{{ title }}</button>
+  <div class="pm-drawer" data-pm-drawer id="pm-info-drawer-{{ id }}" hidden>
+    <div class="pm-drawer__overlay" data-pm-drawer-close></div>
+    <div class="pm-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ title | strip_html | escape }}">
+      <div class="pm-drawer__header">
+        <span class="pm-drawer__title">{{ title }}</span>
+        <button type="button" class="pm-drawer__close" data-pm-drawer-close aria-label="Close">&times;</button>
+      </div>
+      <div class="pm-drawer__body collapsible-content__inner rte">
         {{ content }}
       </div>
     </div>

@@ -1,22 +1,50 @@
+{%- comment -%}
+  Plain text trigger + slide-in drawer (shared .pm-drawer shell, see
+  pm-product.css/pm-product.js) instead of an inline-expanding
+  accordion -- same pattern as the "see all colors" swatch picker.
+
+  If the form was just submitted (full-page reload), the drawer opens
+  already-expanded so the success/error message is visible right away
+  instead of being hidden behind a closed drawer. form.posted_successfully?
+  only exists inside the {% form %} block below, so it has to wrap the
+  trigger/drawer-wrapper too (not just the form fields) for that check
+  to see this specific form's result.
+{%- endcomment -%}
 {%- assign contact_form_id = 'contact-' | append: id -%}
-<div class="collapsibles-wrapper collapsibles-wrapper--border-bottom">
-  {%- form 'contact', id: contact_form_id -%}
-    <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height" aria-controls="Product-content-{{ id }}">
-      {{ block.settings.title }}
-      {%- render 'collapsible-icons' -%}
-    </button>
-    <div id="Product-content-{{ id }}" class="collapsible-content collapsible-content--all">
-      <div class="collapsible-content__inner rte">
+{%- form 'contact', id: contact_form_id -%}
+  {%- assign drawer_open = false -%}
+  {%- if form.posted_successfully? -%}
+    {%- assign drawer_open = true -%}
+  {%- endif -%}
+  <button type="button" class="pm-info-trigger" data-pm-drawer-open="pm-info-drawer-{{ id }}">{{ block.settings.title }}</button>
+  <div class="pm-drawer{% if drawer_open %} pm-drawer--open{% endif %}" data-pm-drawer id="pm-info-drawer-{{ id }}"{% unless drawer_open %} hidden{% endunless %}>
+    <div class="pm-drawer__overlay" data-pm-drawer-close></div>
+    <div class="pm-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ block.settings.title | strip_html | escape }}">
+      <div class="pm-drawer__header">
+        <span class="pm-drawer__title">{{ block.settings.title }}</span>
+        <button type="button" class="pm-drawer__close" data-pm-drawer-close aria-label="Close">&times;</button>
+      </div>
+      <div class="pm-drawer__body collapsible-content__inner rte">
+        {%- if form.posted_successfully? -%}
+          <p class="note note--success">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+        {%- endif -%}
+
+        {%- if form.product -%}
+          {{ form.errors | default_errors }}
+        {%- endif -%}
+
         <div class="form-vertical">
           <input type="hidden" name="contact[product]" value="Product question for: {{ shop.secure_url }}{{ product.url }}">
 
-          <div class="grid grid--small">
-            <div class="grid__item medium-up--one-half">
+          <div class="pm-form-row">
+            <div>
               <label for="ContactFormName-{{ id }}">{{ 'contact.form.name' | t }}</label>
               <input type="text" id="ContactFormName-{{ id }}" class="input-full" name="contact[name]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
             </div>
 
-            <div class="grid__item medium-up--one-half">
+            <div>
               <label for="ContactFormEmail-{{ id }}">{{ 'contact.form.email' | t }}</label>
               <input type="email" id="ContactFormEmail-{{ id }}" class="input-full" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
             </div>
@@ -47,15 +75,5 @@
         </div>
       </div>
     </div>
-
-    {%- if form.posted_successfully? -%}
-      <p class="note note--success">
-        {{ 'contact.form.post_success' | t }}
-      </p>
-    {%- endif -%}
-
-    {%- if form.product -%}
-      {{ form.errors | default_errors }}
-    {%- endif -%}
-  {%- endform -%}
-</div>
+  </div>
+{%- endform -%}

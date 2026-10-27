@@ -243,7 +243,7 @@
     {%- if show_color_expand -%}
       {%- assign extra_color_count = option.values.size | minus: color_visible_limit -%}
       <div class="variant-input variant-input--more">
-        <button type="button" class="pm-color-more" data-pm-color-more data-pm-color-drawer-target="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">
+        <button type="button" class="pm-color-more" data-pm-drawer-open="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">
           <span class="pm-visually-hidden">Show all {{ option.values.size }} colors</span>
           <span aria-hidden="true">+{{ extra_color_count }}</span>
         </button>
@@ -252,12 +252,12 @@
   </fieldset>
 
   {%- if show_color_expand -%}
-    <div class="pm-color-drawer" data-pm-color-drawer id="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}" hidden>
-      <div class="pm-color-drawer__overlay" data-pm-color-drawer-close></div>
-      <div class="pm-color-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ option.name | escape }}">
-        <div class="pm-color-drawer__header">
-          <span class="pm-color-drawer__title">{{ option.name }}</span>
-          <button type="button" class="pm-color-drawer__close" data-pm-color-drawer-close aria-label="Close">&times;</button>
+    <div class="pm-drawer" data-pm-drawer id="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}" hidden>
+      <div class="pm-drawer__overlay" data-pm-drawer-close></div>
+      <div class="pm-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ option.name | escape }}">
+        <div class="pm-drawer__header">
+          <span class="pm-drawer__title">{{ option.name }}</span>
+          <button type="button" class="pm-drawer__close" data-pm-drawer-close aria-label="Close">&times;</button>
         </div>
         <div class="pm-color-drawer__grid">
           {%- for value in option.values -%}

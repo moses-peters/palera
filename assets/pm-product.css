@@ -153,32 +153,39 @@
 }
 .pm-product .pm-color-more:hover { border-color: var(--pm-ink); }
 
-.pm-color-drawer { position: fixed; inset: 0; z-index: 1001; }
-.pm-color-drawer[hidden] { display: none; }
-.pm-color-drawer__overlay {
+/* Generic drawer shell, shared by the color picker above and the
+   Shipping/Ask a Question info panels below -- same slide-in-from-the-
+   right panel, just different content inside .pm-drawer__body. */
+.pm-drawer { position: fixed; inset: 0; z-index: 1001; }
+.pm-drawer[hidden] { display: none; }
+.pm-drawer__overlay {
   position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4);
   opacity: 0; transition: opacity 0.25s var(--pm-ease);
 }
-.pm-color-drawer__panel {
+.pm-drawer__panel {
   position: absolute; top: 0; right: 0; bottom: 0; width: min(50vw, 100%); min-width: 420px;
   background: var(--pm-paper); box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12);
   display: flex; flex-direction: column;
   transform: translateX(100%); transition: transform 0.3s var(--pm-ease);
 }
 @media (max-width: 749px) {
-  .pm-color-drawer__panel { width: 100%; min-width: 0; }
+  .pm-drawer__panel { width: 100%; min-width: 0; }
 }
-.pm-color-drawer--open .pm-color-drawer__overlay { opacity: 1; }
-.pm-color-drawer--open .pm-color-drawer__panel { transform: translateX(0); }
-.pm-color-drawer__header {
+.pm-drawer--open .pm-drawer__overlay { opacity: 1; }
+.pm-drawer--open .pm-drawer__panel { transform: translateX(0); }
+.pm-drawer__header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px var(--pm-pad, 24px); border-bottom: 1px solid var(--pm-line);
 }
-.pm-color-drawer__title {
+.pm-drawer__title {
   font-family: var(--pm-font-serif); font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink);
 }
-.pm-color-drawer__close {
+.pm-drawer__close {
   background: none; border: none; font-size: 22px; line-height: 1; color: var(--pm-ink); cursor: pointer; padding: 4px;
+}
+.pm-drawer__body {
+  flex: 1 1 auto; overflow-y: auto;
+  padding: 20px var(--pm-pad, 24px) 32px;
 }
 .pm-color-drawer__grid {
   flex: 1 1 auto; overflow-y: auto;
@@ -204,7 +211,30 @@
 @media (max-width: 420px) {
   .pm-color-drawer__grid { grid-template-columns: repeat(2, 1fr); }
 }
-body.pm-color-drawer-open { overflow: hidden; }
+body.pm-drawer-open { overflow: hidden; }
+
+/* ===== Info triggers (Shipping, Ask a Question) — plain text links in
+   a row instead of inline-expanding accordions; each opens the same
+   slide-in drawer as the color picker, with its own content inside. ===== */
+.pm-product .product-block--tab {
+  display: inline-block; width: auto; vertical-align: top;
+  margin: 0 32px 16px 0; padding: 0; border: none;
+}
+.pm-info-trigger {
+  background: none; border: none; padding: 0; margin: 0; cursor: pointer;
+  font-family: var(--pm-font-sans); font-size: 13px; letter-spacing: 0.01em; color: var(--pm-ink);
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--pm-line);
+  transition: text-decoration-color 0.2s var(--pm-ease);
+}
+.pm-info-trigger:hover { text-decoration-color: var(--pm-ink); }
+/* Plain CSS Grid instead of the theme's .grid/.grid__item classes for
+   the Name/Email row inside the Ask a Question drawer -- those rely on
+   a negative-margin trick that needs the page's standard padded
+   wrapper to avoid overflowing, which this narrow drawer panel isn't. */
+.pm-product .pm-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+@media (max-width: 480px) {
+  .pm-product .pm-form-row { grid-template-columns: 1fr; }
+}
 
 /* ===== Quantity ===== */
 .pm-product .product__quantity { display: flex; align-items: center; gap: 14px; }

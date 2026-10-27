@@ -1,37 +1,42 @@
-/* "See all colors" drawer -- opened by the "+N" button after the first
-   4 color swatches, shows every color as a larger tile with its name
-   underneath. Picking a tile clicks the real (hidden) radio input so
-   the theme's own variant-change handling (price/image/availability
-   updates) runs exactly as if the swatch itself had been clicked. */
+/* Generic slide-in drawer, used by: the "see all colors" swatch picker,
+   and the Shipping/Ask a Question info panels. Any trigger element with
+   data-pm-drawer-open="<id>" opens the drawer with that id; anything
+   with data-pm-drawer-close (inside it, or its overlay) closes it.
+   Picking a color tile (data-pm-color-pick) additionally clicks the
+   real (hidden) variant radio input so the theme's own variant-change
+   handling (price/image/availability updates) runs exactly as if the
+   swatch itself had been clicked. */
 (function () {
-  var openDrawer = null;
+  var openDrawerEl = null;
 
   function closeDrawer() {
-    if (!openDrawer) return;
-    openDrawer.hidden = true;
-    openDrawer.classList.remove('pm-color-drawer--open');
-    document.body.classList.remove('pm-color-drawer-open');
-    openDrawer = null;
+    if (!openDrawerEl) return;
+    openDrawerEl.classList.remove('pm-drawer--open');
+    var el = openDrawerEl;
+    openDrawerEl = null;
+    document.body.classList.remove('pm-drawer-open');
+    window.setTimeout(function () {
+      el.hidden = true;
+    }, 300);
   }
 
   document.addEventListener('click', function (event) {
-    var moreBtn = event.target.closest('[data-pm-color-more]');
-    if (moreBtn) {
-      var targetId = moreBtn.getAttribute('data-pm-color-drawer-target');
+    var opener = event.target.closest('[data-pm-drawer-open]');
+    if (opener) {
+      var targetId = opener.getAttribute('data-pm-drawer-open');
       var drawer = targetId && document.getElementById(targetId);
       if (drawer) {
         drawer.hidden = false;
-        // Next tick, so the hidden -> visible change transitions in.
         requestAnimationFrame(function () {
-          drawer.classList.add('pm-color-drawer--open');
+          drawer.classList.add('pm-drawer--open');
         });
-        document.body.classList.add('pm-color-drawer-open');
-        openDrawer = drawer;
+        document.body.classList.add('pm-drawer-open');
+        openDrawerEl = drawer;
       }
       return;
     }
 
-    if (event.target.closest('[data-pm-color-drawer-close]')) {
+    if (event.target.closest('[data-pm-drawer-close]')) {
       closeDrawer();
       return;
     }
@@ -46,6 +51,6 @@
   });
 
   document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && openDrawer) closeDrawer();
+    if (event.key === 'Escape' && openDrawerEl) closeDrawer();
   });
 })();
