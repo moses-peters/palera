@@ -39,18 +39,36 @@
   Shipping/Ask a Question, instead of inline with the rest of the
   description. pm_main_description is everything before the heading
   (falls back to the full description when a product hasn't been
-  rewritten in this format yet, since split then returns a single
-  part); pm_details_content is the heading onward, blank if absent.
+  rewritten in this format yet, since nothing then matches);
+  pm_details_content is the heading onward, blank if absent.
+
+  Splits on the plain text only (trying both the &amp; and raw &
+  encodings, in case that varies by product), then finds the actual
+  opening tag by taking everything after the LAST "<h" before that
+  text -- so this doesn't care whether it's an h2, h3, h4, or has
+  extra attributes on it (e.g. an auto-generated id), only that it
+  immediately precedes "Materials & dimensions".
 {%- endcomment -%}
 {%- liquid
-  assign pm_details_marker = '<h3>Materials &amp; dimensions</h3>'
-  assign pm_desc_parts = product.description | split: pm_details_marker
+  assign pm_marker_candidates = 'Materials &amp; dimensions;;Materials & dimensions' | split: ';;'
   assign pm_main_description = product.description
   assign pm_details_content = ''
-  if pm_desc_parts.size > 1
-    assign pm_main_description = pm_desc_parts[0]
-    assign pm_details_content = pm_details_marker | append: pm_desc_parts[1]
-  endif
+  for marker_text in pm_marker_candidates
+    if pm_details_content == ''
+      assign desc_parts = product.description | split: marker_text
+      if desc_parts.size > 1
+        assign before_text = desc_parts[0]
+        assign after_text = desc_parts[1]
+        assign before_split = before_text | split: '<h'
+        if before_split.size > 1
+          assign tag_tail = before_split | last
+          assign tag_open = '<h' | append: tag_tail
+          assign pm_main_description = before_text | replace_last: tag_open, ''
+          assign pm_details_content = tag_open | append: marker_text | append: after_text
+        endif
+      endif
+    endif
+  endfor
 -%}
 
 {%- liquid
