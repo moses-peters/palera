@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
     "main": {
       "type": "main-page",
@@ -130,7 +129,7 @@
           "type": "question",
           "settings": {
             "title": "Can I cancel my order?",
-            "text": "<p>Please check our <a href=\"https://paleramilano.myshopify.com/pages/return-refund\">return &amp; refund policy</a>.</p><p>For all cancellations, refer to our refund and exchange policy or email us at <a href=\"mailto:clientservice@paleramilano.com\">clientservice@paleramilano.com</a>.</p>"
+            "text": "<p>For all cancellations, refer to our <a href=\"https://paleramilano.myshopify.com/pages/return-refund\">refund and exchange policy</a> or email us at <a href=\"mailto:clientservice@paleramilano.com\">clientservice@paleramilano.com</a>.</p>"
           }
         },
         "b87169da-fc6d-4094-863e-c9c8978a0787": {
