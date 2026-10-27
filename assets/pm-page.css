@@ -17,6 +17,8 @@
   font-family: var(--pm-font-sans); font-size: 14px; line-height: 1.9; letter-spacing: 0.01em; color: var(--pm-muted);
 }
 .page-content .rte p { margin-bottom: 16px; }
+.page-content .rte ul, .page-content .rte ol { margin: 0 0 16px 20px; }
+.page-content .rte li { margin-bottom: 8px; }
 .page-content .rte h1, .page-content .rte h2, .page-content .rte h3, .page-content .rte h4 {
   font-family: var(--pm-font-serif) !important; font-weight: 400 !important; font-style: normal !important;
   text-transform: none !important;
@@ -39,6 +41,9 @@
    as the generic page template above, so the title/body rules already
    apply automatically; this just adds the blog-specific elements
    (post title, date, excerpt, author, tag links). */
+.article__body.rte {
+  max-width: 760px; margin: 0 auto;
+}
 .page-content .article__title {
   display: block; font-family: var(--pm-font-serif); font-weight: 400; font-style: normal;
   font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink); margin: 6px 0 8px;
