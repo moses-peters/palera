@@ -191,7 +191,7 @@
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pm-ink);
   cursor: pointer;
 }
-.pm-product .collapsible-content__inner { padding: 4px 0 24px; font-size: 13px; line-height: 1.9; letter-spacing: 0.01em; color: var(--pm-muted); }
+.pm-product .collapsible-content__inner { padding: 4px 0 24px; font-size: 13px; line-height: 1.9; letter-spacing: 0.01em; color: var(--pm-ink); }
 /* theme.css.liquid's base .collapsible-trigger-btn--borders+.collapsible-content
    .collapsible-content__inner rule (3 classes) outranks a plain
    .pm-product .collapsible-content__inner override (2 classes), so the
@@ -203,7 +203,7 @@
    rule sets a 60px top margin meant for full-page content, reading as an
    oversized gap in this narrow accordion. Set in the site's serif
    (--pm-font-serif, used for headings elsewhere — see .pm-serif) in a
-   quiet italic rather than bold uppercase, for the same boutique-editorial
+   quiet weight rather than bold uppercase, for the same boutique-editorial
    tone as the rest of the site instead of a generic form/FAQ look.
    !important on the typography properties for the same reason as
    pm-policy.css/pm-page.css: the theme's "Capitalize headers" setting
@@ -213,7 +213,7 @@
    is a load-order coin flip, not a real override. */
 .pm-product .collapsible-content__inner h3 {
   margin: 30px 0 10px;
-  font-family: var(--pm-font-serif) !important; font-style: italic !important; font-weight: 400 !important;
+  font-family: var(--pm-font-serif) !important; font-style: normal !important; font-weight: 400 !important;
   text-transform: none !important;
   font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink);
 }
@@ -226,7 +226,7 @@
 .pm-product .pm-shipping-table { width: 100%; min-width: 460px; border-collapse: collapse; font-size: 13px; color: var(--pm-ink); }
 .pm-product .pm-shipping-table th,
 .pm-product .pm-shipping-table td { text-align: left; padding: 11px 14px 11px 0; white-space: nowrap; }
-.pm-product .pm-shipping-table th { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-muted); border-bottom: 1px solid var(--pm-ink); }
+.pm-product .pm-shipping-table th { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-ink); border-bottom: 1px solid var(--pm-ink); }
 .pm-product .pm-shipping-table td { border-bottom: 1px solid var(--pm-line); }
 .pm-product .pm-shipping-table tr:last-child td { border-bottom: none; }
 /* Ask a Question form — minimal underline inputs (transparent, bottom
@@ -235,7 +235,7 @@
    web form; focus state darkens the line instead of adding an outline. */
 .pm-product .collapsible-content__inner .form-vertical label {
   display: block; margin-bottom: 8px;
-  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-muted);
+  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-ink);
 }
 .pm-product .collapsible-content__inner .form-vertical .grid--small { margin-bottom: 0; }
 .pm-product .collapsible-content__inner .form-vertical input.input-full,
@@ -252,11 +252,11 @@
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
 }
 .pm-product .pm-contact-email-note {
-  margin: 18px 0 8px; font-size: 12px; color: var(--pm-muted);
+  margin: 18px 0 8px; font-size: 12px; color: var(--pm-ink);
 }
 .pm-product .pm-contact-email-note a { color: var(--pm-ink); text-decoration: underline; text-underline-offset: 2px; }
 .pm-product .pm-recaptcha-disclaimer, .pm-product .pm-recaptcha-disclaimer * {
-  font-size: 11px; font-style: italic; color: var(--pm-muted);
+  font-size: 11px; font-style: normal; color: var(--pm-ink);
 }
 .pm-product .pm-shipping-policy-link {
   margin: 26px 0 0; font-size: 11px; font-style: normal;
@@ -269,15 +269,15 @@
 .pm-product .pm-shipping-policy-link a:hover { opacity: 0.6; }
 
 /* ===== Description (non-tab) ===== */
-.pm-product .product-block .rte { font-size: 14px; line-height: 1.8; color: var(--pm-muted); }
+.pm-product .product-block .rte { font-size: 14px; line-height: 1.8; color: var(--pm-ink); }
 .pm-product .product-block .rte p { margin-bottom: 14px; }
 .pm-product-description {
   padding-top: clamp(24px, 3vw, 32px);
   border-top: 1px solid var(--pm-line);
 }
-.pm-product-description .pm-eyebrow { display: block; margin-bottom: 14px; }
+.pm-product-description .pm-eyebrow { display: block; margin-bottom: 14px; color: var(--pm-ink); }
 .pm-product-description .rte { max-width: 46em; }
-/* Same quiet italic serif heading treatment as the shipping/contact tabs
+/* Same quiet serif heading treatment as the shipping/contact tabs
    above, applied here too in case a product's own description (set per
    product in Admin) includes subheadings — same !important guard
    against the Capitalize Headers setting. */
@@ -286,7 +286,7 @@
 .pm-product-description .rte h3,
 .pm-product-description .rte h4 {
   margin: 24px 0 10px;
-  font-family: var(--pm-font-serif) !important; font-style: italic !important; font-weight: 400 !important;
+  font-family: var(--pm-font-serif) !important; font-style: normal !important; font-weight: 400 !important;
   text-transform: none !important;
   font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink);
 }
