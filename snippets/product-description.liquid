@@ -21,8 +21,16 @@
   {%- render 'tab', id: id, title: title, content: description -%}
 {%- else -%}
   <div class="pm-product-description">
-    <span class="pm-eyebrow">{{ 'products.product.description' | t }}</span>
     <div class="rte">
+      {%- comment -%}
+        "Description" now renders as a real h2 inside .rte, the same
+        as "Fit Notes" etc. within the description text itself, so it
+        picks up the identical serif heading style (.pm-product-description
+        .rte h1-h4 in pm-product.css) instead of the small uppercase
+        .pm-eyebrow label style it had before, which looked like a
+        different, unrelated kind of heading next to it.
+      {%- endcomment -%}
+      <h2>{{ 'products.product.description' | t }}</h2>
       {{ description }}
     </div>
   </div>

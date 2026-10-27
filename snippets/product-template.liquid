@@ -42,29 +42,37 @@
   rewritten in this format yet, since nothing then matches);
   pm_details_content is the heading onward, blank if absent.
 
-  Splits on the plain text only (trying both the &amp; and raw &
-  encodings, in case that varies by product), then finds the actual
-  opening tag by taking everything after the LAST "<h" before that
-  text -- so this doesn't care whether it's an h2, h3, h4, or has
-  extra attributes on it (e.g. an auto-generated id), only that it
-  immediately precedes "Materials & dimensions".
+  Case-insensitive (so "Materials & Dimensions", "materials & DIMENSIONS",
+  etc. all match too) and tries both the &amp; and raw & encodings --
+  found by splitting a downcased copy of the description, then using
+  that split's piece lengths as character offsets into the ORIGINAL
+  (true-case) description, since downcasing never changes a string's
+  length. Then finds the actual opening tag by taking everything after
+  the LAST "<h" before that text, so this doesn't care whether it's an
+  h2, h3, h4, or has extra attributes on it (e.g. an auto-generated
+  id), only that it immediately precedes "Materials & dimensions".
 {%- endcomment -%}
 {%- liquid
   assign pm_marker_candidates = 'Materials &amp; dimensions;;Materials & dimensions' | split: ';;'
   assign pm_main_description = product.description
   assign pm_details_content = ''
+  assign pm_description_lower = product.description | downcase
   for marker_text in pm_marker_candidates
     if pm_details_content == ''
-      assign desc_parts = product.description | split: marker_text
-      if desc_parts.size > 1
-        assign before_text = desc_parts[0]
-        assign after_text = desc_parts[1]
+      assign marker_lower = marker_text | downcase
+      assign desc_parts_lower = pm_description_lower | split: marker_lower
+      if desc_parts_lower.size > 1
+        assign before_len = desc_parts_lower[0].size
+        assign after_offset = before_len | plus: marker_lower.size
+        assign before_text = product.description | slice: 0, before_len
+        assign after_text = product.description | slice: after_offset, 999999
         assign before_split = before_text | split: '<h'
         if before_split.size > 1
           assign tag_tail = before_split | last
           assign tag_open = '<h' | append: tag_tail
           assign pm_main_description = before_text | replace_last: tag_open, ''
-          assign pm_details_content = tag_open | append: marker_text | append: after_text
+          assign actual_marker_text = product.description | slice: before_len, marker_lower.size
+          assign pm_details_content = tag_open | append: actual_marker_text | append: after_text
         endif
       endif
     endif
