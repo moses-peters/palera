@@ -243,13 +243,10 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
-  </fieldset>
-
-  {%- if show_color_expand -%}
-    <div class="pm-color-view-row">
+    {%- if show_color_expand -%}
       <button type="button" class="pm-color-view-link" data-pm-drawer-open="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}">View the colors</button>
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+  </fieldset>
 
   {%- if show_color_expand -%}
     <div class="pm-drawer" data-pm-drawer id="pm-color-drawer-{{ section_id }}-{{ product.id }}-{{ option_index }}" hidden>
