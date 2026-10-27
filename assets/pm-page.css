@@ -32,3 +32,23 @@
   .page-content .section-header__title { font-size: 26px; }
   .page-content .rte { font-size: 13px; }
 }
+
+/* Journal (blog) — listing page cards + individual article page.
+   article-template.liquid / blog-template.liquid / article-grid-item.liquid
+   are stock Impulse markup too, sharing the same .page-content wrapper
+   as the generic page template above, so the title/body rules already
+   apply automatically; this just adds the blog-specific elements
+   (post title, date, excerpt, author, tag links). */
+.page-content .article__title {
+  display: block; font-family: var(--pm-font-serif); font-weight: 400; font-style: normal;
+  font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink); margin: 6px 0 8px;
+  text-decoration: none;
+}
+.page-content .article__title:hover { text-decoration: underline; text-underline-offset: 2px; }
+.page-content .article__date {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pm-muted);
+}
+.page-content .article__date a { color: var(--pm-muted); text-decoration: underline; text-underline-offset: 2px; }
+.page-content .article__excerpt { font-size: 13px; line-height: 1.8; color: var(--pm-muted); }
+.page-content .article__author { font-size: 11px; color: var(--pm-muted); margin-top: 4px; }
+.page-content .return-link { font-family: var(--pm-font-sans); font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; }

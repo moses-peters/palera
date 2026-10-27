@@ -1,3 +1,4 @@
+{{ 'pm-page.css' | asset_url | stylesheet_tag }}
 {%- paginate blog.articles by 21 -%}
 
 <div data-section-id="{{ section.id }}" data-section-type="blog">
