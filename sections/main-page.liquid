@@ -11,6 +11,7 @@
   Press's own layout.
 {%- endcomment -%}
 {%- unless page.handle == 'about-us' or page.handle == 'press' -%}
+  {{ 'pm-page.css' | asset_url | stylesheet_tag }}
   <div class="page-width page-width--narrow page-content">
     {%- render 'breadcrumbs' -%}
     <header class="section-header">
