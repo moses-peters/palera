@@ -97,8 +97,10 @@
 %}
 
 <image-element data-aos="{{ animation }}" data-aos-offset="150">
-        {% if itemprop == 'logo' %}
-      {% assign  alt ='Palera Milano' %}
+        {% if decorative %}
+      {% assign alt = '' %}
+      {% elsif itemprop == 'logo' and alt == blank %}
+      {% assign alt = 'Palera Milano' %}
       {% endif %}
 {% if type == blank %}
   {% if widths != blank %}
