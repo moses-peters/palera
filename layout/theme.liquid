@@ -56,6 +56,15 @@
 
     {%- render 'seo-title' -%}
 
+    {%- comment -%}
+      The EU withdrawal form is a legal/functional utility page --
+      reachable by direct link (e.g. from the footer), but not meant
+      to compete with real content pages in search results.
+    {%- endcomment -%}
+    {%- if page.handle == 'withdrawal-form' -%}
+      <meta name="robots" content="noindex, nofollow">
+    {%- endif -%}
+
     {%- if page_description -%}
       <meta name="description" content="{{ page_description | escape }}">
     {%- endif -%}
