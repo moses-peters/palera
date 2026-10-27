@@ -218,7 +218,16 @@ body.pm-drawer-open { overflow: hidden; }
    slide-in drawer as the color picker, with its own content inside. ===== */
 .pm-product .product-block--tab {
   display: inline-block; width: auto; vertical-align: top;
-  margin: 0 32px 16px 0; padding: 0; border: none;
+  margin: 0 28px 20px 0; padding: 0; border: none;
+}
+/* Hairline + breathing room above the row, same divider convention
+   used elsewhere on the product page (see .pm-product-description) --
+   applied only once, right before the row of trigger links starts,
+   not between each one. */
+.pm-product :not(.product-block--tab) + .product-block--tab {
+  border-top: 1px solid var(--pm-line);
+  padding-top: 20px;
+  margin-top: 4px;
 }
 .pm-info-trigger {
   background: none; border: none; padding: 0; margin: 0; cursor: pointer;
@@ -275,79 +284,11 @@ body.pm-drawer-open { overflow: hidden; }
 .pm-product .sales-point:last-child { margin-bottom: 0; }
 .pm-product .inventory--low { color: var(--pm-ink); }
 
-/* ===== Tabs (shipping info, description-as-tab, contact) ===== */
-/* theme.css.liquid's base .collapsibles-wrapper--border-bottom still
-   sets its own border-bottom -- removing this section's old override
-   (which just recolored the same border) only fell back to that base
-   rule instead of actually removing the line, so it needs an explicit
-   none here. */
-.pm-product .collapsibles-wrapper--border-bottom { border-bottom: none; }
-.pm-product .collapsible-trigger-btn {
-  width: 100%; display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 0; background: transparent; border: none;
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pm-ink);
-  cursor: pointer;
-}
-.pm-product .collapsible-content__inner { padding: 4px 0 24px; font-size: 13px; line-height: 1.9; letter-spacing: 0.01em; color: var(--pm-ink); }
-/* theme.css.liquid's base .collapsible-trigger-btn--borders+.collapsible-content
-   .collapsible-content__inner rule (3 classes) outranks a plain
-   .pm-product .collapsible-content__inner override (2 classes), so the
-   side/bottom border it adds around expanded tab content needs this
-   exact same selector shape, just scoped under .pm-product, to win. */
-.pm-product .collapsible-trigger-btn--borders + .collapsible-content .collapsible-content__inner { border: none; }
-.pm-product .collapsible-content__inner p { margin-bottom: 14px; }
-/* Shipping/contact tab headings (h3) — theme.css.liquid's base .rte h1-h6
-   rule sets a 60px top margin meant for full-page content, reading as an
-   oversized gap in this narrow accordion. Set in the site's serif
-   (--pm-font-serif, used for headings elsewhere — see .pm-serif) in a
-   quiet weight rather than bold uppercase, for the same boutique-editorial
-   tone as the rest of the site instead of a generic form/FAQ look.
-   !important on the typography properties for the same reason as
-   pm-policy.css/pm-page.css: the theme's "Capitalize headers" setting
-   (Theme settings > Typography) adds a same-specificity
-   [data-type_header_capitalize=true] h1..h6 rule that forces
-   uppercase/bold everywhere, including here — without !important this
-   is a load-order coin flip, not a real override. */
-.pm-product .collapsible-content__inner h3 {
-  margin: 30px 0 10px;
-  font-family: var(--pm-font-serif) !important; font-style: normal !important; font-weight: 400 !important;
-  text-transform: none !important;
-  font-size: 18px; letter-spacing: 0.01em; color: var(--pm-ink);
-}
-.pm-product .collapsible-content__inner h3:first-child { margin-top: 0; }
-/* Shipping fees table — hairline rules instead of boxed borders, small
-   letter-spaced caps header (matches .pm-eyebrow elsewhere on the site),
-   generous row padding. Horizontally scrollable on narrow screens so 4
-   columns don't get crushed inside a ~350px mobile accordion. */
-.pm-product .pm-shipping-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 6px 0 18px; }
-.pm-product .pm-shipping-table { width: 100%; min-width: 460px; border-collapse: collapse; font-size: 13px; color: var(--pm-ink); }
-.pm-product .pm-shipping-table th,
-.pm-product .pm-shipping-table td { text-align: left; padding: 11px 14px 11px 0; white-space: nowrap; }
-.pm-product .pm-shipping-table th { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-ink); border-bottom: 1px solid var(--pm-ink); }
-.pm-product .pm-shipping-table td { border-bottom: 1px solid var(--pm-line); }
-.pm-product .pm-shipping-table tr:last-child td { border-bottom: none; }
-/* Ask a Question form — minimal underline inputs (transparent, bottom
-   border only) instead of theme.css.liquid's default boxed fields, to
-   read as part of this quiet editorial accordion rather than a generic
-   web form; focus state darkens the line instead of adding an outline. */
-.pm-product .collapsible-content__inner .form-vertical label {
-  display: block; margin-bottom: 8px;
-  font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-ink);
-}
-.pm-product .collapsible-content__inner .form-vertical .grid--small { margin-bottom: 0; }
-.pm-product .collapsible-content__inner .form-vertical input.input-full,
-.pm-product .collapsible-content__inner .form-vertical textarea.input-full {
-  font-size: 14px; color: var(--pm-ink); background: transparent;
-  border: none; border-bottom: 1px solid var(--pm-line); border-radius: 0;
-  padding: 8px 2px; margin-bottom: 22px; transition: border-color 0.2s var(--pm-ease);
-}
-.pm-product .collapsible-content__inner .form-vertical input.input-full:focus,
-.pm-product .collapsible-content__inner .form-vertical textarea.input-full:focus {
-  outline: none; border-bottom-color: var(--pm-ink);
-}
-.pm-product .collapsible-content__inner .form-vertical .btn {
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
-}
+/* ===== Tabs (shipping info, description-as-tab, contact) =====
+   Content itself (headings, links, tables, the Ask a Question form)
+   is styled by .pm-policy-body (assets/pm-policy.css, loaded on the
+   product page) so it matches the real Shipping Policy / Contact Us
+   pages exactly, rather than keeping a separate look here. */
 .pm-product .pm-contact-email-note {
   margin: 18px 0 8px; font-size: 12px; color: var(--pm-ink);
 }
@@ -355,15 +296,6 @@ body.pm-drawer-open { overflow: hidden; }
 .pm-product .pm-recaptcha-disclaimer, .pm-product .pm-recaptcha-disclaimer * {
   font-size: 11px; font-style: normal; color: var(--pm-ink);
 }
-.pm-product .pm-shipping-policy-link {
-  margin: 26px 0 0; font-size: 11px; font-style: normal;
-  text-transform: uppercase; letter-spacing: 0.14em; color: var(--pm-ink);
-}
-.pm-product .pm-shipping-policy-link a {
-  color: var(--pm-ink); text-decoration: underline; text-underline-offset: 3px;
-  transition: opacity 0.2s var(--pm-ease);
-}
-.pm-product .pm-shipping-policy-link a:hover { opacity: 0.6; }
 
 /* ===== Description (non-tab) ===== */
 .pm-product .product-block .rte { font-size: 14px; line-height: 1.8; color: var(--pm-ink); }
@@ -473,7 +405,4 @@ body.pm-drawer-open { overflow: hidden; }
 
 @media (max-width: 749px) {
   .pm-product .product-single__meta { max-width: none; padding-top: 24px; }
-  .pm-product .collapsible-content__inner h3 { font-size: 16px; }
-  .pm-product .pm-shipping-table { font-size: 12px; }
-  .pm-product .pm-shipping-table th, .pm-product .pm-shipping-table td { padding: 9px 10px 9px 0; }
 }
