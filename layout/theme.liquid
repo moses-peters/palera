@@ -64,6 +64,9 @@
 
     {%- render 'font-face' -%}
     {%- render 'pm-fonts' -%}
+    {%- if page.handle == '6-care-tips' -%}
+      {{ 'pm-ecom-care-tips.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'kg-custom.css' | asset_url | stylesheet_tag: preload: true }}
     {%- render 'css-variables' -%}
