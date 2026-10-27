@@ -1,0 +1,22 @@
+{%- comment -%}
+  Legal policy pages (Terms of Service, Privacy, Shipping, Refund)
+  previously had no custom template at all -- Shopify was falling back
+  to its own generic built-in rendering, completely outside this
+  theme's design, which is why these pages looked disconnected from
+  the rest of the site. page_title / page_content are the standard
+  Shopify objects available specifically on policy page templates.
+{%- endcomment -%}
+{{ 'pm-policy.css' | asset_url | stylesheet_tag }}
+<div class="pm-policy">
+  <h1 class="pm-policy-title">{{ page_title }}</h1>
+  <div class="pm-policy-body rte">
+    {{ page_content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Policy page",
+  "settings": []
+}
+{% endschema %}

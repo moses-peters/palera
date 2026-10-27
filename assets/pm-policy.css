@@ -1,0 +1,29 @@
+.pm-policy {
+  max-width: 760px; margin: 0 auto;
+  padding: clamp(48px, 6vw, 88px) var(--pm-pad) clamp(64px, 8vw, 120px);
+  font-family: var(--pm-font-sans); color: var(--pm-muted); background: var(--pm-paper);
+}
+.pm-policy-title {
+  font-family: var(--pm-font-serif); font-style: italic; font-weight: 400;
+  font-size: clamp(28px, 4vw, 42px); letter-spacing: 0.01em; color: var(--pm-ink);
+  text-align: center; margin: 0 0 clamp(32px, 4vw, 48px);
+}
+.pm-policy-body { font-size: 14px; line-height: 1.9; letter-spacing: 0.01em; }
+.pm-policy-body p { margin-bottom: 16px; }
+.pm-policy-body h1, .pm-policy-body h2, .pm-policy-body h3, .pm-policy-body h4 {
+  font-family: var(--pm-font-serif); font-style: italic; font-weight: 400;
+  color: var(--pm-ink); letter-spacing: 0.01em; margin: 40px 0 14px;
+}
+.pm-policy-body h1:first-child, .pm-policy-body h2:first-child, .pm-policy-body h3:first-child { margin-top: 0; }
+.pm-policy-body ul, .pm-policy-body ol { margin: 0 0 16px 20px; }
+.pm-policy-body li { margin-bottom: 8px; }
+.pm-policy-body a { color: var(--pm-ink); text-decoration: underline; text-underline-offset: 2px; }
+.pm-policy-body strong { color: var(--pm-ink); }
+.pm-policy-body table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+.pm-policy-body th, .pm-policy-body td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--pm-line); }
+.pm-policy-body th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pm-muted); border-bottom: 1px solid var(--pm-ink); }
+@media (max-width: 749px) {
+  .pm-policy { padding-top: clamp(32px, 8vw, 56px); }
+  .pm-policy-body { font-size: 13px; }
+  .pm-policy-title { font-size: 26px; }
+}
