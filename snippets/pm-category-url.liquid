@@ -1,0 +1,26 @@
+{%- comment -%}
+  Maps a Shop-menu category's plain `| handle` output to its real
+  Shopify Collection URL. Can't be derived generically -- Shopify's
+  actual Admin-assigned handles don't all match what `| handle` would
+  produce from the category name (e.g. "Clutches" -> "clutches" via
+  the filter, but the real collection handle is "clutchs"; likewise
+  "Accessories" -> "accessories" via the filter vs the real
+  "jewelry-and-accessories"). Usage:
+
+    {%- assign category_handle = category | handle -%}
+    <a href="{% render 'pm-category-url', handle: category_handle %}">
+{%- endcomment -%}
+{%- liquid
+  case handle
+    when 'clutches'
+      assign category_url = '/collections/clutchs'
+    when 'accessories'
+      assign category_url = '/collections/jewelry-and-accessories'
+    when 'mini-bags'
+      assign category_url = '/collections/mini-bags'
+    when 'fits-a-phone'
+      assign category_url = '/collections/fits-a-phone'
+    else
+      assign category_url = '/collections/all'
+  endcase
+-%}{{- category_url -}}
