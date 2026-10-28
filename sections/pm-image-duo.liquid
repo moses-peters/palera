@@ -12,7 +12,16 @@
       {%- if section.settings.left_content_type == 'text' -%}
         <div class="pm-image-duo-text">
           {%- if section.settings.text_left_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.text_left_eyebrow }}</span>{%- endif -%}
-          {%- if section.settings.text_left_heading != blank -%}<h2 class="pm-serif">{{ section.settings.text_left_heading }}</h2>{%- endif -%}
+          {%- comment -%}
+            The homepage's H1 -- the logo no longer renders as one (see
+            snippets/header-logo-block.liquid), since "Palera Milano"
+            alone doesn't describe what the page is about. Only the
+            left side is promoted (not text_right_heading below) since
+            this is the one with real content on the live homepage;
+            keeping the right side at h2 avoids two H1s on the page if
+            that side is ever filled in too.
+          {%- endcomment -%}
+          {%- if section.settings.text_left_heading != blank -%}<h1 class="pm-serif">{{ section.settings.text_left_heading }}</h1>{%- endif -%}
           {%- if section.settings.text_left_body != blank -%}<div class="pm-image-duo-text-body">{{ section.settings.text_left_body }}</div>{%- endif -%}
         </div>
       {%- elsif section.settings.video_left != blank -%}

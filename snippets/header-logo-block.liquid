@@ -40,12 +40,17 @@
     }
     {%- endstyle -%}
 
-    {%- if template == 'index' -%}
-      <h1 class="site-header__logo" itemscope itemtype="http://schema.org/Organization" {{ block.shopify_attributes }}>
+    {%- comment -%}
+      Always a plain div (the .h1 class keeps the same visual size via
+      CSS), never a real <h1> -- the logo saying "Palera Milano" isn't
+      descriptive of page content, which is what an H1 is for. The
+      homepage's own H1 is the hero heading in sections/pm-image-duo.liquid
+      instead (see its text_left_heading setting).
+    {%- endcomment -%}
+    <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization" {{ block.shopify_attributes }}>
+      {%- if template == 'index' -%}
         <span class="visually-hidden">{{ shop.name }}</span>
-    {%- else -%}
-      <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization" {{ block.shopify_attributes }}>
-    {%- endif -%}
+      {%- endif -%}
 
     {%- if block.settings.logo -%}
       {% comment %}
@@ -109,11 +114,7 @@
     {%- else -%}
       <a href="{{ routes.root_url }}" itemprop="url">{{ shop.name }}</a>
     {%- endif -%}
-    {%- if template == 'index' -%}
-      </h1>
-    {%- else -%}
-      </div>
-    {%- endif -%}
+    </div>
 
   {%- endif -%}
 {%- endfor -%}
@@ -125,19 +126,11 @@
       max-width: 60%;
     }
   {%- endstyle -%}
-  {%- if template == 'index' -%}
-    <h1 class="site-header__logo" itemscope itemtype="http://schema.org/Organization">
-  {%- else -%}
-    <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization">
-  {%- endif -%}
+  <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization">
   <a href="{{ routes.root_url }}" itemprop="url" class="site-header__logo-link">
     {{ shop.name }}
   </a>
-  {%- if template == 'index' -%}
-    </h1>
-  {%- else -%}
-    </div>
-  {%- endif -%}
+  </div>
 {%- endunless -%}
 {% comment %}
 
