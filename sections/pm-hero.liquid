@@ -31,9 +31,9 @@
             <source media="(max-width: 639px)" srcset="{{ section.settings.image_mobile | image_url: width: 1800 }}">
           {%- endif -%}
           {%- if section.settings.image -%}
-            <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ shop.name }}" loading="eager">
+            <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.overlay_eyebrow | default: shop.name }}" loading="eager">
           {%- else -%}
-            <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ shop.name }}" loading="eager">
+            <img src="{{ 'pm-drive-hero.jpg' | asset_url }}" alt="{{ section.settings.overlay_eyebrow | default: shop.name }}" loading="eager">
           {%- endif -%}
         </picture>
       {%- endif -%}
@@ -41,7 +41,7 @@
     {%- if section.settings.overlay_eyebrow != blank or section.settings.overlay_label != blank -%}
       <div class="pm-hero-caption">
         {%- if section.settings.overlay_eyebrow != blank -%}
-          <span class="pm-hero-caption-eyebrow">{{ section.settings.overlay_eyebrow }}</span>
+          <h2 class="pm-hero-caption-eyebrow">{{ section.settings.overlay_eyebrow }}</h2>
         {%- endif -%}
         {%- if section.settings.overlay_label != blank -%}
           <a href="{{ section.settings.overlay_link_url | default: '/collections/aw27' }}" class="pm-hero-caption-button">{{ section.settings.overlay_label }}</a>
@@ -64,7 +64,7 @@
     { "type": "range", "id": "focal_x", "label": "Focal point — horizontal", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's left side." },
     { "type": "range", "id": "focal_y", "label": "Focal point — vertical", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "info": "Lower = crop shows more of the image's top." },
     { "type": "header", "content": "Bottom caption (optional)" },
-    { "type": "text", "id": "overlay_eyebrow", "label": "Small line above", "default": "Autumn Winter 2027" },
+    { "type": "text", "id": "overlay_eyebrow", "label": "Small line above (H2 heading)", "default": "Autumn Winter 2027" },
     { "type": "text", "id": "overlay_label", "label": "Boxed line below", "default": "Shop the New Collection" },
     { "type": "url", "id": "overlay_link_url", "label": "Boxed line link", "info": "Defaults to /collections/aw27. This is separate from the Link setting above, which is the rest of the photo's own link." }
   ],

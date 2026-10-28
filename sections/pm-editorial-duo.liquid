@@ -9,7 +9,7 @@
             {%- if section.settings.image_a_mobile -%}
               <source media="(max-width: 639px)" srcset="{{ section.settings.image_a_mobile | image_url: width: 1200 }}">
             {%- endif -%}
-            <img src="{{ section.settings.image_a | image_url: width: 1200 }}" alt="{{ section.settings.image_a.alt | escape }}" loading="lazy">
+            <img src="{{ section.settings.image_a | image_url: width: 1200 }}" alt="{{ section.settings.image_a.alt | escape | default: section.settings.tag | default: shop.name }}" loading="lazy">
           </picture>
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
@@ -26,7 +26,7 @@
             {%- if section.settings.image_b_mobile -%}
               <source media="(max-width: 639px)" srcset="{{ section.settings.image_b_mobile | image_url: width: 900 }}">
             {%- endif -%}
-            <img src="{{ section.settings.image_b | image_url: width: 900 }}" alt="{{ section.settings.image_b.alt | escape }}" loading="lazy">
+            <img src="{{ section.settings.image_b | image_url: width: 900 }}" alt="{{ section.settings.image_b.alt | escape | default: section.settings.tag | default: shop.name }}" loading="lazy">
           </picture>
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
@@ -38,7 +38,7 @@
     </div>
 
     <div class="pm-duo-caption pm-reveal" style="transition-delay: 300ms">
-      <span class="pm-eyebrow">{{ section.settings.tag }}</span>
+      {%- if section.settings.tag != blank -%}<h2 class="pm-eyebrow">{{ section.settings.tag }}</h2>{%- endif -%}
       {%- comment -%}
         A hard break after the first sentence for a clean two-line read
         -- tied to this exact copy text rather than the field
@@ -64,7 +64,7 @@
     { "type": "image_picker", "id": "image_b", "label": "Small offset image (desktop)" },
     { "type": "image_picker", "id": "image_b_mobile", "label": "Small offset image (mobile)", "info": "Optional — shown below 640px wide. Falls back to the desktop image when not set." },
     { "type": "video", "id": "video_b", "label": "Small offset video", "info": "Uploaded directly (not a pasted link) — overrides the image when set." },
-    { "type": "text", "id": "tag", "label": "Tag", "default": "Made By Hand" },
+    { "type": "text", "id": "tag", "label": "Tag (H2 heading)", "default": "Made By Hand" },
     { "type": "textarea", "id": "copy", "label": "Copy", "default": "Every crystal is set individually, so no two pieces catch the light the same way." },
     { "type": "text", "id": "hover_label", "label": "Hover name", "info": "Shown over both photos when hovered — e.g. the product name." },
     { "type": "text", "id": "link_label", "label": "Link label" },

@@ -255,6 +255,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-cinema { padding: 0 var(--pm-pad); margin-top: clamp(48px, 6vw, 88px); }
 .pm-cinema-media { display: block; position: relative; height: 70vh; height: 70dvh; max-height: 820px; min-height: 320px; overflow: hidden; }
 .pm-cinema-media img, .pm-cinema-media video { width: 100%; height: 100%; object-fit: cover; }
+.pm-cinema-heading { padding-top: 24px; text-align: center; font-size: clamp(24px, 3.4vw, 36px); }
+.pm-cinema-heading + .pm-cinema-caption { padding-top: 8px; }
 .pm-cinema-caption { padding-top: 20px; text-align: center; }
 /* Same look as .pm-product-pair-caption -- name revealed on hover
    rather than shown as a static line below the photo. */
