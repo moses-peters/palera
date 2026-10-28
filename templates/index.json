@@ -42,6 +42,8 @@
           "type": "product",
           "settings": {
             "product": "shopify://products/clutch-micro-bag",
+            "image": "shopify://shop_images/Clutch-Edge-Airpod-Gamboge-Multicolor.jpg",
+            "image_mobile": "shopify://shop_images/Clutch-Edge-Airpod-Gamboge-Multicolor.jpg",
             "video": "shopify://files/videos/copy_566BB479-5B3C-478C-9DA9-7D9329401B21.mov",
             "fallback_label": "",
             "fallback_asset": "pm-drive-product-b.jpg",
