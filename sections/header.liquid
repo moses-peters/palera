@@ -130,6 +130,20 @@
   .site-header .icon { opacity: 0.92; transition: opacity 0.2s ease; }
   .site-header .header-item--icons a:hover .icon,
   .site-header .header-item--icons button:hover .icon { opacity: 1; }
+  /* A touch more breathing room between the header icons. */
+  .site-header .site-nav__link--icon { padding-left: 14px; padding-right: 14px; }
+  /* The wishlist icon comes from the Wishlist Hero app (its own SVG
+     shape, not one of the theme's icon set, so it can't be restyled to
+     match their exact line-art) -- sized and recolored here so it's at
+     least visually consistent in scale/color/opacity with the icons on
+     either side of it, instead of sitting noticeably smaller and off
+     the theme's icon color. !important needed since the app sets
+     font-size via an inline style attribute. */
+  .site-header .wishlist-hero-header-icon { display: inline-flex; align-items: center; opacity: 0.92; transition: opacity 0.2s ease; }
+  .site-header .wishlist-hero-header-icon:hover { opacity: 1; }
+  .site-header .wishlist-hero-header-icon .wlh-svg-Icon {
+    font-size: 26px !important; margin-top: 0 !important; fill: currentColor;
+  }
   .announcement-bar,
   .site-header ~ * .announcement-bar {
     font-size: 10px;
