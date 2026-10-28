@@ -230,7 +230,23 @@ body.pm-drawer-open { overflow: hidden; }
    slide-in drawer as the color picker, with its own content inside. ===== */
 .pm-product .product-block--tab {
   display: inline-block; width: auto; vertical-align: top;
-  margin: 0 28px 20px 0; padding: 0; border: none;
+  margin: 0 24px 20px 0; padding: 0; border: none;
+}
+/* Force the whole trigger row (Shipping / Ask a question / Product
+   Details / Care Information) onto one line instead of wrapping --
+   white-space is inherited, so it's reset back to normal everywhere
+   else in this block list (other blocks' own text still wraps
+   normally), and inside each drawer's own content (.pm-drawer is a
+   fixed-position overlay, but still a descendant here, so it would
+   otherwise inherit nowrap too and refuse to wrap its own paragraphs).
+   overflow-x is a safety net in case the row still doesn't fit even
+   at the shrunk mobile size below -- scrolls instead of clipping. */
+.pm-product [data-product-blocks] {
+  white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.pm-product [data-product-blocks] > .product-block:not(.product-block--tab),
+.pm-product .pm-drawer {
+  white-space: normal;
 }
 /* Breathing room above the row -- plain spacing, no divider line.
    (A border here, on either the trigger or the block before it, kept
@@ -246,6 +262,10 @@ body.pm-drawer-open { overflow: hidden; }
   transition: text-decoration-color 0.2s var(--pm-ease);
 }
 .pm-info-trigger:hover { text-decoration-color: var(--pm-ink); }
+@media (max-width: 480px) {
+  .pm-product .product-block--tab { margin: 0 14px 16px 0; }
+  .pm-info-trigger { font-size: 11px; letter-spacing: 0; }
+}
 /* Plain CSS Grid instead of the theme's .grid/.grid__item classes for
    the Name/Email row inside the Ask a Question drawer -- those rely on
    a negative-margin trick that needs the page's standard padded
