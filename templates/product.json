@@ -97,6 +97,7 @@
             "phone": false
           }
         },
+        "tab_care": {"type": "tab", "settings": {"title": "Care Information", "content": "<p>Each Palera Milano piece is handcrafted in Italy using premium materials, including crystals, leather and brass. To preserve its beauty and quality, we recommend the following care:</p><ul><li><strong>Wear:</strong> Handle with care and avoid impacts, excessive friction or contact with sharp surfaces.</li><li><strong>Protect:</strong> Keep away from water, perfumes, oils, cosmetics and harsh chemicals to preserve the crystals, leather and metal finishes.</li><li><strong>Clean:</strong> Gently wipe with a soft, dry cloth. Avoid abrasive materials, detergents or chemical cleaning products.</li><li><strong>Store:</strong> Keep in its protective dust bag in a cool, dry place, away from direct sunlight, heat and humidity.</li><li><strong>Travel:</strong> Pack separately from sharp or heavy objects to prevent scratches, pressure and damage.</li></ul><p>For additional care or restoration, our Palera Milano Bag Spa service is available to help maintain and refresh your piece. Service fees may apply.</p>"}},
         "share": {
           "type": "share",
           "settings": {}
@@ -121,6 +122,7 @@
         "description",
         "tab",
         "contact",
+        "tab_care",
         "share"
       ],
       "settings": {
