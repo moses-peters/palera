@@ -28,6 +28,16 @@
    one repeating block. */
 .pm-press-spread { padding-top: clamp(28px, 4vw, 48px); padding-bottom: clamp(28px, 4vw, 48px); }
 .pm-press-spread + .pm-press-spread { border-top: 1px solid var(--pm-line); }
+.pm-press-byline { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.pm-press-date {
+  font-family: var(--pm-font-sans);
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--pm-muted);
+  opacity: 0.75;
+}
+.pm-press-date::before { content: "\2014"; margin-right: 10px; }
 @media (min-width: 900px) {
   .pm-about-spread--reverse .pm-about-spread-image { order: 2; }
   .pm-about-spread--reverse .pm-about-spread-copy { order: 1; }

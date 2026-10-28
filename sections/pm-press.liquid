@@ -75,7 +75,7 @@
             {%- endif -%}
           </div>
           <div class="pm-about-spread-copy">
-            <span class="pm-eyebrow">{{ block.settings.eyebrow }}</span>
+            <span class="pm-eyebrow pm-press-byline">{{ block.settings.eyebrow }}{%- if block.settings.date != blank -%}<span class="pm-press-date">{{ block.settings.date }}</span>{%- endif -%}</span>
             <h2 class="pm-serif">{{ block.settings.heading }}</h2>
             {%- if block.settings.link_url != blank -%}
               <p class="pm-about-spread-text"><a href="{{ block.settings.link_url }}" target="_blank" rel="noopener" class="pm-link">{{ block.settings.link_label | default: 'Read the feature →' }}</a></p>
@@ -125,6 +125,7 @@
       "name": "Press mention",
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Publication name" },
+        { "type": "text", "id": "date", "label": "Date", "info": "Shown next to the publication name, e.g. \"March 2024\"." },
         { "type": "text", "id": "heading", "label": "Headline" },
         { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
         { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional — falls back to the desktop image." },
