@@ -537,6 +537,32 @@
     {% include 'wiser_popup' %}
     {{ 'increase-pagespeed-min.js' | asset_url | script_tag }}
     {% render 'fa_translate_custom' %}
+    {% if template == 'index' %}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Palera Milano",
+        "legalName": "Palera Milano Srl",
+        "url": "https://paleramilano.com/",
+        "logo": "https://paleramilano.com/cdn/shop/files/Palera_Milano_Logo_V1.png",
+        "email": "clientservice@paleramilano.com",
+        "foundingDate": "2021",
+        "foundingLocation": { "@type": "Place", "name": "Milan, Italy" },
+        "founder": [
+          { "@type": "Person", "name": "Patrick Touma", "jobTitle": "CEO" },
+          { "@type": "Person", "name": "Valeriia Khrapko", "jobTitle": "Creative Director" }
+        ],
+        "description": "Milanese brand of handcrafted crystal handbags and accessories, made to order in Italy.",
+        "sameAs": [
+          "https://www.instagram.com/paleramilano/",
+          "https://www.tiktok.com/@paleramilano",
+          "https://www.pinterest.com/paleramilano/",
+          "https://www.youtube.com/@paleramilano"
+        ]
+      }
+      </script>
+    {% endif %}
   </head>
 
   <body
