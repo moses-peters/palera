@@ -221,6 +221,7 @@
           "disabled": true,
           "settings": {
             "eyebrow": "Vogue Italia",
+            "date": "",
             "heading": "Opening: the new boutiques shaping Milan retail",
             "link_url": "https://www.vogue.it/gallery/opening-boutique-moda-novita-2025",
             "link_label": "Read the feature →",
@@ -241,6 +242,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Dress Code Magazine",
+            "date": "09/05/2026",
             "heading": "Palera Milano lights up La Rinascente with its timeless elegance",
             "image": "shopify://shop_images/p1.webp",
             "link_url": "https://dresscodemagazine.it/palera-milano-accende-la-rinascente-con-la-sua-eleganza-senza-tempo/",
@@ -266,6 +268,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Fashion United",
+            "date": "14/05/2025",
             "heading": "Palera Milano opens a temporary store at La Rinascente",
             "image": "shopify://shop_images/P124.avif",
             "link_url": "https://fashionunited.it/news/retail/palera-milano-apre-un-temporary-store-alla-rinascente/2025051426996",
@@ -287,6 +290,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Fashion Network",
+            "date": "14/05/2025",
             "heading": "New Openings: Giorgio Armani, Boggi Milano, Harmont & Blaine, Etro, Loewe, Oakley, Palera Milano",
             "image": "shopify://shop_images/d88f.avif",
             "link_url": "https://it.fashionnetwork.com/news/Nuovi-opening-giorgio-armani-boggi-milano-harmont-blaine-etro-loewe-oakley-palera-milano,1730097.html",
@@ -308,6 +312,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Fashion News Magazine",
+            "date": "15/05/2025",
             "heading": "Palera Milano: the perfect ceremony bag unveiled in a temporary store at La Rinascente Milan",
             "image": "shopify://shop_images/esposizione.jpg",
             "link_url": "https://www.fashionnewsmagazine.com/2025/05/15/palera-milano-la-perfetta-borsa-da-cerimonia-svelata-in-un-temporary-store-alla-rinascente-di-milano/",
@@ -329,6 +334,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "TGCOM24",
+            "date": "24/09/2025",
             "heading": "Palera Milano: bags that light up everyday living",
             "image": "shopify://shop_images/pp1.webp",
             "link_url": "https://www.tgcom24.mediaset.it/lifestyle/palera-milano-borse-che-illuminano-il-vivere-quotidiano_103679206-202502k.shtml",
@@ -354,6 +360,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Fashionality",
+            "date": "29/01/2026",
             "heading": "Palera Milano SS26: The Bags That Capture the Essence of Handcrafted Radiance",
             "image": "shopify://shop_images/Roma_BeltU_2.jpg",
             "link_url": "https://www.fashionality.nyc/palera-milano-ss26-the-bags-that-capture-the-essence-of-handcrafted-radiance/",
@@ -375,6 +382,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Hub Style",
+            "date": "04/05/2026",
             "heading": "Palera Milano accelerates global retail expansion",
             "image": "shopify://shop_images/P1653.jpg",
             "link_url": "https://hubstyle.it/2026/05/04/palera-milano-accelera-lespansione-retail-globale/",
@@ -396,6 +404,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Fashion Network",
+            "date": "04/05/2026",
             "heading": "New Openings and Pop-Up Stores: Falconeri, Scholl, Lancôme, Zona20 Milano, Marlù, Palera Milano",
             "image": "shopify://shop_images/P165.jpg",
             "link_url": "https://it.fashionnetwork.com/news/Nuovi-opening-e-pop-up-store-falconeri-scholl-lancome-zona20-milano-marlu-palera-milano,1829140.html",
@@ -417,6 +426,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Beesness",
+            "date": "11/05/2026",
             "heading": "Palera Milano accelerates global retail expansion",
             "image": "shopify://shop_images/d88f.avif",
             "link_url": "https://www.beesness.it/2026/05/11/palera-milano-accelera-lespansione-retail-globale/",
@@ -438,6 +448,7 @@
           "type": "mention",
           "settings": {
             "eyebrow": "Affari Italiani",
+            "date": "13/05/2026",
             "heading": "Palera Milano accelerates global retail expansion",
             "image": "shopify://shop_images/esposizione.jpg",
             "link_url": "https://www.affaritaliani.it/milano/milan-show-biz/paler-milano-accelera-espansione-retail-globale.html",
@@ -460,6 +471,7 @@
           "disabled": true,
           "settings": {
             "eyebrow": "Press",
+            "date": "",
             "heading": "More Coverage",
             "link_url": "",
             "link_label": "Read the feature →",
