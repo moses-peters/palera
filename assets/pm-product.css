@@ -230,7 +230,7 @@ body.pm-drawer-open { overflow: hidden; }
    slide-in drawer as the color picker, with its own content inside. ===== */
 .pm-product .product-block--tab {
   display: inline-block; width: auto; vertical-align: top;
-  margin: 0 24px 20px 0; padding: 0; border: none;
+  margin: 0 16px 20px 0; padding: 0; border: none;
 }
 /* Force the whole trigger row (Shipping / Ask a question / Product
    Details / Care Information) onto one line instead of wrapping --
@@ -239,11 +239,10 @@ body.pm-drawer-open { overflow: hidden; }
    normally), and inside each drawer's own content (.pm-drawer is a
    fixed-position overlay, but still a descendant here, so it would
    otherwise inherit nowrap too and refuse to wrap its own paragraphs).
-   overflow-x is a safety net in case the row still doesn't fit even
-   at the shrunk mobile size below -- scrolls instead of clipping. */
-.pm-product [data-product-blocks] {
-  white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
-}
+   overflow-x: hidden rather than auto/scroll -- no scrollbar ever, the
+   font sizes below are chosen to actually fit instead of relying on
+   one appearing. */
+.pm-product [data-product-blocks] { white-space: nowrap; overflow-x: hidden; }
 .pm-product [data-product-blocks] > .product-block:not(.product-block--tab),
 .pm-product .pm-drawer {
   white-space: normal;
@@ -257,14 +256,14 @@ body.pm-drawer-open { overflow: hidden; }
 }
 .pm-info-trigger {
   background: none; border: none; padding: 0; margin: 0; cursor: pointer;
-  font-family: var(--pm-font-sans); font-size: 13px; letter-spacing: 0.01em; color: var(--pm-ink);
+  font-family: var(--pm-font-sans); font-size: 11px; letter-spacing: 0; color: var(--pm-ink);
   text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--pm-line);
   transition: text-decoration-color 0.2s var(--pm-ease);
 }
 .pm-info-trigger:hover { text-decoration-color: var(--pm-ink); }
 @media (max-width: 480px) {
-  .pm-product .product-block--tab { margin: 0 14px 16px 0; }
-  .pm-info-trigger { font-size: 11px; letter-spacing: 0; }
+  .pm-product .product-block--tab { margin: 0 9px 16px 0; }
+  .pm-info-trigger { font-size: 9.5px; }
 }
 /* Plain CSS Grid instead of the theme's .grid/.grid__item classes for
    the Name/Email row inside the Ask a Question drawer -- those rely on
