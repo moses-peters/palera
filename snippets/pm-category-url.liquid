@@ -1,10 +1,11 @@
 {%- comment -%}
   Maps a Shop-menu category's plain `| handle` output to its real
-  Shopify Collection URL. Can't be derived generically -- Shopify's
-  actual Admin-assigned handle for Accessories doesn't match what
-  `| handle` would produce from the category name ("Accessories" ->
-  "accessories" via the filter, but the real collection handle is
-  "jewelry-and-accessories"). Usage:
+  Shopify Collection URL. Can't be derived generically -- Clutches,
+  Mini Bags and Fits A Phone's real Admin-assigned handles happen to
+  match what `| handle` produces from the category name, but
+  Accessories doesn't ("Accessories" -> "accessories" via the filter,
+  while the real collection handle is "jewelry-and-accessories").
+  Usage:
 
     {%- assign category_handle = category | handle -%}
     <a href="{% render 'pm-category-url', handle: category_handle %}">
