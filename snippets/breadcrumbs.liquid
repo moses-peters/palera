@@ -6,16 +6,43 @@
 
     {% if template.name == 'product' %}
 
-      {% if collection %}
+      {%- comment -%}
+        `collection` is only set when the URL carries collection
+        context (/collections/X/products/Y, or /products/Y?collection=X)
+        -- which most arrivals don't have: direct product links, search
+        results, homepage/recommendation tiles and Google traffic all
+        land on the plain /products/Y URL. Falling back to
+        product.collections (every real Collection this product
+        belongs to) means the breadcrumb -- and its link back to the
+        right category -- still shows up on those, instead of just
+        "Home / Product Name" with nothing in between. Checked in a
+        fixed priority order against the 4 real category Collections
+        (same ones the Shop page filters link to) plus AW27 last, so
+        it's deterministic even if a product sits in more than one.
+      {%- endcomment -%}
+      {%- assign breadcrumb_collection = collection -%}
+      {%- if breadcrumb_collection == nil or breadcrumb_collection.handle == blank -%}
+        {%- assign pm_breadcrumb_handles = 'clutches,jewelry-and-accessories,mini-bags,fits-a-phone,aw27' | split: ',' -%}
+        {%- for pm_handle in pm_breadcrumb_handles -%}
+          {%- if breadcrumb_collection == nil or breadcrumb_collection.handle == blank -%}
+            {%- assign pm_match = product.collections | where: 'handle', pm_handle | first -%}
+            {%- if pm_match -%}
+              {%- assign breadcrumb_collection = pm_match -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {% if breadcrumb_collection %}
         {% if settings.show_breadcrumbs_collection_link %}
           <span class="breadcrumb__divider" aria-hidden="true">/</span>
           <a href="{{ routes.collections_url }}">{{ 'general.search.collections' | t | replace: ':', ''}}</a>
         {% endif %}
 
         <span class="breadcrumb__divider" aria-hidden="true">/</span>
-        {% if collection.handle %}
-          {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
-          {{ collection.title | link_to: url }}
+        {% if breadcrumb_collection.handle %}
+          {% capture url %}{{ routes.collections_url }}/{{ breadcrumb_collection.handle }}{% endcapture %}
+          {{ breadcrumb_collection.title | link_to: url }}
         {% endif %}
       {% endif %}
       <span class="breadcrumb__divider" aria-hidden="true">/</span>
