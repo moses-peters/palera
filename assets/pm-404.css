@@ -55,9 +55,12 @@
 .pm-404-search-btn:hover { opacity: 0.55; }
 
 .pm-404-links {
-  column-gap: 28px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  gap: clamp(14px, 3vw, 28px);
   justify-content: center;
-  row-gap: 14px;
+  overflow-x: auto;
+  padding: 0 4px 4px;
+  -webkit-overflow-scrolling: touch;
 }
+.pm-404-links a { flex: none; white-space: nowrap; }
