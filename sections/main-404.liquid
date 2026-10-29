@@ -32,13 +32,33 @@
 {%- if show_lookbook -%}
   {% render 'pm-lookbook', pdf_url: section.settings.lookbook_pdf_url, heading: section.settings.lookbook_heading, eyebrow: section.settings.lookbook_eyebrow %}
 {%- else -%}
-  <div class="page-width page-content">
-    <header class="section-header section-header--404">
-      <h1 class="section-header__title">{{ 'general.404.title' | t }}</h1>
-      <div class="rte text-spacing">
-        {{ 'general.404.subtext_html' | t: url: routes.root_url }}
-      </div>
-    </header>
+  {{ 'pm-404.css' | asset_url | stylesheet_tag }}
+  <div class="pm-homepage">
+    <section class="pm-404">
+      <p class="pm-eyebrow">404</p>
+      <h1 class="pm-serif pm-404-title">{{ 'general.404.title' | t }}</h1>
+      <p class="pm-404-subtext">The page you were looking for doesn't exist, or the link may be out of date.</p>
+
+      <form action="{{ routes.search_url }}" method="get" role="search" class="pm-404-search">
+        <label for="pm-404-search-input" class="hidden-label">{{ 'general.search.title' | t }}</label>
+        <input type="search" id="pm-404-search-input" name="q" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off">
+        <button type="submit" class="pm-404-search-btn">
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><path d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58ZM54 54 41.94 42"/></svg>
+          <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+        </button>
+      </form>
+
+      <nav class="pm-404-links" aria-label="Shop categories">
+        <a href="{{ routes.root_url }}" class="pm-link">Home</a>
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-link">View All</a>
+        <a href="/collections/aw27" class="pm-link">New In</a>
+        {%- assign pm_404_categories = 'Clutches,Accessories,Mini Bags,Fits A Phone' | split: ',' -%}
+        {%- for category in pm_404_categories -%}
+          {%- assign category_handle = category | handle -%}
+          <a href="{% render 'pm-category-url', handle: category_handle %}" class="pm-link">{{ category }}</a>
+        {%- endfor -%}
+      </nav>
+    </section>
   </div>
 {%- endif -%}
 

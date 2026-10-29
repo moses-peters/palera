@@ -1,0 +1,63 @@
+/* Palera Milano — 404 page content (sections/main-404.liquid,
+   non-lookbook branch). Reuses the pm- design tokens and .pm-eyebrow/
+   .pm-serif/.pm-link classes declared in pm-homepage.css (loaded
+   site-wide via pm-footer.liquid, also loaded explicitly below so it
+   isn't missing on a cold hit to this page before the footer's own
+   copy has loaded). */
+
+.pm-404 {
+  margin: 0 auto;
+  max-width: 560px;
+  padding: clamp(56px, 10vh, 120px) var(--pm-pad, 20px) clamp(40px, 6vh, 72px);
+  text-align: center;
+}
+
+.pm-404-title {
+  font-size: clamp(30px, 5vw, 46px);
+  margin: 10px 0 16px;
+}
+
+.pm-404-subtext {
+  color: var(--pm-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 36px;
+}
+
+.pm-404-search {
+  align-items: center;
+  border-bottom: 1px solid var(--pm-line);
+  display: flex;
+  gap: 10px;
+  margin: 0 auto 36px;
+  max-width: 380px;
+  padding-bottom: 10px;
+}
+.pm-404-search input {
+  background: transparent;
+  border: 0;
+  color: var(--pm-ink);
+  flex: 1;
+  font-family: var(--pm-font-serif);
+  font-size: 17px;
+  text-align: center;
+}
+.pm-404-search input::placeholder { color: var(--pm-muted); font-style: italic; }
+.pm-404-search input:focus { outline: 0; }
+.pm-404-search-btn {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  transition: opacity 0.2s var(--pm-ease, ease);
+}
+.pm-404-search-btn .icon { height: 18px; width: 18px; }
+.pm-404-search-btn path { stroke: var(--pm-ink, #000); }
+.pm-404-search-btn:hover { opacity: 0.55; }
+
+.pm-404-links {
+  column-gap: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 14px;
+}
