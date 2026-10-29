@@ -69,15 +69,16 @@ predictive-search.pm-search .results__search-btn {
    instead decouples it from column width, so the whole 3x2 grid
    reliably fits in one view without scrolling, on any screen size. */
 predictive-search.pm-search .search__results {
-  max-height: 85vh;
+  max-height: 88vh;
   overflow-y: hidden;
 }
 predictive-search.pm-search .predictive-search-results {
-  padding-top: clamp(16px, 3vh, 32px);
+  padding-top: clamp(12px, 2.4vh, 24px);
+  padding-bottom: clamp(10px, 1.8vh, 20px);
 }
 predictive-search.pm-search .results--products ul {
   display: grid;
-  gap: clamp(8px, 1.8vh, 20px) 16px;
+  gap: clamp(6px, 1.4vh, 16px) 16px;
   grid-template-columns: repeat(2, 1fr);
 }
 predictive-search.pm-search .results--products li { padding: 0; }
@@ -86,7 +87,7 @@ predictive-search.pm-search .results--products li a {
   flex-direction: column;
 }
 predictive-search.pm-search .results-products__image {
-  height: clamp(64px, 11vh, 120px);
+  height: clamp(60px, 10vh, 110px);
   max-width: none;
   min-width: 0;
   overflow: hidden;
@@ -104,6 +105,7 @@ predictive-search.pm-search .results-products__image img {
 predictive-search.pm-search .results-products__info {
   margin-left: 0;
   margin-top: 8px;
+  padding-bottom: 4px;
   text-align: center;
   width: 100%;
 }
@@ -136,6 +138,6 @@ predictive-search.pm-search .pm-search-swatches {
     grid-template-columns: repeat(3, 1fr);
   }
   predictive-search.pm-search .results-products__image {
-    height: clamp(90px, 15vh, 170px);
+    height: clamp(80px, 13vh, 150px);
   }
 }
