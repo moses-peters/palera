@@ -56,12 +56,28 @@ predictive-search.pm-search .results__search-btn {
 /* Product results as a grid (2 columns on narrow screens, 3 columns
    -- a 3x2 matrix for the 6 results -- once the dropdown is wide
    enough). .search__results already establishes an inline-size
-   container (see theme.css), so these query against its own width
-   rather than the viewport -- it adapts correctly whether the
-   dropdown is full-width (mobile) or a few hundred px (desktop). */
+   container (see theme.css), so the column-count query below checks
+   its own width rather than the viewport -- it adapts correctly
+   whether the dropdown is full-width (mobile) or a few hundred px
+   (desktop).
+
+   Everything here is sized off vh, not image aspect-ratio, on
+   purpose: an aspect-ratio box grows with the grid COLUMN's width,
+   so on a wide screen with fewer, wider columns the images (and so
+   the whole panel) could end up taller than the viewport, forcing an
+   internal scrollbar. Capping image height to a vh-based clamp
+   instead decouples it from column width, so the whole 3x2 grid
+   reliably fits in one view without scrolling, on any screen size. */
+predictive-search.pm-search .search__results {
+  max-height: 85vh;
+  overflow-y: hidden;
+}
+predictive-search.pm-search .predictive-search-results {
+  padding-top: clamp(16px, 3vh, 32px);
+}
 predictive-search.pm-search .results--products ul {
   display: grid;
-  gap: 24px 18px;
+  gap: clamp(8px, 1.8vh, 20px) 16px;
   grid-template-columns: repeat(2, 1fr);
 }
 predictive-search.pm-search .results--products li { padding: 0; }
@@ -70,8 +86,7 @@ predictive-search.pm-search .results--products li a {
   flex-direction: column;
 }
 predictive-search.pm-search .results-products__image {
-  aspect-ratio: 4 / 5;
-  height: auto;
+  height: clamp(64px, 11vh, 120px);
   max-width: none;
   min-width: 0;
   overflow: hidden;
@@ -88,14 +103,21 @@ predictive-search.pm-search .results-products__image img {
 }
 predictive-search.pm-search .results-products__info {
   margin-left: 0;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 predictive-search.pm-search .results--products span {
+  display: block;
   margin-left: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @container (min-width: 620px) {
   predictive-search.pm-search .results--products ul {
     grid-template-columns: repeat(3, 1fr);
+  }
+  predictive-search.pm-search .results-products__image {
+    height: clamp(90px, 15vh, 170px);
   }
 }
