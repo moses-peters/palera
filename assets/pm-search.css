@@ -52,3 +52,50 @@ predictive-search.pm-search .results__search-btn {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
+/* Product results as a grid (2 columns on narrow screens, 3 columns
+   -- a 3x2 matrix for the 6 results -- once the dropdown is wide
+   enough). .search__results already establishes an inline-size
+   container (see theme.css), so these query against its own width
+   rather than the viewport -- it adapts correctly whether the
+   dropdown is full-width (mobile) or a few hundred px (desktop). */
+predictive-search.pm-search .results--products ul {
+  display: grid;
+  gap: 24px 18px;
+  grid-template-columns: repeat(2, 1fr);
+}
+predictive-search.pm-search .results--products li { padding: 0; }
+predictive-search.pm-search .results--products li a {
+  align-items: flex-start;
+  flex-direction: column;
+}
+predictive-search.pm-search .results-products__image {
+  aspect-ratio: 4 / 5;
+  height: auto;
+  max-width: none;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+predictive-search.pm-search .results-products__image img {
+  height: 100%;
+  inset: 0;
+  object-fit: contain;
+  padding: 6%;
+  position: absolute;
+  width: 100%;
+}
+predictive-search.pm-search .results-products__info {
+  margin-left: 0;
+  margin-top: 10px;
+}
+predictive-search.pm-search .results--products span {
+  margin-left: 0;
+}
+
+@container (min-width: 620px) {
+  predictive-search.pm-search .results--products ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

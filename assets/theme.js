@@ -4073,7 +4073,7 @@ theme.recentlyViewed = {
     getSearchResults(searchTerm) {
       const searchObj = {
         'q': searchTerm,
-        'resources[limit]': 3,
+        'resources[limit]': 6,
         'resources[limit_scope]': 'each',
         'resources[options][unavailable_products]': 'last'
       };
