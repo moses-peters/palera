@@ -562,6 +562,32 @@
         ]
       }
       </script>
+      {%- comment -%}
+        Lets Google show a search box directly under this site's
+        listing in search results (the "sitelinks search box"), and
+        gives AI answer engines a machine-readable way to know the
+        site has on-site search rather than having to guess at a URL
+        pattern. Google only looks for this on the homepage. The
+        {search_term_string} placeholder is schema.org's required
+        literal token, not a Liquid variable -- it stays as-is and is
+        filled in by whatever queries this markup, not by Liquid.
+      {%- endcomment -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": {{ shop.name | json }},
+        "url": "{{ shop.secure_url }}/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "{{ shop.secure_url }}{{ routes.search_url }}?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+      </script>
     {% endif %}
   </head>
 
