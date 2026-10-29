@@ -83,49 +83,51 @@
             <ul role="listbox" aria-labelledby="predictive-search-products">
               {%- for product in predictive_search.resources.products -%}
                 <li role="option">
-                  <a href="{{ product.url }}">
-                    <div class="results-products__image grid__image-ratio">
-                      {% if product.media != blank %}
-                        {%- render 'image-element',
-                          img: product.featured_media,
-                          widths: '160, 320, 480',
-                        -%}
-                      {% endif %}
-                    </div>
-                    <div class="results-products__info">
-                      <span>{{ product.title | split: ' — ' | first }}</span>
-                      {% if settings.predictive_search_show_vendor %}
-                      <span class="grid-product__vendor">{{ product.vendor }}</span>
-                      {% endif %}
-                      {% if settings.predictive_search_show_price %}
-                        {%- if on_sale -%}
-                          <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-                          <span class="grid-product__price--original">{{ product.compare_at_price | money }}</span>
-                          <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-                        {%- endif -%}
-
-                        {%- if product.price_varies -%}
-                          {%- assign price = product.price_min | money -%}
-                          <span class="grid-product__price">{{ 'products.general.from_text_html' | t: price: price }}</span>
-                        {%- else -%}
-                          <span class="grid-product__price">{{ product.price | money }}</span>
-                        {%- endif -%}
-                        {%- if on_sale -%}
-                          {%- if settings.product_save_amount -%}
-                            {%- if settings.product_save_type == 'dollar' -%}
-                              {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money }}{%- endcapture -%}
-                            {%- else -%}
-                              {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
-                            {%- endif -%}
-                            <span class="grid-product__price--savings">
-                              {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
-                            </span>
+                  <div class="pm-search-result-tile">
+                    <a href="{{ product.url }}">
+                      <div class="results-products__image grid__image-ratio">
+                        {% if product.media != blank %}
+                          {%- render 'image-element',
+                            img: product.featured_media,
+                            widths: '160, 320, 480',
+                          -%}
+                        {% endif %}
+                      </div>
+                      <div class="results-products__info">
+                        <span>{{ product.title | split: ' — ' | first }}</span>
+                        {% if settings.predictive_search_show_vendor %}
+                        <span class="grid-product__vendor">{{ product.vendor }}</span>
+                        {% endif %}
+                        {% if settings.predictive_search_show_price %}
+                          {%- if on_sale -%}
+                            <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                            <span class="grid-product__price--original">{{ product.compare_at_price | money }}</span>
+                            <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
                           {%- endif -%}
-                        {%- endif -%}
-                      {% endif %}
-                    </div>
 
-                  </a>
+                          {%- if product.price_varies -%}
+                            {%- assign price = product.price_min | money -%}
+                            <span class="grid-product__price">{{ 'products.general.from_text_html' | t: price: price }}</span>
+                          {%- else -%}
+                            <span class="grid-product__price">{{ product.price | money }}</span>
+                          {%- endif -%}
+                          {%- if on_sale -%}
+                            {%- if settings.product_save_amount -%}
+                              {%- if settings.product_save_type == 'dollar' -%}
+                                {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money }}{%- endcapture -%}
+                              {%- else -%}
+                                {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
+                              {%- endif -%}
+                              <span class="grid-product__price--savings">
+                                {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                              </span>
+                            {%- endif -%}
+                          {%- endif -%}
+                        {% endif %}
+                      </div>
+                    </a>
+                    {%- render 'pm-search-swatches', product: product -%}
+                  </div>
                 </li>
               {%- endfor -%}
             </ul>

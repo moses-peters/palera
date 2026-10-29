@@ -1,0 +1,87 @@
+{%- comment -%}
+  Renders the same color-swatches overlay used on the Shop grid
+  (sections/pm-collection-grid.liquid), for a single predictive search
+  result. Unlike the grid, search shows one tile per matched product
+  rather than splitting a color-variant product into one tile per
+  color, so "other colors" here means every color besides the one
+  this particular result is already showing.
+
+  Most colors in this catalog are separate products sharing a title
+  suffix ("Maxi Roma — Black" / "Maxi Roma — White"), not real
+  Shopify variants, so siblings for that case are found by scanning
+  collections.all.products for a matching base title -- same approach
+  the grid uses, just swapping its `collection.products` scope (the
+  grid only has one collection in play) for the whole catalog, since
+  a search result has no collection context to search within.
+
+  Usage: {% render 'pm-search-swatches', product: product %}
+{%- endcomment -%}
+{%- liquid
+  assign color_option = nil
+  for option in product.options_with_values
+    assign option_name_downcase = option.name | downcase
+    if option_name_downcase == 'color' or option_name_downcase == 'colour'
+      assign color_option = option
+    endif
+  endfor
+-%}
+
+{%- assign swatch_siblings = '' -%}
+{%- if color_option -%}
+  {%- liquid
+    assign color_values = color_option.values
+    assign color_option_key = 'option' | append: color_option.position
+    assign current_variant = product.selected_or_first_available_variant
+    assign current_color = current_variant[color_option_key]
+  -%}
+  {%- for other_value in color_values -%}
+    {%- unless other_value == current_color -%}
+      {%- assign other_variant = product.variants | where: color_option_key, other_value | first -%}
+      {%- assign swatch_css = other_value | split: ' ' | last | handle -%}
+      {%- capture swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: other_value %}{%- endcapture -%}
+      {%- assign swatch_image = swatch_image | strip -%}
+      {%- if swatch_image == blank and other_variant.featured_image -%}
+        {%- assign swatch_image = other_variant.featured_image | image_url: width: 400 -%}
+      {%- endif -%}
+      {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: product.url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
+      {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- assign base_title = product.title | split: ' — ' | first -%}
+  {%- for other_product in collections.all.products -%}
+    {%- if other_product.id != product.id -%}
+      {%- assign other_base = other_product.title | split: ' — ' | first -%}
+      {%- if other_base == base_title -%}
+        {%- assign other_color_name = other_product.title | split: ' — ' | last -%}
+        {%- assign swatch_css = other_color_name | split: ' ' | last | handle -%}
+        {%- capture swatch_image -%}{% render 'pm-crystal-swatch-url', color_value: other_color_name %}{%- endcapture -%}
+        {%- assign swatch_image = swatch_image | strip -%}
+        {%- if swatch_image == blank and other_product.featured_image -%}
+          {%- assign swatch_image = other_product.featured_image | image_url: width: 400 -%}
+        {%- endif -%}
+        {%- assign sibling_entry = other_color_name | append: '::' | append: swatch_css | append: '::' | append: other_product.url | append: '::' | append: swatch_image -%}
+        {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- assign swatch_list = swatch_siblings | split: ';;' -%}
+{%- assign swatch_visible = swatch_list | slice: 0, 4 -%}
+{%- assign swatch_overflow = swatch_list.size | minus: swatch_visible.size -%}
+
+{%- if swatch_visible.size > 0 -%}
+  <div class="pm-plp-swatches pm-search-swatches">
+    {%- for entry in swatch_visible -%}
+      {%- assign swatch_parts = entry | split: '::' -%}
+      {%- assign swatch_img = swatch_parts[3] -%}
+      {%- assign swatch_is_curated = false -%}
+      {%- if swatch_img contains 'pm-swatch-' -%}{%- assign swatch_is_curated = true -%}{%- endif -%}
+      <a href="{{ swatch_parts[2] }}" class="pm-plp-swatch" style="background-color: {{ swatch_parts[1] }};{% if swatch_img != blank %} background-image: url({{ swatch_img }});{% endif %}{% if swatch_is_curated %} background-size: cover;{% endif %}" title="{{ swatch_parts[0] | escape }}" aria-label="{{ swatch_parts[0] | escape }}"></a>
+    {%- endfor -%}
+    {%- if swatch_overflow > 0 -%}
+      <span class="pm-plp-swatch-more">+{{ swatch_overflow }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

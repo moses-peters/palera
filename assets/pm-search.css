@@ -104,6 +104,8 @@ predictive-search.pm-search .results-products__image img {
 predictive-search.pm-search .results-products__info {
   margin-left: 0;
   margin-top: 8px;
+  text-align: center;
+  width: 100%;
 }
 predictive-search.pm-search .results--products span {
   display: block;
@@ -111,6 +113,22 @@ predictive-search.pm-search .results--products span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Color swatches (same markup/classes as the Shop grid, see
+   snippets/pm-search-swatches.liquid) overlaid on the product photo.
+   .pm-search-result-tile is the positioned ancestor .pm-plp-swatches
+   needs -- it isn't .pm-plp-tile here, so the grid's hover-to-reveal
+   rule never matches; shown always instead, since hover isn't a
+   reliable way to discover them in a quick search dropdown,
+   especially on mobile. !important guards against pm-homepage.css's
+   opacity:0 default winning the cascade on load order alone (both
+   are single-class selectors, so source order would otherwise
+   decide it, and this snippet can load before or after footer's). */
+predictive-search.pm-search .pm-search-result-tile { position: relative; }
+predictive-search.pm-search .pm-search-swatches {
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 @container (min-width: 620px) {
