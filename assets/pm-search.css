@@ -1,0 +1,188 @@
+/* Palera Milano — predictive search redesign. Scoped under .pm-search so
+   it only touches the <predictive-search> component (header + /search
+   page), reusing the pm- design tokens declared in pm-homepage.css
+   (loaded site-wide via pm-footer.liquid) rather than redefining them. */
+
+predictive-search.pm-search .predictive__screen {
+  background: oklch(0.19 0 0 / 0.35);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.3s var(--pm-ease, ease);
+}
+predictive-search.pm-search.is-active .predictive__screen { opacity: 1; }
+
+predictive-search.pm-search form { font-family: var(--pm-font-sans); }
+
+.pm-search-eyebrow {
+  display: none;
+  margin-right: 18px;
+  white-space: nowrap;
+}
+predictive-search.pm-search.is-active .pm-search-eyebrow {
+  display: flex;
+  align-items: center;
+}
+
+predictive-search.pm-search .search__input-wrap { flex: 1; }
+
+predictive-search.pm-search .search__input {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--pm-line, #ddd);
+  border-radius: 0;
+  color: var(--pm-ink, #111);
+  font-family: var(--pm-font-serif, inherit);
+  font-size: 19px;
+  height: 46px;
+  padding: 0 34px 10px 2px;
+  transition: border-color 0.25s var(--pm-ease, ease);
+}
+predictive-search.pm-search .search__input::placeholder {
+  color: var(--pm-muted, #888);
+  font-style: italic;
+}
+predictive-search.pm-search .search__input:focus {
+  border-color: var(--pm-ink, #111);
+  outline: 0;
+}
+
+predictive-search.pm-search .btn--search { right: 2px; }
+predictive-search.pm-search .btn--search .icon,
+predictive-search.pm-search .btn--close-search .icon { height: 20px; width: 20px; }
+predictive-search.pm-search .btn--search path,
+predictive-search.pm-search .btn--close-search path { stroke: var(--pm-ink, #111) !important; }
+predictive-search.pm-search .btn--search,
+predictive-search.pm-search .btn--close-search {
+  transition: opacity 0.25s var(--pm-ease, ease);
+}
+predictive-search.pm-search .btn--search:hover,
+predictive-search.pm-search .btn--close-search:hover { opacity: 0.55; }
+
+/* Quick-link shortcuts (View All / New In / the 4 categories) -- shown
+   above the results panel at all times, so search doubles as a fast
+   way into the shop categories even before typing anything. */
+.pm-search-quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 16px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s var(--pm-ease, ease), margin-top 0.3s var(--pm-ease, ease);
+  width: 100%;
+}
+predictive-search.pm-search.is-active .pm-search-quicklinks { max-height: 60px; }
+.pm-search-quicklink {
+  color: var(--pm-muted, #888);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  padding-bottom: 4px;
+  text-transform: uppercase;
+  transition: color 0.2s var(--pm-ease, ease), border-color 0.2s var(--pm-ease, ease);
+  border-bottom: 1px solid transparent;
+}
+.pm-search-quicklink:hover {
+  border-bottom-color: var(--pm-ink, #111);
+  color: var(--pm-ink, #111);
+}
+
+/* Results panel */
+predictive-search.pm-search .search__results {
+  background: var(--pm-paper, #fff);
+  box-shadow: 0 20px 50px oklch(0.19 0 0 / 0.1);
+}
+
+predictive-search.pm-search .predictive-search-results { padding: 28px 0 0; }
+
+predictive-search.pm-search .predictive-search-results h3 {
+  border: 0;
+  color: var(--pm-muted, #888);
+  font-family: var(--pm-font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  margin-bottom: 14px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+}
+
+predictive-search.pm-search .results--queries span { font-weight: 400; }
+
+predictive-search.pm-search .results li { border-radius: 2px; }
+
+predictive-search.pm-search .results--products ul {
+  display: grid;
+  gap: 18px 16px;
+  grid-template-columns: repeat(2, 1fr);
+}
+predictive-search.pm-search .results--products li { padding: 0; }
+predictive-search.pm-search .results--products li a {
+  align-items: flex-start;
+  flex-direction: column;
+}
+predictive-search.pm-search .results-products__image {
+  aspect-ratio: 4 / 5;
+  height: auto;
+  max-width: none;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+predictive-search.pm-search .results-products__image img {
+  height: 100%;
+  object-fit: contain;
+  padding: 6%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}
+predictive-search.pm-search .results-products__info {
+  margin-left: 0;
+  margin-top: 10px;
+}
+predictive-search.pm-search .results--products span {
+  color: var(--pm-ink, #111);
+  font-size: 13px;
+  line-height: 1.4;
+  margin-left: 0;
+}
+predictive-search.pm-search .grid-product__price,
+predictive-search.pm-search .grid-product__vendor {
+  color: var(--pm-muted, #888);
+  font-size: 12px;
+}
+
+predictive-search.pm-search .results--pages li a,
+predictive-search.pm-search .results--articles li a,
+predictive-search.pm-search .results--collections li a {
+  font-family: var(--pm-font-serif, inherit);
+}
+
+predictive-search.pm-search .predictive-search__no-results {
+  color: var(--pm-muted, #888);
+  font-size: 14px;
+  padding: 10px 0 0;
+}
+
+predictive-search.pm-search .results__search-btn {
+  background: var(--pm-ink, #111);
+  border: 0;
+  color: var(--pm-paper, #fff);
+  font-size: 11px;
+  gap: 8px;
+  justify-content: center;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+predictive-search.pm-search .results__search-btn:hover { background: var(--pm-ink, #111); opacity: 0.85; }
+predictive-search.pm-search .results__search-btn path { stroke: var(--pm-paper, #fff); }
+
+@media only screen and (min-width: 769px) {
+  predictive-search.pm-search .results--products ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
