@@ -3,6 +3,23 @@
    pm-homepage.css declares, loaded site-wide via pm-footer.liquid).
    Layout/position/sizing are untouched -- cosmetic only. */
 
+/* Frosted-glass backdrop instead of the stock flat grey scrim
+   (--colorModalBg, #e6e6e6) -- a light, mostly-transparent wash so
+   the page reads as softly blurred behind the panel rather than
+   fully hidden. Starts at opacity 0 and fades in with .is-active
+   (same class the component already toggles) instead of just
+   display:none -> block, so it doesn't pop in abruptly. */
+predictive-search.pm-search .predictive__screen {
+  background: oklch(1 0 0 / 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s var(--pm-ease, ease);
+}
+predictive-search.pm-search.is-active .predictive__screen {
+  opacity: 1;
+}
+
 predictive-search.pm-search .search__input {
   color: var(--pm-ink, #000);
   font-family: var(--pm-font-serif, inherit);
