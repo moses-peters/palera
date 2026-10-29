@@ -1,0 +1,54 @@
+/* Palera Milano — aligns the stock predictive search dropdown's
+   colors/typography with the custom pm- pages (same tokens
+   pm-homepage.css declares, loaded site-wide via pm-footer.liquid).
+   Layout/position/sizing are untouched -- cosmetic only. */
+
+predictive-search.pm-search .search__input {
+  color: var(--pm-ink, #000);
+  font-family: var(--pm-font-serif, inherit);
+}
+predictive-search.pm-search .search__input::placeholder {
+  color: var(--pm-muted, #767676);
+  font-style: italic;
+}
+
+predictive-search.pm-search .btn--search path,
+predictive-search.pm-search .btn--close-search path {
+  stroke: var(--pm-ink, #000) !important;
+}
+
+predictive-search.pm-search .predictive-search-results h3 {
+  border-color: var(--pm-line, #e8e8e1);
+  color: var(--pm-muted, #767676);
+  font-family: var(--pm-font-sans, inherit);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+predictive-search.pm-search .results--pages li a,
+predictive-search.pm-search .results--articles li a,
+predictive-search.pm-search .results--collections li a,
+predictive-search.pm-search .results--products span {
+  color: var(--pm-ink, #000);
+  font-family: var(--pm-font-serif, inherit);
+}
+
+predictive-search.pm-search .grid-product__price,
+predictive-search.pm-search .grid-product__vendor {
+  color: var(--pm-muted, #767676);
+  font-family: var(--pm-font-sans, inherit);
+}
+
+predictive-search.pm-search .predictive-search__no-results {
+  color: var(--pm-muted, #767676);
+  font-family: var(--pm-font-serif, inherit);
+}
+
+predictive-search.pm-search .results__search-btn {
+  border-color: var(--pm-ink, #000);
+  font-family: var(--pm-font-sans, inherit);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

@@ -7,7 +7,9 @@
   endif
 -%}
 
-<predictive-search data-context="{{ context }}" data-enabled="{{ settings.predictive_search_enabled }}" data-dark="{{ dark_search_bg }}">
+{{ 'pm-search.css' | asset_url | stylesheet_tag }}
+
+<predictive-search class="pm-search" data-context="{{ context }}" data-enabled="{{ settings.predictive_search_enabled }}" data-dark="{{ dark_search_bg }}">
   <div class="predictive__screen" data-screen></div>
   <form action="{{ routes.search_url }}" method="get" role="search">
     <label for="Search" class="hidden-label">Search</label>
