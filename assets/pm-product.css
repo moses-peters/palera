@@ -25,7 +25,7 @@
 .pm-product .product__thumb-item.is-active .product__thumb,
 .pm-product .product__thumb.is-active { border-color: var(--pm-ink); }
 .pm-product .product-slideshow .image-wrap,
-.pm-product .product-main-slide { background: var(--pm-sable); }
+.pm-product .product-main-slide { background: var(--pm-paper); }
 
 /* Stock thumbnail column is a bare 60-80px strip with its scrollbar
    forced invisible (scrollbar-width:none) and no arrows by default —
