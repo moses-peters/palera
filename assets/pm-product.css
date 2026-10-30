@@ -27,6 +27,25 @@
 .pm-product .product-slideshow .image-wrap,
 .pm-product .product-main-slide { background: var(--pm-paper); }
 
+/* Before Flickity (the gallery's JS carousel) initializes, the stock
+   theme CSS (.product-main-slide:first-child{display:block}) shows
+   whichever photo happens to be first in the product's media order --
+   not whichever one actually matches the variant/color linked to from
+   the Shop grid or search (snippets/media.liquid already tags the
+   right one with the "starting-slide" class server-side; the CSS
+   fallback just never looked at it). That's the flash of the wrong
+   color for about a second on every direct link to a non-default
+   variant, until JS catches up and corrects it. Showing .starting-slide
+   instead fixes that from the very first paint. The :has() guard keeps
+   the original :first-child fallback for the rare case a product has
+   no media Liquid can resolve a featured image for at all (nothing
+   would get the starting-slide class then, and this must not result
+   in an empty gallery). */
+.pm-product .product-main-slide.starting-slide { display: block; }
+.pm-product .product-slideshow:has(.starting-slide) .product-main-slide:first-child:not(.starting-slide) {
+  display: none;
+}
+
 /* Stock thumbnail column is a bare 60-80px strip with its scrollbar
    forced invisible (scrollbar-width:none) and no arrows by default —
    nothing told the customer there was more to scroll to. Widen it a
