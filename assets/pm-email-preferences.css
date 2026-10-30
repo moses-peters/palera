@@ -1,0 +1,28 @@
+/* Palera Milano — email-preferences confirmation page
+   (sections/pm-email-preferences.liquid). Static content only: no
+   form, no script -- see that file's comment for why. */
+
+.pm-email-pref {
+  margin: 0 auto;
+  max-width: 480px;
+  padding: clamp(72px, 12vh, 140px) var(--pm-pad, 20px) clamp(56px, 8vh, 96px);
+  text-align: center;
+}
+
+.pm-email-pref-title {
+  font-size: clamp(28px, 4.5vw, 40px);
+  margin: 0 0 20px;
+}
+
+.pm-email-pref-body {
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 16px;
+}
+
+.pm-email-pref-note {
+  color: var(--pm-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 32px;
+}

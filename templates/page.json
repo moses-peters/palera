@@ -523,12 +523,17 @@
         "eyebrow": "Press",
         "heading": "As Seen In"
       }
+    },
+    "pm_email_preferences": {
+      "type": "pm-email-preferences",
+      "settings": {}
     }
   },
   "order": [
     "main",
     "1726698142b015c0cf",
     "pm_about_Ch6rqK",
-    "pm_press_Rh8dKz"
+    "pm_press_Rh8dKz",
+    "pm_email_preferences"
   ]
 }

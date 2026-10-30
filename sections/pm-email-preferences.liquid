@@ -1,0 +1,33 @@
+{%- comment -%}
+  Lives on the same shared default page template as "PM: About" and
+  "PM: Press" (pm-about.liquid / pm-press.liquid) -- the page.handle
+  == 'email-preferences' check below is what keeps this section's
+  content scoped to just that one page.
+
+  Purely a static confirmation screen: customers land here after
+  clicking "Disable tracking" in a Klaviyo email, and the click itself
+  is already recorded by Klaviyo before they ever reach this page.
+  Deliberately has no form, no button that submits anything, no
+  script, and no tracking of any kind -- just a plain visual
+  confirmation.
+{%- endcomment -%}
+{%- if page.handle == 'email-preferences' -%}
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+{{ 'pm-email-preferences.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage">
+  <section class="pm-email-pref">
+    <h1 class="pm-serif pm-email-pref-title">Preference saved</h1>
+    <p class="pm-email-pref-body">Thank you, your preference has been recorded. You will continue to receive all our communications, but without any tracking of opens or clicked links.</p>
+    <p class="pm-email-pref-note">You can change this choice at any time by contacting us.</p>
+    <a href="/" class="pm-link">Return to the shop</a>
+  </section>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "PM: Email preferences",
+  "tag": "section"
+}
+{% endschema %}
