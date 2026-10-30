@@ -1,8 +1,16 @@
 {%- comment -%}
   Lives on the same shared default page template as "PM: About" and
   "PM: Press" (pm-about.liquid / pm-press.liquid) -- the page.handle
-  == 'email-preferences' check below is what keeps this section's
-  content scoped to just that one page.
+  check below is what keeps this section's content scoped to just
+  that one page.
+
+  The page's real handle turned out to be
+  "email-preferences-tracking-off", not "email-preferences" -- Admin
+  doesn't support a real ?query=string in a page handle, so setting it
+  to "email-preferences?tracking=off" just got slugified into one
+  handle, folding "?tracking=off" into the path itself rather than
+  making it an actual URL query parameter. `contains` instead of an
+  exact match keeps this working even if the handle changes again.
 
   Purely a static confirmation screen: customers land here after
   clicking "Disable tracking" in a Klaviyo email, and the click itself
@@ -11,7 +19,7 @@
   script, and no tracking of any kind -- just a plain visual
   confirmation.
 {%- endcomment -%}
-{%- if page.handle == 'email-preferences' -%}
+{%- if page.handle contains 'email-preferences' -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 {{ 'pm-email-preferences.css' | asset_url | stylesheet_tag }}
 

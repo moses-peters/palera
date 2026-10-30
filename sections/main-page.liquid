@@ -9,8 +9,16 @@
   dedicated section of its own and needs something to actually show
   its title/body content), and without this guard it would stack a
   second, empty title header above each of those pages' own layout.
+
+  The email-preferences page's real handle turned out to be
+  "email-preferences-tracking-off", not "email-preferences" -- Admin
+  doesn't support a real ?query=string in a page handle, so setting it
+  to "email-preferences?tracking=off" just got slugified into one
+  handle, with "?tracking=off" folded into the path itself rather than
+  becoming an actual URL query parameter. `contains` instead of an
+  exact match keeps this working even if the handle changes again.
 {%- endcomment -%}
-{%- unless page.handle == 'about-us' or page.handle == 'press' or page.handle == 'email-preferences' -%}
+{%- unless page.handle == 'about-us' or page.handle == 'press' or page.handle contains 'email-preferences' -%}
   {{ 'pm-page.css' | asset_url | stylesheet_tag }}
   <div class="page-width page-width--narrow page-content">
     {%- render 'breadcrumbs' -%}
