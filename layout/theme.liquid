@@ -6,6 +6,23 @@
   <head>
  {%- render 'ecom_header' -%}
 
+    {%- comment -%}
+      Hero/featured product image, preloaded as early as possible so
+      the browser starts fetching it in parallel with everything else
+      instead of only discovering it once HTML parsing reaches that
+      point in the body (which, on this page, is after a fair amount
+      of head content). 900px is a middling pick among the widths the
+      gallery itself offers (360/540/720/900/1080 -- see media.liquid)
+      -- not a guaranteed byte-for-byte match to whichever one the
+      browser ends up picking for the real <img>, but a reasonable
+      one for how wide the hero photo actually renders at on both
+      desktop and mobile, and still a net win even if they differ:
+      the fetch starts this much earlier either way.
+    {%- endcomment -%}
+    {%- if request.page_type == 'product' and product.selected_or_first_available_variant.featured_image -%}
+      <link rel="preload" as="image" href="{{ product.selected_or_first_available_variant.featured_image | image_url: width: 900 }}">
+    {%- endif -%}
+
     <!-- Google Tag Manager -->
     <script>
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -15,11 +32,6 @@
       })(window,document,'script','dataLayer','GTM-KBJHBJRT');
     </script>
     <!-- End Google Tag Manager -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -650,6 +662,21 @@
         </image-element>
       </div>
     </template>
+    {%- comment -%}
+      Owl Carousel is only used for .kg-product-image-slider
+      (snippets/product-grid-item.liquid) -- loaded here, right before
+      the one script that uses it, instead of blocking <head> on every
+      page (most of which never touch this element). jQuery isn't
+      loaded alongside it: snippets/wiser.liquid (included earlier,
+      globally) already carries its own bundled jQuery as a fallback
+      ("if (!window.jQuery)"), which by this point in the page has
+      already self-loaded if nothing else provided one -- so it's
+      already available here for Owl Carousel to attach itself to,
+      with no separate jQuery fetch needed.
+    {%- endcomment -%}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
            <script>
   $(function() {
   // Owl Carousel
