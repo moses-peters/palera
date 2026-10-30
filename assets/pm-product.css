@@ -40,9 +40,23 @@
    the original :first-child fallback for the rare case a product has
    no media Liquid can resolve a featured image for at all (nothing
    would get the starting-slide class then, and this must not result
-   in an empty gallery). */
-.pm-product .product-main-slide.starting-slide { display: block; }
-.pm-product .product-slideshow:has(.starting-slide) .product-main-slide:first-child:not(.starting-slide) {
+   in an empty gallery).
+
+   Both rules are scoped to :not(.flickity-enabled) -- once Flickity
+   actually initializes (adds that class), it takes over positioning
+   every slide itself via .flickity-slider .product-main-slide{display:
+   block} (theme.js's updateVariantImage() calls flickity.goToSlide()
+   when a color swatch is clicked). An earlier version of this left
+   that out: these two selectors have far higher specificity than
+   Flickity's own rule, so they kept permanently forcing the
+   :first-child slide to display:none even once Flickity tried to
+   bring it back into view for a swatch click -- clicking back to
+   whichever color was first in the product's media order silently did
+   nothing. This only needs to apply for that pre-JS instant, so
+   stepping aside once flickity-enabled is present fixes that without
+   losing the original fix. */
+.pm-product .product-slideshow:not(.flickity-enabled) .product-main-slide.starting-slide { display: block; }
+.pm-product .product-slideshow:not(.flickity-enabled):has(.starting-slide) .product-main-slide:first-child:not(.starting-slide) {
   display: none;
 }
 
