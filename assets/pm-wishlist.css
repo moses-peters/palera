@@ -66,68 +66,49 @@
    ancestor, so the default absolute top/left from .pm-wishlist-btn
    above is all any of them need -- no per-system override here. */
 
-/* Product page placement: a small checker directly under Add to Cart,
-   not floating over the gallery (the gallery already has its own color
-   swatches/zoom affordances, which a floating heart would compete
-   with). Plain checkbox metaphor rather than the card heart, since this
-   sits right next to the cart button as a secondary, calmer action. */
+/* Product page placement: a small heart-toggle checker directly under
+   Add to Cart, not floating over the gallery (the gallery already has
+   its own color swatches/zoom affordances, which a floating heart
+   would compete with). On mobile it sits left, inline with its own
+   width; on desktop it's centered under the (full-width) Add to Cart
+   button, same width, so the two read as one calm stacked pair rather
+   than a button with a stray label hanging off one side. */
 .pm-product .pm-wishlist-btn--checkbox {
   all: unset;
   box-sizing: border-box;
   position: static;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  justify-content: center;
+  gap: 8px;
   margin-top: 12px;
   cursor: pointer;
   color: var(--pm-muted);
   font-family: var(--pm-font-sans);
   font-size: 11px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: color 0.2s var(--pm-ease);
 }
 .pm-product .pm-wishlist-btn--checkbox:hover {
   color: var(--pm-ink);
 }
-.pm-wishlist-checkbox-box {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px; height: 16px;
-  border: 1px solid var(--pm-muted);
-  transition: background-color 0.2s var(--pm-ease), border-color 0.2s var(--pm-ease);
+.pm-product .pm-wishlist-btn--checkbox .pm-wishlist-icon {
+  width: 15px; height: 15px;
 }
-.pm-wishlist-btn--checkbox:hover .pm-wishlist-checkbox-box {
-  border-color: var(--pm-ink);
-}
-.pm-wishlist-checkbox-tick {
-  width: 11px; height: 11px;
-  color: var(--pm-paper);
-  opacity: 0;
-  transform: scale(0.7);
-  transition: opacity 0.15s var(--pm-ease), transform 0.15s var(--pm-ease);
-}
-.pm-wishlist-btn--checkbox.is-active {
+.pm-product .pm-wishlist-btn--checkbox.is-active {
   color: var(--pm-ink);
 }
-.pm-wishlist-btn--checkbox.is-active .pm-wishlist-checkbox-box {
-  background: var(--pm-ink);
-  border-color: var(--pm-ink);
+.pm-product .pm-wishlist-btn--checkbox.is-active .pm-wishlist-icon {
+  fill: var(--pm-ink);
 }
-.pm-wishlist-btn--checkbox.is-active .pm-wishlist-checkbox-tick {
-  opacity: 1;
-  transform: scale(1);
-}
-.pm-wishlist-btn--checkbox:focus-visible {
+.pm-product .pm-wishlist-btn--checkbox:focus-visible {
   outline: 1.5px solid var(--pm-ink);
   outline-offset: 3px;
 }
-@media (prefers-reduced-motion: reduce) {
-  .pm-wishlist-checkbox-box,
-  .pm-wishlist-checkbox-tick {
-    transition: none;
+@media (min-width: 769px) {
+  .pm-product .pm-wishlist-btn--checkbox {
+    width: 100%;
   }
 }
 
