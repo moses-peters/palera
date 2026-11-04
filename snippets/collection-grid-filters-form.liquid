@@ -46,8 +46,11 @@
                 assign is_color = false
                 assign swatch_file_extension = 'png'
                 if enable_color_swatches
+                    assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
                     assign downcased_label = filter.label | downcase
-                    if downcased_label contains 'color' or downcased_label contains 'colour' or downcased_label contains 'colore'
+                    if downcased_label contains swatch_trigger
+                    assign is_color = true
+                    elsif swatch_trigger == 'color' and downcased_label contains 'colour'
                     assign is_color = true
                     endif
                 endif

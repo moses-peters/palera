@@ -21,18 +21,9 @@
     <a href="{{ routes.collections_url | default: '/collections' }}" class="site-nav__link site-nav__link--underline">Shop</a>
   </li>
   <li class="site-nav__item site-nav__expanded-item">
-    {%- comment -%}
-      pages['about-us'].url first, not the setting -- it's resolved
-      fresh for the current request's locale (and any translated
-      handle), where a hardcoded/picked path like "/pages/about-us"
-      stays pinned to whatever locale it was saved under and opens the
-      wrong page when browsing the storefront in Italian. The setting
-      is still honored when no such page exists, for merchants who
-      deliberately point "About Us" somewhere else.
-    {%- endcomment -%}
-    <a href="{{ pages['about-us'].url | default: about_us_url | default: '/pages/about-us' }}" class="site-nav__link site-nav__link--underline">About Us</a>
+    <a href="{{ about_us_url | default: '/pages/about-us' }}" class="site-nav__link site-nav__link--underline">About Us</a>
   </li>
   <li class="site-nav__item site-nav__expanded-item">
-    <a href="{{ pages['press'].url | default: press_url | default: '/pages/press' }}" class="site-nav__link site-nav__link--underline">Seen In</a>
+    <a href="{{ press_url | default: '/pages/press' }}" class="site-nav__link site-nav__link--underline">Seen In</a>
   </li>
 </ul>

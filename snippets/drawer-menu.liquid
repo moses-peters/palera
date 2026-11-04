@@ -158,15 +158,10 @@
           <a href="{{ routes.root_url }}" class="mobile-nav__link mobile-nav__link--top-level">Home</a>
         </li>
         <li class="mobile-nav__item appear-animation appear-delay-4">
-          {%- comment -%}
-            Same locale-aware fix as snippets/header-desktop-nav.liquid --
-            pages['about-us'].url resolves fresh per request (current
-            locale, translated handle); the setting's saved path doesn't.
-          {%- endcomment -%}
-          <a href="{{ pages['about-us'].url | default: section.settings.about_us_url | default: '/pages/about-us' }}" class="mobile-nav__link mobile-nav__link--top-level">About Us</a>
+          <a href="{{ section.settings.about_us_url | default: '/pages/about-us' }}" class="mobile-nav__link mobile-nav__link--top-level">About Us</a>
         </li>
         <li class="mobile-nav__item appear-animation appear-delay-5">
-          <a href="{{ pages['press'].url | default: section.settings.press_url | default: '/pages/press' }}" class="mobile-nav__link mobile-nav__link--top-level">Seen In</a>
+          <a href="{{ section.settings.press_url | default: '/pages/press' }}" class="mobile-nav__link mobile-nav__link--top-level">Seen In</a>
         </li>
         {%- assign animation_row = 5 -%}
 
@@ -206,11 +201,6 @@
 
       {%- assign animation_row = animation_row | plus: 1 -%}
       <ul class="mobile-nav__social appear-animation appear-delay-{{ animation_row }}">
-        {%- if shop.enabled_locales.size > 1 -%}
-          <li class="mobile-nav__social-item mobile-nav__social-item--lang">
-            {%- render 'pm-language-switcher', context: 'drawer' -%}
-          </li>
-        {%- endif -%}
         {%- if settings.social_instagram_link != blank -%}
           <li class="mobile-nav__social-item">
             <a target="_blank" rel="noopener" href="{{ settings.social_instagram_link }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Instagram' }}">
@@ -292,21 +282,6 @@
           </li>
         {%- endif -%}
       </ul>
-      <style>
-        /* Stock Impulse sizes each item at a fixed 33.33% (3 per row),
-           which wraps a 4th/5th item (the social icons here, plus the
-           language switcher added above) onto an unwanted second row.
-           flex:1 1 0 instead splits the row evenly between however
-           many items are actually visible, and nowrap guarantees a
-           single line regardless of count. */
-        .mobile-nav__social {
-          flex-wrap: nowrap;
-        }
-        .mobile-nav__social-item {
-          flex: 1 1 0;
-          min-width: 0;
-        }
-      </style>
       </div>
 
       {%- comment -%}

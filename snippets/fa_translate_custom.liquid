@@ -1,0 +1,109 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const targets = [
+          '.transcy-switcher-location',
+          '.transcy-label',
+    '.transcy-geo__label'
+      ];
+
+      setTimeout(() => {
+          let count = 0;
+          const maxAttempts = 6;
+          const addCustomClass = setInterval(() => {
+              if (count >= maxAttempts) {
+                  clearInterval(addCustomClass);
+              }
+              count++;
+              targets.forEach(selector => {
+                  const elements = document.querySelectorAll(selector);
+                  if (elements.length > 0) {
+                      elements.forEach(e => e.classList.add('notranslate'));
+                  }
+              });
+          }, 500);
+      }, 500);
+  });
+</script>
+
+
+  <style>
+      .btn, .rte .btn, .shopify-payment-button .shopify-payment-button__button--unbranded, .spr-container .spr-button, .spr-container .spr-summary-actions a {
+          font-size: max(calc(var(--typeBaseSize) -4px), 19px !important);
+    }
+
+      label:not(.variant__button-label):not(.text-label) {
+          letter-spacing: normal !important;
+    }
+
+    .btn {
+          letter-spacing: normal !important;
+
+    }
+
+    .collapsible-trigger-btn {
+          letter-spacing: normal !important;
+
+    }
+
+    h2, .announcement-text {
+      letter-spacing: normal !important;
+    }
+    .enlarge-text h4{
+        letter-spacing: normal !important;
+    }
+  </style>
+
+<script>
+  transcy_useLocaleStoreDefaultTrans = true
+    document.addEventListener("DOMContentLoaded", function () {
+          function addCusEventListener(selector, event, handler) {
+              let rootElement = document.querySelector('body');
+              //since the root element is set to be body for our current dealings
+              rootElement.addEventListener(event, function (evt) {
+                  var targetElement = evt.target;
+                  while (targetElement != null) {
+                      if (targetElement.matches(selector)) {
+                          handler(evt);
+                          return;
+                      }
+                      targetElement = targetElement.parentElement;
+                  }
+              },
+                  true
+              );
+          };
+      function _transcyReplaceTextDefault(className) {
+        var count = 0;
+        var intervalRemove = setInterval(() => {
+            var elements = document.querySelectorAll(className);
+              elements && elements.length > 0 && [].forEach.call(elements, function (elmnt) {
+                  const translatedElement = elmnt && elmnt.querySelectorAll('font') || null;
+              translatedElement && [].forEach.call(elmnt.childNodes, function (nodeChild, index) {
+                if(nodeChild.nodeName == '#text' && index > 0){
+                  console.log(11111, nodeChild)
+                  elmnt.removeChild(elmnt.childNodes[index]);
+                }
+                elmnt.classList.add('notranslate');
+              })
+            });
+            if (count >= 3) {
+              clearInterval(intervalRemove);
+            }
+            count++;
+        }, 500);
+    };
+
+      // Đoạn tùy chỉnh sao cho phù hợp vs từng store, này là những thẻ có class bị show dup
+      var _pageOneReplaceTextDefault = function () {
+        console.log(111111111);
+          const className = '.kl-private-reset-css-Xuajs1 > button';
+          _transcyReplaceTextDefault(className);
+      };
+
+      // Chỗ nào click làm bị thì add event onlick vào
+      addCusEventListener('.needsclick', 'click', _pageOneReplaceTextDefault);
+      addCusEventListener('.kl-private-reset-css-Xuajs1 > input', 'click', _pageOneReplaceTextDefault);
+      addCusEventListener('.kl-private-reset-css-Xuajs1 > input', 'change', _pageOneReplaceTextDefault);
+      setInterval(_pageOneReplaceTextDefault, 3000);
+  });
+</script>
