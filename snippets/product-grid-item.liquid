@@ -47,15 +47,15 @@ Arguments
 
   # --- NEW: detect whether this product has a color option, matching the option name EXACTLY (not "contains")
   #     so options like "Chain Color" or "Hardware Color" don't get mistaken for the main "Color" option ---
-  assign swatch_trigger = 'color'
+  # Shopify translates the option's own name per locale ("Color" becomes
+  # "Colore" on the Italian storefront) -- checked against every
+  # spelling this is actually known to take, not one hardcoded English
+  # word, so it works regardless of which language is being viewed.
   assign is_color_product = false
   assign color_option_index = -1
   for option in product.options_with_values
     assign option_name = option.name | downcase
-    if option_name == swatch_trigger
-      assign is_color_product = true
-      assign color_option_index = forloop.index0
-    elsif swatch_trigger == 'color' and option_name == 'colour'
+    if option_name == 'color' or option_name == 'colour' or option_name == 'colore'
       assign is_color_product = true
       assign color_option_index = forloop.index0
     endif
@@ -253,14 +253,11 @@ Arguments
         
 
         {%- if settings.enable_swatches -%}
-          {%- assign swatch_trigger = 'color' -%}
           {%- for option in product.options_with_values -%}
             {%- liquid
               assign option_name = option.name | downcase
               assign is_color = false
-              if option_name contains swatch_trigger
-                assign is_color = true
-              elsif swatch_trigger == 'color' and option_name contains 'colour'
+              if option_name == 'color' or option_name == 'colour' or option_name == 'colore'
                 assign is_color = true
               endif
             -%}
@@ -345,7 +342,6 @@ Arguments
 
           {%- if settings.enable_swatches and type == 'horizontal' -%}
             {%- liquid
-              assign swatch_trigger = 'color'
               assign swatch_file_extension = 'png'
               assign color_count = 0
             -%}
@@ -354,9 +350,7 @@ Arguments
               {%- liquid
                 assign option_name = option.name | downcase
                 assign is_color = false
-                if option_name contains swatch_trigger
-                  assign is_color = true
-                elsif swatch_trigger == 'color' and option_name contains 'colour'
+                if option_name == 'color' or option_name == 'colour' or option_name == 'colore'
                   assign is_color = true
                 endif
               -%}
@@ -409,7 +403,6 @@ Arguments
   </div>
   {%- if settings.enable_swatches and type == blank -%}
     {%- liquid
-      assign swatch_trigger = 'color'
       assign swatch_file_extension = 'png'
       assign color_count = 0
     -%}
@@ -418,9 +411,7 @@ Arguments
       {%- liquid
         assign option_name = option.name | downcase
         assign is_color = false
-        if option_name contains swatch_trigger
-          assign is_color = true
-        elsif swatch_trigger == 'color' and option_name contains 'colour'
+        if option_name == 'color' or option_name == 'colour' or option_name == 'colore'
           assign is_color = true
         endif
       -%}

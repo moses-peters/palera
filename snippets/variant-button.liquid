@@ -49,12 +49,15 @@
     # how many swatch circles show inline, so the row doesn't get
     # crowded on products with a lot of colors -- the link itself
     # always shows, regardless of count.
-    assign swatch_trigger_check = 'color'
+    # Shopify translates the option's own name per locale (confirmed:
+    # "Color" becomes "Colore" on the Italian storefront) -- matching
+    # against a single hardcoded English word missed that locale
+    # entirely. Checked against every spelling this option name is
+    # actually known to take, not derived from the active locale, so
+    # it keeps working regardless of which language is being viewed.
     assign option_name_downcased_check = option.name | downcase
     assign is_color_option_group = false
-    if option_name_downcased_check == swatch_trigger_check
-      assign is_color_option_group = true
-    elsif swatch_trigger_check == 'color' and option_name_downcased_check == 'colour'
+    if option_name_downcased_check == 'color' or option_name_downcased_check == 'colour' or option_name_downcased_check == 'colore'
       assign is_color_option_group = true
     endif
 
@@ -104,12 +107,9 @@
             # rather than a swatch-file-friendly plain color. Anything else that's
             # swatch-enabled (e.g. "Chain Color") keeps the original shared
             # swatch-file behavior instead.
-            assign swatch_trigger = 'color'
             assign option_name_downcased = option.name | downcase
             assign is_main_color_option = false
-            if option_name_downcased == swatch_trigger
-              assign is_main_color_option = true
-            elsif swatch_trigger == 'color' and option_name_downcased == 'colour'
+            if option_name_downcased == 'color' or option_name_downcased == 'colour' or option_name_downcased == 'colore'
               assign is_main_color_option = true
             elsif option_name_downcased contains 'hardware'
               assign is_main_color_option = true
