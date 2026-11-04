@@ -57,8 +57,21 @@
             {%- endcomment -%}
             {%- liquid
               assign slide_loading = 'lazy'
+              assign slide_sizes = sizes
               if context == 'main-product' and forloop.index0 == 0
                 assign slide_loading = 'eager'
+
+                # sizeVariable's vw-based guess (e.g. "40vw") is evaluated
+                # against the viewport before Flickity has finished laying
+                # the gallery out, and the real column can also be capped by
+                # a max-width wrapper further up the page -- so once layout
+                # settles the browser can decide a different srcset
+                # candidate was actually needed and silently re-fetch it,
+                # which looks like this one photo "reloading" a moment after
+                # it already appeared correctly. Fixed per-breakpoint values
+                # here are known at parse time rather than recomputed after
+                # layout, so there's nothing left to re-fetch.
+                assign slide_sizes = '(min-width: 769px) 720px, 600px'
               endif
             -%}
             {%- render 'media',
@@ -73,7 +86,7 @@
               isModal: isModal,
               video_looping: video_looping,
               video_style: video_style,
-              sizes: sizes,
+              sizes: slide_sizes,
               sizeVariable: sizeVariable,
               fallback: fallback,
               loading: slide_loading,
