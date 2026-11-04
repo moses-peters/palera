@@ -47,7 +47,7 @@ Arguments
 
   # --- NEW: detect whether this product has a color option, matching the option name EXACTLY (not "contains")
   #     so options like "Chain Color" or "Hardware Color" don't get mistaken for the main "Color" option ---
-  assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+  assign swatch_trigger = 'color'
   assign is_color_product = false
   assign color_option_index = -1
   for option in product.options_with_values
@@ -253,7 +253,7 @@ Arguments
         
 
         {%- if settings.enable_swatches -%}
-          {%- assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase -%}
+          {%- assign swatch_trigger = 'color' -%}
           {%- for option in product.options_with_values -%}
             {%- liquid
               assign option_name = option.name | downcase
@@ -345,7 +345,7 @@ Arguments
 
           {%- if settings.enable_swatches and type == 'horizontal' -%}
             {%- liquid
-              assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+              assign swatch_trigger = 'color'
               assign swatch_file_extension = 'png'
               assign color_count = 0
             -%}
@@ -409,7 +409,7 @@ Arguments
   </div>
   {%- if settings.enable_swatches and type == blank -%}
     {%- liquid
-      assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+      assign swatch_trigger = 'color'
       assign swatch_file_extension = 'png'
       assign color_count = 0
     -%}

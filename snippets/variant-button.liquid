@@ -49,7 +49,7 @@
     # how many swatch circles show inline, so the row doesn't get
     # crowded on products with a lot of colors -- the link itself
     # always shows, regardless of count.
-    assign swatch_trigger_check = 'products.general.color_swatch_trigger' | t | downcase
+    assign swatch_trigger_check = 'color'
     assign option_name_downcased_check = option.name | downcase
     assign is_color_option_group = false
     if option_name_downcased_check == swatch_trigger_check
@@ -104,7 +104,7 @@
             # rather than a swatch-file-friendly plain color. Anything else that's
             # swatch-enabled (e.g. "Chain Color") keeps the original shared
             # swatch-file behavior instead.
-            assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+            assign swatch_trigger = 'color'
             assign option_name_downcased = option.name | downcase
             assign is_main_color_option = false
             if option_name_downcased == swatch_trigger
