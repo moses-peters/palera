@@ -104,16 +104,6 @@
     },
     "content_for_index": [],
     "blocks": {
-      "10746902591489815047": {
-        "type": "shopify://apps/use-google-fonts-custom-fonts/blocks/app-embed/2caf2c68-0038-455e-b0b9-066a7c2ad923",
-        "disabled": false,
-        "settings": {}
-      },
-      "17772089793659017505": {
-        "type": "shopify://apps/securityking/blocks/security-app-embed/4d2757ed-33ad-4e94-a186-da550756ae46",
-        "disabled": false,
-        "settings": {}
-      },
       "15683396631634586217": {
         "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
         "disabled": false,
@@ -125,21 +115,6 @@
           "button_horizontal_position": "bottom_right",
           "button_vertical_position": "lowest"
         }
-      },
-      "6986766168588894248": {
-        "type": "shopify://apps/preorder-now-wolf/blocks/app-embed/7ee1d740-e67b-4ea8-b0c9-1f62cb8777ec",
-        "disabled": false,
-        "settings": {}
-      },
-      "21474836472147483647": {
-        "type": "shopify://apps/ecomposer-landing-page-builder/blocks/app-embed/a0fc26e1-7741-4773-8b27-39389b4fb4a0",
-        "disabled": false,
-        "settings": {}
-      },
-      "14826766009936288847": {
-        "type": "shopify://apps/discounty/blocks/sdk/d65eb522-0d94-499f-9831-d4b3301f5340",
-        "disabled": false,
-        "settings": {}
       },
       "1366455014531238847": {
         "type": "shopify://apps/wishlist-hero/blocks/customize-style-block/a9a5079b-59e8-47cb-b659-ecf1c60b9b72",
@@ -170,11 +145,6 @@
         "disabled": false,
         "settings": {}
       },
-      "6279071938380501511": {
-        "type": "shopify://apps/powerful-form-builder/blocks/app-embed/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
-        "disabled": false,
-        "settings": {}
-      },
       "13440586637131102011": {
         "type": "shopify://apps/tinycookie/blocks/cookie-embed/b65baef5-7248-4353-8fd9-b676240311dc",
         "disabled": false,
@@ -183,44 +153,6 @@
           "hide_in_theme_editor": false,
           "hide_in_password_page": false,
           "display_delay": 5
-        }
-      },
-      "13762318497758424536": {
-        "type": "shopify://apps/eu-widerruf-button/blocks/button_css_embed/019b2ca9-9838-7858-9694-3a8051afa76e",
-        "disabled": true,
-        "settings": {
-          "target_url": "/pages/widerruf-formular",
-          "button_style": "filled",
-          "bg_color": "#FFFFFF",
-          "text_color": "#000000",
-          "border_color": "#000000",
-          "padding_vertical": 0,
-          "padding_horizontal": 0,
-          "font_size": 12,
-          "font_weight": "400",
-          "border_radius": 0,
-          "hover_effect": "opacity",
-          "hide_outside_eu": false
-        }
-      },
-      "12510727292439481604": {
-        "type": "shopify://apps/eu-widerruf-button/blocks/embed/019b2ca9-9838-7858-9694-3a8051afa76e",
-        "disabled": true,
-        "settings": {
-          "show_heading": true,
-          "heading": "-",
-          "description": "-",
-          "show_fixed_button": true,
-          "color_bg": "#000000",
-          "color_text": "#ffffff",
-          "position": "bottom-right",
-          "label_text": "-",
-          "show_order_lookup": true,
-          "require_order_number": true,
-          "hide_order_notes": false,
-          "require_items": false,
-          "confirm_step": false,
-          "hide_outside_eu": false
         }
       },
       "3963213073043125682": {
@@ -262,7 +194,7 @@
       },
       "10008203421340698720": {
         "type": "shopify://apps/g-translate-shop-translator/blocks/dropdown/408a74ac-f92d-43cf-a1b1-a044341e66bd",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "horizontal_position": "left",
           "vertical_position": "bottom",
