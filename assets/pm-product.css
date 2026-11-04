@@ -60,6 +60,18 @@
   display: none;
 }
 
+/* The main photo's <image-element> is gated by AOS's scroll-reveal
+   fade-in (opacity:0 until AOS adds .aos-animate and runs its CSS
+   animation) -- meant for content further down the page the visitor
+   has to scroll to. Flickity moves this element into its own wrapper
+   during setup, which can make AOS re-evaluate it and the fade-in
+   replay or stall momentarily, looking like the photo flickering or
+   reloading right after it already appeared. It's already eager-loaded
+   and above the fold, so there's nothing to "reveal" here -- same fix
+   already used for cart thumbnails (assets/theme.liquid's cart image
+   fix script forces their opacity the same way, for the same reason). */
+.pm-product .product-slideshow .image-element { opacity: 1 !important; }
+
 /* Stock thumbnail column is a bare 60-80px strip with its scrollbar
    forced invisible (scrollbar-width:none) and no arrows by default —
    nothing told the customer there was more to scroll to. Widen it a
