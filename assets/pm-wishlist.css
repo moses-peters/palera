@@ -1,0 +1,229 @@
+/* Palera Milano — wishlist
+   Heart toggle (product cards + product page) and the wishlist drawer.
+   Shares the same design tokens as the rest of the pm- pages/sections
+   (--pm-ink, --pm-paper, --pm-line, --pm-muted, --pm-font-serif/sans,
+   --pm-ease, --pm-pad), defined in pm-homepage.css. */
+
+/* ===== Heart toggle button ===== */
+.pm-wishlist-btn {
+  all: unset;
+  box-sizing: border-box;
+  position: absolute;
+  top: 10px; left: 10px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  cursor: pointer;
+  color: var(--pm-ink);
+}
+.pm-wishlist-btn:focus-visible {
+  outline: 1.5px solid var(--pm-ink);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+.pm-wishlist-icon {
+  width: 17px; height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: transform 0.2s var(--pm-ease), fill 0.2s var(--pm-ease), stroke 0.2s var(--pm-ease);
+}
+/* A soft backdrop so the outlined heart stays legible over bright or
+   busy photos, matching the weight of the existing swatch chips rather
+   than introducing a new visual language. */
+.pm-wishlist-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: var(--pm-paper);
+  opacity: 0.001; /* hit-test only until hover/active, see below */
+  transition: opacity 0.2s var(--pm-ease);
+  z-index: -1;
+}
+.pm-wishlist-btn:hover::before,
+.pm-wishlist-btn.is-active::before {
+  opacity: 0.78;
+}
+.pm-wishlist-btn:hover .pm-wishlist-icon {
+  transform: scale(1.08);
+}
+.pm-wishlist-btn.is-active .pm-wishlist-icon {
+  fill: var(--pm-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-wishlist-icon,
+  .pm-wishlist-btn::before {
+    transition: none;
+  }
+}
+
+/* Every card placement (.pm-plp-tile, .pm-search-result-tile,
+   .grid-product__image-mask) is already its own `position: relative`
+   ancestor, so the default absolute top/left from .pm-wishlist-btn
+   above is all any of them need -- no per-system override here. */
+
+/* Product page placement: inline next to the title, not floating over
+   the gallery (the gallery already has its own color swatches/zoom
+   affordances, which a floating heart would compete with). */
+.pm-product .pm-wishlist-btn--page {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  color: var(--pm-muted);
+  font-family: var(--pm-font-sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s var(--pm-ease);
+}
+.pm-product .pm-wishlist-btn--page:hover,
+.pm-product .pm-wishlist-btn--page.is-active {
+  color: var(--pm-ink);
+}
+.pm-product .pm-wishlist-btn--page .pm-wishlist-icon {
+  width: 16px; height: 16px;
+}
+.pm-product .pm-wishlist-btn--page:focus-visible {
+  outline: 1.5px solid var(--pm-ink);
+  outline-offset: 3px;
+}
+
+/* ===== Header icon + count badge ===== */
+.site-header .pm-wishlist-header-icon { position: relative; display: inline-flex; align-items: center; opacity: 0.92; transition: opacity 0.2s ease; }
+.site-header .pm-wishlist-header-icon:hover { opacity: 1; }
+.site-header .pm-wishlist-header-icon .icon { width: 22px; height: 22px; }
+.site-header .pm-wishlist-header-icon .pm-wishlist-icon {
+  width: 22px; height: 22px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+}
+.pm-wishlist-count {
+  position: absolute;
+  top: -4px; right: -7px;
+  min-width: 15px; height: 15px;
+  padding: 0 3px;
+  border-radius: 50%;
+  background: var(--pm-ink);
+  color: var(--pm-paper);
+  font-family: var(--pm-font-sans);
+  font-size: 9px;
+  line-height: 15px;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s var(--pm-ease), transform 0.2s var(--pm-ease);
+  pointer-events: none;
+}
+.pm-wishlist-count--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ===== Drawer ===== */
+#WishlistDrawer .drawer__title { font-family: var(--pm-font-serif); }
+
+.pm-wishlist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.pm-wishlist-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--pm-line);
+}
+.pm-wishlist-item:first-child { padding-top: 0; }
+.pm-wishlist-item-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+.pm-wishlist-item-image {
+  flex: 0 0 auto;
+  width: 72px; height: 72px;
+  background: var(--pm-sable);
+  overflow: hidden;
+}
+.pm-wishlist-item-image img {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.pm-wishlist-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding-top: 2px;
+}
+.pm-wishlist-item-name {
+  font-family: var(--pm-font-sans);
+  font-size: 13px;
+  color: var(--pm-ink);
+  line-height: 1.4;
+}
+.pm-wishlist-item-price {
+  font-size: 12px;
+  color: var(--pm-muted);
+}
+.pm-wishlist-item-soldout {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pm-muted);
+}
+.pm-wishlist-item-remove {
+  all: unset;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  margin: 2px -4px 0 0;
+  cursor: pointer;
+  color: var(--pm-muted);
+  transition: color 0.2s var(--pm-ease);
+}
+.pm-wishlist-item-remove:hover { color: var(--pm-ink); }
+.pm-wishlist-item-remove:focus-visible { outline: 1.5px solid var(--pm-ink); outline-offset: 2px; }
+.pm-wishlist-item-remove svg { width: 13px; height: 13px; }
+
+.pm-wishlist-empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 48px 0;
+}
+.pm-wishlist-drawer--empty .pm-wishlist-empty { display: flex; }
+.pm-wishlist-drawer--empty .pm-wishlist-list { display: none; }
+.pm-wishlist-empty-text {
+  font-family: var(--pm-font-sans);
+  font-size: 13px;
+  color: var(--pm-muted);
+}
+.pm-wishlist-empty .pm-link {
+  font-family: var(--pm-font-sans);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pm-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

@@ -124,6 +124,7 @@ Arguments
        <a href="{{ tile_url }}" class="grid-product__link">
          {% endif %}
       <div class="grid-product__image-mask">
+        {%- render 'pm-wishlist-button', product: product -%}
         {%- if fixed_aspect_ratio -%}
           <div
             class="grid__image-ratio grid__image-ratio--{% if image_style == 'circle' %}square{% else %}{{ settings.product_grid_image_size }}{% endif %}">
@@ -295,7 +296,6 @@ Arguments
          {% endif %}
 
       <a href="{{ tile_url }}" class="grid-product__link">
-{% render 'wishlisthero-collection-product' with product, product: product %}
         <div class="grid-product__meta">
           <div class="grid-product__title grid-product__title--{{ settings.type_product_style }} notranslate">{{ product.title }}</div>
           {%- if settings.vendor_enable -%}

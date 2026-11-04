@@ -1,0 +1,33 @@
+{%- comment -%}
+  Wishlist drawer, mirroring snippets/cart-drawer.liquid's structure so it
+  reuses theme.Drawers/.js-drawer-close/.drawer--right behavior as-is.
+  Content is rendered entirely client-side by assets/pm-wishlist.js from
+  localStorage -- [data-pm-wishlist-list] and the empty-state block below
+  start blank/hidden in the server-rendered HTML by design.
+{%- endcomment -%}
+<div id="WishlistDrawer" class="drawer drawer--right pm-wishlist-drawer--empty">
+  <div class="drawer__contents">
+    <div class="drawer__fixed-header">
+      <div class="drawer__header appear-animation appear-delay-1">
+        <div class="h2 drawer__title">{{ 'products.general.wishlist_title' | t }}</div>
+        <div class="drawer__close">
+          <button type="button" class="drawer__close-button js-drawer-close">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg>
+            <span class="icon__fallback-text">{{ 'general.accessibility.close' | t }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer__inner">
+      <div class="drawer__scrollable">
+        <div data-pm-wishlist-list class="pm-wishlist-list appear-animation appear-delay-2"></div>
+      </div>
+    </div>
+
+    <div class="pm-wishlist-empty appear-animation appear-delay-2">
+      <p class="pm-wishlist-empty-text">{{ 'products.general.wishlist_empty' | t }}</p>
+      <button type="button" class="js-drawer-close pm-link">{{ 'products.general.wishlist_empty_cta' | t }}</button>
+    </div>
+  </div>
+</div>

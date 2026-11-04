@@ -1,0 +1,45 @@
+{%- comment -%}
+  Reusable wishlist heart toggle. Used on every product card layout
+  (Shop grid, homepage tiles, search results, "You may also like") and
+  the product page itself.
+
+  Saved by product, not by variant -- carries the product's own display
+  data as data-* attributes so assets/pm-wishlist.js can build the
+  drawer entirely client-side, with no server round-trip needed to show
+  a saved item's photo/name/price later.
+
+  Accepts:
+  - product (required, Product object)
+  - extra_class (optional, String) -- appended to the button's class
+  - page (optional, Boolean) -- true for the product-page placement
+    (inline, labelled), false/omitted for the card placement (icon-only,
+    floating over the image)
+{%- endcomment -%}
+{%- liquid
+  assign pm_wl_title = product.title | split: ' — ' | first
+  assign pm_wl_image = product.featured_image | image_url: width: 400
+  assign pm_wl_price = product.selected_or_first_available_variant.price | default: product.price
+-%}
+<button
+  type="button"
+  class="pm-wishlist-btn{% if page %} pm-wishlist-btn--page{% endif %}{% if extra_class %} {{ extra_class }}{% endif %}"
+  data-pm-wishlist-toggle
+  data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle }}"
+  data-product-title="{{ pm_wl_title | escape }}"
+  data-product-image="{{ pm_wl_image }}"
+  data-product-price="{{ pm_wl_price }}"
+  data-product-url="{{ product.url }}"
+  data-product-available="{{ product.available }}"
+  aria-pressed="false"
+  aria-label="{{ 'products.general.wishlist_add' | t }}"
+>
+  <svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="pm-wishlist-icon">
+    <path d="M16 27.3c-.3 0-.6-.1-.9-.3C9.3 22.8 4 17.9 4 12.9 4 9 7.1 6 10.9 6c2 0 3.9.9 5.1 2.5C17.2 6.9 19.1 6 21.1 6 24.9 6 28 9 28 12.9c0 5-5.3 9.9-11.1 14.1-.3.2-.6.3-.9.3Z"/>
+  </svg>
+  {%- if page -%}
+    <span data-pm-wishlist-label>{{ 'products.general.wishlist_add' | t }}</span>
+  {%- else -%}
+    <span class="visually-hidden">{{ 'products.general.wishlist_add' | t }}</span>
+  {%- endif -%}
+</button>

@@ -90,6 +90,7 @@
     {%- endif -%}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'kg-custom.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'pm-wishlist.css' | asset_url | stylesheet_tag }}
     {%- render 'css-variables' -%}
 
     <script>
@@ -121,7 +122,10 @@
         searchPages: {{ 'general.search.pages' | t | json }},
         searchArticles: {{ 'general.search.articles' | t | json }},
         productFrom: {{ 'products.general.from_text_html' | t: price: '' | json }},
-        maxQuantity: {{ 'cart.general.max_quantity' | t: quantity: '[quantity]', title: '[title]' | json }}
+        maxQuantity: {{ 'cart.general.max_quantity' | t: quantity: '[quantity]', title: '[title]' | json }},
+        wishlistAdd: {{ 'products.general.wishlist_add' | t | json }},
+        wishlistRemove: {{ 'products.general.wishlist_remove' | t | json }},
+        wishlistSoldOut: {{ 'products.general.wishlist_soldout' | t | json }}
       };
       theme.settings = {
         cartType: {{ settings.cart_type | json }},
@@ -150,6 +154,7 @@
     {%- endif -%}
 
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'pm-wishlist.js' | asset_url }}" defer="defer"></script>
 
     <script>
       (function() {

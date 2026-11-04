@@ -135,6 +135,9 @@
               </div>
             {%- endif -%}
           </a>
+          {%- if product -%}
+            {%- render 'pm-wishlist-button', product: product -%}
+          {%- endif -%}
           {%- if swatch_visible.size > 0 -%}
             <div class="pm-plp-swatches">
               {%- for entry in swatch_visible -%}
