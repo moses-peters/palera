@@ -1,19 +1,30 @@
 {%- comment -%}
-  Compact "EN | IT" language switcher for the header icon row, next to
-  the account icon. Uses Shopify's own localization form (same one
-  snippets/multi-selectors.liquid uses for its dropdown version) so no
-  new JS is needed -- each non-current locale is a plain submit button
-  (name="locale_code", value="<iso_code>") that Shopify's native
-  localization form handler reads directly; works even if theme.js
-  hasn't finished loading yet.
+  Compact "EN | IT" language switcher. Uses Shopify's own localization
+  form (same one snippets/multi-selectors.liquid uses for its dropdown
+  version) so no new JS is needed -- each non-current locale is a
+  plain submit button (name="locale_code", value="<iso_code>") that
+  Shopify's native localization form handler reads directly; works
+  even if theme.js hasn't finished loading yet.
 
   Hidden entirely until a second locale is actually published in
   Shopify Admin (Settings > Languages) -- shop.enabled_locales only
   has more than one entry once that's done, so this has nothing to
   switch between until then.
+
+  Rendered twice on purpose, in two different contexts, each shown on
+  only one breakpoint (never both at once):
+  - context: 'header' (default) -- next to the account icon in the
+    desktop header, white text to read against that bar's dark
+    background. Hidden on mobile.
+  - context: 'drawer' -- inside the mobile nav drawer's bottom social
+    row, as a plain-text item alongside the social icons, inheriting
+    the drawer's own (dark-on-light) text color instead of white.
 {%- endcomment -%}
 {%- if shop.enabled_locales.size > 1 -%}
-  {%- form 'localization', class: 'pm-lang-switcher' -%}
+  {%- liquid
+    assign pm_lang_context = context | default: 'header'
+  -%}
+  {%- form 'localization', class: 'pm-lang-switcher pm-lang-switcher--' | append: pm_lang_context -%}
     <span class="visually-hidden">{{ 'general.language.dropdown_label' | t }}</span>
     {%- for locale in form.available_locales -%}
       {%- unless forloop.first -%}<span class="pm-lang-switcher-sep" aria-hidden="true">|</span>{%- endunless -%}
@@ -29,6 +40,7 @@
     .pm-lang-switcher {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       margin: 0 2px;
     }
@@ -37,26 +49,47 @@
       font-family: inherit;
       font-size: 11px;
       letter-spacing: 0.06em;
-      color: #fff;
       font-weight: 400;
       cursor: pointer;
     }
     .pm-lang-switcher-option.is-current {
-      color: #fff;
       cursor: default;
       font-weight: 700;
-    }
-    .pm-lang-switcher-option:not(.is-current):hover,
-    .pm-lang-switcher-option:not(.is-current):focus-visible {
-      opacity: 0.7;
     }
     .pm-lang-switcher-option:focus-visible {
       outline: 1.5px solid currentColor;
       outline-offset: 2px;
     }
-    .pm-lang-switcher-sep {
+
+    /* Header placement: desktop only, white to read against the
+       header's dark background. */
+    .pm-lang-switcher--header {
+      display: none;
+    }
+    .pm-lang-switcher--header .pm-lang-switcher-option,
+    .pm-lang-switcher--header .pm-lang-switcher-sep {
       color: #fff;
-      font-size: 11px;
+    }
+    .pm-lang-switcher--header .pm-lang-switcher-option:not(.is-current):hover,
+    .pm-lang-switcher--header .pm-lang-switcher-option:not(.is-current):focus-visible {
+      opacity: 0.7;
+    }
+    @media (min-width: 769px) {
+      .pm-lang-switcher--header {
+        display: inline-flex;
+      }
+    }
+
+    /* Drawer placement: mobile only (the drawer itself is mobile-only
+       in this theme), plain text matching the drawer's own link
+       color instead of a hardcoded one. */
+    .pm-lang-switcher--drawer .pm-lang-switcher-option,
+    .pm-lang-switcher--drawer .pm-lang-switcher-sep {
+      color: inherit;
+    }
+    .pm-lang-switcher--drawer .pm-lang-switcher-option:not(.is-current):hover,
+    .pm-lang-switcher--drawer .pm-lang-switcher-option:not(.is-current):focus-visible {
+      opacity: 0.6;
     }
   </style>
 {%- endif -%}

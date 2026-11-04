@@ -206,6 +206,11 @@
 
       {%- assign animation_row = animation_row | plus: 1 -%}
       <ul class="mobile-nav__social appear-animation appear-delay-{{ animation_row }}">
+        {%- if shop.enabled_locales.size > 1 -%}
+          <li class="mobile-nav__social-item mobile-nav__social-item--lang">
+            {%- render 'pm-language-switcher', context: 'drawer' -%}
+          </li>
+        {%- endif -%}
         {%- if settings.social_instagram_link != blank -%}
           <li class="mobile-nav__social-item">
             <a target="_blank" rel="noopener" href="{{ settings.social_instagram_link }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Instagram' }}">
@@ -287,6 +292,21 @@
           </li>
         {%- endif -%}
       </ul>
+      <style>
+        /* Stock Impulse sizes each item at a fixed 33.33% (3 per row),
+           which wraps a 4th/5th item (the social icons here, plus the
+           language switcher added above) onto an unwanted second row.
+           flex:1 1 0 instead splits the row evenly between however
+           many items are actually visible, and nowrap guarantees a
+           single line regardless of count. */
+        .mobile-nav__social {
+          flex-wrap: nowrap;
+        }
+        .mobile-nav__social-item {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+      </style>
       </div>
 
       {%- comment -%}
