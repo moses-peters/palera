@@ -6972,9 +6972,16 @@ theme.recentlyViewed = {
         this.availabilitySetup();
         this.initVariants();
   
-        // We know the current variant now so setup image sets
-        if (this.settings.imageSetName) {
-          this.updateImageSet();
+        // We know the current variant now so record its image-set group --
+        // initProductSlider() (called right after, in init()) already
+        // filters/initializes Flickity correctly for it. Calling the full
+        // updateImageSet() here used to also trigger a second, redundant
+        // Flickity rebuild immediately afterward, since
+        // this.settings.currentImageSet starts null and never matched its
+        // "already on this group" guard on page load -- a visible flicker
+        // on every load of a product using this feature.
+        if (this.settings.imageSetName && this.variants && this.variants.currentVariant) {
+          this.settings.currentImageSet = this.getImageSetName(this.variants.currentVariant[this.settings.imageSetIndex]);
         }
       },
   
