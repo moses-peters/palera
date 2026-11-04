@@ -116,30 +116,6 @@
           "button_vertical_position": "lowest"
         }
       },
-      "1366455014531238847": {
-        "type": "shopify://apps/wishlist-hero/blocks/customize-style-block/a9a5079b-59e8-47cb-b659-ecf1c60b9b72",
-        "disabled": false,
-        "settings": {
-          "Btn_color": "#0f0f0f",
-          "WishlistButtonTextColor": "#0f0f0f",
-          "Ico_color": "#0f0f0f",
-          "HeaderFontSize": 30,
-          "ProductNameFontSize": 18,
-          "PriceFontSize": 16,
-          "PriceColor": "#0f0f0f"
-        }
-      },
-      "7870687481494312845": {
-        "type": "shopify://apps/wishlist-hero/blocks/app-embed/a9a5079b-59e8-47cb-b659-ecf1c60b9b72",
-        "disabled": false,
-        "settings": {
-          "customThemeName": "Impulse",
-          "additionalWLButtonCssClasses": "",
-          "additionalWLCartBubbleCssClasses": "",
-          "extraHTMLToAppend": "<style>\n\n.SocialMediaShareButton--viber,.SocialMediaShareButton--instapaper,\n  .SocialMediaShareButton--linkedin,\n  .SocialMediaShareButton--vk,.SocialMediaShareButton--ok,\n  .SocialMediaShareButton--reddit,.SocialMediaShareButton--tumblr,\n  .SocialMediaShareButton--livejournal,.SocialMediaShareButton--mailru,\n  .SocialMediaShareButton--workplace,.SocialMediaShareButton--line,\n  .SocialMediaShareButton--pocket,\n  .SocialMediaShareButton--email\n  {\n        display:none;\n  }\n\n.wishlist-hero-share-icons div:nth-child(4){\n        padding: 0;\n  }\n\n.wishlist-hero-share-icons div:nth-child(8){\n        padding: 1%;\n  }\n  \n  .SocialMediaShareButton--pinterest,\n  .SocialMediaShareButton--pinterest svg{\n        width:50px !important;\n        height:50px !important;\n  }\n\n @media(min-width:1920px){\n     .MuiGrid-grid-xl-2{\n        max-width: 25% !important;\n        flex-basis: 25% !important;\n     }\n  }\n\n\n.wishlist-hero-list-header{\ndisplay: none;\n}\n\n</style>",
-          "disableAutomaticButtonAddition": false
-        }
-      },
       "855628211100114053": {
         "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": false,
@@ -192,9 +168,36 @@
           "custom_css": "@media only screen and (min-width: 600px) {\n.site-nav__icons {\ndisplay:flex!important;\nalign-items: center!important;\n}\n.gt_switcher {\norder:-1!important;\n}\n}\n\n.gt_option {\nposition:absolute!important;\nwidth:44px!important;\n}\n\n.gt_switcher .gt_selected a {\nborder:unset!important;\nfont-size:0px!important;\n}\n\n.gt_switcher .gt_selected {\nbackground:unset!important;\n}\n\n.gt_switcher {\nwidth:60px!important;\n}\n\n.gt_switcher .gt_selected a:hover {\nbackground:unset!important;\n}\n\n.gt_switcher a {\nfont-size:0px!important;\n}\n\n@media only screen and (max-width: 600px) {\n.site-nav__icons .gt_switcher {\ndisplay:none!important;\n}\n}"
         }
       },
+      "1366455014531238847": {
+        "type": "shopify://apps/wishlist-hero/blocks/customize-style-block/a9a5079b-59e8-47cb-b659-ecf1c60b9b72",
+        "disabled": true,
+        "settings": {
+          "Btn_color": "#0f0f0f",
+          "WishlistButtonTextColor": "#0f0f0f",
+          "Ico_color": "#0f0f0f",
+          "HeaderFontSize": 30,
+          "HeaderColor": "",
+          "ProductNameFontSize": 18,
+          "PriceFontSize": 16,
+          "PriceColor": "#0f0f0f"
+        }
+      },
+      "7870687481494312845": {
+        "type": "shopify://apps/wishlist-hero/blocks/app-embed/a9a5079b-59e8-47cb-b659-ecf1c60b9b72",
+        "disabled": true,
+        "settings": {
+          "customThemeName": "Impulse",
+          "additionalWLButtonCssClasses": "",
+          "additionalWLCartBubbleCssClasses": "",
+          "extraHTMLToAppend": "<style>\n\n.SocialMediaShareButton--viber,.SocialMediaShareButton--instapaper,\n  .SocialMediaShareButton--linkedin,\n  .SocialMediaShareButton--vk,.SocialMediaShareButton--ok,\n  .SocialMediaShareButton--reddit,.SocialMediaShareButton--tumblr,\n  .SocialMediaShareButton--livejournal,.SocialMediaShareButton--mailru,\n  .SocialMediaShareButton--workplace,.SocialMediaShareButton--line,\n  .SocialMediaShareButton--pocket,\n  .SocialMediaShareButton--email\n  {\n        display:none;\n  }\n\n.wishlist-hero-share-icons div:nth-child(4){\n        padding: 0;\n  }\n\n.wishlist-hero-share-icons div:nth-child(8){\n        padding: 1%;\n  }\n  \n  .SocialMediaShareButton--pinterest,\n  .SocialMediaShareButton--pinterest svg{\n        width:50px !important;\n        height:50px !important;\n  }\n\n @media(min-width:1920px){\n     .MuiGrid-grid-xl-2{\n        max-width: 25% !important;\n        flex-basis: 25% !important;\n     }\n  }\n\n\n.wishlist-hero-list-header{\ndisplay: none;\n}\n\n</style>",
+          "disableAutomaticButtonAddition": false,
+          "enableCustomLoginUrl": false,
+          "customLoginUrl": "/account/login"
+        }
+      },
       "10008203421340698720": {
         "type": "shopify://apps/g-translate-shop-translator/blocks/dropdown/408a74ac-f92d-43cf-a1b1-a044341e66bd",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "horizontal_position": "left",
           "vertical_position": "bottom",
