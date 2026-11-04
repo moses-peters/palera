@@ -38,6 +38,10 @@
     </span>
   </button>
 
+  {%- unless product.empty? -%}
+    {%- render 'pm-wishlist-button', product: product, variant: current_variant, style: 'checkbox' -%}
+  {%- endunless -%}
+
   <select name="id" data-product-select class="product-single__variants no-js">
     {%- for variant in product.variants -%}
       {%- if variant.available -%}

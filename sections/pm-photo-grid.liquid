@@ -136,7 +136,15 @@
             {%- endif -%}
           </a>
           {%- if product -%}
-            {%- render 'pm-wishlist-button', product: product -%}
+            {%- liquid
+              assign photo_wl_title = product.title | split: ' — ' | first
+              if block.settings.variant_color != blank
+                assign photo_wl_title = photo_wl_title | append: ' — ' | append: block.settings.variant_color
+              elsif product.title contains ' — '
+                assign photo_wl_title = product.title
+              endif
+            -%}
+            {%- render 'pm-wishlist-button', product: product, variant: selected_variant, display_title: photo_wl_title -%}
           {%- endif -%}
           {%- if swatch_visible.size > 0 -%}
             <div class="pm-plp-swatches">

@@ -3,43 +3,71 @@
   (Shop grid, homepage tiles, search results, "You may also like") and
   the product page itself.
 
-  Saved by product, not by variant -- carries the product's own display
-  data as data-* attributes so assets/pm-wishlist.js can build the
-  drawer entirely client-side, with no server round-trip needed to show
-  a saved item's photo/name/price later.
+  Saved by VARIANT, not just by product -- a color is a real Shopify
+  variant on this storefront's products, each with its own image/price/
+  URL (?variant=<id>), so the unique key has to be the variant id. Keying
+  by product alone meant saving any color saved "the product" and
+  re-opening it always landed back on the product's default/first
+  variant, regardless of which color was actually saved.
+
+  Carries its variant's own display data as data-* attributes so
+  assets/pm-wishlist.js can build the drawer entirely client-side, with
+  no server round-trip needed to show a saved item's photo/name/price
+  later.
 
   Accepts:
   - product (required, Product object)
+  - variant (optional, Variant object) -- the specific variant this
+    button represents; defaults to product.selected_or_first_available_variant
+  - display_title (optional, String) -- overrides the computed title
+    (base product name, plus the variant's own title when it's a real
+    option combo and not Shopify's single-variant "Default Title")
   - extra_class (optional, String) -- appended to the button's class
-  - page (optional, Boolean) -- true for the product-page placement
-    (inline, labelled), false/omitted for the card placement (icon-only,
-    floating over the image)
+  - style (optional, String) -- "checkbox" for the small labelled
+    checker placed under the product page's Add to Cart button;
+    omitted/anything else is the icon-only placement used everywhere
+    else (floating over a card image)
 {%- endcomment -%}
 {%- liquid
-  assign pm_wl_title = product.title | split: ' — ' | first
-  assign pm_wl_image = product.featured_image | image_url: width: 400
-  assign pm_wl_price = product.selected_or_first_available_variant.price | default: product.price
+  assign pm_wl_variant = variant | default: product.selected_or_first_available_variant
+  assign pm_wl_title = display_title
+  unless pm_wl_title
+    assign pm_wl_title = product.title | split: ' — ' | first
+    if pm_wl_variant.title != blank and pm_wl_variant.title != 'Default Title'
+      assign pm_wl_title = pm_wl_title | append: ' — ' | append: pm_wl_variant.title
+    endif
+  endunless
+  assign pm_wl_image = pm_wl_variant.featured_image | default: product.featured_image | image_url: width: 400
+  assign pm_wl_price = pm_wl_variant.price | default: product.price
+  assign pm_wl_available = pm_wl_variant.available
+  assign pm_wl_url = product.url | append: '?variant=' | append: pm_wl_variant.id
 -%}
 <button
   type="button"
-  class="pm-wishlist-btn{% if page %} pm-wishlist-btn--page{% endif %}{% if extra_class %} {{ extra_class }}{% endif %}"
+  class="pm-wishlist-btn{% if style == 'checkbox' %} pm-wishlist-btn--checkbox{% endif %}{% if extra_class %} {{ extra_class }}{% endif %}"
   data-pm-wishlist-toggle
+  data-variant-id="{{ pm_wl_variant.id }}"
   data-product-id="{{ product.id }}"
   data-product-handle="{{ product.handle }}"
   data-product-title="{{ pm_wl_title | escape }}"
   data-product-image="{{ pm_wl_image }}"
   data-product-price="{{ pm_wl_price }}"
-  data-product-url="{{ product.url }}"
-  data-product-available="{{ product.available }}"
+  data-product-url="{{ pm_wl_url }}"
+  data-product-available="{{ pm_wl_available }}"
   aria-pressed="false"
   aria-label="{{ 'products.general.wishlist_add' | t }}"
 >
-  <svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="pm-wishlist-icon">
-    <path d="M16 27.3c-.3 0-.6-.1-.9-.3C9.3 22.8 4 17.9 4 12.9 4 9 7.1 6 10.9 6c2 0 3.9.9 5.1 2.5C17.2 6.9 19.1 6 21.1 6 24.9 6 28 9 28 12.9c0 5-5.3 9.9-11.1 14.1-.3.2-.6.3-.9.3Z"/>
-  </svg>
-  {%- if page -%}
+  {%- if style == 'checkbox' -%}
+    <span class="pm-wishlist-checkbox-box" aria-hidden="true">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" class="pm-wishlist-checkbox-tick">
+        <path d="M4 12.5 9.5 18 20 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
     <span data-pm-wishlist-label>{{ 'products.general.wishlist_add' | t }}</span>
   {%- else -%}
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" class="pm-wishlist-icon">
+      <path d="M16 27.3c-.3 0-.6-.1-.9-.3C9.3 22.8 4 17.9 4 12.9 4 9 7.1 6 10.9 6c2 0 3.9.9 5.1 2.5C17.2 6.9 19.1 6 21.1 6 24.9 6 28 9 28 12.9c0 5-5.3 9.9-11.1 14.1-.3.2-.6.3-.9.3Z"/>
+    </svg>
     <span class="visually-hidden">{{ 'products.general.wishlist_add' | t }}</span>
   {%- endif -%}
 </button>

@@ -365,7 +365,13 @@
                   </span>
                 </div>
               </a>
-              {%- render 'pm-wishlist-button', product: product -%}
+              {%- liquid
+                assign tile_wl_title = tile_name
+                if tile_color_name != blank
+                  assign tile_wl_title = tile_wl_title | append: ' — ' | append: tile_color_name
+                endif
+              -%}
+              {%- render 'pm-wishlist-button', product: product, variant: tile_variant, display_title: tile_wl_title -%}
               {%- if swatch_visible.size > 0 -%}
                 <div class="pm-plp-swatches">
                   {%- for entry in swatch_visible -%}

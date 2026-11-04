@@ -103,7 +103,8 @@
   function productDataFromButton(button) {
     var price = parseInt(button.getAttribute('data-product-price'), 10);
     return {
-      id: button.getAttribute('data-product-id'),
+      id: button.getAttribute('data-variant-id'),
+      productId: button.getAttribute('data-product-id'),
       handle: button.getAttribute('data-product-handle'),
       title: button.getAttribute('data-product-title'),
       image: button.getAttribute('data-product-image'),
@@ -113,15 +114,19 @@
     };
   }
 
-  // Keeps every button for a given product (there can be several on one
-  // page -- a card in a recommendations rail and the same product's own
-  // page, for instance) in sync after any toggle, from any of them.
+  // Keeps every button for a given VARIANT (there can be several on one
+  // page -- a card in a recommendations rail and the same variant's own
+  // product page, for instance) in sync after any toggle, from any of
+  // them. Buttons for other colors/variants of the same product are
+  // untouched, since each is saved (or not) independently.
   function syncButtons(id, saved) {
-    var selector = '[data-pm-wishlist-toggle][data-product-id="' + cssEscape(id) + '"]';
+    var selector = '[data-pm-wishlist-toggle][data-variant-id="' + cssEscape(id) + '"]';
     document.querySelectorAll(selector).forEach(function (button) {
       button.classList.toggle('is-active', saved);
       button.setAttribute('aria-pressed', saved ? 'true' : 'false');
       button.setAttribute('aria-label', saved ? theme.strings.wishlistRemove : theme.strings.wishlistAdd);
+      var label = button.querySelector('[data-pm-wishlist-label]');
+      if (label) { label.textContent = saved ? theme.strings.wishlistRemove : theme.strings.wishlistAdd; }
     });
   }
 
@@ -134,7 +139,7 @@
     var items = readItems();
     var seen = {};
     document.querySelectorAll('[data-pm-wishlist-toggle]').forEach(function (button) {
-      var id = button.getAttribute('data-product-id');
+      var id = button.getAttribute('data-variant-id');
       if (seen[id]) { return; }
       seen[id] = true;
       syncButtons(id, findIndex(items, id) !== -1);
@@ -171,7 +176,7 @@
     if (!button) { return; }
 
     evt.preventDefault();
-    var id = button.getAttribute('data-product-id');
+    var id = button.getAttribute('data-variant-id');
     if (!id) { return; }
 
     var items = remove(id);
@@ -209,7 +214,7 @@
           (item.available === false ? '<span class="pm-wishlist-item-soldout">' + theme.strings.wishlistSoldOut + '</span>' : '') +
         '</span>' +
       '</a>' +
-      '<button type="button" class="pm-wishlist-item-remove" data-pm-wishlist-remove data-product-id="' + item.id + '" aria-label="' + theme.strings.wishlistRemove + '">' +
+      '<button type="button" class="pm-wishlist-item-remove" data-pm-wishlist-remove data-variant-id="' + item.id + '" aria-label="' + theme.strings.wishlistRemove + '">' +
         '<svg aria-hidden="true" focusable="false" viewBox="0 0 64 64"><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74" fill="none" stroke="currentColor" stroke-width="3"/></svg>' +
       '</button>';
     return el;
@@ -235,6 +240,43 @@
   document.addEventListener('pm:wishlist:change', function (evt) {
     updateCount(evt.detail.items);
     renderDrawer();
+  });
+
+  /* The product-page buttons (title area + the checker under Add to
+     Cart) are rendered server-side for whatever variant was selected
+     on load. If the shopper changes color/size with the page's own
+     variant picker before toggling the heart, theme.js's global
+     "variant:change" event (see theme.js's _onSelectChange) is the only
+     signal that the variant now showing is a different one -- re-point
+     each button's data-* at it so a save always captures what the
+     shopper is actually looking at, not stale load-time data. Scoped to
+     .pm-product so a recommendation card for a *different* product
+     elsewhere on the page is never touched by this. */
+  document.addEventListener('variant:change', function (evt) {
+    var newVariant = evt.detail && evt.detail.variant;
+    if (!newVariant) { return; }
+
+    document.querySelectorAll('.pm-product [data-pm-wishlist-toggle]').forEach(function (button) {
+      button.setAttribute('data-variant-id', newVariant.id);
+      button.setAttribute('data-product-price', newVariant.price);
+      button.setAttribute('data-product-available', newVariant.available ? 'true' : 'false');
+
+      if (newVariant.featured_image && newVariant.featured_image.src) {
+        button.setAttribute('data-product-image', newVariant.featured_image.src);
+      }
+
+      var baseUrl = button.getAttribute('data-product-url').split('?')[0];
+      button.setAttribute('data-product-url', baseUrl + '?variant=' + newVariant.id);
+
+      var baseTitle = button.getAttribute('data-product-title').split(' — ')[0];
+      if (newVariant.public_title && newVariant.public_title !== 'Default Title') {
+        button.setAttribute('data-product-title', baseTitle + ' — ' + newVariant.public_title);
+      } else {
+        button.setAttribute('data-product-title', baseTitle);
+      }
+    });
+
+    syncAllButtons();
   });
 
   // Matches the cart drawer's own "drawerOpen.<id>" event name (see
