@@ -152,8 +152,8 @@
   {%- endcapture -%}
   {% assign img_width = widthsArray | last %}
   <img src="{{ img | image_url: width: img_width }}"
-    width
-    height
+    width="{{ media_width }}"
+    height="{{ media_height }}"
     class="{{ classes }}"
     loading="{{ loading }}"
     {% if logoalt == 'logo' %}
