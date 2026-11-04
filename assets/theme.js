@@ -7226,16 +7226,33 @@ theme.recentlyViewed = {
       imageSetArguments: function(variant) {
         var variant = variant ? variant : (this.variants ? this.variants.currentVariant : null);
         if (!variant) return;
-  
+
         var setValue = this.settings.currentImageSet = this.getImageSetName(variant[this.settings.imageSetIndex]);
         var set = this.settings.imageSetName + '_' + setValue;
-  
-        // Always start on index 0
+        var cellSelector = '[data-group="'+set+'"]';
+
+        // Default to this group's first slide, but if the slide already on
+        // screen (the server-rendered .starting-slide, which the pre-JS CSS
+        // fix in pm-product.css already displays correctly) belongs to this
+        // same group, use its position instead -- otherwise Flickity's own
+        // init jumps back to the group's first photo, flashing away from the
+        // photo that was already correctly showing. On a color switch (this
+        // function called with a variant from a swatch click), .starting-slide
+        // still points at the old color's photo, so it won't be found in the
+        // new group's slide list and this falls back to 0 as before.
         this.settings.currentSlideIndex = 0;
-  
+        var groupSlides = this.cache.mainSlider.querySelectorAll(cellSelector);
+        var startingSlide = this.cache.mainSlider.querySelector(selectors.startingSlide);
+        if (startingSlide) {
+          var startIndexInGroup = Array.prototype.indexOf.call(groupSlides, startingSlide);
+          if (startIndexInGroup !== -1) {
+            this.settings.currentSlideIndex = startIndexInGroup;
+          }
+        }
+
         // Return object that adds cellSelector to mainSliderArgs
         return {
-          cellSelector: '[data-group="'+set+'"]',
+          cellSelector: cellSelector,
           imageSet: set,
           initialIndex: this.settings.currentSlideIndex
         }
