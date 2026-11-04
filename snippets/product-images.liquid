@@ -15,6 +15,20 @@
   if context == 'main-product'
     assign loading = 'eager'
   endif
+
+  # For products using the image-set feature (color variants with multiple
+  # photos grouped via a "#color_x" tag in each media's alt text), this is
+  # the group the currently selected photo belongs to. Used below to hide
+  # other colors' thumbnails on first render, instead of leaving every
+  # color's thumbnails visible until theme.js's updateImageSetThumbs() runs
+  # and hides them -- which is what caused all of them to flash on load.
+  assign featured_group = ''
+  if featured_media.alt contains '#'
+    assign featured_group_full = featured_media.alt | split: '#' | last
+    if featured_group_full contains '_'
+      assign featured_group = featured_group_full
+    endif
+  endif
 -%}
 
 {%- unless product.empty? -%}
@@ -103,6 +117,7 @@
               {%- liquid
                 assign image_set = false
                 assign image_set_group = ''
+                assign image_set_full = ''
                 if media.alt contains '#'
                   assign image_set_full = media.alt | split: '#' | last
                   if image_set_full contains '_'
@@ -110,8 +125,13 @@
                     assign image_set_group = image_set_full | split: '_' | first
                   endif
                 endif
+
+                assign thumb_hidden = false
+                if featured_group != '' and image_set_full != featured_group
+                  assign thumb_hidden = true
+                endif
               -%}
-              <div class="product__thumb-item"
+              <div class="product__thumb-item{% if thumb_hidden %} hide{% endif %}"
                 data-index="{{ forloop.index0 }}"
                 {% if image_set %}
                   data-set-name="{{image_set_group}}"
