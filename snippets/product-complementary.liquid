@@ -36,37 +36,21 @@
     {%- if recommend_products -%}
       <div class="product-recommendations-placeholder">
         {% comment %}
-          This content is visually hidden and replaced when recommended products show up
+          This content is visually hidden and replaced when recommended products show up.
+
+          The real recommended products used to also render here directly
+          (related_collection.products, server-side), as well as being
+          fetched again by theme.js's ProductRecommendations.connectedCallback
+          (via the data-url above) and injected into this same placeholder.
+          Both ran unconditionally, so every recommended product's images
+          were downloaded twice on every page load. This widget is already
+          JS-driven -- the fetch is what actually shows recommendations --
+          so only the invisible skeleton (current product, aria-hidden)
+          renders server-side now; real products come from the JS fetch
+          alone, same as before just without the duplicate render.
         {% endcomment %}
         <div class="grid grid--uniform visually-invisible" aria-hidden="true">
           {%- render 'product-grid-item', product: product, per_row: number_of_products -%}
-        </div>
-      </div>
-    {%- endif -%}
-    {%- if related_collection.products_count > 0 -%}
-      <div class="product-recommendations">
-        <div class="product-single__related grid grid--uniform" data-aos="overflow__animation" {% if type == 'block' %}data-slideshow data-controls="{{ block.settings.control_type }}" data-per-slide="{{ block.settings.per_slide }}" data-count="{{ number_of_products}}"{% endif %}>
-          {% assign currentStep = 1 %}
-          {%- for product in related_collection.products limit: number_of_products -%}
-            {% if currentStep == 1 %}
-              <div class="product-recommendations__slide">
-            {% endif %}
-
-            {%- render 'product-grid-item',
-              image_style: image_style,
-              product: product,
-              per_row: 1,
-              type: 'horizontal',
-              sizes: '112px',
-            -%}
-
-            {% if currentStep == block.settings.per_slide or forloop.last %}
-              </div>
-              {% assign currentStep = 0 %}
-            {% endif %}
-
-            {% assign currentStep = currentStep | plus: 1 %}
-          {%- endfor -%}
         </div>
       </div>
     {%- endif -%}
