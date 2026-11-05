@@ -1,0 +1,100 @@
+{%- comment -%}
+  "6 Care Tips" page. Replaces the old EComposer-built page, whose text
+  was frozen in the section code (so it couldn't be translated or
+  edited after the app was removed). Everything here is a section or
+  block setting, so it's editable in the theme editor and translatable
+  in Translate & Adapt.
+{%- endcomment -%}
+{{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
+
+<div class="pm-homepage pm-care">
+  <header class="pm-care-header">
+    {%- if section.settings.eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    {%- if section.settings.heading != blank -%}<h1 class="pm-serif pm-care-title">{{ section.settings.heading }}</h1>{%- endif -%}
+    {%- if section.settings.intro != blank -%}<div class="pm-care-intro">{{ section.settings.intro }}</div>{%- endif -%}
+  </header>
+
+  <ol class="pm-care-grid">
+    {%- for block in section.blocks -%}
+      <li class="pm-care-tip" {{ block.shopify_attributes }}>
+        <div class="pm-care-tip-media">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '(min-width: 990px) 30vw, (min-width: 600px) 45vw, 100vw', alt: block.settings.title }}
+          {%- elsif block.settings.image_url != blank -%}
+            <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="900">
+          {%- endif -%}
+        </div>
+        <span class="pm-eyebrow pm-care-tip-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+        <h2 class="pm-serif pm-care-tip-title">{{ block.settings.title }}</h2>
+        <div class="pm-care-tip-text">{{ block.settings.text }}</div>
+      </li>
+    {%- endfor -%}
+  </ol>
+
+  {%- if section.settings.spa_heading != blank or section.settings.spa_text != blank -%}
+    <section class="pm-care-spa">
+      {%- if section.settings.spa_heading != blank -%}<h2 class="pm-serif pm-care-spa-title">{{ section.settings.spa_heading }}</h2>{%- endif -%}
+      <div class="pm-care-intro">{{ section.settings.spa_text }}</div>
+      {%- if section.settings.spa_button_label != blank -%}
+        <a class="pm-care-spa-link" href="{{ section.settings.spa_button_link | default: routes.root_url }}">{{ section.settings.spa_button_label }}</a>
+      {%- endif -%}
+    </section>
+  {%- endif -%}
+</div>
+
+<style>
+  .pm-care { padding: clamp(40px, 6vw, 88px) var(--pm-pad) clamp(56px, 8vw, 120px); }
+  .pm-care-header { max-width: 760px; margin: 0 auto clamp(40px, 6vw, 72px); text-align: center; }
+  .pm-care-header .pm-eyebrow { display: block; margin-bottom: 14px; }
+  .pm-care-title { font-size: clamp(28px, 4vw, 44px); line-height: 1.15; margin: 0 0 22px; letter-spacing: 0; text-transform: none; }
+  .pm-care-intro { font-size: 15px; line-height: 1.75; color: var(--pm-ink); }
+  .pm-care-intro p { margin: 0 0 1em; }
+  .pm-care-grid {
+    list-style: none; margin: 0 auto; padding: 0; max-width: 1280px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(40px, 5vw, 64px) clamp(20px, 3vw, 40px);
+  }
+  @media (max-width: 989px) { .pm-care-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 599px) { .pm-care-grid { grid-template-columns: 1fr; } }
+  .pm-care-tip { margin: 0; }
+  .pm-care-tip-media { aspect-ratio: 1 / 1; overflow: hidden; background: var(--pm-sable); margin-bottom: 20px; }
+  .pm-care-tip-media img { width: 100%; height: 100%; object-fit: cover; }
+  .pm-care-tip-num { display: block; margin-bottom: 8px; }
+  .pm-care-tip-title { font-size: 24px; line-height: 1.2; margin: 0 0 12px; letter-spacing: 0; text-transform: none; }
+  .pm-care-tip-text { font-size: 14px; line-height: 1.75; color: var(--pm-muted); }
+  .pm-care-tip-text p { margin: 0; }
+  .pm-care-spa { max-width: 760px; margin: clamp(64px, 9vw, 120px) auto 0; padding-top: clamp(40px, 6vw, 64px); border-top: 1px solid var(--pm-line); text-align: center; }
+  .pm-care-spa-title { font-size: clamp(26px, 3.4vw, 36px); margin: 0 0 18px; letter-spacing: 0; text-transform: none; }
+  .pm-care-spa-link {
+    display: inline-block; margin-top: 12px; padding: 14px 28px; background: var(--pm-ink); color: var(--pm-paper);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PM: Care Tips",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label above the title", "default": "6 Care Tips" },
+    { "type": "text", "id": "heading", "label": "Title", "default": "For Your Palera Milano Luxury Handcrafted Bags and Accessories" },
+    { "type": "richtext", "id": "intro", "label": "Intro text" },
+    { "type": "header", "content": "Bag Spa" },
+    { "type": "text", "id": "spa_heading", "label": "Heading", "default": "Bag Spa" },
+    { "type": "richtext", "id": "spa_text", "label": "Text" },
+    { "type": "text", "id": "spa_button_label", "label": "Button label (optional)" },
+    { "type": "url", "id": "spa_button_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "tip",
+      "name": "Tip",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "image_url", "label": "Image address (used when no image is picked)" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Tip" },
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PM: Care Tips" }]
+}
+{% endschema %}

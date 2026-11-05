@@ -1,1 +1,76 @@
-{"layout":"theme","sections":{"ecom-6687d63c19dba45e1602b6d3-page":{"type":"ecom-6687d63c19dba45e1602b6d3-page","settings":{}}},"order":["ecom-6687d63c19dba45e1602b6d3-page"]}
+{
+  "layout": "theme",
+  "sections": {
+    "care_tips": {
+      "type": "pm-care-tips",
+      "blocks": {
+        "tip_1": {
+          "type": "tip",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0661/2680/7279/files/Tip_1_Wear.jpg?v=1721998026",
+            "title": "Wear",
+            "text": "<p>To prevent damage to your Palera pieces, apply makeup and perfume before wearing them. Don’t overfill your handcrafted bag to preserve the elegance of your exclusive piece. Keep light and dark colors apart for leather pieces.</p>"
+          }
+        },
+        "tip_2": {
+          "type": "tip",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0661/2680/7279/files/Tip_2_Protect.jpg?v=1721996550",
+            "title": "Protect",
+            "text": "<p>Avoid prolonged exposure to sunlight, artificial light, and humidity. If your leather and crystal bags get wet, dab them dry with a soft cloth to maintain their shine and luxurious appearance.</p>"
+          }
+        },
+        "tip_3": {
+          "type": "tip",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0661/2680/7279/files/Tip_3_Pamper.jpg?v=1721996614",
+            "title": "Pamper",
+            "text": "<p>Use a soft cloth to polish your bags and accessories regularly. Keep all items away from water, soap, and chemicals to avoid damage and ensure your fashion-forward handbags remain pristine.</p>"
+          }
+        },
+        "tip_4": {
+          "type": "tip",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0661/2680/7279/files/Tip_4_Store.jpg?v=1721996702",
+            "title": "Store",
+            "text": "<p>Store your Palera Milano bags and accessories in separate pouches to avoid scratches. Wrap handbag chains or straps in tissue paper and store bags upright in their original pouches with fillings. This will help maintain the shape and quality of your exclusive designs.</p>"
+          }
+        },
+        "tip_5": {
+          "type": "tip",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0661/2680/7279/files/Tip_5_Embrace.jpg?v=1721996805",
+            "title": "Embrace",
+            "text": "<p>Enjoy the natural patina that develops on your pieces over time. It adds character and tells a story of your journey together, enhancing the uniqueness of your luxury accessories.</p>"
+          }
+        },
+        "tip_6": {
+          "type": "tip",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0661/2680/7279/files/Tip_6_Travel.jpg?v=1721996895",
+            "title": "Travel",
+            "text": "<p>When traveling, use original pouches for your items and wrap handbag chains in tissue paper. Store handbags upright with soft fillings and avoid placing heavy items on top to keep them in perfect condition, ensuring your stylish investments are always ready to impress.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "tip_1",
+        "tip_2",
+        "tip_3",
+        "tip_4",
+        "tip_5",
+        "tip_6"
+      ],
+      "settings": {
+        "eyebrow": "6 Care Tips",
+        "heading": "For Your Palera Milano Luxury Handcrafted Bags and Accessories",
+        "intro": "<p>Palera Milano pieces are meticulously handcrafted in Italy by talented artisans with a keen attention to detail. Using only the highest quality materials—whether crystal, leather, brass, and many more—our unique craftsmanship techniques have been developed over months and years to create long-lasting pieces meant to be cherished by their owners.</p>",
+        "spa_heading": "Bag Spa",
+        "spa_text": "<p>As part of our commitment to sustainable luxury, prolonging the lifespan of your Palera Milano pieces is a priority. For additional support or questions, reach out to us anytime. We offer a Spa service for your items to pamper and rejuvenate them, ensuring your luxury pieces remain as captivating as the day you first acquired them. (service fees may apply)</p>"
+      }
+    }
+  },
+  "order": [
+    "care_tips"
+  ]
+}
