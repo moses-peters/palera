@@ -44,7 +44,7 @@
           <h2 class="pm-hero-caption-eyebrow">{{ section.settings.overlay_eyebrow }}</h2>
         {%- endif -%}
         {%- if section.settings.overlay_label != blank -%}
-          <a href="{{ section.settings.overlay_link_url | default: '/collections/aw27' }}" class="pm-hero-caption-button">{{ section.settings.overlay_label }}</a>
+          <a href="{{ section.settings.overlay_link_url | default: collections['aw27'].url | default: '/collections/aw27' }}" class="pm-hero-caption-button">{{ section.settings.overlay_label }}</a>
         {%- endif -%}
       </div>
     {%- endif -%}

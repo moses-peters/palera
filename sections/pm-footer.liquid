@@ -53,7 +53,7 @@
                       previews don't run theme code for unmatched routes.
                     {%- endcomment -%}
                     {%- if block.settings.menu == 'client-service' -%}
-                      <li><a href="/pages/press">Press</a></li>
+                      <li><a href="{{ pages['press'].url | default: '/pages/press' }}">Press</a></li>
                     {%- endif -%}
                   </ul>
                 </div>

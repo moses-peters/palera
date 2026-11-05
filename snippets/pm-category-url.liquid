@@ -13,14 +13,14 @@
 {%- liquid
   case handle
     when 'clutches'
-      assign category_url = '/collections/clutches'
+      assign category_url = collections['clutches'].url | default: '/collections/clutches'
     when 'accessories'
-      assign category_url = '/collections/jewelry-and-accessories'
+      assign category_url = collections['jewelry-and-accessories'].url | default: '/collections/jewelry-and-accessories'
     when 'mini-bags'
-      assign category_url = '/collections/mini-bags'
+      assign category_url = collections['mini-bags'].url | default: '/collections/mini-bags'
     when 'fits-a-phone'
-      assign category_url = '/collections/fits-a-phone'
+      assign category_url = collections['fits-a-phone'].url | default: '/collections/fits-a-phone'
     else
-      assign category_url = '/collections/all'
+      assign category_url = routes.all_products_collection_url | default: '/collections/all'
   endcase
 -%}{{- category_url -}}

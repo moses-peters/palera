@@ -334,7 +334,7 @@
         </div>
         <div class="pm-mobile-shop-links">
           <a href="{{ all_products_url }}">View All</a>
-          <a href="/collections/aw27">New In</a>
+          <a href="{{ collections['aw27'].url | default: '/collections/aw27' }}">New In</a>
           {%- for category in shop_categories -%}
             {%- assign category_handle = category | handle -%}
             <a href="{% render 'pm-category-url', handle: category_handle %}">{{ category }}</a>

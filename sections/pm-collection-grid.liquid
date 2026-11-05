@@ -74,7 +74,7 @@
 
   <div class="pm-collection-grid-wrap">
     {%- if collection.products.size == 0 -%}
-      {%- if collection.handle == 'aw27' -%}
+      {%- if collection.id == collections['aw27'].id -%}
         {%- comment -%}
           Coded placeholder spots, not a text message — so the page
           never reads as broken/empty while the real AW27 products are
@@ -144,7 +144,7 @@
         {%- endcomment -%}
         {%- assign editorial_blocks = section.blocks | where: 'type', 'editorial_break' -%}
         {%- assign current_scope = 'shop_all' -%}
-        {%- if collection.handle == 'aw27' -%}{%- assign current_scope = 'aw27' -%}{%- endif -%}
+        {%- if collection.id == collections['aw27'].id -%}{%- assign current_scope = 'aw27' -%}{%- endif -%}
 
         {%- comment -%}
           Break spacing used to be a fixed "every 12 tiles" — fine for

@@ -73,7 +73,8 @@
       reachable by direct link (e.g. from the footer), but not meant
       to compete with real content pages in search results.
     {%- endcomment -%}
-    {%- if page.handle == 'withdrawal-form' -%}
+    {%- comment -%} Matched by id: the Italian page can have a translated handle. {%- endcomment -%}
+    {%- if page and page.id == pages['withdrawal-form'].id -%}
       <meta name="robots" content="noindex, nofollow">
     {%- endif -%}
 
@@ -85,7 +86,7 @@
 
     {%- render 'font-face' -%}
     {%- render 'pm-fonts' -%}
-    {%- if page.handle == '6-care-tips' -%}
+    {%- if page and page.id == pages['6-care-tips'].id -%}
       {{ 'pm-ecom-care-tips.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}

@@ -8048,7 +8048,7 @@ theme.recentlyViewed = {
           if (theme.recentlyViewed.productInfo.hasOwnProperty(handle)) {
             resolve(theme.recentlyViewed.productInfo[handle]);
           } else {
-            fetch('/products/'+ handle +'.js').then(function(response) {
+            fetch((theme.routes.home + '/products/' + handle + '.js').replace('//', '/')).then(function(response) {
               return response.text();
             }).then(function(product) {
               resolve(product);

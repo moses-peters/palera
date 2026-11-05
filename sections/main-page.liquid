@@ -19,7 +19,7 @@
   exact match keeps this working even if the handle changes again.
 {%- endcomment -%}
 {%- comment -%} About Us / Press matched by id so it also works with translated handles. {%- endcomment -%}
-{%- unless page.id == pages['about-us'].id or page.id == pages['press'].id or page.handle contains 'email-preferences' -%}
+{%- unless page.id == pages['about-us'].id or page.id == pages['press'].id or page.handle contains 'email-preferences' or page.id == pages['email-preferences-tracking-off'].id -%}
   {{ 'pm-page.css' | asset_url | stylesheet_tag }}
   <div class="page-width page-width--narrow page-content">
     {%- render 'breadcrumbs' -%}

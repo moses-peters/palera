@@ -15,7 +15,7 @@
     <a href="{{ routes.root_url }}" class="site-nav__link site-nav__link--underline">Home</a>
   </li>
   <li class="site-nav__item site-nav__expanded-item">
-    <a href="{{ aw27_url | default: '/collections/aw27' }}" class="site-nav__link site-nav__link--underline">New In</a>
+    <a href="{{ collections['aw27'].url | default: aw27_url | default: '/collections/aw27' }}" class="site-nav__link site-nav__link--underline">New In</a>
   </li>
   <li class="site-nav__item site-nav__expanded-item">
     <a href="{{ routes.collections_url | default: '/collections' }}" class="site-nav__link site-nav__link--underline">Shop</a>

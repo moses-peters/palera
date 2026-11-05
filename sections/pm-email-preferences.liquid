@@ -19,7 +19,8 @@
   script, and no tracking of any kind -- just a plain visual
   confirmation.
 {%- endcomment -%}
-{%- if page.handle contains 'email-preferences' -%}
+{%- comment -%} Also matched by id, since the Italian page can have a translated handle. {%- endcomment -%}
+{%- if page.handle contains 'email-preferences' or page.id == pages['email-preferences-tracking-off'].id -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 {{ 'pm-email-preferences.css' | asset_url | stylesheet_tag }}
 
