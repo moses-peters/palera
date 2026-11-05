@@ -9,7 +9,12 @@
   content from also showing up on About Us or any other page using
   that template.
 {%- endcomment -%}
-{%- if page.handle == 'press' -%}
+{%- comment -%}
+  Matched by page id, not page.handle: on the Italian storefront
+  page.handle is the translated handle (e.g. the Italian press handle), while
+  pages['press'] always finds the page by its original handle.
+{%- endcomment -%}
+{%- if page.id == pages['press'].id -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 {{ 'pm-about.css' | asset_url | stylesheet_tag }}
 

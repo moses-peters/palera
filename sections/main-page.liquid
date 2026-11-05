@@ -18,7 +18,8 @@
   becoming an actual URL query parameter. `contains` instead of an
   exact match keeps this working even if the handle changes again.
 {%- endcomment -%}
-{%- unless page.handle == 'about-us' or page.handle == 'press' or page.handle contains 'email-preferences' -%}
+{%- comment -%} About Us / Press matched by id so it also works with translated handles. {%- endcomment -%}
+{%- unless page.id == pages['about-us'].id or page.id == pages['press'].id or page.handle contains 'email-preferences' -%}
   {{ 'pm-page.css' | asset_url | stylesheet_tag }}
   <div class="page-width page-width--narrow page-content">
     {%- render 'breadcrumbs' -%}

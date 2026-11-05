@@ -11,7 +11,12 @@
   'about-us' instead of excluding just 'press' is what keeps this
   section's content scoped to the actual About Us page alone.
 {%- endcomment -%}
-{%- if page.handle == 'about-us' -%}
+{%- comment -%}
+  Matched by page id, not page.handle: on the Italian storefront
+  page.handle is the translated handle (e.g. "chi-siamo-it"), while
+  pages['about-us'] always finds the page by its original handle.
+{%- endcomment -%}
+{%- if page.id == pages['about-us'].id -%}
 {{ 'pm-homepage.css' | asset_url | stylesheet_tag }}
 {{ 'pm-about.css' | asset_url | stylesheet_tag }}
 
