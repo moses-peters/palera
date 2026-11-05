@@ -23,7 +23,7 @@
   {%- endif -%}
 
   <div class="pm-policy-body rte">
-    <p>We'd love to hear from you. Whether it's a question about an order, a product, or anything else, send us a message below and our team will get back to you within 24&ndash;48 hours.</p>
+    <p>{{ 'pm.contact.intro' | t }}</p>
 
     {%- if section.settings.text != blank -%}
       {{ section.settings.text }}
@@ -64,17 +64,17 @@
       </div>
     {%- endform -%}
 
-    <h2>Other Ways to Reach Us</h2>
+    <h2>{{ 'pm.contact.other_ways' | t }}</h2>
     <p>
-      Email: <a href="mailto:clientservice@paleramilano.com">clientservice@paleramilano.com</a>
+      {{ 'pm.contact.email_label' | t }} <a href="mailto:clientservice@paleramilano.com">clientservice@paleramilano.com</a>
     </p>
     <p>
       <strong>Palera Milano S.r.l.</strong><br>
-      Via Vallarsa 26, 20139 Milan (MI), Italy<br>
-      VAT number (Partita IVA): IT12427630962
+      {{ 'pm.contact.address_html' | t }}<br>
+      {{ 'pm.contact.vat' | t }}
     </p>
     {%- if faq_page -%}
-      <p>Have a quick question? Check our <a href="{{ faq_page.url }}">FAQs</a> &mdash; you might find your answer right away.</p>
+      <p>{{ 'pm.contact.faq_html' | t: url: faq_page.url }}</p>
     {%- endif -%}
   </div>
 </div>

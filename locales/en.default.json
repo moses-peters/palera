@@ -388,5 +388,34 @@
   },
   "date_formats": {
     "month_day_year": "%b %d, %Y"
+  },
+  "pm": {
+    "contact": {
+      "intro": "We'd love to hear from you. Whether it's a question about an order, a product, or anything else, send us a message below and our team will get back to you within 24–48 hours.",
+      "other_ways": "Other Ways to Reach Us",
+      "email_label": "Email:",
+      "address_html": "Via Vallarsa 26, 20139 Milan (MI), Italy",
+      "vat": "VAT number (Partita IVA): IT12427630962",
+      "faq_html": "Have a quick question? Check our <a href=\"{{ url }}\">FAQs</a> &mdash; you might find your answer right away."
+    },
+    "withdrawal": {
+      "title": "Withdrawal Form",
+      "intro_1": "We want you to be completely satisfied. If you're not happy with your purchase, you can return or exchange it within 14 days of delivery — no questions asked.",
+      "intro_2": "You can return or exchange your item by filling the form below.",
+      "intro_3": "If you wish to withdraw from your contract of sale, you may use this form. We will acknowledge receipt of your withdrawal by email without delay.",
+      "to": "To",
+      "full_name": "Full name *",
+      "order_email": "Email address on the order *",
+      "order_number": "Order number *",
+      "order_number_placeholder": "e.g. #1234",
+      "address": "Your address *",
+      "items": "Item(s) you wish to withdraw from *",
+      "items_placeholder": "Product name(s), color, etc.",
+      "date_ordered": "Date ordered",
+      "date_received": "Date received",
+      "declaration": "I hereby give notice that I withdraw from my contract of sale of the above goods.",
+      "submit": "Submit Withdrawal Request",
+      "success": "Your withdrawal request has been received. A confirmation email is on its way to you, and our team will follow up with next steps."
+    }
   }
 }
