@@ -41,9 +41,9 @@
        {% if  product.product.tags contains 'gift-box-eligible' %}
           {% assign productFinalPrice = product.final_price | divided_by: 100 %}
             {% if productFinalPrice >= 450 %}
-              <input type="checkbox" class="kg_add_gift" prod-id="{{ product.key }}" value="48379481096539" /> This is a gift. Include a gift box & card. Free for items above €450.
+              <label class="pm-cart-gift"><input type="checkbox" class="kg_add_gift" prod-id="{{ product.key }}" value="48379481096539" /> <span>This is a gift. Include a gift box & card. Free for items above €450.</span></label>
             {% else %}
-               <input type="checkbox" class="kg_add_gift" prod-id="{{ product.key }}" value="48379488403803" /> This is a gift. Include a gift box & card - 15 € or free for items above €450.
+               <label class="pm-cart-gift"><input type="checkbox" class="kg_add_gift" prod-id="{{ product.key }}" value="48379488403803" /> <span>This is a gift. Include a gift box & card - 15 € or free for items above €450.</span></label>
           {% endif %}
       {% endif %}
 
