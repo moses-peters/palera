@@ -86,7 +86,8 @@
 
     {%- render 'font-face' -%}
     {%- render 'pm-fonts' -%}
-    {%- if page and page.id == pages['6-care-tips'].id -%}
+    {%- comment -%} Matched by the page's EComposer template too, which stays the same in every language. {%- endcomment -%}
+    {%- if page and page.id == pages['6-care-tips'].id or template.suffix == 'ecom-6687d63c19dba45e1602b6d3' -%}
       {{ 'pm-ecom-care-tips.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
