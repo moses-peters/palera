@@ -18,11 +18,16 @@
       <div class="cart__page">
         <div data-products class="cart__page-col">
           {% for item in cart.items %}
-            {%- render 'cart-item', product: item, sizes: '180px', -%}
+            {%- render 'cart-item', product: item, sizes: '260px', -%}
           {%- endfor -%}
         </div>
         <div class="cart__page-col">
-          {%- comment -%} Order note removed on purpose (same as the cart drawer). {%- endcomment -%}
+          {% if settings.cart_notes_enable %}
+            <div>
+              <label for="CartNote">{{ 'cart.general.note' | t }}</label>
+              <textarea name="note" class="input-full cart-notes" id="CartNote">{{ cart.note }}</textarea>
+            </div>
+          {% endif %}
 
           <div data-discounts>
             {% if cart.cart_level_discount_applications != blank %}

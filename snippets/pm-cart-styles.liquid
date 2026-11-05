@@ -29,10 +29,10 @@
   }
   .pm-cart-scope .cart__item:last-child { border-bottom: 0; }
   .pm-cart-scope .cart__image {
-    flex: 0 0 140px;
+    flex: 0 0 170px;
     margin-right: 24px;
   }
-  .pm-cart-scope .cart__image { aspect-ratio: 1 / 1; }
+  .pm-cart-scope .cart__image { aspect-ratio: 5 / 4; }
   .pm-cart-scope .cart__image a,
   .pm-cart-scope .cart__image .image-wrap { height: 100%; }
   .pm-cart-scope .cart__image img { height: 100%; width: 100%; object-fit: contain; }
@@ -40,7 +40,7 @@
   .pm-cart-scope .cart__item-title {
     margin: 0;
     font-family: var(--pm-font-serif, inherit);
-    font-size: 19px;
+    font-size: 16px;
     line-height: 1.25;
     text-transform: none;
     letter-spacing: 0;
@@ -51,7 +51,7 @@
   .pm-cart-scope .cart__item-name {
     display: block;
     font-family: var(--pm-font-serif, inherit);
-    font-size: 19px;
+    font-size: 16px;
     line-height: 1.25;
     font-weight: 400;
     letter-spacing: 0;
@@ -70,15 +70,18 @@
     color: var(--pm-cd-muted);
     margin: 0;
   }
+  /* The picked value (Black, Gold...) is bold; the option name stays light */
+  .pm-cart-scope .cart__item--variants > div,
+  .pm-cart-scope .cart__item--properties { font-weight: 700; color: var(--pm-cd-ink); }
   .pm-cart-scope .cart__item--variants span,
-  .pm-cart-scope .cart__item--properties span { font-weight: 500; color: var(--pm-cd-muted); }
+  .pm-cart-scope .cart__item--properties span { font-weight: 400; color: var(--pm-cd-muted); }
   .pm-cart-scope .pm-cart-gift {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    margin: 14px 0 0;
-    font-size: 12px;
-    line-height: 1.5;
+    margin: 10px 0 2px;
+    font-size: 10px;
+    line-height: 1.4;
     color: var(--pm-cd-muted);
     text-transform: none;
     letter-spacing: 0;
@@ -117,7 +120,16 @@
     letter-spacing: 0;
     text-transform: none;
   }
-  .pm-cart-page .cart__image { flex-basis: 180px; }
+  .pm-cart-page .cart__image { flex-basis: 260px; margin-right: 32px; }
+  .pm-cart-page .cart__page-col:first-child { padding-right: 48px; }
+  .pm-cart-page .cart-notes {
+    font-family: inherit; font-size: 13px; min-height: 90px;
+    border: 1px solid var(--pm-cd-line); border-radius: 0; margin-bottom: 20px;
+  }
+  .pm-cart-page label[for="CartNote"] {
+    display: block; margin-bottom: 8px;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pm-cd-muted);
+  }
   .pm-cart-page .cart__item-sub.cart__item-row {
     font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
   }
