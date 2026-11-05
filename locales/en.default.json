@@ -416,6 +416,10 @@
       "declaration": "I hereby give notice that I withdraw from my contract of sale of the above goods.",
       "submit": "Submit Withdrawal Request",
       "success": "Your withdrawal request has been received. A confirmation email is on its way to you, and our team will follow up with next steps."
+    },
+    "cart": {
+      "view_bag": "View shopping cart",
+      "continue_shopping": "Continue shopping"
     }
   }
 }

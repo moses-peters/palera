@@ -66,8 +66,8 @@
           {% endif %}
 
           <div class="cart__checkout-wrapper kg-cart-drawer-actions">
-            <a href="{{ routes.cart_url }}" class="kg-cart-view-bag">View shopping cart</a>
-            <button type="button" class="js-drawer-close kg-cart-continue-shopping">Continue shopping</button>
+            <a href="{{ routes.cart_url }}" class="kg-cart-view-bag">{{ 'pm.cart.view_bag' | t }}</a>
+            <button type="button" class="js-drawer-close kg-cart-continue-shopping">{{ 'pm.cart.continue_shopping' | t }}</button>
 
             {% if additional_checkout_buttons and settings.cart_additional_buttons %}
               <div class="additional-checkout-buttons additional-checkout-buttons--vertical">{{ content_for_additional_checkout_buttons }}</div>

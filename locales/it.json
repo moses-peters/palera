@@ -2697,6 +2697,10 @@
       "declaration": "Con la presente notifico il recesso dal mio contratto di vendita dei beni sopra indicati.",
       "submit": "Invia richiesta di recesso",
       "success": "La tua richiesta di recesso è stata ricevuta. Ti stiamo inviando un'email di conferma e il nostro team ti contatterà con i prossimi passi."
+    },
+    "cart": {
+      "view_bag": "Vedi il carrello",
+      "continue_shopping": "Continua gli acquisti"
     }
   }
 }
