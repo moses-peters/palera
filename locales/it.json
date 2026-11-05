@@ -2701,6 +2701,13 @@
     "cart": {
       "view_bag": "Vedi il carrello",
       "continue_shopping": "Continua gli acquisti"
+    },
+    "trust": {
+      "handcrafted": "Made in Italy",
+      "made_to_order": "Ogni borsa è realizzata su ordinazione, {{ time }}.",
+      "time_10_days": "con tempi di realizzazione di circa 10 giorni",
+      "time_3_weeks": "con tempi di realizzazione di circa 3 settimane",
+      "shipping": "Spedizione gratuita per ordini superiori a €450"
     }
   }
 }

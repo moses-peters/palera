@@ -106,7 +106,7 @@
         "pm_trust_strip": {
           "type": "custom",
           "settings": {
-            "code": "{%- assign pm_trust_days_text = 'taking about 10 days' -%}{%- if product.title == 'Micro Long' or product.title == 'Phone Holder' -%}{%- assign pm_trust_days_text = 'taking about 3 weeks' -%}{%- endif -%}<div class=\"pm-product-trust\"><div class=\"pm-product-trust-item\"><span>Handcrafted in Italy</span></div><div class=\"pm-product-trust-item\"><span>Each bag is made to order, {{ pm_trust_days_text }}</span></div><div class=\"pm-product-trust-item\"><span>Complimentary Shipping on Orders Over &euro;450</span></div></div>"
+            "code": "{%- assign pm_trust_time = 'pm.trust.time_10_days' | t -%}{%- if product.title == 'Micro Long' or product.title == 'Phone Holder' -%}{%- assign pm_trust_time = 'pm.trust.time_3_weeks' | t -%}{%- endif -%}<div class=\"pm-product-trust\"><div class=\"pm-product-trust-item\"><span>{{ 'pm.trust.handcrafted' | t }}</span></div><div class=\"pm-product-trust-item\"><span>{{ 'pm.trust.made_to_order' | t: time: pm_trust_time }}</span></div><div class=\"pm-product-trust-item\"><span>{{ 'pm.trust.shipping' | t }}</span></div></div>"
           }
         }
       },

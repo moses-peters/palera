@@ -420,6 +420,13 @@
     "cart": {
       "view_bag": "View shopping cart",
       "continue_shopping": "Continue shopping"
+    },
+    "trust": {
+      "handcrafted": "Handcrafted in Italy",
+      "made_to_order": "Each bag is made to order, {{ time }}",
+      "time_10_days": "taking about 10 days",
+      "time_3_weeks": "taking about 3 weeks",
+      "shipping": "Complimentary Shipping on Orders Over €450"
     }
   }
 }
