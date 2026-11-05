@@ -25,7 +25,7 @@
           {%- assign color_option = nil -%}
           {%- for option in product.options_with_values -%}
             {%- assign option_name_downcase = option.name | downcase -%}
-            {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+            {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' or option_name_downcase == 'colore' -%}
               {%- assign color_option = option -%}
             {%- endif -%}
           {%- endfor -%}
@@ -55,7 +55,7 @@
         {%- if product -%}
           {%- for option in product.options_with_values -%}
             {%- assign option_name_downcase = option.name | downcase -%}
-            {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+            {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' or option_name_downcase == 'colore' -%}
               {%- assign color_option = option -%}
             {%- endif -%}
           {%- endfor -%}
