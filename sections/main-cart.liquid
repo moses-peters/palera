@@ -1,4 +1,5 @@
-<div class="page-width page-content">
+{%- render 'pm-cart-styles' -%}
+<div class="page-width page-content pm-cart-scope pm-cart-page">
 
   {%- render 'breadcrumbs' -%}
 
@@ -17,16 +18,11 @@
       <div class="cart__page">
         <div data-products class="cart__page-col">
           {% for item in cart.items %}
-            {%- render 'cart-item', product: item, sizes: '150px', -%}
+            {%- render 'cart-item', product: item, sizes: '180px', -%}
           {%- endfor -%}
         </div>
         <div class="cart__page-col">
-          {% if settings.cart_notes_enable %}
-            <div>
-              <label for="CartNote">{{ 'cart.general.note' | t }}</label>
-              <textarea name="note" class="input-full cart-notes" id="CartNote">{{ cart.note }}</textarea>
-            </div>
-          {% endif %}
+          {%- comment -%} Order note removed on purpose (same as the cart drawer). {%- endcomment -%}
 
           <div data-discounts>
             {% if cart.cart_level_discount_applications != blank %}
