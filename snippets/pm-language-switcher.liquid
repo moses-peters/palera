@@ -20,13 +20,13 @@
     row, as a plain-text item alongside the social icons, inheriting
     the drawer's own (dark-on-light) text color instead of white.
 
-  (Re-pushed 2026-11-05 so Shopify imports this file.)
 {%- endcomment -%}
 {%- if shop.enabled_locales.size > 1 -%}
   {%- liquid
     assign pm_lang_context = context | default: 'header'
+    assign pm_lang_class = 'pm-lang-switcher pm-lang-switcher--' | append: pm_lang_context
   -%}
-  {%- form 'localization', class: 'pm-lang-switcher pm-lang-switcher--' | append: pm_lang_context -%}
+  {%- form 'localization', class: pm_lang_class -%}
     <span class="visually-hidden">{{ 'general.language.dropdown_label' | t }}</span>
     {%- for locale in form.available_locales -%}
       {%- unless forloop.first -%}<span class="pm-lang-switcher-sep" aria-hidden="true">|</span>{%- endunless -%}
