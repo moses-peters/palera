@@ -359,9 +359,38 @@
           # against every spelling this is actually known to take,
           # rather than one hardcoded English word, so it works
           # regardless of which language is being viewed.
+# Hardware / chain option: whatever it's called ("Hardware Color",
+          # "Chain Color", "Colore catena", ...), it's spotted by its values
+          # being metal finishes (Gold / Silver / Oro / Argento ...), so a
+          # new name or language can't break it.
+          assign pm_is_metal_option = false
+          if downcased_option contains 'hardware' or downcased_option contains 'chain' or downcased_option contains 'catena' or downcased_option contains 'metal'
+            assign pm_is_metal_option = true
+          elsif option.values.size > 0
+            assign pm_metal_values = 'gold,silver,oro,argento,rose gold,oro rosa,gunmetal,canna di fucile,bronze,bronzo,black,nero' | split: ','
+            assign pm_is_metal_option = true
+            for pm_val in option.values
+              assign pm_val_down = pm_val | downcase | strip
+              unless pm_metal_values contains pm_val_down
+                assign pm_is_metal_option = false
+              endunless
+            endfor
+            # Gold/silver-only is the hardware option; a set of only
+            # "black" etc. on its own is more likely a real color option.
+            assign pm_has_gold_or_silver = false
+            for pm_val in option.values
+              assign pm_val_down = pm_val | downcase | strip
+              if pm_val_down == 'gold' or pm_val_down == 'silver' or pm_val_down == 'oro' or pm_val_down == 'argento'
+                assign pm_has_gold_or_silver = true
+              endif
+            endfor
+            unless pm_has_gold_or_silver
+              assign pm_is_metal_option = false
+            endunless
+          endif
           if downcased_option == 'color' or downcased_option == 'colour' or downcased_option == 'colore'
             assign is_color = true
-          elsif downcased_option contains 'hardware' or downcased_option contains 'chain' or downcased_option contains 'catena'
+          elsif pm_is_metal_option
             assign is_color = true
           endif
         endif

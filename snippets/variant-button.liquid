@@ -108,10 +108,39 @@
             # swatch-enabled (e.g. "Chain Color") keeps the original shared
             # swatch-file behavior instead.
             assign option_name_downcased = option.name | downcase
+            # Hardware / chain option: whatever it's called ("Hardware Color",
+            # "Chain Color", "Colore catena", ...), it's spotted by its values
+            # being metal finishes (Gold / Silver / Oro / Argento ...), so a
+            # new name or language can't break it.
+            assign pm_is_metal_option = false
+            if option_name_downcased contains 'hardware' or option_name_downcased contains 'chain' or option_name_downcased contains 'catena' or option_name_downcased contains 'metal'
+              assign pm_is_metal_option = true
+            elsif option.values.size > 0
+              assign pm_metal_values = 'gold,silver,oro,argento,rose gold,oro rosa,gunmetal,canna di fucile,bronze,bronzo,black,nero' | split: ','
+              assign pm_is_metal_option = true
+              for pm_val in option.values
+                assign pm_val_down = pm_val | downcase | strip
+                unless pm_metal_values contains pm_val_down
+                  assign pm_is_metal_option = false
+                endunless
+              endfor
+              # Gold/silver-only is the hardware option; a set of only
+              # "black" etc. on its own is more likely a real color option.
+              assign pm_has_gold_or_silver = false
+              for pm_val in option.values
+                assign pm_val_down = pm_val | downcase | strip
+                if pm_val_down == 'gold' or pm_val_down == 'silver' or pm_val_down == 'oro' or pm_val_down == 'argento'
+                  assign pm_has_gold_or_silver = true
+                endif
+              endfor
+              unless pm_has_gold_or_silver
+                assign pm_is_metal_option = false
+              endunless
+            endif
             assign is_main_color_option = false
             if option_name_downcased == 'color' or option_name_downcased == 'colour' or option_name_downcased == 'colore'
               assign is_main_color_option = true
-            elsif option_name_downcased contains 'hardware' or option_name_downcased contains 'chain' or option_name_downcased contains 'catena'
+            elsif pm_is_metal_option
               assign is_main_color_option = true
             endif
 
@@ -125,7 +154,7 @@
             assign value_downcased = value | downcase
             # Italian names the option "Colore catena" (and may translate the
             # values to Oro / Argento), so match those spellings too.
-            if option_name_downcased contains 'hardware' or option_name_downcased contains 'chain' or option_name_downcased contains 'catena'
+            if pm_is_metal_option
               if value_downcased == 'gold' or value_downcased == 'oro'
                 assign is_hardware_swatch = true
                 assign hardware_css = 'linear-gradient(135deg, #d3b56a 0%, #f7ecc7 22%, #a9822f 50%, #f7ecc7 78%, #d3b56a 100%)'
