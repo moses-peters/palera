@@ -7120,6 +7120,27 @@ theme.recentlyViewed = {
         // image set names variant change listeners
         if (this.settings.imageSetName) {
           var variantWrapper = this.container.querySelector('.variant-input-wrap[data-handle="'+this.settings.imageSetName+'"]');
+          // The photo groups are tagged with the English option name
+          // ("#color_black"), but on the Italian site the option is called
+          // "Colore", so the lookup by name fails. Fall back to the option
+          // whose values match the photo groups (color values aren't
+          // translated, so "black" still matches).
+          if (!variantWrapper) {
+            var setName = this.settings.imageSetName;
+            var slider = this.cache.mainSlider;
+            var self = this;
+            this.container.querySelectorAll('.variant-input-wrap[data-index]').forEach(function(wrap) {
+              if (variantWrapper) return;
+              var inputs = wrap.querySelectorAll('input, option');
+              for (var i = 0; i < inputs.length; i++) {
+                var val = inputs[i].value;
+                if (val && slider.querySelector('[data-group="' + setName + '_' + self.getImageSetName(val) + '"]')) {
+                  variantWrapper = wrap;
+                  return;
+                }
+              }
+            });
+          }
           if (variantWrapper) {
             this.settings.imageSetIndex = variantWrapper.dataset.index;
             this.container.on('variantChange' + this.settings.namespace, this.updateImageSet.bind(this))
