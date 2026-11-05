@@ -1,5 +1,6 @@
 <div class="site-nav">
   <div class="site-nav__icons">
+    {%- render 'pm-language-switcher' -%}
     {%- if shop.customer_accounts_enabled -%}
       <a class="site-nav__link site-nav__link--icon small--hide" href="{{ routes.account_url }}">
         {%- comment -%}
@@ -52,6 +53,5 @@
         <span class="cart-link__bubble{% if cart.item_count > 0 %} cart-link__bubble--visible{% endif %}"></span>
       </span>
     </a>
-            <div class="transcy-switcher-manual transcy-mobile hidden" style="margin: unset;"></div>
   </div>
 </div>
