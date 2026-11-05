@@ -361,7 +361,7 @@
           # regardless of which language is being viewed.
           if downcased_option == 'color' or downcased_option == 'colour' or downcased_option == 'colore'
             assign is_color = true
-          elsif downcased_option contains 'hardware'
+          elsif downcased_option contains 'hardware' or downcased_option contains 'chain' or downcased_option contains 'catena'
             assign is_color = true
           endif
         endif

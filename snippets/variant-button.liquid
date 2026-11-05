@@ -111,7 +111,7 @@
             assign is_main_color_option = false
             if option_name_downcased == 'color' or option_name_downcased == 'colour' or option_name_downcased == 'colore'
               assign is_main_color_option = true
-            elsif option_name_downcased contains 'hardware'
+            elsif option_name_downcased contains 'hardware' or option_name_downcased contains 'chain' or option_name_downcased contains 'catena'
               assign is_main_color_option = true
             endif
 
@@ -123,11 +123,13 @@
             # below entirely when this is the case.
             assign is_hardware_swatch = false
             assign value_downcased = value | downcase
-            if option_name_downcased contains 'hardware' or option_name_downcased contains 'chain color'
-              if value_downcased == 'gold'
+            # Italian names the option "Colore catena" (and may translate the
+            # values to Oro / Argento), so match those spellings too.
+            if option_name_downcased contains 'hardware' or option_name_downcased contains 'chain' or option_name_downcased contains 'catena'
+              if value_downcased == 'gold' or value_downcased == 'oro'
                 assign is_hardware_swatch = true
                 assign hardware_css = 'linear-gradient(135deg, #d3b56a 0%, #f7ecc7 22%, #a9822f 50%, #f7ecc7 78%, #d3b56a 100%)'
-              elsif value_downcased == 'silver'
+              elsif value_downcased == 'silver' or value_downcased == 'argento'
                 assign is_hardware_swatch = true
                 assign hardware_css = 'linear-gradient(135deg, #c6c6c6 0%, #f5f5f5 22%, #9a9a9a 50%, #f5f5f5 78%, #c6c6c6 100%)'
               endif
