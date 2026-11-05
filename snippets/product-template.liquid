@@ -53,7 +53,8 @@
   id), only that it immediately precedes "Materials & dimensions".
 {%- endcomment -%}
 {%- liquid
-  assign pm_marker_candidates = 'Materials &amp; dimensions;;Materials & dimensions' | split: ';;'
+  # Italian descriptions use "Materiali & Dimensioni" (or "e") instead.
+  assign pm_marker_candidates = 'Materials &amp; dimensions;;Materials & dimensions;;Materiali &amp; dimensioni;;Materiali & dimensioni;;Materiali e dimensioni' | split: ';;'
   assign pm_main_description = product.description
   assign pm_details_content = ''
   assign pm_description_lower = product.description | downcase
@@ -230,7 +231,8 @@
                     {%- if pm_details_content != blank -%}
                       {%- assign pm_details_tab_id = 'product-details-' | append: product.id -%}
                       <div class="product-block product-block--tab">
-                        {%- render 'tab', id: pm_details_tab_id, title: 'Product Details', content: pm_details_content -%}
+                        {%- if request.locale.iso_code == 'it' -%}{%- assign pm_details_title = 'Dettagli prodotto' -%}{%- else -%}{%- assign pm_details_title = 'Product Details' -%}{%- endif -%}
+                        {%- render 'tab', id: pm_details_tab_id, title: pm_details_title, content: pm_details_content -%}
                       </div>
                     {%- endif -%}
                   {%- when 'description' -%}
