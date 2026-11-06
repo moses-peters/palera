@@ -58,6 +58,7 @@
 <div
   class="product-main-slide {% if is_featured %}starting-slide{% else %}secondary-slide{% endif %}"
   data-index="{{ loopIndex0 }}"
+  data-pm-media-id="{{ media.id }}"
   {% if image_set %}
     data-set-name="{{image_set_group}}"
     data-group="{{image_set_full}}"

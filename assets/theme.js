@@ -6981,7 +6981,7 @@ theme.recentlyViewed = {
         // "already on this group" guard on page load -- a visible flicker
         // on every load of a product using this feature.
         if (this.settings.imageSetName && this.variants && this.variants.currentVariant) {
-          this.settings.currentImageSet = this.getImageSetName(this.variants.currentVariant[this.settings.imageSetIndex]);
+          this.settings.currentImageSet = this.getImageSetValue(this.variants.currentVariant);
         }
       },
   
@@ -7141,6 +7141,10 @@ theme.recentlyViewed = {
               }
             });
           }
+          if (!variantWrapper) {
+            var swatch = this.container.querySelector('.variant-input-wrap[data-index] .variant__input--color-swatch');
+            variantWrapper = swatch ? swatch.closest('.variant-input-wrap') : null;
+          }
           if (variantWrapper) {
             this.settings.imageSetIndex = variantWrapper.dataset.index;
             this.container.on('variantChange' + this.settings.namespace, this.updateImageSet.bind(this))
@@ -7255,7 +7259,7 @@ theme.recentlyViewed = {
         var variant = variant ? variant : (this.variants ? this.variants.currentVariant : null);
         if (!variant) return;
 
-        var setValue = this.settings.currentImageSet = this.getImageSetName(variant[this.settings.imageSetIndex]);
+        var setValue = this.settings.currentImageSet = this.getImageSetValue(variant);
         var set = this.settings.imageSetName + '_' + setValue;
         var cellSelector = '[data-group="'+set+'"]';
 
@@ -7293,7 +7297,7 @@ theme.recentlyViewed = {
           return;
         }
   
-        var setValue = this.getImageSetName(variant[this.settings.imageSetIndex]);
+        var setValue = this.getImageSetValue(variant);
   
         // Already on the current image group
         if (this.settings.currentImageSet === setValue) {
@@ -7310,6 +7314,25 @@ theme.recentlyViewed = {
         });
       },
   
+      // Which photo group ("#color_<value>" in the alt text) belongs to this
+      // variant. Read from the variant's own photo first: on the Italian
+      // site the color values can be translated ("Purple" -> "Viola"), so
+      // turning the value into a group name finds nothing and the gallery
+      // goes blank. Falls back to the value name when the variant has no
+      // photo of its own.
+      getImageSetValue: function(variant) {
+        if (variant && variant.featured_media && this.cache.mainSlider) {
+          var slide = this.cache.mainSlider.querySelector('[data-pm-media-id="' + variant.featured_media.id + '"][data-group]');
+          var group = slide && slide.getAttribute('data-group');
+          var prefix = this.settings.imageSetName + '_';
+          if (group && group.indexOf(prefix) === 0) {
+            return group.slice(prefix.length);
+          }
+        }
+        var raw = variant && this.settings.imageSetIndex ? variant[this.settings.imageSetIndex] : '';
+        return raw ? this.getImageSetName(raw) : '';
+      },
+
       getImageSetName: function(string) {
         return string.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '').replace(/^-/, '');
       },
