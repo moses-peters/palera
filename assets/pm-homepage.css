@@ -470,6 +470,8 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-plp-tile-image[data-pm-hover-image] .pm-plp-tile-image-alt { opacity: 0; }
 .pm-plp-tile:hover .pm-plp-tile-image[data-pm-hover-image] .pm-plp-tile-image-alt { opacity: 1; }
 .pm-plp-tile:hover .pm-plp-tile-image[data-pm-hover-image] img:not(.pm-plp-tile-image-alt) { opacity: 0; }
+/* Phones have no hover, so never download the second (hover) photo there. */
+@media (hover: none) { .pm-plp-tile-image .pm-plp-tile-image-alt { display: none; } .pm-plp-tile:hover .pm-plp-tile-image[data-pm-hover-image] img:not(.pm-plp-tile-image-alt) { opacity: 1; } }
 .pm-plp-campaign-tile { grid-column: span 2; }
 .pm-plp-campaign-tile--vertical { grid-column: span 1; }
 .pm-plp-campaign-tile .pm-plp-tile-image { aspect-ratio: 16 / 9; }

@@ -346,16 +346,41 @@
               the family filter script) targets .pm-plp-tile by class,
               not by tag, so nothing else needed to change for this.
             {%- endcomment -%}
-            <div class="pm-plp-tile pm-reveal" data-family="{{ tile_family }}" style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms">
+            {%- comment -%}
+              The first 4 tiles (the first row on desktop, first two rows
+              on phones) load right away and skip the fade-in, so the
+              first photos show without waiting for scripts. The rest
+              stay lazy. Tiles are about 45% of the screen wide on phones
+              and about 22% from 640px up, so the browser picks a file
+              that size from the srcset instead of always 900px.
+            {%- endcomment -%}
+            {%- liquid
+              assign tile_above_fold = false
+              if tile_index <= 4
+                assign tile_above_fold = true
+              endif
+              assign tile_widths = '180, 270, 360, 540, 720, 900'
+              assign tile_sizes = '(min-width: 640px) 22vw, 45vw'
+            -%}
+            <div class="pm-plp-tile{% unless tile_above_fold %} pm-reveal{% endunless %}" data-family="{{ tile_family }}"{% unless tile_above_fold %} style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms"{% endunless %}>
               <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
                 <div class="pm-plp-tile-image"{% if tile_secondary_image %} data-pm-hover-image{% endif %}>
                   {%- if tile_image -%}
-                    <img src="{{ tile_image | image_url: width: 900 }}" alt="{{ tile_image.alt | escape | default: tile_name }}" loading="lazy">
+                    {%- assign tile_alt_text = tile_image.alt | default: tile_name -%}
+                    {%- if tile_above_fold -%}
+                      {%- if tile_index <= 2 -%}
+                        {{ tile_image | image_url: width: 900 | image_tag: widths: tile_widths, sizes: tile_sizes, loading: 'eager', fetchpriority: 'high', alt: tile_alt_text }}
+                      {%- else -%}
+                        {{ tile_image | image_url: width: 900 | image_tag: widths: tile_widths, sizes: tile_sizes, loading: 'eager', alt: tile_alt_text }}
+                      {%- endif -%}
+                    {%- else -%}
+                      {{ tile_image | image_url: width: 900 | image_tag: widths: tile_widths, sizes: tile_sizes, loading: 'lazy', alt: tile_alt_text }}
+                    {%- endif -%}
                   {%- else -%}
                     {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
                   {%- endif -%}
                   {%- if tile_secondary_image -%}
-                    <img src="{{ tile_secondary_image | image_url: width: 900 }}" alt="" loading="lazy" class="pm-plp-tile-image-alt" aria-hidden="true">
+                    {{ tile_secondary_image | image_url: width: 900 | image_tag: widths: tile_widths, sizes: tile_sizes, loading: 'lazy', alt: '', class: 'pm-plp-tile-image-alt', aria-hidden: 'true' }}
                   {%- endif -%}
                 </div>
                 <div class="pm-plp-tile-info">
