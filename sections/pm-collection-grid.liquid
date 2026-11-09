@@ -123,6 +123,13 @@
         at evenly-spaced points (see break_spacing below), one per
         "Editorial break" block scoped to this page.
       {%- endcomment -%}
+      {%- comment -%}
+        Family pages (?family=...) hide every other product with the script
+        below. Until it runs, hide all tiles so the browser doesn't start
+        downloading photos of products that are about to be hidden.
+      {%- endcomment -%}
+      <style>.pm-family-pending [data-pm-plp-grid] > .pm-plp-tile { display: none; }</style>
+      <script>if (/[?&]family=/.test(location.search)) document.documentElement.classList.add('pm-family-pending');</script>
       <div class="pm-plp-grid" data-pm-plp-grid>
         {%- comment -%}
           This section's blocks can be a mix of "Editorial break" and
@@ -478,6 +485,7 @@
 <script src="{{ 'pm-homepage.js' | asset_url }}" defer></script>
 <script>
   (function () {
+  try {
     var select = document.getElementById('PmSortBy');
     if (select) {
       select.addEventListener('change', function () {
@@ -626,12 +634,36 @@
       handling or history.pushState left to fight the browser's own
       navigation.
     {%- endcomment -%}
+    // On a family page, the first photos on screen are only known now:
+    // load them straight away (and skip the fade-in) like the first row
+    // of a normal shop page.
+    function promoteFirstTiles() {
+      var visible = Array.prototype.filter.call(grid.children, function (t) {
+        return t.classList.contains('pm-plp-tile') && !t.classList.contains('pm-plp-campaign-tile') &&
+          !t.classList.contains('pm-is-hidden') && !t.classList.contains('pm-is-paged');
+      }).slice(0, 4);
+      visible.forEach(function (tile, i) {
+        tile.classList.remove('pm-reveal');
+        tile.style.transitionDelay = '';
+        var img = tile.querySelector('.pm-plp-tile-image img:not(.pm-plp-tile-image-alt)');
+        if (img) {
+          img.loading = 'eager';
+          if (i < 2) img.fetchPriority = 'high';
+        }
+      });
+    }
+
     var initialFamily = new URLSearchParams(window.location.search).get('family');
     if (initialFamily) {
       var initialLink = nav.querySelector('[data-family-filter="' + initialFamily + '"]');
-      if (initialLink) applyFilter(initialFamily, initialLink.textContent.trim());
+      if (initialLink) {
+        applyFilter(initialFamily, initialLink.textContent.trim());
+        promoteFirstTiles();
+      }
     }
-
+  } finally {
+    document.documentElement.classList.remove('pm-family-pending');
+  }
   })();
 </script>
 
