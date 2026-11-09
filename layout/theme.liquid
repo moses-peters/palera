@@ -16,7 +16,7 @@
       {%- assign pm_hero = product.selected_or_first_available_variant.featured_image -%}
       <link rel="preload" as="image" fetchpriority="high"
         imagesrcset="{% for w in (1..5) %}{% assign pm_w = w | times: 180 | plus: 180 %}{% if pm_hero.width >= pm_w %}{{ pm_hero | image_url: width: pm_w }} {{ pm_w }}w,{% endif %}{% endfor %}"
-        imagesizes="(min-width: 769px) 720px, 600px">
+        imagesizes="(min-width: 769px) 720px, 300px">
     {%- endif -%}
 
     <!-- Google Tag Manager -->

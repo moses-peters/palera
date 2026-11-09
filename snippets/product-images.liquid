@@ -69,7 +69,10 @@
                 # it already appeared correctly. Fixed per-breakpoint values
                 # here are known at parse time rather than recomputed after
                 # layout, so there's nothing left to re-fetch.
-                assign slide_sizes = '(min-width: 769px) 720px, 600px'
+                # Phones: 300px makes 2x-3x screens pick the 720/900px file
+                # instead of 1080px, so the first photo arrives sooner.
+                # Keep in sync with the hero preload in layout/theme.liquid.
+                assign slide_sizes = '(min-width: 769px) 720px, 300px'
               endif
             -%}
             {%- render 'media',
