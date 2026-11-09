@@ -7213,11 +7213,11 @@ theme.recentlyViewed = {
   
           // Sale price, if necessary
           if (variant.compare_at_price > variant.price) {
-            this.cache.comparePrice.innerHTML = theme.Currency.formatMoney(variant.compare_at_price, theme.settings.moneyFormat);
-            this.cache.priceWrapper.classList.remove(classes.hidden);
+            if (this.cache.comparePrice) this.cache.comparePrice.innerHTML = theme.Currency.formatMoney(variant.compare_at_price, theme.settings.moneyFormat);
+            if (this.cache.priceWrapper) this.cache.priceWrapper.classList.remove(classes.hidden);
             this.cache.price.classList.add(classes.onSale);
-            this.cache.comparePriceA11y.setAttribute('aria-hidden', 'false');
-            this.cache.priceA11y.setAttribute('aria-hidden', 'false');
+            if (this.cache.comparePriceA11y) this.cache.comparePriceA11y.setAttribute('aria-hidden', 'false');
+            if (this.cache.priceA11y) this.cache.priceA11y.setAttribute('aria-hidden', 'false');
   
             var savings = variant.compare_at_price - variant.price;
   
@@ -7227,18 +7227,21 @@ theme.recentlyViewed = {
               savings = theme.Currency.formatMoney(savings, theme.settings.moneyFormat);
             }
   
-            this.cache.savePrice.classList.remove(classes.hidden);
-            this.cache.savePrice.innerHTML = theme.strings.savePrice.replace('[saved_amount]', savings);
+            // Some product layouts have no "You save" label -- skip it there
+            if (this.cache.savePrice) {
+              this.cache.savePrice.classList.remove(classes.hidden);
+              this.cache.savePrice.innerHTML = theme.strings.savePrice.replace('[saved_amount]', savings);
+            }
           } else {
             if (this.cache.priceWrapper) {
               this.cache.priceWrapper.classList.add(classes.hidden);
             }
-            this.cache.savePrice.classList.add(classes.hidden);
+            if (this.cache.savePrice) this.cache.savePrice.classList.add(classes.hidden);
             this.cache.price.classList.remove(classes.onSale);
             if (this.cache.comparePriceA11y) {
               this.cache.comparePriceA11y.setAttribute('aria-hidden', 'true');
             }
-            this.cache.priceA11y.setAttribute('aria-hidden', 'true');
+            if (this.cache.priceA11y) this.cache.priceA11y.setAttribute('aria-hidden', 'true');
           }
         }
       },
