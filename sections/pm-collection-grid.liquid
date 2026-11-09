@@ -363,7 +363,7 @@
               assign tile_widths = '180, 270, 360, 540, 720, 900'
               assign tile_sizes = '(min-width: 640px) 22vw, 45vw'
             -%}
-            <div class="pm-plp-tile{% unless tile_above_fold %} pm-reveal{% endunless %}{% if tile_index > 24 %} pm-is-paged{% endif %}" data-family="{{ tile_family }}"{% unless tile_above_fold %} style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms"{% endunless %}>
+            <div class="pm-plp-tile{% unless tile_above_fold %} pm-reveal{% endunless %}{% if tile_index > 16 %} pm-is-paged{% endif %}" data-family="{{ tile_family }}"{% unless tile_above_fold %} style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms"{% endunless %}>
               <a href="{{ product.url | split: '?' | first }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
                 <div class="pm-plp-tile-image"{% if tile_secondary_image %} data-pm-hover-image{% endif %}>
                   {%- if tile_image -%}
@@ -443,7 +443,7 @@
               {%- if editorial_block -%}
                 {%- liquid
                   assign campaign_paged = false
-                  if tile_index >= 24
+                  if tile_index >= 16
                     assign campaign_paged = true
                   endif
                 -%}
@@ -468,7 +468,7 @@
           {%- endfor -%}
         {%- endunless -%}
       </div>
-      <div class="pm-plp-more"{% if tile_index <= 24 %} hidden{% endif %} data-pm-more-wrap>
+      <div class="pm-plp-more"{% if tile_index <= 16 %} hidden{% endif %} data-pm-more-wrap>
         <button type="button" class="pm-plp-more-btn" data-pm-more>{{ 'pm.collection.view_more' | t }}</button>
       </div>
     {%- endif -%}
@@ -491,10 +491,10 @@
     var nav = document.querySelector('[data-pm-family-nav]');
     if (!grid) return;
 
-    // "View more": show 24 product tiles at a time. Every tile is still in
+    // "View more": show 16 product tiles at a time. Every tile is still in
     // the page (so the family filter can find all of them); the ones past
     // the limit are just display:none, so their photos don't download.
-    var PAGE_SIZE = 24;
+    var PAGE_SIZE = 16;
     var shownLimit = PAGE_SIZE;
     var moreWrap = document.querySelector('[data-pm-more-wrap]');
     var moreBtn = document.querySelector('[data-pm-more]');
@@ -513,7 +513,7 @@
       return hasMore;
     }
     // Campaign photos take up more than one grid cell, so a plain cut at
-    // 24 can leave a half-empty last row. Show a few more tiles until the
+    // 16 can leave a half-empty last row. Show a few more tiles until the
     // last visible one reaches the right-hand edge of the grid.
     function fillLastRow() {
       for (var i = 0; i < 4; i++) {

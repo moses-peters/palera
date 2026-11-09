@@ -405,7 +405,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 }
 .pm-plp-tile.pm-is-hidden { display: none; }
 .pm-plp-tile.pm-is-paged { display: none; }
-/* "View more" under the shop grid (24 tiles at a time) */
+/* "View more" under the shop grid (16 tiles at a time) */
 .pm-plp-more { display: flex; justify-content: center; margin-top: clamp(40px, 5vw, 64px); }
 .pm-plp-more[hidden] { display: none; }
 .pm-plp-more-btn {
