@@ -66,3 +66,7 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
         }
     }
 
+/* Owl Carousel was removed (it never ran: jQuery isn't loaded). Its CSS
+   used to hide these unstarted sliders; keep them hidden so nothing
+   changes visually. */
+.owl-carousel:not(.owl-loaded) { display: none; }
