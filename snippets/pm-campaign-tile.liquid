@@ -25,7 +25,7 @@
 {%- if campaign_block.settings.link != blank -%}
   {%- assign campaign_has_link = true -%}
 {%- endif -%}
-<div class="pm-plp-tile pm-plp-campaign-tile{% if campaign_block.settings.orientation == 'vertical' %} pm-plp-campaign-tile--vertical{% endif %}{% if hidden %} pm-is-hidden{% endif %}" data-show-on="{{ campaign_block.settings.show_on }}" data-campaign-family="{{ campaign_block.settings.family }}"{% unless campaign_has_link %} aria-hidden="true"{% endunless %} {{ campaign_block.shopify_attributes }}>
+<div class="pm-plp-tile pm-plp-campaign-tile{% if campaign_block.settings.orientation == 'vertical' %} pm-plp-campaign-tile--vertical{% endif %}{% if hidden %} pm-is-hidden{% endif %}{% if paged %} pm-is-paged{% endif %}" data-show-on="{{ campaign_block.settings.show_on }}" data-campaign-family="{{ campaign_block.settings.family }}"{% unless campaign_has_link %} aria-hidden="true"{% endunless %} {{ campaign_block.shopify_attributes }}>
   {%- if campaign_has_link -%}<a href="{{ campaign_block.settings.link }}" class="pm-plp-tile-image pm-plp-tile-image--campaign">{%- else -%}<div class="pm-plp-tile-image pm-plp-tile-image--campaign">{%- endif -%}
     {%- if campaign_block.settings.video_url != blank -%}
       <video autoplay muted loop playsinline{% if campaign_block.settings.image %} poster="{{ campaign_block.settings.image | image_url: width: 1800 }}"{% endif %}>

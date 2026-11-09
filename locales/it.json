@@ -2671,6 +2671,9 @@
     }
   },
   "pm": {
+    "collection": {
+      "view_more": "Mostra altri"
+    },
     "contact": {
       "intro": "Ci farebbe piacere sentirti. Che si tratti di una domanda su un ordine, su un prodotto o di qualsiasi altra cosa, scrivici qui sotto e il nostro team ti risponderà entro 24–48 ore.",
       "other_ways": "Altri modi per contattarci",

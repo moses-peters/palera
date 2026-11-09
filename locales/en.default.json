@@ -390,6 +390,9 @@
     "month_day_year": "%b %d, %Y"
   },
   "pm": {
+    "collection": {
+      "view_more": "View more"
+    },
     "contact": {
       "intro": "We'd love to hear from you. Whether it's a question about an order, a product, or anything else, send us a message below and our team will get back to you within 24–48 hours.",
       "other_ways": "Other Ways to Reach Us",

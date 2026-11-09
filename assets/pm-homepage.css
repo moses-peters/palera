@@ -404,6 +404,17 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   min-width: 0;
 }
 .pm-plp-tile.pm-is-hidden { display: none; }
+.pm-plp-tile.pm-is-paged { display: none; }
+/* "View more" under the shop grid (24 tiles at a time) */
+.pm-plp-more { display: flex; justify-content: center; margin-top: clamp(40px, 5vw, 64px); }
+.pm-plp-more[hidden] { display: none; }
+.pm-plp-more-btn {
+  background: transparent; color: var(--pm-ink); border: 1px solid var(--pm-ink);
+  padding: 15px 36px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  cursor: pointer; font-family: inherit;
+  transition: background 0.25s var(--pm-ease), color 0.25s var(--pm-ease);
+}
+.pm-plp-more-btn:hover { background: var(--pm-ink); color: #fff; }
 .pm-plp-tile-link { display: block; }
 /* Sibling color swatches — a plain sibling <div>, not nested inside
    .pm-plp-tile-link, since an <a> can't legally contain another <a>

@@ -363,7 +363,7 @@
               assign tile_widths = '180, 270, 360, 540, 720, 900'
               assign tile_sizes = '(min-width: 640px) 22vw, 45vw'
             -%}
-            <div class="pm-plp-tile{% unless tile_above_fold %} pm-reveal{% endunless %}" data-family="{{ tile_family }}"{% unless tile_above_fold %} style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms"{% endunless %}>
+            <div class="pm-plp-tile{% unless tile_above_fold %} pm-reveal{% endunless %}{% if tile_index > 24 %} pm-is-paged{% endif %}" data-family="{{ tile_family }}"{% unless tile_above_fold %} style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms"{% endunless %}>
               <a href="{{ product.url | split: '?' | first }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
                 <div class="pm-plp-tile-image"{% if tile_secondary_image %} data-pm-hover-image{% endif %}>
                   {%- if tile_image -%}
@@ -441,7 +441,13 @@
                 {%- endif -%}
               {%- endfor -%}
               {%- if editorial_block -%}
-                {% render 'pm-campaign-tile', campaign_block: editorial_block, hidden: false %}
+                {%- liquid
+                  assign campaign_paged = false
+                  if tile_index >= 24
+                    assign campaign_paged = true
+                  endif
+                -%}
+                {% render 'pm-campaign-tile', campaign_block: editorial_block, hidden: false, paged: campaign_paged %}
               {%- endif -%}
             {%- endif -%}
           {%- endunless -%}
@@ -462,6 +468,9 @@
           {%- endfor -%}
         {%- endunless -%}
       </div>
+      <div class="pm-plp-more"{% if tile_index <= 24 %} hidden{% endif %} data-pm-more-wrap>
+        <button type="button" class="pm-plp-more-btn" data-pm-more>{{ 'pm.collection.view_more' | t }}</button>
+      </div>
     {%- endif -%}
   </div>
 </div>
@@ -480,7 +489,37 @@
 
     var grid = document.querySelector('[data-pm-plp-grid]');
     var nav = document.querySelector('[data-pm-family-nav]');
-    if (!grid || !nav) return;
+    if (!grid) return;
+
+    // "View more": show 24 product tiles at a time. Every tile is still in
+    // the page (so the family filter can find all of them); the ones past
+    // the limit are just display:none, so their photos don't download.
+    var PAGE_SIZE = 24;
+    var shownLimit = PAGE_SIZE;
+    var moreWrap = document.querySelector('[data-pm-more-wrap]');
+    var moreBtn = document.querySelector('[data-pm-more]');
+    function applyPaging() {
+      var count = 0, hasMore = false;
+      Array.prototype.forEach.call(grid.children, function (tile) {
+        if (!tile.classList.contains('pm-plp-tile')) return;
+        if (tile.classList.contains('pm-is-hidden')) { tile.classList.remove('pm-is-paged'); return; }
+        var isProduct = !tile.classList.contains('pm-plp-campaign-tile');
+        if (isProduct) count++;
+        var paged = isProduct ? count > shownLimit : count >= shownLimit;
+        tile.classList.toggle('pm-is-paged', paged);
+        if (paged && isProduct) hasMore = true;
+      });
+      if (moreWrap) moreWrap.hidden = !hasMore;
+    }
+    if (moreBtn) {
+      moreBtn.addEventListener('click', function () {
+        shownLimit += PAGE_SIZE;
+        applyPaging();
+      });
+    }
+    applyPaging();
+
+    if (!nav) return;
 
     var countEl = document.querySelector('[data-pm-piece-count]');
     var titleEl = document.querySelector('[data-pm-collection-title]');
@@ -548,6 +587,8 @@
       if (titleEl) {
         titleEl.textContent = isFiltered ? familyLabel : baseTitle;
       }
+      shownLimit = PAGE_SIZE;
+      applyPaging();
     }
 
     {%- comment -%}
