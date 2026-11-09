@@ -535,8 +535,12 @@
         page();
       });
     }
-    page();
-    window.addEventListener('load', fillLastRow);
+    // First pass only hides/shows tiles (no layout measuring, so the page
+    // isn't forced to lay out while it is still loading). The row check
+    // runs once the page has loaded, below the fold where nobody sees it.
+    applyPaging();
+    if (document.readyState === 'complete') fillLastRow();
+    else window.addEventListener('load', fillLastRow);
 
     if (!nav) return;
 
@@ -607,7 +611,8 @@
         titleEl.textContent = isFiltered ? familyLabel : baseTitle;
       }
       shownLimit = PAGE_SIZE;
-      page();
+      applyPaging();
+      if (document.readyState === 'complete') fillLastRow();
     }
 
     {%- comment -%}
