@@ -52,9 +52,9 @@
         {%- elsif tile_image -%}
           <picture>
             {%- if block.settings.image_mobile -%}
-              <source media="(max-width: 639px)" srcset="{{ block.settings.image_mobile | image_url: width: 1400 }}">
+              <source media="(max-width: 639px)" srcset="{%- render 'pm-srcset', img: block.settings.image_mobile, max: 1400 -%}" sizes="100vw">
             {%- endif -%}
-            <img src="{{ tile_image | image_url: width: 1400 }}" alt="{{ tile_image.alt | escape | default: product.title | default: block.settings.fallback_label }}" loading="lazy">
+            <img src="{{ tile_image | image_url: width: 1400 }}" srcset="{%- render 'pm-srcset', img: tile_image, max: 1400 -%}" sizes="(min-width: 640px) 50vw, 100vw" alt="{{ tile_image.alt | escape | default: product.title | default: block.settings.fallback_label }}" loading="lazy">
           </picture>
         {%- else -%}
           <img src="{{ block.settings.fallback_asset | default: 'pm-drive-product-a.jpg' | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">

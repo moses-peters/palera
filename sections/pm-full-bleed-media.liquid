@@ -6,10 +6,10 @@
       {%- else -%}
         <picture>
           {%- if section.settings.image_mobile -%}
-            <source media="(max-width: 639px)" srcset="{{ section.settings.image_mobile | image_url: width: 1800 }}">
+            <source media="(max-width: 639px)" srcset="{%- render 'pm-srcset', img: section.settings.image_mobile, max: 1800 -%}" sizes="100vw">
           {%- endif -%}
           {%- if section.settings.image -%}
-            <img src="{{ section.settings.image | image_url: width: 1800 }}" alt="{{ section.settings.image.alt | escape | default: section.settings.heading | default: section.settings.caption }}" loading="lazy">
+            <img src="{{ section.settings.image | image_url: width: 1800 }}" srcset="{%- render 'pm-srcset', img: section.settings.image, max: 1800 -%}" sizes="100vw" alt="{{ section.settings.image.alt | escape | default: section.settings.heading | default: section.settings.caption }}" loading="lazy">
           {%- else -%}
             <img src="{{ 'pm-drive-horizontal.jpg' | asset_url }}" alt="{{ section.settings.heading | default: section.settings.caption }}" loading="lazy">
           {%- endif -%}

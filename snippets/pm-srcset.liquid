@@ -1,0 +1,12 @@
+{%- comment -%}
+  Outputs a srcset for an image, using standard widths up to `max`
+  (the size this spot used to always load) and never wider than the
+  original file. Lets phones download a smaller file than desktops.
+  Params: img (image object), max (number).
+{%- endcomment -%}
+{%- assign pm_srcset_widths = '360,540,720,900,1080,1200,1400,1800' | split: ',' -%}
+{%- for w in pm_srcset_widths -%}
+  {%- assign wn = w | plus: 0 -%}
+  {%- if wn <= max and wn <= img.width -%}{{ img | image_url: width: wn }} {{ wn }}w,{%- endif -%}
+{%- endfor -%}
+{%- if img.width < 360 -%}{{ img | image_url }} {{ img.width }}w{%- endif -%}

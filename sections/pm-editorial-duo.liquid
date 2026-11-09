@@ -7,9 +7,9 @@
         {%- elsif section.settings.image_a -%}
           <picture>
             {%- if section.settings.image_a_mobile -%}
-              <source media="(max-width: 639px)" srcset="{{ section.settings.image_a_mobile | image_url: width: 1200 }}">
+              <source media="(max-width: 639px)" srcset="{%- render 'pm-srcset', img: section.settings.image_a_mobile, max: 1200 -%}" sizes="100vw">
             {%- endif -%}
-            <img src="{{ section.settings.image_a | image_url: width: 1200 }}" alt="{{ section.settings.image_a.alt | escape | default: section.settings.tag | default: shop.name }}" loading="lazy">
+            <img src="{{ section.settings.image_a | image_url: width: 1200 }}" srcset="{%- render 'pm-srcset', img: section.settings.image_a, max: 1200 -%}" sizes="(min-width: 900px) 60vw, 100vw" alt="{{ section.settings.image_a.alt | escape | default: section.settings.tag | default: shop.name }}" loading="lazy">
           </picture>
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
@@ -24,9 +24,9 @@
         {%- elsif section.settings.image_b -%}
           <picture>
             {%- if section.settings.image_b_mobile -%}
-              <source media="(max-width: 639px)" srcset="{{ section.settings.image_b_mobile | image_url: width: 900 }}">
+              <source media="(max-width: 639px)" srcset="{%- render 'pm-srcset', img: section.settings.image_b_mobile, max: 900 -%}" sizes="100vw">
             {%- endif -%}
-            <img src="{{ section.settings.image_b | image_url: width: 900 }}" alt="{{ section.settings.image_b.alt | escape | default: section.settings.tag | default: shop.name }}" loading="lazy">
+            <img src="{{ section.settings.image_b | image_url: width: 900 }}" srcset="{%- render 'pm-srcset', img: section.settings.image_b, max: 900 -%}" sizes="(min-width: 900px) 42vw, 100vw" alt="{{ section.settings.image_b.alt | escape | default: section.settings.tag | default: shop.name }}" loading="lazy">
           </picture>
         {%- else -%}
           {% render 'pm-media-placeholder', label: 'Photo' %}
