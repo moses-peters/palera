@@ -167,7 +167,8 @@
             <a href="{{ rec_tile_url }}" class="pm-rec-tile-link">
               <div class="pm-rec-tile-image">
                 {%- if rec_tile_image -%}
-                  <img src="{{ rec_tile_image | image_url: width: 800 }}" srcset="{%- render 'pm-srcset', img: rec_tile_image, max: 800 -%}" sizes="(min-width: 769px) 25vw, 70vw" width="{{ rec_tile_image.width }}" height="{{ rec_tile_image.height }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy">
+                  <img data-pm-rec-src="{{ rec_tile_image | image_url: width: 800 }}" data-pm-rec-srcset="{%- render 'pm-srcset', img: rec_tile_image, max: 800 -%}" sizes="(min-width: 769px) 25vw, 70vw" width="{{ rec_tile_image.width }}" height="{{ rec_tile_image.height }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy">
+                  <noscript><img src="{{ rec_tile_image | image_url: width: 800 }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy"></noscript>
                 {%- else -%}
                   {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
                 {%- endif -%}
@@ -204,6 +205,40 @@
     </div>
   {%- endif -%}
 </div>
+
+{%- comment -%}
+  "You may also like" photos sit just below the fold, so on a slow phone the
+  browser starts them straight away and they share the connection with the
+  main product photo. They now only start once the page has finished loading
+  or the visitor scrolls near this section, whichever comes first.
+{%- endcomment -%}
+<script>
+  (function () {
+    var imgs = document.querySelectorAll('img[data-pm-rec-src]');
+    if (!imgs.length) return;
+    var done = false;
+    function show() {
+      if (done) return;
+      done = true;
+      Array.prototype.forEach.call(imgs, function (img) {
+        img.srcset = img.getAttribute('data-pm-rec-srcset');
+        img.src = img.getAttribute('data-pm-rec-src');
+        img.removeAttribute('data-pm-rec-src');
+      });
+    }
+    var section = imgs[0].closest('.pm-product-recs');
+    if ('IntersectionObserver' in window && section) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { io.disconnect(); show(); }
+      }, { rootMargin: '0px 0px 600px 0px' });
+      io.observe(section);
+    } else {
+      show();
+    }
+    if (document.readyState === 'complete') show();
+    else window.addEventListener('load', show);
+  })();
+</script>
 
 {% schema %}
 {
