@@ -4,6 +4,9 @@
 <!doctype html>
 <html lang="{{ full_locale_code }}">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    {%- comment -%} Viewport must come before the product photo preload below, or phones pick the preload size as if the screen were desktop width. {%- endcomment -%}
  {%- render 'ecom_header' -%}
 
     {%- comment -%}
@@ -46,9 +49,7 @@
       }
     </script>
 
-    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="{{ settings.color_button }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
