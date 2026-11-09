@@ -510,14 +510,33 @@
         if (paged && isProduct) hasMore = true;
       });
       if (moreWrap) moreWrap.hidden = !hasMore;
+      return hasMore;
     }
+    // Campaign photos take up more than one grid cell, so a plain cut at
+    // 24 can leave a half-empty last row. Show a few more tiles until the
+    // last visible one reaches the right-hand edge of the grid.
+    function fillLastRow() {
+      for (var i = 0; i < 4; i++) {
+        var visible = Array.prototype.filter.call(grid.children, function (t) {
+          return t.classList.contains('pm-plp-tile') && !t.classList.contains('pm-plp-campaign-tile') && t.offsetParent;
+        });
+        if (!visible.length || !(moreWrap && !moreWrap.hidden)) return;
+        var last = visible[visible.length - 1].getBoundingClientRect();
+        var gridBox = grid.getBoundingClientRect();
+        if (gridBox.right - last.right < last.width / 2) return;
+        shownLimit++;
+        applyPaging();
+      }
+    }
+    function page() { applyPaging(); fillLastRow(); }
     if (moreBtn) {
       moreBtn.addEventListener('click', function () {
         shownLimit += PAGE_SIZE;
-        applyPaging();
+        page();
       });
     }
-    applyPaging();
+    page();
+    window.addEventListener('load', fillLastRow);
 
     if (!nav) return;
 
@@ -588,7 +607,7 @@
         titleEl.textContent = isFiltered ? familyLabel : baseTitle;
       }
       shownLimit = PAGE_SIZE;
-      applyPaging();
+      page();
     }
 
     {%- comment -%}
