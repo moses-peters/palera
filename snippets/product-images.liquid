@@ -34,7 +34,7 @@
     data-product-images
     data-zoom="{{ product_zoom_enable }}"
     data-has-slideshow="{% if product.media.size > 1 %}true{% else %}false{% endif %}">
-    <div class="product__photos product__photos-{{ section_id }} product__photos--{{ thumbnail_position }}">
+    <div class="product__photos product__photos-{{ section_id }} product__photos--{{ thumbnail_position }}{% if product.media.size > 1 and thumbnail_position == 'beside' and image_position == 'left' %} pm-photos--thumbs-left{% endif %}">
 
       <div class="product__main-photos" data-aos data-product-single-media-group>
         <div

@@ -81,6 +81,13 @@
    bars. */
 .pm-product .product__thumbs--beside { flex: 0 0 72px; max-width: 72px; position: relative; }
 @media (min-width: 769px) { .pm-product .product__thumbs--beside { flex-basis: 92px; max-width: 92px; } }
+/* The main photo is in the HTML before the thumbnail column, so the browser
+   could paint it full width and then shove it right once the thumbnails
+   arrived (a visible flicker). Hold the thumbnail column's space (92px +
+   15px gap) until the thumbnails exist, so the photo paints in its final spot. */
+@media (min-width: 769px) {
+  .pm-product .pm-photos--thumbs-left:not(:has([data-product-thumbs])) .product__main-photos { margin-left: 107px; }
+}
 .pm-product .product__thumbs--beside .product__thumbs--scroller {
   scroll-snap-type: y proximity;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
