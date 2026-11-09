@@ -1,3 +1,6 @@
+/* NOTE: for layout/theme.liquid these rules now live at the end of
+   theme.css.liquid (merged to save a render-blocking request). Change them
+   there too. */
 /* Palera Milano — wishlist
    Heart toggle (product cards + product page) and the wishlist drawer.
    Shares the same design tokens as the rest of the pm- pages/sections

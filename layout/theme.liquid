@@ -87,8 +87,6 @@
       {{ 'pm-ecom-care-tips.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'kg-custom.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'pm-wishlist.css' | asset_url | stylesheet_tag }}
     {%- render 'css-variables' -%}
 
     <script>
@@ -148,7 +146,9 @@
     <script src="{{ 'vendor-scripts-v11.js' | asset_url | split: '?' | first }}" defer="defer"></script>
 
     {%- if shop.enabled_currencies.size > 1 -%}
-      <link rel="stylesheet" href="{{ 'country-flags.css' | asset_url | split: '?' | first }}">
+      {%- comment -%} Only the country picker uses these flags, so don't block the page on them. {%- endcomment -%}
+      <link rel="stylesheet" href="{{ 'country-flags.css' | asset_url | split: '?' | first }}" media="print" onload="this.media='all'">
+      <noscript><link rel="stylesheet" href="{{ 'country-flags.css' | asset_url | split: '?' | first }}"></noscript>
     {%- endif -%}
 
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>

@@ -1,3 +1,6 @@
+/* NOTE: for layout/theme.liquid these rules now live at the end of
+   theme.css.liquid (merged to save a render-blocking request). Change them
+   there too. */
 body {
   top: 0 !important;
 }
