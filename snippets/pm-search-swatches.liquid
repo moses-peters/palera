@@ -43,7 +43,8 @@
       {%- if swatch_image == blank and other_variant.featured_image -%}
         {%- assign swatch_image = other_variant.featured_image | image_url: width: 400 -%}
       {%- endif -%}
-      {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: product.url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
+      {%- assign pm_base_url = product.url | split: '?' | first -%}
+      {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: pm_base_url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
       {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
     {%- endunless -%}
   {%- endfor -%}

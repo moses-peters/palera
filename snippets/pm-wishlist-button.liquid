@@ -40,7 +40,7 @@
   assign pm_wl_image = pm_wl_variant.featured_image | default: product.featured_image | image_url: width: 400
   assign pm_wl_price = pm_wl_variant.price | default: product.price
   assign pm_wl_available = pm_wl_variant.available
-  assign pm_wl_url = product.url | append: '?variant=' | append: pm_wl_variant.id
+  assign pm_wl_url = product.url | split: '?' | first | append: '?variant=' | append: pm_wl_variant.id
 -%}
 <button
   type="button"

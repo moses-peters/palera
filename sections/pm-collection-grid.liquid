@@ -269,7 +269,8 @@
                   {%- if swatch_image == blank and other_variant.featured_image -%}
                     {%- assign swatch_image = other_variant.featured_image | image_url: width: 400 -%}
                   {%- endif -%}
-                  {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: product.url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
+                  {%- assign pm_base_url = product.url | split: '?' | first -%}
+                  {%- assign sibling_entry = other_value | append: '::' | append: swatch_css | append: '::' | append: pm_base_url | append: '?variant=' | append: other_variant.id | append: '::' | append: swatch_image -%}
                   {%- assign swatch_siblings = swatch_siblings | append: sibling_entry | append: ';;' -%}
                 {%- endunless -%}
               {%- endfor -%}
@@ -363,7 +364,7 @@
               assign tile_sizes = '(min-width: 640px) 22vw, 45vw'
             -%}
             <div class="pm-plp-tile{% unless tile_above_fold %} pm-reveal{% endunless %}" data-family="{{ tile_family }}"{% unless tile_above_fold %} style="transition-delay: {{ tile_index | modulo: 8 | times: 70 }}ms"{% endunless %}>
-              <a href="{{ product.url }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
+              <a href="{{ product.url | split: '?' | first }}{% if tile_variant %}?variant={{ tile_variant.id }}{% endif %}" class="pm-plp-tile-link">
                 <div class="pm-plp-tile-image"{% if tile_secondary_image %} data-pm-hover-image{% endif %}>
                   {%- if tile_image -%}
                     {%- assign tile_alt_text = tile_image.alt | default: tile_name -%}
