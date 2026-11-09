@@ -9,4 +9,7 @@
   {%- assign wn = w | plus: 0 -%}
   {%- if wn <= max and wn <= img.width -%}{{ img | image_url: width: wn }} {{ wn }}w,{%- endif -%}
 {%- endfor -%}
-{%- if img.width < 360 -%}{{ img | image_url }} {{ img.width }}w{%- endif -%}
+{%- comment -%} Also offer the original file when it's smaller than max, so
+  screens that need every pixel still get the full image. {%- endcomment -%}
+{%- assign pm_native = img.width | append: '' -%}
+{%- if img.width < max -%}{%- unless pm_srcset_widths contains pm_native -%}{{ img | image_url: width: img.width }} {{ img.width }}w{%- endunless -%}{%- endif -%}
