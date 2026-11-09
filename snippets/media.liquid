@@ -98,7 +98,7 @@
           endif
         -%}
 
-        {%- render 'image-element', img: media.preview_image, type: 'photoswipe', classes: image_classes, alt: media.alt, split: '#', widths: '360, 540, 720, 900, 1080', product_zoom_size: product_zoom_size, loopIndex: loopIndex, media: media, media_width: media_width, media_height: media_height, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, loading: loading -%}
+        {%- render 'image-element', img: media.preview_image, type: 'photoswipe', classes: image_classes, alt: media.alt, split: '#', widths: '360, 540, 720, 900, 1080', product_zoom_size: product_zoom_size, loopIndex: loopIndex, media: media, media_width: media_width, media_height: media_height, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, loading: loading, defer_src: defer_src -%}
 
         {%- if product_zoom_enable and media.media_type == 'image' -%}
           <button type="button" class="btn btn--body btn--circle js-photoswipe__zoom product__photo-zoom">
@@ -136,6 +136,7 @@
           {% endcomment %}
           <video
             playsinline
+            preload="none"
             {% if video_looping %}loop{% endif %}
             controls
             controlsList="nodownload"
@@ -171,6 +172,7 @@
             {%- if video_type == 'mp4' -%}
               <video
                 playsinline
+                preload="none"
                 {% if video_looping %}loop{% endif %}
                 {% if video_style == 'muted' %}muted{% endif %}
                 {% if video_style == 'unmuted' %}controls{% endif %}

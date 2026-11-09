@@ -56,6 +56,13 @@
             {%- liquid
               assign slide_loading = 'lazy'
               assign slide_sizes = sizes
+              assign slide_defer = false
+              if context == 'main-product' and media != featured_media
+                # Other photos wait until the first one has loaded (or the
+                # visitor touches the page) -- see the script after the gallery.
+                assign slide_defer = true
+                assign slide_sizes = '(min-width: 769px) 720px, 300px'
+              endif
               if context == 'main-product' and media == featured_media
                 assign slide_loading = 'eager'
 
@@ -91,10 +98,44 @@
               sizeVariable: sizeVariable,
               fallback: fallback,
               loading: slide_loading,
+              defer_src: slide_defer,
               mobile_layout: mobile_layout
             -%}
           {%- endfor -%}
         </div>
+        {%- if context == 'main-product' -%}
+          {%- comment -%}
+            The other gallery photos only get their image address once the
+            first photo has finished loading, the page has loaded, or the
+            visitor touches the page (swipe, swatch tap, key), whichever is
+            first -- so they don't share the connection with the first photo.
+          {%- endcomment -%}
+          <script>
+            (function () {
+              var gallery = document.getElementById('ProductPhotos-{{ section_id }}');
+              if (!gallery) return;
+              var done = false;
+              function release() {
+                if (done) return;
+                done = true;
+                Array.prototype.forEach.call(gallery.querySelectorAll('img[data-pm-defer-src]'), function (img) {
+                  img.srcset = img.getAttribute('data-pm-defer-srcset');
+                  img.src = img.getAttribute('data-pm-defer-src');
+                  img.removeAttribute('data-pm-defer-src');
+                  img.removeAttribute('data-pm-defer-srcset');
+                });
+              }
+              var first = gallery.querySelector('img[loading="eager"]');
+              if (!first || first.complete) { release(); return; }
+              first.addEventListener('load', release);
+              first.addEventListener('error', release);
+              window.addEventListener('load', release);
+              ['pointerdown', 'touchstart', 'keydown', 'click'].forEach(function (ev) {
+                document.addEventListener(ev, release, { capture: true, passive: true, once: true });
+              });
+            })();
+          </script>
+        {%- endif -%}
 
         {%- if first_3d_model -%}
           <button

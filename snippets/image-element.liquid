@@ -151,7 +151,7 @@
     {% endfor %}
   {%- endcapture -%}
   {% assign img_width = widthsArray | last %}
-  <img src="{{ img | image_url: width: img_width }}"
+  <img {% if defer_src %}data-pm-defer-src{% else %}src{% endif %}="{{ img | image_url: width: img_width }}"
     width="{{ media_width }}"
     height="{{ media_height }}"
     class="{{ classes }}"
@@ -161,7 +161,7 @@
     {% else %}
        alt="{{ alt }}"
       {% endif %}
-    srcset="{{ img_widths }}"
+    {% if defer_src %}data-pm-defer-srcset{% else %}srcset{% endif %}="{{ img_widths }}"
     data-photoswipe-src="{{ img | image_url: width: product_zoom_size, format: format }}"
     data-photoswipe-width="{{ media_width }}"
     data-photoswipe-height="{{ media_height }}"
