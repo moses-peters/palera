@@ -167,7 +167,7 @@
             <a href="{{ rec_tile_url }}" class="pm-rec-tile-link">
               <div class="pm-rec-tile-image">
                 {%- if rec_tile_image -%}
-                  <img src="{{ rec_tile_image | image_url: width: 800 }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy">
+                  <img src="{{ rec_tile_image | image_url: width: 800 }}" srcset="{%- render 'pm-srcset', img: rec_tile_image, max: 800 -%}" sizes="(min-width: 769px) 25vw, 70vw" width="{{ rec_tile_image.width }}" height="{{ rec_tile_image.height }}" alt="{{ rec_tile_image.alt | escape | default: rec_tile_name }}" loading="lazy">
                 {%- else -%}
                   {% render 'pm-media-placeholder', label: 'Photo', hover: true %}
                 {%- endif -%}

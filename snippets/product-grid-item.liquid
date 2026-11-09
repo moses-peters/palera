@@ -217,38 +217,6 @@ Arguments
 
 
         
-          <!-- mobileview product image slider  -->
-         <div class="{% if template.name == 'index' %} kg-custom-collection {% endif %} kg-mobile-image-view">
-         <a href="{{ tile_url }}">
-        <div class="kg-product-image-slider owl-carousel owl-theme">
-         
-         {%- for media in product.media  -%}
-           {%- liquid
-             assign show_this_media = true
-             if is_color_product
-               assign show_this_media = false
-               assign media_alt_downcased = media.alt | downcase
-               if media_alt_downcased contains tile_value_downcased
-                 assign show_this_media = true
-               endif
-             endif
-           -%}
-           {%- if show_this_media -%}
-                 {%- render 'image-element',
-              img: media,
-              classes: image_classes,
-              sizes: sizes,
-              sizeVariable: sizeVariable,
-              fallback: fallback,
-              widths: '360, 540, 720, 1000',
-                  alt: product_title,
-            -%}
-          {%- endif -%}
-          {%- endfor -%}
-        
-        </div>
-             </a>
-           </div>
              
         
 
