@@ -3054,7 +3054,10 @@ body,html{
 
 .page-width{
   margin:0 auto;
-  max-width:1500px;
+  /* 2500px matches the store's Custom CSS setting, which Shopify prints at the
+     very end of the page; having it here too stops the page from first
+     rendering 1500px wide and then jumping wider on large screens. */
+  max-width:2500px;
 }
 
 .page-full,.page-width{
