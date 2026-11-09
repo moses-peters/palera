@@ -56,7 +56,7 @@
             {%- liquid
               assign slide_loading = 'lazy'
               assign slide_sizes = sizes
-              if context == 'main-product' and forloop.index0 == 0
+              if context == 'main-product' and media == featured_media
                 assign slide_loading = 'eager'
 
                 # sizeVariable's vw-based guess (e.g. "40vw") is evaluated

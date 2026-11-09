@@ -12617,6 +12617,13 @@ html[dir=rtl] .product-single__meta .rte{
     display:block;
   }
 
+/* The gallery's viewport starts at 0px tall and Flickity then sets its
+   height. With the default 0.35s height transition the photo vanished and
+   wiped back in from the top, so it looked like it loaded twice. */
+.product-slideshow .flickity-viewport{
+    transition:none;
+  }
+
 .product__photo-zoom{
   position:absolute !important;
 }
