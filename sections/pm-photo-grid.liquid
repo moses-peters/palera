@@ -113,9 +113,9 @@
               {%- endcomment -%}
               <picture>
                 {%- if tile_image_mobile -%}
-                  <source media="(max-width: 639px)" srcset="{%- render 'pm-srcset', img: tile_image_mobile, max: 900 -%}" sizes="55vw">
+                  <source media="(max-width: 639px)" srcset="{%- render 'pm-srcset', img: tile_image_mobile, max: 900 -%}" sizes="55vw" width="{{ tile_image_mobile.width }}" height="{{ tile_image_mobile.height }}">
                 {%- endif -%}
-                <img src="{{ tile_image | image_url: width: 900 }}" srcset="{%- render 'pm-srcset', img: tile_image, max: 900 -%}" sizes="(min-width: 640px) 25vw, 55vw" alt="{{ tile_alt }}" loading="lazy">
+                <img src="{{ tile_image | image_url: width: 900 }}" srcset="{%- render 'pm-srcset', img: tile_image, max: 900 -%}" sizes="(min-width: 640px) 25vw, 55vw" width="{{ tile_image.width }}" height="{{ tile_image.height }}" alt="{{ tile_alt }}" loading="lazy">
               </picture>
             {%- else -%}
               <img src="{{ block.settings.fallback_asset | asset_url }}" alt="{{ product.title | default: block.settings.fallback_label }}" loading="lazy">
