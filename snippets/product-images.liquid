@@ -11,10 +11,8 @@
   assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
   assign first_3d_model = product.media | where: 'media_type', 'model' | first
 
-  # Thumbnails on the main product template should load early (small, always visible)
-  if context == 'main-product'
-    assign loading = 'eager'
-  endif
+  # Thumbnails load lazily at 80px: they're hidden on phones, and eager
+  # loading made phones download a 720px copy of every thumbnail.
 
   # For products using the image-set feature (color variants with multiple
   # photos grouped via a "#color_x" tag in each media's alt text), this is
@@ -172,7 +170,7 @@
                       appear-delay-{{ forloop.index | times: 3 }}
                     {%- endcapture -%}
 
-                    {%- render 'image-element', img: media.preview_image, alt: media.alt, split: '#', widths: '120, 360, 540, 720', sizeVariable: '80px', loading: loading -%}
+                    {%- render 'image-element', img: media.preview_image, alt: media.alt, split: '#', widths: '120, 360, 540, 720', sizes: '80px', loading: 'lazy' -%}
                   </div>
                 </a>
               </div>

@@ -7,20 +7,16 @@
  {%- render 'ecom_header' -%}
 
     {%- comment -%}
-      Hero/featured product image, preloaded as early as possible so
-      the browser starts fetching it in parallel with everything else
-      instead of only discovering it once HTML parsing reaches that
-      point in the body (which, on this page, is after a fair amount
-      of head content). 900px is a middling pick among the widths the
-      gallery itself offers (360/540/720/900/1080 -- see media.liquid)
-      -- not a guaranteed byte-for-byte match to whichever one the
-      browser ends up picking for the real <img>, but a reasonable
-      one for how wide the hero photo actually renders at on both
-      desktop and mobile, and still a net win even if they differ:
-      the fetch starts this much earlier either way.
+      Preload the first product photo with the same srcset and sizes as
+      the gallery's first slide (snippets/media.liquid widths and
+      snippets/product-images.liquid sizes), so the browser fetches the
+      exact file the gallery uses once, instead of a separate 900px copy.
     {%- endcomment -%}
     {%- if request.page_type == 'product' and product.selected_or_first_available_variant.featured_image -%}
-      <link rel="preload" as="image" href="{{ product.selected_or_first_available_variant.featured_image | image_url: width: 900 }}">
+      {%- assign pm_hero = product.selected_or_first_available_variant.featured_image -%}
+      <link rel="preload" as="image" fetchpriority="high"
+        imagesrcset="{% for w in (1..5) %}{% assign pm_w = w | times: 180 | plus: 180 %}{% if pm_hero.width >= pm_w %}{{ pm_hero | image_url: width: pm_w }} {{ pm_w }}w,{% endif %}{% endfor %}"
+        imagesizes="(min-width: 769px) 720px, 600px">
     {%- endif -%}
 
     <!-- Google Tag Manager -->
