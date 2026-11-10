@@ -4,10 +4,6 @@
   <footer class="pm-footer">
     <div class="pm-footer-top">
       <div class="pm-footer-brand">
-        <span class="pm-serif pm-footer-wordmark">{{ shop.name }}</span>
-        {%- if section.settings.tagline != blank -%}
-          <p class="pm-footer-tagline">{{ section.settings.tagline }}</p>
-        {%- endif -%}
         {%- if section.settings.show_newsletter -%}
           <div class="pm-footer-newsletter-compact pm-footer-newsletter-compact--brand pm-reveal">
             {%- if section.settings.newsletter_eyebrow != blank -%}<span class="pm-eyebrow">{{ section.settings.newsletter_eyebrow }}</span>{%- endif -%}
@@ -28,6 +24,8 @@
             </form>
           </div>
         {%- endif -%}
+        {%- comment -%} Brand name sits below the sign-up; tagline removed (Moses, 2026-11-10). {%- endcomment -%}
+        <span class="pm-serif pm-footer-wordmark pm-footer-wordmark--below">{{ shop.name }}</span>
       </div>
       <div class="pm-footer-cols">
         {%- for block in section.blocks -%}
