@@ -496,3 +496,6 @@ body.pm-drawer-open { overflow: hidden; }
 @media (max-width: 749px) {
   .pm-product .product-single__meta { max-width: none; padding-top: 24px; }
 }
+
+/* Withdrawal form: email alternative under the submit button */
+.pm-withdraw-email { margin-top: 28px; text-align: center; }

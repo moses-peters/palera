@@ -402,6 +402,7 @@
       "faq_html": "Have a quick question? Check our <a href=\"{{ url }}\">FAQs</a> &mdash; you might find your answer right away."
     },
     "withdrawal": {
+      "email_html": "Or send an email with your refund/return request to {{ email }}",
       "title": "Withdrawal Form",
       "intro_1": "We want you to be completely satisfied. If you're not happy with your purchase, you can return or exchange it within 14 days of delivery — no questions asked.",
       "intro_2": "You can return or exchange your item by filling the form below.",

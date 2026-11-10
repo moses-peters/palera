@@ -2683,6 +2683,7 @@
       "faq_html": "Hai una domanda veloce? Consulta le nostre <a href=\"{{ url }}\">FAQ</a> &mdash; potresti trovare subito la risposta."
     },
     "withdrawal": {
+      "email_html": "Oppure invia un'email con la tua richiesta di reso/rimborso a {{ email }}",
       "title": "Modulo di recesso",
       "intro_1": "Vogliamo che tu sia pienamente soddisfatto. Se il tuo acquisto non ti convince, puoi restituirlo o cambiarlo entro 14 giorni dalla consegna, senza dover dare spiegazioni.",
       "intro_2": "Puoi restituire o cambiare il tuo articolo compilando il modulo qui sotto.",

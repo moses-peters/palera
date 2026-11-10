@@ -27,9 +27,6 @@
     <p>{{ 'pm.withdrawal.intro_2' | t }}</p>
     <p>{{ 'pm.withdrawal.intro_3' | t }}</p>
 
-    <p>
-      <a href="mailto:clientservice@paleramilano.com">clientservice@paleramilano.com</a>
-    </p>
 
     {%- form 'contact', id: 'pm-eu-withdrawal-form' -%}
       <input type="hidden" name="contact[subject]" value="EU Withdrawal Request">
@@ -82,6 +79,8 @@
         {{ form.errors | default_errors }}
       {%- endif -%}
     {%- endform -%}
+
+    <p class="pm-withdraw-email">{{ 'pm.withdrawal.email_html' | t: email: '<a href="mailto:clientservice@paleramilano.com">clientservice@paleramilano.com</a>' }}</p>
   </div>
 </div>
 
