@@ -27,11 +27,8 @@
     <p>{{ 'pm.withdrawal.intro_2' | t }}</p>
     <p>{{ 'pm.withdrawal.intro_3' | t }}</p>
 
-    <h2>{{ 'pm.withdrawal.to' | t }}</h2>
     <p>
-      Palera Milano S.r.l.<br>
-      {{ 'pm.contact.address_html' | t }}<br>
-      {{ 'mailto:clientservice@paleramilano.com' | link_to: 'clientservice@paleramilano.com' }}
+      <a href="mailto:clientservice@paleramilano.com">clientservice@paleramilano.com</a>
     </p>
 
     {%- form 'contact', id: 'pm-eu-withdrawal-form' -%}
