@@ -54,12 +54,18 @@
     bottom) rather than as a live, click-driven filter.
   {%- endcomment -%}
   <nav class="pm-plp-subnav" data-pm-family-nav>
-    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item is-active" data-family-filter="">View All</a>
+    {%- comment -%} On a family's own collection page, that family's tab is the active one. {%- endcomment -%}
+    {%- assign pm_current_family = '' -%}
+    {%- for family in pm_families -%}
+      {%- assign family_parts = family | split: '|' -%}
+      {%- if family_parts[3] != blank and family_parts[3] == collection.handle -%}{%- assign pm_current_family = family_parts[0] | handle -%}{%- endif -%}
+    {%- endfor -%}
+    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item{% if pm_current_family == '' %} is-active{% endif %}" data-family-filter="">View All</a>
     {%- for family in pm_families -%}
       {%- assign family_parts = family | split: '|' -%}
       {%- assign family_name = family_parts[0] -%}
       {%- assign family_handle = family_name | handle -%}
-      <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}?family={{ family_handle }}" class="pm-plp-subnav-item" data-family-filter="{{ family_handle }}">{{ family_name }}</a>
+      <a href="{% render 'pm-family-url', handle: family_handle, collection: family_parts[3] %}" class="pm-plp-subnav-item{% if pm_current_family == family_handle %} is-active{% endif %}" data-family-filter="{{ family_handle }}">{{ family_name }}</a>
     {%- endfor -%}
   </nav>
 
@@ -129,7 +135,23 @@
         downloading photos of products that are about to be hidden.
       {%- endcomment -%}
       <style>.pm-family-pending [data-pm-plp-grid] > .pm-plp-tile { display: none; }</style>
-      <script>if (/[?&]family=/.test(location.search)) document.documentElement.classList.add('pm-family-pending');</script>
+      {%- comment -%} Old ?family= links (Google, bookmarks) go straight to the family's own collection. {%- endcomment -%}
+      <script>
+        (function () {
+          var fam = new URLSearchParams(location.search).get('family');
+          if (!fam) return;
+          var urls = {
+            {%- for family in pm_families -%}
+              {%- assign family_parts = family | split: '|' -%}
+              {%- if family_parts[3] != blank and collections[family_parts[3]].url != blank -%}
+                {{ family_parts[0] | handle | json }}: {{ collections[family_parts[3]].url | json }},
+              {%- endif -%}
+            {%- endfor -%}
+          };
+          if (urls[fam]) { location.replace(urls[fam]); return; }
+          document.documentElement.classList.add('pm-family-pending');
+        })();
+      </script>
       <div class="pm-plp-grid" data-pm-plp-grid>
         {%- comment -%}
           This section's blocks can be a mix of "Editorial break" and

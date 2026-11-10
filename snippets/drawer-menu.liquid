@@ -376,7 +376,7 @@
                 {%- endfor -%}
               {%- endfor -%}
             {%- endunless -%}
-            <a href="{{ all_products_url }}?family={{ family_handle }}" class="pm-mobile-shop-family">
+            <a href="{% render 'pm-family-url', handle: family_handle, collection: family_parts[3] %}" class="pm-mobile-shop-family">
               <span class="pm-mobile-shop-family-image">
                 {%- if family_image -%}
                   <img src="{{ family_image | image_url: width: 300 }}" alt="{{ family_name }}" loading="lazy">

@@ -16,7 +16,8 @@
     {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
     {%- assign pm_families = pm_families_raw | strip | split: ';;' -%}
 
-  Format per entry: Name|Preview description|keyword1,keyword2,...
+  Format per entry: Name|Preview description|keyword1,keyword2,...|collection handle
+  (the family's own Shopify collection; links fall back to ?family= if it's missing)
   Entries joined by ";;".
 {%- endcomment -%}
-{{- 'Pouches|Soft crystal pouches, worn crossbody or in hand.|Pouch;;Mini Roma|A smaller take on the signature Roma.|Mini Roma;;Mini Milano|Milano architecture, scaled down.|Milano;;Santorini|Sun-bleached crystal, inspired by the Cyclades.|Santorini;;Maxi Roma|The Roma silhouette, in its fullest form.|Maxi Roma;;Clutch Micro|The Clutch silhouette, scaled to its smallest form.|Clutch Micro;;Clutches|Compact, hand-set crystal clutches for evening.|Clutch;;Wood Net Hobo|Hand-netted crystal over a wood frame.|Hobo,Wood Net;;Wallets|Compact crystal wallets, sized to fit a phone.|Wallet' -}}
+{{- 'Pouches|Soft crystal pouches, worn crossbody or in hand.|Pouch|pouches;;Mini Roma|A smaller take on the signature Roma.|Mini Roma|mini-roma;;Mini Milano|Milano architecture, scaled down.|Milano|mini-milano;;Santorini|Sun-bleached crystal, inspired by the Cyclades.|Santorini|santorini;;Maxi Roma|The Roma silhouette, in its fullest form.|Maxi Roma|maxi-roma;;Clutch Micro|The Clutch silhouette, scaled to its smallest form.|Clutch Micro|clutch-micro;;Clutches|Compact, hand-set crystal clutches for evening.|Clutch|clutches-1;;Wood Net Hobo|Hand-netted crystal over a wood frame.|Hobo,Wood Net|wood-net;;Wallets|Compact crystal wallets, sized to fit a phone.|Wallet|wallets' -}}
