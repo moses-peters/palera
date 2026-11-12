@@ -41,15 +41,20 @@
       var isPrev = btn.getAttribute('data-scroll-arrow') === 'prev';
       var children = row.children;
       var current = row.scrollLeft;
+      // Item positions measured from the first item, so the row's own
+      // left padding (Press row: 80px) doesn't count as a step. Without
+      // this, "next" targets the first item, and scroll-snap pulls it
+      // straight back to 0, so the arrow looks dead.
+      var base = children.length ? children[0].offsetLeft : 0;
       var target = null;
       if (isPrev) {
         for (var i = children.length - 1; i >= 0; i--) {
-          if (children[i].offsetLeft < current - 1) { target = children[i].offsetLeft; break; }
+          if (children[i].offsetLeft - base < current - 1) { target = children[i].offsetLeft - base; break; }
         }
         if (target === null) target = 0;
       } else {
         for (var j = 0; j < children.length; j++) {
-          if (children[j].offsetLeft > current + 1) { target = children[j].offsetLeft; break; }
+          if (children[j].offsetLeft - base > current + 1) { target = children[j].offsetLeft - base; break; }
         }
         if (target === null) target = row.scrollWidth;
       }
