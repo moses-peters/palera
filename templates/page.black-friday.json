@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "pm-collection-grid",
+      "settings": {
+        "back_label": "All Families",
+        "back_url": "",
+        "line_label": "",
+        "empty_label": "New pieces are on the way.",
+        "collection": "black-friday"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -11,6 +11,17 @@
 {%- assign pm_families = pm_families_raw | strip | split: ';;' -%}
 
 {%- comment -%}
+  On a page template (e.g. Black Friday), the section's "Collection"
+  setting supplies the products, so a page can show any collection in
+  the same shop layout. Collection pages leave it empty and use their own.
+{%- endcomment -%}
+{%- assign pm_page_collection = false -%}
+{%- if section.settings.collection != blank -%}
+  {%- assign collection = section.settings.collection -%}
+  {%- assign pm_page_collection = true -%}
+{%- endif -%}
+
+{%- comment -%}
   Every bag is one Shopify product with a Color option holding several
   variants, not separate per-color products — Shopify has no setting
   that renders one Product as multiple collection-grid tiles (Combined
@@ -60,7 +71,7 @@
       {%- assign family_parts = family | split: '|' -%}
       {%- if family_parts[3] != blank and family_parts[3] == collection.handle -%}{%- assign pm_current_family = family_parts[0] | handle -%}{%- endif -%}
     {%- endfor -%}
-    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item{% if pm_current_family == '' %} is-active{% endif %}" data-family-filter="">View All</a>
+    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item{% if pm_current_family == '' and pm_page_collection == false %} is-active{% endif %}" data-family-filter="">View All</a>
     {%- for family in pm_families -%}
       {%- assign family_parts = family | split: '|' -%}
       {%- assign family_name = family_parts[0] -%}
@@ -696,7 +707,8 @@
     { "type": "text", "id": "back_label", "label": "Back link label", "default": "All Families" },
     { "type": "url", "id": "back_url", "label": "Back link URL", "info": "Point this at your Shop by Family page (/collections)." },
     { "type": "text", "id": "line_label", "label": "Line label override" },
-    { "type": "text", "id": "empty_label", "label": "Empty collection message", "default": "New pieces for this family are on the way." }
+    { "type": "text", "id": "empty_label", "label": "Empty collection message", "default": "New pieces for this family are on the way." },
+    { "type": "collection", "id": "collection", "label": "Collection (page templates only)", "info": "Leave empty on collection pages. On a page template, pick the collection whose products this page shows." }
   ],
   "blocks": [
     {
