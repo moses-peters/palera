@@ -35,4 +35,9 @@
   <li class="site-nav__item site-nav__expanded-item">
     <a href="{{ pages['press'].url | default: press_url | default: '/pages/press' }}" class="site-nav__link site-nav__link--underline">Seen In</a>
   </li>
+  {%- if settings.pm_sale_show -%}
+    <li class="site-nav__item site-nav__expanded-item">
+      <a href="{% render 'pm-sale-url' %}" class="site-nav__link site-nav__link--underline pm-sale-link">{{ 'pm.sale' | t }}</a>
+    </li>
+  {%- endif -%}
 </ul>

@@ -1094,5 +1094,42 @@
         "info": "Used by the newsletter signup form to subscribe visitors directly via Klaviyo."
       }
     ]
+  },
+  {
+    "name": "Sale",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Red \"Sale\" link (\"Saldi\" in Italian) in the main menu, mobile menu, Shop page and collection filter bar, plus the banner on the sale collection page."
+      },
+      {
+        "type": "checkbox",
+        "id": "pm_sale_show",
+        "label": "Show Sale link",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "pm_sale_collection",
+        "label": "Sale collection",
+        "info": "Where the Sale link goes, and the page that shows the banner. Empty = the \"Black Friday\" collection."
+      },
+      {
+        "type": "header",
+        "content": "Sale banner"
+      },
+      {
+        "type": "image_picker",
+        "id": "pm_sale_banner",
+        "label": "Banner image (desktop)",
+        "info": "Shown above the products on the sale collection page, cropped to 16:9 (e.g. 2560 x 1440 px)."
+      },
+      {
+        "type": "image_picker",
+        "id": "pm_sale_banner_mobile",
+        "label": "Banner image (mobile)",
+        "info": "Shown on phones (below 640px wide), whole and at its own shape (square works well, e.g. 1254 x 1254 px). Falls back to the desktop image."
+      }
+    ]
   }
 ]

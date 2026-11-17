@@ -71,13 +71,21 @@
       {%- assign family_parts = family | split: '|' -%}
       {%- if family_parts[3] != blank and family_parts[3] == collection.handle -%}{%- assign pm_current_family = family_parts[0] | handle -%}{%- endif -%}
     {%- endfor -%}
-    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item{% if pm_current_family == '' and pm_page_collection == false %} is-active{% endif %}" data-family-filter="">View All</a>
+    {%- comment -%} Sale (Black Friday) collection: Theme settings > Sale, falls back to "black-friday". {%- endcomment -%}
+    {%- assign pm_sale_collection = settings.pm_sale_collection -%}
+    {%- if pm_sale_collection == blank -%}{%- assign pm_sale_collection = collections['black-friday'] -%}{%- endif -%}
+    {%- assign pm_is_sale = false -%}
+    {%- if pm_sale_collection != blank and collection.id == pm_sale_collection.id -%}{%- assign pm_is_sale = true -%}{%- endif -%}
+    <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="pm-plp-subnav-item{% if pm_current_family == '' and pm_page_collection == false and pm_is_sale == false %} is-active{% endif %}" data-family-filter="">View All</a>
     {%- for family in pm_families -%}
       {%- assign family_parts = family | split: '|' -%}
       {%- assign family_name = family_parts[0] -%}
       {%- assign family_handle = family_name | handle -%}
       <a href="{% render 'pm-family-url', handle: family_handle, collection: family_parts[3] %}" class="pm-plp-subnav-item{% if pm_current_family == family_handle %} is-active{% endif %}" data-family-filter="{{ family_handle }}">{{ family_name }}</a>
     {%- endfor -%}
+    {%- if settings.pm_sale_show -%}
+      <a href="{% render 'pm-sale-url' %}" class="pm-plp-subnav-item pm-sale-link{% if pm_is_sale %} is-active{% endif %}">{{ 'pm.sale' | t }}</a>
+    {%- endif -%}
   </nav>
 
   {%- comment -%}
@@ -90,6 +98,36 @@
   {%- endcomment -%}
 
   <div class="pm-collection-grid-wrap">
+    {%- comment -%}
+      Sale banner, only on the sale collection page. Desktop is cropped to
+      16:9; on phones the mobile image shows whole, at its own shape
+      (e.g. square), so text in it is never cut off. Images are set
+      in Theme settings > Sale (separate desktop and mobile image). Nothing
+      renders until at least one image is set.
+    {%- endcomment -%}
+    {%- assign pm_banner_desktop = settings.pm_sale_banner | default: settings.pm_sale_banner_mobile -%}
+    {%- if pm_is_sale and pm_banner_desktop != blank -%}
+      {%- assign pm_banner_mobile = settings.pm_sale_banner_mobile | default: pm_banner_desktop -%}
+      <div class="pm-sale-banner">
+        <picture>
+          <source
+            media="(max-width: 639px)"
+            srcset="{{ pm_banner_mobile | image_url: width: 640 }} 640w, {{ pm_banner_mobile | image_url: width: 960 }} 960w, {{ pm_banner_mobile | image_url: width: 1280 }} 1280w"
+            sizes="100vw"
+            width="{{ pm_banner_mobile.width }}"
+            height="{{ pm_banner_mobile.height }}">
+          <img
+            src="{{ pm_banner_desktop | image_url: width: 1600 }}"
+            srcset="{{ pm_banner_desktop | image_url: width: 1000 }} 1000w, {{ pm_banner_desktop | image_url: width: 1600 }} 1600w, {{ pm_banner_desktop | image_url: width: 2200 }} 2200w, {{ pm_banner_desktop | image_url: width: 2800 }} 2800w"
+            sizes="100vw"
+            alt="{{ pm_banner_desktop.alt | default: collection.title | escape }}"
+            width="{{ pm_banner_desktop.width }}"
+            height="{{ pm_banner_desktop.height }}"
+            loading="eager"
+            fetchpriority="high">
+        </picture>
+      </div>
+    {%- endif -%}
     {%- if collection.products.size == 0 -%}
       {%- if collection.id == collections['aw27'].id -%}
         {%- comment -%}

@@ -1,0 +1,15 @@
+{%- comment -%}
+  URL of the Sale (Black Friday) collection, for the red "Sale" / "Saldi"
+  links (desktop nav, mobile drawer, Shop page sidebar, collection
+  filter bar). The collection is picked in Theme settings > Sale; if
+  nothing is picked it falls back to the "black-friday" collection.
+  collection.url is resolved per request, so it follows the visitor's
+  language (/it/collections/...).
+  Usage: <a href="{% render 'pm-sale-url' %}">
+{%- endcomment -%}
+{%- liquid
+  assign pm_sale_collection = settings.pm_sale_collection
+  if pm_sale_collection == blank
+    assign pm_sale_collection = collections['black-friday']
+  endif
+-%}{{- pm_sale_collection.url | default: '/collections/black-friday' -}}

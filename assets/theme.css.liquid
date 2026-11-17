@@ -13623,3 +13623,34 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* ===== Sale (Black Friday) link + banner =====
+   Red "Sale" / "Saldi" link in the desktop nav, mobile menu, Shop page
+   sidebar and collection filter bar (Theme settings > Sale). Stays red
+   on the transparent home header too. */
+.pm-sale-link,
+.pm-sale-link:hover,
+.pm-sale-link:focus,
+.is-light .site-nav__link.pm-sale-link,
+.is-light .site-nav__link.pm-sale-link:hover,
+.pm-plp-subnav-item.pm-sale-link.is-active {
+  color: #c8102e !important;
+}
+.site-nav__link--underline.pm-sale-link:after,
+.is-light .site-nav__item:not(.site-nav--has-dropdown) .site-nav__link--underline.pm-sale-link:after {
+  border-bottom-color: #c8102e;
+}
+.pm-plp-subnav-item.pm-sale-link.is-active { border-color: #c8102e; }
+
+/* Banner above the products on the sale collection page: 16:9 on
+   desktop; on phones the mobile image keeps its own shape (no crop). */
+.pm-sale-banner { margin: 0 0 clamp(28px, 4vw, 48px); }
+.pm-sale-banner picture,
+.pm-sale-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (min-width: 640px) {
+  .pm-sale-banner img { aspect-ratio: 16 / 9; object-fit: cover; }
+}

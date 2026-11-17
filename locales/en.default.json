@@ -390,6 +390,7 @@
     "month_day_year": "%b %d, %Y"
   },
   "pm": {
+    "sale": "Sale",
     "collection": {
       "view_more": "View more"
     },

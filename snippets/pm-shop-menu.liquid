@@ -39,6 +39,9 @@
         {%- assign category_handle = category | handle -%}
         <a href="{% render 'pm-category-url', handle: category_handle %}" class="pm-shop-menu-links-item{% if forloop.first %} pm-shop-menu-links-item--group-start{% endif %}">{{ category }}</a>
       {%- endfor -%}
+      {%- if settings.pm_sale_show -%}
+        <a href="{% render 'pm-sale-url' %}" class="pm-shop-menu-links-item pm-shop-menu-links-item--group-start pm-sale-link">{{ 'pm.sale' | t }}</a>
+      {%- endif -%}
     </nav>
 
     <div class="pm-shop-menu-grid">
