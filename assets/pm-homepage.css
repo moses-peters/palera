@@ -469,6 +469,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    Nov 18 2026). Price stays pinned top-right, also in ink. */
 .pm-plp-grid .pm-plp-tile-name .pm-tile-color {
   display: block; color: var(--pm-ink); font-style: normal; font-size: 0.8em;
+  white-space: nowrap; /* one line; may run under the price column */
 }
 .pm-plp-grid .pm-plp-tile-price { color: var(--pm-ink); }
 .pm-plp-tile-image { display: block; position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
