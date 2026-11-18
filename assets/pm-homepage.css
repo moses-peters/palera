@@ -466,10 +466,11 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
 .pm-tile-color { color: var(--pm-muted); font-style: italic; }
 /* Shop / collection grid only: color goes on its own line under the
    name, same ink as the name, 80% of its size, not italic (Moses,
-   Nov 18 2026). Price stays pinned top-right. */
+   Nov 18 2026). Price stays pinned top-right, also in ink. */
 .pm-plp-grid .pm-plp-tile-name .pm-tile-color {
   display: block; color: var(--pm-ink); font-style: normal; font-size: 0.8em;
 }
+.pm-plp-grid .pm-plp-tile-price { color: var(--pm-ink); }
 .pm-plp-tile-image { display: block; position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
 .pm-plp-tile-image img,
 .pm-plp-tile-image video,
