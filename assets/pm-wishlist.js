@@ -91,7 +91,39 @@
     var saved = isSaved(productData.id);
     var items = saved ? remove(productData.id) : add(productData);
     broadcastChange(items);
+    if (!saved) { trackAddedToWishlist(productData); }
     return !saved;
+  }
+
+  /* ===== Shopify "product_added_to_wishlist" event =====
+     Published through Shopify's own analytics bus (Customer events), so
+     any custom pixel in Settings > Customer events can subscribe with
+     analytics.subscribe('product_added_to_wishlist', ...). Fires only
+     on add, never on remove. */
+  function absoluteUrl(url) {
+    if (!url) { return ''; }
+    if (url.indexOf('//') === 0) { return 'https:' + url; }
+    if (url.charAt(0) === '/') { return window.location.origin + url; }
+    return url;
+  }
+
+  function trackAddedToWishlist(productData) {
+    try {
+      if (!window.Shopify || !Shopify.analytics || typeof Shopify.analytics.publish !== 'function') { return; }
+      Shopify.analytics.publish('product_added_to_wishlist', {
+        productId: productData.productId,
+        variantId: productData.id,
+        handle: productData.handle,
+        title: productData.title,
+        url: absoluteUrl(productData.url),
+        image: absoluteUrl(productData.image),
+        price: productData.price != null ? productData.price / 100 : null,
+        currency: (window.Shopify && Shopify.currency && Shopify.currency.active) || '',
+        available: productData.available,
+        language: document.documentElement.lang || '',
+        wishlistCount: readItems().length
+      });
+    } catch (e) {}
   }
 
   function broadcastChange(items) {
@@ -200,25 +232,111 @@
     return (cents / 100).toFixed(2);
   }
 
+  function escapeAttr(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   function buildDrawerItem(item) {
     var el = document.createElement('div');
     el.className = 'pm-wishlist-item';
     el.innerHTML =
-      '<a href="' + item.url + '" class="pm-wishlist-item-link">' +
-        '<span class="pm-wishlist-item-image">' +
-          (item.image ? '<img src="' + item.image + '" alt="" loading="lazy" width="200" height="200">' : '') +
-        '</span>' +
-        '<span class="pm-wishlist-item-info">' +
-          '<span class="pm-wishlist-item-name">' + (item.title || '') + '</span>' +
-          '<span class="pm-wishlist-item-price">' + formatMoney(item.price) + '</span>' +
-          (item.available === false ? '<span class="pm-wishlist-item-soldout">' + theme.strings.wishlistSoldOut + '</span>' : '') +
-        '</span>' +
+      '<a href="' + item.url + '" class="pm-wishlist-item-image" tabindex="-1" aria-hidden="true">' +
+        (item.image ? '<img src="' + item.image + '" alt="" loading="lazy" width="200" height="200">' : '') +
       '</a>' +
+      '<div class="pm-wishlist-item-info">' +
+        '<a href="' + item.url + '" class="pm-wishlist-item-name">' + (item.title || '') + '</a>' +
+        '<span class="pm-wishlist-item-price">' + formatMoney(item.price) + '</span>' +
+        (item.available === false ? '<span class="pm-wishlist-item-soldout">' + theme.strings.wishlistSoldOut + '</span>' : '') +
+        // Saved items are stored by VARIANT id (see pm-wishlist-button.liquid),
+        // so the exact color/hardware that was saved is what goes in the
+        // cart -- no option names are read here, so it works the same on
+        // the English and Italian storefronts.
+        (item.available === false ? '' :
+          '<form class="pm-wishlist-item-cart" data-pm-wishlist-cart action="' + escapeAttr(theme.routes.cartAdd.replace(/\\.js$/, '')) + '" method="post">' +
+            '<input type="hidden" name="id" value="' + escapeAttr(item.id) + '">' +
+            '<input type="hidden" name="quantity" value="1">' +
+            '<button type="submit" class="pm-wishlist-item-cart-btn">' + theme.strings.wishlistAddToCart + '</button>' +
+            '<span class="pm-wishlist-item-cart-error" data-pm-wishlist-cart-error hidden></span>' +
+          '</form>') +
+      '</div>' +
       '<button type="button" class="pm-wishlist-item-remove" data-pm-wishlist-remove data-variant-id="' + item.id + '" aria-label="' + theme.strings.wishlistRemove + '">' +
         '<svg aria-hidden="true" focusable="false" viewBox="0 0 64 64"><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74" fill="none" stroke="currentColor" stroke-width="3"/></svg>' +
       '</button>';
     return el;
   }
+
+  /* ===== Add to cart from the drawer =====
+     Posts the saved variant to Shopify's cart, then hands over to the
+     theme's own cart drawer exactly like a product page add does: the
+     'ajaxProduct:added' event (dispatched from this form, which carries
+     an [name="id"] input just like a real product form) makes
+     theme.CartDrawer rebuild + open, and the gift-box refresh in
+     layout/theme.liquid runs as usual. The wishlist entry is kept. */
+  function handleCartSubmit(evt) {
+    var form = evt.target.closest && evt.target.closest('[data-pm-wishlist-cart]');
+    if (!form) { return; }
+    evt.preventDefault();
+
+    var button = form.querySelector('button[type="submit"]');
+    var errorEl = form.querySelector('[data-pm-wishlist-cart-error]');
+    if (button.classList.contains('btn--loading')) { return; }
+    button.classList.add('btn--loading');
+    button.disabled = true;
+    if (errorEl) { errorEl.hidden = true; errorEl.textContent = ''; }
+
+    var body = 'id=' + encodeURIComponent(form.querySelector('[name="id"]').value) + '&quantity=1';
+
+    fetch(theme.routes.cartAdd, {
+      method: 'POST',
+      body: body,
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(function (response) { return response.json(); })
+    .then(function (data) {
+      button.classList.remove('btn--loading');
+      button.disabled = false;
+
+      if (data.status === 422 || data.status === 404 || data.status === 'bad_request') {
+        if (errorEl) {
+          errorEl.textContent = data.description || data.message || theme.strings.wishlistSoldOut;
+          errorEl.hidden = false;
+        }
+        return;
+      }
+
+      if (document.body.classList.contains('template-cart')) {
+        location.reload();
+        return;
+      }
+      if (!theme.settings || theme.settings.cartType !== 'drawer') {
+        location.href = theme.routes.cartPage;
+        return;
+      }
+
+      // Close the wishlist first so the cart drawer can open in its place.
+      if (theme.WishlistDrawer) {
+        theme.WishlistDrawer.activeSource = null;
+        theme.WishlistDrawer.close();
+      }
+      form.dispatchEvent(new CustomEvent('ajaxProduct:added', {
+        detail: { product: data, addToCartBtn: button },
+        bubbles: true
+      }));
+    })
+    .catch(function () {
+      button.classList.remove('btn--loading');
+      button.disabled = false;
+      location.href = theme.routes.cartPage;
+    });
+  }
+
+  document.addEventListener('submit', handleCartSubmit);
 
   function renderDrawer() {
     var list = document.querySelector('[data-pm-wishlist-list]');

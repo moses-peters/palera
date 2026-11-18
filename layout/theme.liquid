@@ -122,7 +122,8 @@
         maxQuantity: {{ 'cart.general.max_quantity' | t: quantity: '[quantity]', title: '[title]' | json }},
         wishlistAdd: {{ 'products.general.wishlist_add' | t | json }},
         wishlistRemove: {{ 'products.general.wishlist_remove' | t | json }},
-        wishlistSoldOut: {{ 'products.general.wishlist_soldout' | t | json }}
+        wishlistSoldOut: {{ 'products.general.wishlist_soldout' | t | json }},
+        wishlistAddToCart: {{ 'products.product.add_to_cart' | t | json }}
       };
       theme.settings = {
         cartType: {{ settings.cart_type | json }},
