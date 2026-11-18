@@ -13649,12 +13649,12 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
 .pm-plp-subnav-item.pm-sale-link.is-active { border-color: #c8102e; }
 
 /* Thin static banner strip under the filter bar on the sale page.
-   Fixed 45px tall (same as the filter bar) on every screen size. */
+   Fixed height: 120px on desktop, 80px on phones. */
 .pm-sale-strip {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 45px;
+  height: 120px;
   padding: 0 16px;
   background: #fff;
   border-bottom: 1px solid var(--pm-line, #eee);
@@ -13666,4 +13666,7 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
   width: auto;
   max-width: 100%;
   object-fit: contain;
+}
+@media (max-width: 639px) {
+  .pm-sale-strip { height: 80px; }
 }
