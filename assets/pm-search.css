@@ -150,6 +150,15 @@ predictive-search.pm-search .pm-search-swatches {
   pointer-events: auto !important;
 }
 
+/* Mobile: hide the swatch row in search results -- at this size it
+   sits right on top of the small product photo and overpowers it.
+   Collection pages and desktop search keep their swatches. */
+@media only screen and (max-width: 768px) {
+  predictive-search.pm-search .pm-search-swatches {
+    display: none !important;
+  }
+}
+
 @container (min-width: 620px) {
   predictive-search.pm-search .results--products ul {
     grid-template-columns: repeat(3, 1fr);
