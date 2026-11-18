@@ -13648,17 +13648,22 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
 }
 .pm-plp-subnav-item.pm-sale-link.is-active { border-color: #c8102e; }
 
-/* Thin static banner strip under the filter bar on the sale page */
-.pm-sale-strip { background: #fff; border-bottom: 1px solid var(--pm-line, #eee); }
-.pm-sale-strip picture,
+/* Thin static banner strip under the filter bar on the sale page.
+   Fixed 45px tall (same as the filter bar) on every screen size. */
+.pm-sale-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid var(--pm-line, #eee);
+}
+.pm-sale-strip picture { display: contents; }
 .pm-sale-strip img {
   display: block;
-  width: 100%;
-  max-width: 1100px;
-  height: auto;
-  margin: 0 auto;
-}
-/* Desktop: half the page width, centered */
-@media (min-width: 640px) {
-  .pm-sale-strip picture { width: 50%; }
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
 }

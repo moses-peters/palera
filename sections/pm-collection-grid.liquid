@@ -100,10 +100,9 @@
   {%- comment -%}
     Sale banner: a thin, static strip under the filter bar, only on the
     sale collection page, so products stay visible in the first view.
-    Desktop shows the one-line banner; phones get a two-line version
-    (title on top, offers below) so the text stays readable. Uses the
-    Black Friday artwork shipped with the theme
-    (assets/pm-black-friday-strip*.jpg) unless other images are set in
+    Fixed height, the same as the filter bar above it (45px), on every
+    screen size. Uses the Black Friday artwork shipped with the theme
+    (assets/pm-black-friday-strip.jpg) unless other images are set in
     Theme settings > Sale.
   {%- endcomment -%}
   {%- if pm_is_sale -%}
@@ -128,9 +127,9 @@
         assign pm_strip_m_w = pm_strip_w
         assign pm_strip_m_h = pm_strip_h
       else
-        assign pm_strip_m_src = 'pm-black-friday-strip-mobile.jpg' | asset_url
-        assign pm_strip_m_w = 1105
-        assign pm_strip_m_h = 420
+        assign pm_strip_m_src = pm_strip_src
+        assign pm_strip_m_w = pm_strip_w
+        assign pm_strip_m_h = pm_strip_h
       endif
     -%}
     <div class="pm-sale-strip">
