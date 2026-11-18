@@ -101,30 +101,44 @@
     {%- comment -%}
       Sale banner, only on the sale collection page. Desktop is cropped to
       16:9; on phones the mobile image shows whole, at its own shape
-      (e.g. square), so text in it is never cut off. Images are set
-      in Theme settings > Sale (separate desktop and mobile image). Nothing
-      renders until at least one image is set.
+      (e.g. square), so text in it is never cut off. Uses the Black
+      Friday artwork shipped with the theme (assets/pm-black-friday-banner-*)
+      unless other images are set in Theme settings > Sale.
     {%- endcomment -%}
-    {%- assign pm_banner_desktop = settings.pm_sale_banner | default: settings.pm_sale_banner_mobile -%}
-    {%- if pm_is_sale and pm_banner_desktop != blank -%}
-      {%- assign pm_banner_mobile = settings.pm_sale_banner_mobile | default: pm_banner_desktop -%}
+    {%- liquid
+      assign pm_banner_desktop = settings.pm_sale_banner | default: settings.pm_sale_banner_mobile
+      assign pm_banner_mobile = settings.pm_sale_banner_mobile | default: pm_banner_desktop
+    -%}
+    {%- if pm_is_sale -%}
       <div class="pm-sale-banner">
         <picture>
-          <source
-            media="(max-width: 639px)"
-            srcset="{{ pm_banner_mobile | image_url: width: 640 }} 640w, {{ pm_banner_mobile | image_url: width: 960 }} 960w, {{ pm_banner_mobile | image_url: width: 1280 }} 1280w"
-            sizes="100vw"
-            width="{{ pm_banner_mobile.width }}"
-            height="{{ pm_banner_mobile.height }}">
-          <img
-            src="{{ pm_banner_desktop | image_url: width: 1600 }}"
-            srcset="{{ pm_banner_desktop | image_url: width: 1000 }} 1000w, {{ pm_banner_desktop | image_url: width: 1600 }} 1600w, {{ pm_banner_desktop | image_url: width: 2200 }} 2200w, {{ pm_banner_desktop | image_url: width: 2800 }} 2800w"
-            sizes="100vw"
-            alt="{{ pm_banner_desktop.alt | default: collection.title | escape }}"
-            width="{{ pm_banner_desktop.width }}"
-            height="{{ pm_banner_desktop.height }}"
-            loading="eager"
-            fetchpriority="high">
+          {%- if pm_banner_desktop != blank -%}
+            <source
+              media="(max-width: 639px)"
+              srcset="{{ pm_banner_mobile | image_url: width: 640 }} 640w, {{ pm_banner_mobile | image_url: width: 960 }} 960w, {{ pm_banner_mobile | image_url: width: 1280 }} 1280w"
+              sizes="100vw"
+              width="{{ pm_banner_mobile.width }}"
+              height="{{ pm_banner_mobile.height }}">
+            <img
+              src="{{ pm_banner_desktop | image_url: width: 1600 }}"
+              srcset="{{ pm_banner_desktop | image_url: width: 1000 }} 1000w, {{ pm_banner_desktop | image_url: width: 1600 }} 1600w, {{ pm_banner_desktop | image_url: width: 2200 }} 2200w, {{ pm_banner_desktop | image_url: width: 2800 }} 2800w"
+              sizes="100vw"
+              alt="{{ pm_banner_desktop.alt | default: collection.title | escape }}"
+              width="{{ pm_banner_desktop.width }}"
+              height="{{ pm_banner_desktop.height }}"
+              loading="eager"
+              fetchpriority="high">
+          {%- else -%}
+            {%- comment -%} Default Black Friday 2026 artwork, shipped with the theme. Replaced by any image set in Theme settings > Sale. {%- endcomment -%}
+            <source media="(max-width: 639px)" srcset="{{ 'pm-black-friday-banner-mobile.jpg' | asset_url }}" width="1254" height="1254">
+            <img
+              src="{{ 'pm-black-friday-banner-desktop.jpg' | asset_url }}"
+              alt="Black Friday"
+              width="1672"
+              height="941"
+              loading="eager"
+              fetchpriority="high">
+          {%- endif -%}
         </picture>
       </div>
     {%- endif -%}

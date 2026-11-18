@@ -1122,7 +1122,7 @@
         "type": "image_picker",
         "id": "pm_sale_banner",
         "label": "Banner image (desktop)",
-        "info": "Shown above the products on the sale collection page, cropped to 16:9 (e.g. 2560 x 1440 px)."
+        "info": "Shown above the products on the sale collection page, cropped to 16:9 (e.g. 2560 x 1440 px). Empty = the Black Friday artwork built into the theme."
       },
       {
         "type": "image_picker",

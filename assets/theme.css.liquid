@@ -13625,15 +13625,21 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
 }
 
 /* ===== Sale (Black Friday) link + banner =====
-   Red "Sale" / "Saldi" link in the desktop nav, mobile menu, Shop page
-   sidebar and collection filter bar (Theme settings > Sale). Stays red
-   on the transparent home header too. */
+   "Sale" / "Saldi" link (Theme settings > Sale). In the header it is
+   white like the other menu items and turns red on hover; in the
+   mobile menu, Shop page sidebar and collection filter bar it is red. */
 .pm-sale-link,
 .pm-sale-link:hover,
 .pm-sale-link:focus,
-.is-light .site-nav__link.pm-sale-link,
-.is-light .site-nav__link.pm-sale-link:hover,
 .pm-plp-subnav-item.pm-sale-link.is-active {
+  color: #c8102e !important;
+}
+.site-nav__link.pm-sale-link {
+  color: #fff !important;
+  transition: color 0.2s ease;
+}
+.site-nav__link.pm-sale-link:hover,
+.site-nav__link.pm-sale-link:focus-visible {
   color: #c8102e !important;
 }
 .site-nav__link--underline.pm-sale-link:after,
