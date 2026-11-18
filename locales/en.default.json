@@ -391,6 +391,17 @@
   },
   "pm": {
     "sale": "Sale",
+    "sale_banner": {
+      "title": "Black Friday Sale",
+      "dates": "27 – 30 November",
+      "note": "*Due to peak season, shipping may take upwards of 3 weeks",
+      "offer_1": "15% off",
+      "offer_1_condition": "Any order",
+      "offer_2": "20% off",
+      "offer_2_condition": "Orders over €400",
+      "offer_3": "30% off",
+      "offer_3_condition": "Orders over €750"
+    },
     "collection": {
       "view_more": "View more"
     },

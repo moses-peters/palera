@@ -13648,25 +13648,65 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
 }
 .pm-plp-subnav-item.pm-sale-link.is-active { border-color: #c8102e; }
 
-/* Thin static banner strip under the filter bar on the sale page.
-   Fixed height: 120px on desktop, 80px on phones. */
+/* Thin text banner under the filter bar on the sale page:
+   120px tall on desktop, 80px on phones. Black text, site font. */
 .pm-sale-strip {
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 120px;
-  padding: 0 16px;
+  padding: 0 var(--pm-pad, 16px);
   background: #fff;
+  color: #000;
   border-bottom: 1px solid var(--pm-line, #eee);
+  font-family: Outfit, var(--pm-font-sans), sans-serif;
+  text-transform: uppercase;
+  overflow: hidden;
 }
-.pm-sale-strip picture { display: contents; }
-.pm-sale-strip img {
-  display: block;
-  height: 100%;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
+.pm-sale-strip p { margin: 0; }
+.pm-sale-strip-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 2.6vw, 44px);
+  width: 100%;
+  max-width: 1400px;
 }
-@media (max-width: 639px) {
-  .pm-sale-strip { height: 80px; }
+.pm-sale-strip-head { display: flex; flex-direction: column; gap: 10px; }
+.pm-sale-strip-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 26px; line-height: 1.1; }
+.pm-sale-strip-name { font-size: 24px; letter-spacing: 0.14em; }
+.pm-sale-strip-dates { font-size: 20px; letter-spacing: 0.04em; }
+.pm-sale-strip-note { font-size: 10px; letter-spacing: 0.04em; }
+.pm-sale-strip-offers { display: flex; list-style: none; margin: 0; padding: 0; }
+.pm-sale-strip-offers li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px clamp(16px, 2.2vw, 36px);
+  border-left: 1px solid #000;
+  text-align: center;
+  white-space: nowrap;
+}
+.pm-sale-strip-off { font-size: 22px; letter-spacing: 0.03em; line-height: 1; }
+.pm-sale-strip-cond { font-size: 11px; letter-spacing: 0.04em; line-height: 1; }
+@media (max-width: 1100px) {
+  .pm-sale-strip-name { font-size: 18px; }
+  .pm-sale-strip-dates { font-size: 15px; }
+  .pm-sale-strip-off { font-size: 17px; }
+  .pm-sale-strip-cond { font-size: 9px; }
+}
+@media (max-width: 767px) {
+  .pm-sale-strip { height: 80px; padding: 0 8px; }
+  .pm-sale-strip-inner { flex-direction: column; gap: 5px; }
+  .pm-sale-strip-head { align-items: center; gap: 3px; }
+  .pm-sale-strip-title { gap: 10px; justify-content: center; }
+  .pm-sale-strip-name { font-size: 12px; }
+  .pm-sale-strip-dates { font-size: 11px; }
+  .pm-sale-strip-note { font-size: 7px; text-align: center; }
+  .pm-sale-strip-offers li { padding: 1px 10px; gap: 3px; }
+  .pm-sale-strip-offers li:first-child { border-left: 0; }
+  .pm-sale-strip-off { font-size: 12px; }
+  .pm-sale-strip-cond { font-size: 7px; }
 }

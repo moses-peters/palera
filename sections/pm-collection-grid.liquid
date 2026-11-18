@@ -98,44 +98,29 @@
   {%- endcomment -%}
 
   {%- comment -%}
-    Sale banner: a thin, static strip under the filter bar, only on the
-    sale collection page, so products stay visible in the first view.
-    Fixed height: 120px on desktop, 80px on phones. Uses the Black Friday artwork shipped with the theme
-    (assets/pm-black-friday-strip.jpg) unless other images are set in
-    Theme settings > Sale.
+    Sale banner: a thin text strip under the filter bar, only on the sale
+    collection page, so products stay visible in the first view. Real
+    text (not an image), in the site font. 120px tall on desktop, 80px on
+    phones. Wording lives in the locale files (pm.sale_banner.*), so the
+    Italian site shows it in Italian and it can be edited in Translate &
+    Adapt.
   {%- endcomment -%}
   {%- if pm_is_sale -%}
-    {%- liquid
-      if settings.pm_sale_banner != blank
-        assign pm_strip_src = settings.pm_sale_banner | image_url: width: 2200
-        assign pm_strip_w = settings.pm_sale_banner.width
-        assign pm_strip_h = settings.pm_sale_banner.height
-        assign pm_strip_alt = settings.pm_sale_banner.alt | default: collection.title
-      else
-        assign pm_strip_src = 'pm-black-friday-strip.jpg' | asset_url
-        assign pm_strip_w = 2172
-        assign pm_strip_h = 240
-        assign pm_strip_alt = 'Black Friday Sale, 27 - 30 November: 15% off any order, 20% off orders over €400, 30% off orders over €750'
-      endif
-      if settings.pm_sale_banner_mobile != blank
-        assign pm_strip_m_src = settings.pm_sale_banner_mobile | image_url: width: 1200
-        assign pm_strip_m_w = settings.pm_sale_banner_mobile.width
-        assign pm_strip_m_h = settings.pm_sale_banner_mobile.height
-      elsif settings.pm_sale_banner != blank
-        assign pm_strip_m_src = pm_strip_src
-        assign pm_strip_m_w = pm_strip_w
-        assign pm_strip_m_h = pm_strip_h
-      else
-        assign pm_strip_m_src = pm_strip_src
-        assign pm_strip_m_w = pm_strip_w
-        assign pm_strip_m_h = pm_strip_h
-      endif
-    -%}
     <div class="pm-sale-strip">
-      <picture>
-        <source media="(max-width: 639px)" srcset="{{ pm_strip_m_src }}" width="{{ pm_strip_m_w }}" height="{{ pm_strip_m_h }}">
-        <img src="{{ pm_strip_src }}" alt="{{ pm_strip_alt | escape }}" width="{{ pm_strip_w }}" height="{{ pm_strip_h }}" loading="eager" fetchpriority="high">
-      </picture>
+      <div class="pm-sale-strip-inner">
+        <div class="pm-sale-strip-head">
+          <p class="pm-sale-strip-title">
+            <span class="pm-sale-strip-name">{{ 'pm.sale_banner.title' | t }}</span>
+            <span class="pm-sale-strip-dates">{{ 'pm.sale_banner.dates' | t }}</span>
+          </p>
+          <p class="pm-sale-strip-note">{{ 'pm.sale_banner.note' | t }}</p>
+        </div>
+        <ul class="pm-sale-strip-offers">
+          <li><span class="pm-sale-strip-off">{{ 'pm.sale_banner.offer_1' | t }}</span><span class="pm-sale-strip-cond">{{ 'pm.sale_banner.offer_1_condition' | t }}</span></li>
+          <li><span class="pm-sale-strip-off">{{ 'pm.sale_banner.offer_2' | t }}</span><span class="pm-sale-strip-cond">{{ 'pm.sale_banner.offer_2_condition' | t }}</span></li>
+          <li><span class="pm-sale-strip-off">{{ 'pm.sale_banner.offer_3' | t }}</span><span class="pm-sale-strip-cond">{{ 'pm.sale_banner.offer_3_condition' | t }}</span></li>
+        </ul>
+      </div>
     </div>
   {%- endif -%}
 

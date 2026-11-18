@@ -1100,7 +1100,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Red \"Sale\" link (\"Saldi\" in Italian) in the main menu, mobile menu, Shop page and collection filter bar, plus the banner on the sale collection page."
+        "content": "Red \"Sale\" link (\"Saldi\" in Italian) in the main menu, mobile menu, Shop page and collection filter bar, plus the text banner on the sale collection page. Banner wording: Translate & Adapt / Edit default theme content, under \"pm > sale_banner\"."
       },
       {
         "type": "checkbox",
@@ -1113,22 +1113,6 @@
         "id": "pm_sale_collection",
         "label": "Sale collection",
         "info": "Where the Sale link goes, and the page that shows the banner. Empty = the \"Black Friday\" collection."
-      },
-      {
-        "type": "header",
-        "content": "Sale banner (thin strip)"
-      },
-      {
-        "type": "image_picker",
-        "id": "pm_sale_banner",
-        "label": "Banner image (desktop)",
-        "info": "Thin, wide image under the filter bar on the sale page (e.g. 2172 x 240 px). Empty = the Black Friday banner built into the theme."
-      },
-      {
-        "type": "image_picker",
-        "id": "pm_sale_banner_mobile",
-        "label": "Banner image (mobile)",
-        "info": "Shown on phones (below 640px wide), at its own shape. Empty = the desktop image you set, or the built-in two-line Black Friday banner."
       }
     ]
   }

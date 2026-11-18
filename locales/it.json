@@ -2672,6 +2672,17 @@
   },
   "pm": {
     "sale": "Saldi",
+    "sale_banner": {
+      "title": "Saldi Black Friday",
+      "dates": "27 – 30 novembre",
+      "note": "*A causa dell'alta stagione, la spedizione può richiedere 3 settimane o più",
+      "offer_1": "15% di sconto",
+      "offer_1_condition": "Su tutti gli ordini",
+      "offer_2": "20% di sconto",
+      "offer_2_condition": "Ordini oltre €400",
+      "offer_3": "30% di sconto",
+      "offer_3_condition": "Ordini oltre €750"
+    },
     "collection": {
       "view_more": "Mostra altri"
     },
