@@ -13648,15 +13648,37 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
 }
 .pm-plp-subnav-item.pm-sale-link.is-active { border-color: #c8102e; }
 
-/* Banner above the products on the sale collection page: 16:9 on
-   desktop; on phones the mobile image keeps its own shape (no crop). */
-.pm-sale-banner { margin: 0 0 clamp(28px, 4vw, 48px); }
-.pm-sale-banner picture,
-.pm-sale-banner img {
-  display: block;
-  width: 100%;
-  height: auto;
+/* Thin scrolling banner strip under the filter bar on the sale page */
+.pm-sale-strip {
+  overflow: hidden;
+  background: #161616;
+  height: clamp(56px, 6.5vw, 110px);
 }
-@media (min-width: 640px) {
-  .pm-sale-banner img { aspect-ratio: 16 / 9; object-fit: cover; }
+.pm-sale-strip-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: pm-sale-strip-scroll 45s linear infinite;
+}
+.pm-sale-strip-half { display: flex; flex: none; height: 100%; }
+.pm-sale-strip img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  flex: none;
+  padding-right: clamp(32px, 4vw, 72px);
+  background: #161616;
+  box-sizing: content-box;
+}
+.pm-sale-strip:hover .pm-sale-strip-track { animation-play-state: paused; }
+@keyframes pm-sale-strip-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (max-width: 639px) {
+  .pm-sale-strip-track { animation-duration: 30s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pm-sale-strip-track { animation-duration: 120s; }
 }

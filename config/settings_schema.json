@@ -1116,19 +1116,13 @@
       },
       {
         "type": "header",
-        "content": "Sale banner"
+        "content": "Sale banner (thin scrolling strip)"
       },
       {
         "type": "image_picker",
         "id": "pm_sale_banner",
-        "label": "Banner image (desktop)",
-        "info": "Shown above the products on the sale collection page, cropped to 16:9 (e.g. 2560 x 1440 px). Empty = the Black Friday artwork built into the theme."
-      },
-      {
-        "type": "image_picker",
-        "id": "pm_sale_banner_mobile",
-        "label": "Banner image (mobile)",
-        "info": "Shown on phones (below 640px wide), whole and at its own shape (square works well, e.g. 1254 x 1254 px). Falls back to the desktop image."
+        "label": "Banner image",
+        "info": "Wide, thin image that scrolls in a loop under the filter bar on the sale page (e.g. 2928 x 352 px). Empty = the Black Friday strip built into the theme."
       }
     ]
   }

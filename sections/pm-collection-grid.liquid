@@ -97,51 +97,41 @@
     on-page display went away.
   {%- endcomment -%}
 
-  <div class="pm-collection-grid-wrap">
-    {%- comment -%}
-      Sale banner, only on the sale collection page. Desktop is cropped to
-      16:9; on phones the mobile image shows whole, at its own shape
-      (e.g. square), so text in it is never cut off. Uses the Black
-      Friday artwork shipped with the theme (assets/pm-black-friday-banner-*)
-      unless other images are set in Theme settings > Sale.
-    {%- endcomment -%}
+  {%- comment -%}
+    Sale banner: a thin strip under the filter bar, only on the sale
+    collection page, so products stay visible in the first view. The
+    image scrolls sideways in an endless loop so the whole banner passes
+    by on any screen width. Uses the Black Friday strip shipped with the
+    theme (assets/pm-black-friday-strip.jpg) unless another image is set
+    in Theme settings > Sale. Two identical halves; the track moves by
+    exactly one half per cycle, so the loop has no visible jump.
+  {%- endcomment -%}
+  {%- if pm_is_sale -%}
     {%- liquid
-      assign pm_banner_desktop = settings.pm_sale_banner | default: settings.pm_sale_banner_mobile
-      assign pm_banner_mobile = settings.pm_sale_banner_mobile | default: pm_banner_desktop
+      if settings.pm_sale_banner != blank
+        assign pm_strip_src = settings.pm_sale_banner | image_url: height: 240
+        assign pm_strip_w = settings.pm_sale_banner.width | times: 240 | divided_by: settings.pm_sale_banner.height
+        assign pm_strip_alt = settings.pm_sale_banner.alt | default: collection.title | escape
+      else
+        assign pm_strip_src = 'pm-black-friday-strip.jpg' | asset_url
+        assign pm_strip_w = 1996
+        assign pm_strip_alt = 'Black Friday Sales, 27 - 30 November: 15% off any order, 20% off orders over 400, 30% off orders over 750'
+      endif
     -%}
-    {%- if pm_is_sale -%}
-      <div class="pm-sale-banner">
-        <picture>
-          {%- if pm_banner_desktop != blank -%}
-            <source
-              media="(max-width: 639px)"
-              srcset="{{ pm_banner_mobile | image_url: width: 640 }} 640w, {{ pm_banner_mobile | image_url: width: 960 }} 960w, {{ pm_banner_mobile | image_url: width: 1280 }} 1280w"
-              sizes="100vw"
-              width="{{ pm_banner_mobile.width }}"
-              height="{{ pm_banner_mobile.height }}">
-            <img
-              src="{{ pm_banner_desktop | image_url: width: 1600 }}"
-              srcset="{{ pm_banner_desktop | image_url: width: 1000 }} 1000w, {{ pm_banner_desktop | image_url: width: 1600 }} 1600w, {{ pm_banner_desktop | image_url: width: 2200 }} 2200w, {{ pm_banner_desktop | image_url: width: 2800 }} 2800w"
-              sizes="100vw"
-              alt="{{ pm_banner_desktop.alt | default: collection.title | escape }}"
-              width="{{ pm_banner_desktop.width }}"
-              height="{{ pm_banner_desktop.height }}"
-              loading="eager"
-              fetchpriority="high">
-          {%- else -%}
-            {%- comment -%} Default Black Friday 2026 artwork, shipped with the theme. Replaced by any image set in Theme settings > Sale. {%- endcomment -%}
-            <source media="(max-width: 639px)" srcset="{{ 'pm-black-friday-banner-mobile.jpg' | asset_url }}" width="1254" height="1254">
-            <img
-              src="{{ 'pm-black-friday-banner-desktop.jpg' | asset_url }}"
-              alt="Black Friday"
-              width="1672"
-              height="941"
-              loading="eager"
-              fetchpriority="high">
-          {%- endif -%}
-        </picture>
+    <div class="pm-sale-strip" role="img" aria-label="{{ pm_strip_alt }}">
+      <div class="pm-sale-strip-track" aria-hidden="true">
+        {%- for half in (1..2) -%}
+          <div class="pm-sale-strip-half">
+            {%- for i in (1..3) -%}
+              <img src="{{ pm_strip_src }}" alt="" width="{{ pm_strip_w }}" height="240" loading="eager"{% if half == 1 and i == 1 %} fetchpriority="high"{% endif %}>
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
       </div>
-    {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="pm-collection-grid-wrap">
     {%- if collection.products.size == 0 -%}
       {%- if collection.id == collections['aw27'].id -%}
         {%- comment -%}
