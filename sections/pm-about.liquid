@@ -178,7 +178,6 @@
       <div class="pm-about-values-grid">
         {%- for block in value_blocks -%}
           <div class="pm-about-value pm-reveal" style="transition-delay: {{ forloop.index0 | times: 100 }}ms" {{ block.shopify_attributes }}>
-            <span class="pm-about-value-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
             <h3 class="pm-serif">{{ block.settings.title }}</h3>
             <p>{{ block.settings.text }}</p>
           </div>
