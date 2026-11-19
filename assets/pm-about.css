@@ -27,7 +27,6 @@
    side the image sits on so a long list of entries doesn't read as
    one repeating block. */
 .pm-press-spread { padding-top: clamp(28px, 4vw, 48px); padding-bottom: clamp(28px, 4vw, 48px); }
-.pm-press-spread + .pm-press-spread { border-top: 1px solid var(--pm-line); }
 .pm-press-byline { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .pm-press-date {
   font-family: var(--pm-font-sans);
@@ -83,7 +82,7 @@
   .pm-press-gallery { grid-template-columns: repeat(4, 1fr); }
 }
 
-.pm-about-values { padding: 0 var(--pm-pad) clamp(36px, 5vw, 72px); border-top: 1px solid var(--pm-line); }
+.pm-about-values { padding: 0 var(--pm-pad) clamp(36px, 5vw, 72px); }
 .pm-about-values-grid { display: grid; grid-template-columns: 1fr; gap: clamp(32px, 4vw, 48px); padding-top: clamp(28px, 4vw, 48px); }
 .pm-about-value-index { display: block; font-size: 11px; color: var(--pm-muted); letter-spacing: 0.1em; margin-bottom: 14px; }
 .pm-about-value h3 { font-size: clamp(20px, 2.2vw, 26px); }
@@ -93,3 +92,7 @@
 
 .pm-about-closing { text-align: center; padding: 0 var(--pm-pad) clamp(40px, 5vw, 72px); }
 .pm-about-closing-text { max-width: 680px; margin: 0 auto 24px; font-size: clamp(22px, 3.4vw, 34px); font-style: italic; line-height: 1.4; }
+
+/* About Us page only: no grey divider/box lines, all text black. */
+.pm-about-page { --pm-muted: var(--pm-ink); }
+.pm-about-page .pm-duo-caption { border: none; }
