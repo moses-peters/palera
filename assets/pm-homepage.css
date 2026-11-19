@@ -448,7 +448,7 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
    ellipsis, which read as cramped/cheap. Price stays pinned top-right
    regardless of how many lines the name wraps to; same rule at every
    width, so mobile and desktop line up the same way. */
-.pm-plp-tile-info { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.pm-plp-tile-info { display: flex; flex-direction: row; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 10px; }
 .pm-plp-tile-name {
   min-width: 0; flex: 1 1 auto;
   font-size: 13px; line-height: 1.5; color: var(--pm-ink);
@@ -471,8 +471,6 @@ a:hover .pm-placeholder--hover, button:hover .pm-placeholder--hover { background
   white-space: nowrap; /* one line; may run under the price column */
 }
 .pm-plp-grid .pm-plp-tile-price { color: var(--pm-ink); }
-/* Price sits on the same baseline as the product name (first line). */
-.pm-plp-grid .pm-plp-tile-info { align-items: baseline; }
 .pm-plp-tile-image { display: block; position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
 .pm-plp-tile-image img,
 .pm-plp-tile-image video,
