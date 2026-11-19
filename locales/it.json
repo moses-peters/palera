@@ -2673,10 +2673,10 @@
   "pm": {
     "sale": "Saldi",
     "tiers": {
-      "current": "Hai il [percent]% di sconto.",
-      "next": "Aggiungi altri [amount] per avere il [percent]% di sconto.",
-      "top": "Hai il [percent]% di sconto, il nostro miglior sconto Black Friday.",
-      "product_note": "Black Friday: {{ t1 }}% di sconto su tutti gli ordini, {{ t2 }}% sugli ordini oltre €{{ t2_min }}, {{ t3 }}% sugli ordini oltre €{{ t3_min }}. Applicato nel carrello."
+      "current": "Hai il [percent]% di sconto sui pezzi Black Friday.",
+      "next": "Aggiungi altri [amount] in pezzi Black Friday per avere il [percent]% di sconto.",
+      "top": "Hai il [percent]% di sconto sui pezzi Black Friday, il nostro miglior sconto Black Friday.",
+      "product_note": "Black Friday: {{ t1 }}% di sconto, {{ t2 }}% quando i pezzi Black Friday superano €{{ t2_min }}, {{ t3 }}% oltre €{{ t3_min }}. Applicato nel carrello."
     },
     "sale_banner": {
       "title": "Saldi Black Friday",

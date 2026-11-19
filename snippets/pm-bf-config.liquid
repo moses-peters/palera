@@ -1,0 +1,23 @@
+{%- comment -%}
+  Black Friday data for scripts (cart tier bar, wishlist drawer): the
+  first-tier % and which products are in the sale collection (ids and
+  handles), so the cart bar can count only Black Friday items, matching
+  the Shopify discounts ("Amount off products", Black Friday collection
+  only). Rendered in layout/theme.liquid only while "Black Friday
+  discounts active" is on.
+{%- endcomment -%}
+{%- if settings.pm_sale_tiers -%}
+  {%- liquid
+    assign pm_sale_collection = settings.pm_sale_collection
+    if pm_sale_collection == blank
+      assign pm_sale_collection = collections['black-friday']
+    endif
+  -%}
+  <script>
+    window.pmBf = {
+      pct: {{ settings.pm_tier1_pct | json }},
+      ids: [{%- for p in pm_sale_collection.products -%}{{ p.id }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+      handles: [{%- for p in pm_sale_collection.products -%}{{ p.handle | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+    };
+  </script>
+{%- endif -%}

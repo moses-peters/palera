@@ -26,9 +26,15 @@
     bars.forEach(function (bar) {
       if (!cart || !cart.item_count) { bar.hidden = true; return; }
       var d = bar.dataset, r = rate();
+      /* Only Black Friday items count (the discounts apply to that collection only) */
+      var bf = window.pmBf || { ids: [] };
+      var total = 0;
+      (cart.items || []).forEach(function (it) {
+        if (bf.ids.indexOf(it.product_id) !== -1 || (bf.handles || []).indexOf(it.handle) !== -1) total += it.original_line_price;
+      });
+      if (!total) { bar.hidden = true; return; }
       var t1 = +d.t1, t2 = +d.t2, t3 = +d.t3;
       var m2 = Math.round(+d.t2Min * 100 * r), m3 = Math.round(+d.t3Min * 100 * r);
-      var total = cart.original_total_price != null ? cart.original_total_price : cart.items_subtotal_price;
       var text, current, next, nextMin;
       if (total >= m3) { current = t3; }
       else if (total >= m2) { current = t2; next = t3; nextMin = m3; }

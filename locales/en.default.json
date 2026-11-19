@@ -392,10 +392,10 @@
   "pm": {
     "sale": "Sale",
     "tiers": {
-      "current": "You get [percent]% off.",
-      "next": "Add [amount] more for [percent]% off.",
-      "top": "You get [percent]% off, our best Black Friday discount.",
-      "product_note": "Black Friday: {{ t1 }}% off any order, {{ t2 }}% off orders over €{{ t2_min }}, {{ t3 }}% off orders over €{{ t3_min }}. Applied in the cart."
+      "current": "You get [percent]% off your Black Friday pieces.",
+      "next": "Add [amount] more in Black Friday pieces for [percent]% off.",
+      "top": "You get [percent]% off your Black Friday pieces, our best Black Friday discount.",
+      "product_note": "Black Friday: {{ t1 }}% off, {{ t2 }}% off when your Black Friday pieces total over €{{ t2_min }}, {{ t3 }}% over €{{ t3_min }}. Applied in the cart."
     },
     "sale_banner": {
       "title": "Black Friday Sale",
