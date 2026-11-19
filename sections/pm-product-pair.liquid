@@ -63,7 +63,7 @@
           <span class="pm-serif">{{ product.title | split: ' — ' | first | default: block.settings.fallback_label }}{%- if product.title contains ' — ' %} <span class="pm-tile-color">{{ product.title | split: ' — ' | last }}</span>{%- endif -%}</span>
           {%- if product.price -%}
             <span class="pm-product-pair-price">
-              {%- if product.price_varies -%}From {{ product.price | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
+              {%- if product.price_varies -%}{%- render 'pm-bf-tile-price', product: product, price: product.price, prefix: 'From ' -%}{%- else -%}{%- render 'pm-bf-tile-price', product: product, price: product.price -%}{%- endif -%}
             </span>
           {%- endif -%}
         </div>

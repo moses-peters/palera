@@ -276,7 +276,7 @@ Arguments
               {%- assign price = product.price_min | money -%}
               {{ 'products.general.from_text_html' | t: price: price }}
             {%- else -%}
-              {{ product.price | money }}
+              {%- render 'pm-bf-tile-price', product: product, price: product.price -%}
             {%- endif -%}
             {%- if on_sale -%}
               {%- if settings.product_save_amount -%}

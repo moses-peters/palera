@@ -109,7 +109,7 @@
                             {%- assign price = product.price_min | money -%}
                             <span class="grid-product__price">{{ 'products.general.from_text_html' | t: price: price }}</span>
                           {%- else -%}
-                            <span class="grid-product__price">{{ product.price | money }}</span>
+                            <span class="grid-product__price">{%- render 'pm-bf-tile-price', product: product, price: product.price -%}</span>
                           {%- endif -%}
                           {%- if on_sale -%}
                             {%- if settings.product_save_amount -%}

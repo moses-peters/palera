@@ -462,7 +462,7 @@
                 <div class="pm-plp-tile-info">
                   <span class="pm-plp-tile-name">{{ tile_name }}{%- if tile_color_name != blank %} <span class="pm-tile-color">{{ tile_color_name | replace: 'Transparent White Multi', 'T. White Multi' }}</span>{%- endif -%}</span>
                   <span class="pm-plp-tile-price">
-                    {%- if tile_price_varies -%}From {{ tile_price | money }}{%- else -%}{{ tile_price | money }}{%- endif -%}
+                    {%- if tile_price_varies -%}{%- render 'pm-bf-tile-price', product: product, price: tile_price, prefix: 'From ' -%}{%- else -%}{%- render 'pm-bf-tile-price', product: product, price: tile_price -%}{%- endif -%}
                   </span>
                 </div>
               </a>

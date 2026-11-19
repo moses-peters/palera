@@ -126,9 +126,9 @@
                 {%- if tile_price -%}
                   <span class="pm-plp-tile-price">
                     {%- if selected_variant == nil or block.settings.variant_color == blank -%}
-                      {%- if product.price_varies -%}From {{ tile_price | money }}{%- else -%}{{ tile_price | money }}{%- endif -%}
+                      {%- if product.price_varies -%}{%- render 'pm-bf-tile-price', product: product, price: tile_price, prefix: 'From ' -%}{%- else -%}{%- render 'pm-bf-tile-price', product: product, price: tile_price -%}{%- endif -%}
                     {%- else -%}
-                      {{ tile_price | money }}
+                      {%- render 'pm-bf-tile-price', product: product, price: tile_price -%}
                     {%- endif -%}
                   </span>
                 {%- endif -%}
