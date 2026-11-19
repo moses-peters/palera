@@ -1113,6 +1113,50 @@
         "id": "pm_sale_collection",
         "label": "Sale collection",
         "info": "Where the Sale link goes, and the page that shows the banner. Empty = the \"Black Friday\" collection."
+      },
+      {
+        "type": "header",
+        "content": "Black Friday discount tiers"
+      },
+      {
+        "type": "paragraph",
+        "content": "Only shows the tiers on the site (struck price + discounted price on sale products, and a \"spend X more\" bar in the cart). The discounts themselves must be set up in Shopify Admin > Discounts, with the same numbers."
+      },
+      {
+        "type": "checkbox",
+        "id": "pm_sale_tiers",
+        "label": "Black Friday discounts active",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "pm_tier1_pct",
+        "label": "Tier 1: % off any order",
+        "default": 15
+      },
+      {
+        "type": "number",
+        "id": "pm_tier2_min",
+        "label": "Tier 2: from (€)",
+        "default": 400
+      },
+      {
+        "type": "number",
+        "id": "pm_tier2_pct",
+        "label": "Tier 2: % off",
+        "default": 20
+      },
+      {
+        "type": "number",
+        "id": "pm_tier3_min",
+        "label": "Tier 3: from (€)",
+        "default": 750
+      },
+      {
+        "type": "number",
+        "id": "pm_tier3_pct",
+        "label": "Tier 3: % off",
+        "default": 30
       }
     ]
   }

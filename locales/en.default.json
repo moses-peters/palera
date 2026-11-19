@@ -391,6 +391,12 @@
   },
   "pm": {
     "sale": "Sale",
+    "tiers": {
+      "current": "You get [percent]% off.",
+      "next": "Add [amount] more for [percent]% off.",
+      "top": "You get [percent]% off, our best Black Friday discount.",
+      "product_note": "Black Friday: {{ t1 }}% off any order, {{ t2 }}% off orders over €{{ t2_min }}, {{ t3 }}% off orders over €{{ t3_min }}. Applied in the cart."
+    },
     "sale_banner": {
       "title": "Black Friday Sale",
       "dates": "27 – 30 November",
