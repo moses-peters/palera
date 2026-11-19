@@ -123,8 +123,8 @@
   font-family: var(--pm-font-sans); font-size: 20px; font-weight: 500; letter-spacing: 0.02em; color: var(--pm-ink);
 }
 .pm-product .product__price--compare { color: var(--pm-muted); text-decoration: line-through; margin-right: 10px; }
-.pm-product .product__price-savings { margin-left: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pm-muted); }
-.pm-product .product__unit-price { margin-top: 6px; font-size: 12px; color: var(--pm-muted); }
+.pm-product .product__price-savings { margin-left: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pm-ink); }
+.pm-product .product__unit-price { margin-top: 6px; font-size: 12px; color: var(--pm-ink); }
 
 /* ===== Variant picker ===== */
 .pm-product .variant-wrapper { margin-bottom: clamp(18px, 2.2vw, 24px); }
@@ -476,7 +476,7 @@ body.pm-drawer-open { overflow: hidden; }
   font-size: 11px; color: var(--pm-muted);
 }
 .pm-rec-tile-colors i { width: 9px; height: 9px; border-radius: 1px; background: var(--pm-ink); }
-.pm-rec-tile-price { display: block; margin-top: 4px; font-size: 12px; color: var(--pm-muted); }
+.pm-rec-tile-price { display: block; margin-top: 4px; font-size: 12px; color: var(--pm-ink); }
 @media (min-width: 640px) { .pm-rec-tile { flex-basis: clamp(260px, 24vw, 340px); } }
 
 /* ===== Social sharing ===== */

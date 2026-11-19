@@ -96,3 +96,6 @@
 /* About Us page only: no grey divider/box lines, all text black. */
 .pm-about-page { --pm-muted: var(--pm-ink); }
 .pm-about-page .pm-duo-caption { border: none; }
+
+/* Seen in page only: all text black. */
+.pm-press-page { --pm-muted: var(--pm-ink); }
