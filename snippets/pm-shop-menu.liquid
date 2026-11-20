@@ -27,7 +27,7 @@
 {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
 {%- liquid
   assign pm_families = pm_families_raw | strip | split: ';;'
-  assign categories = 'Clutches,Accessories,Mini Bags,Fits A Phone' | split: ','
+  assign categories = 'Clutches,Accessories,Mini Bags,Fits A Phone,Gift Edit' | split: ','
 -%}
 
 <div class="pm-homepage">

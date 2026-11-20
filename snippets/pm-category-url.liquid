@@ -20,6 +20,8 @@
       assign category_url = collections['mini-bags'].url | default: '/collections/mini-bags'
     when 'fits-a-phone'
       assign category_url = collections['fits-a-phone'].url | default: '/collections/fits-a-phone'
+    when 'gift-edit'
+      assign category_url = collections['gift-edit'].url | default: '/collections/gift-edit'
     else
       assign category_url = routes.all_products_collection_url | default: '/collections/all'
   endcase

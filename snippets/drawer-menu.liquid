@@ -322,7 +322,7 @@
       {%- capture pm_families_raw -%}{% render 'pm-family-data' %}{%- endcapture -%}
       {%- liquid
         assign pm_families = pm_families_raw | strip | split: ';;'
-        assign shop_categories = 'Accessories,Clutches,Mini Bags,Fits A Phone' | split: ','
+        assign shop_categories = 'Accessories,Clutches,Mini Bags,Fits A Phone,Gift Edit' | split: ','
         assign all_products_url = routes.all_products_collection_url | default: '/collections/all'
       -%}
       <div class="pm-mobile-nav-screen" data-mobile-nav-screen="shop" hidden>
