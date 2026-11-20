@@ -95,7 +95,7 @@
     return !saved;
   }
 
-  /* ===== Shopify "product_added_to_wishlist" event =====
+  /* ===== Wishlist tracking: Shopify "product_added_to_wishlist" + Klaviyo =====
      Published through Shopify's own analytics bus (Customer events), so
      any custom pixel in Settings > Customer events can subscribe with
      analytics.subscribe('product_added_to_wishlist', ...). Fires only
@@ -107,22 +107,59 @@
     return url;
   }
 
+  /* Klaviyo "Added to Wishlist" -- sent through Klaviyo's onsite script
+     (Klaviyo app embed). Klaviyo only records it for visitors it can
+     identify: logged-in customers (identified by email below), people
+     who clicked through from a Klaviyo email, or anyone who signed up
+     via a Klaviyo form in this browser. If klaviyo.js hasn't loaded yet
+     the call is queued in _klOnsite, which klaviyo.js drains on load. */
+  function klaviyoPush(args) {
+    var kl = window.klaviyo;
+    if (kl && typeof kl.push === 'function') {
+      kl.push(args);
+    } else {
+      window._klOnsite = window._klOnsite || [];
+      window._klOnsite.push(args);
+    }
+  }
+
   function trackAddedToWishlist(productData) {
+    var price = productData.price != null ? productData.price / 100 : null;
+
     try {
-      if (!window.Shopify || !Shopify.analytics || typeof Shopify.analytics.publish !== 'function') { return; }
-      Shopify.analytics.publish('product_added_to_wishlist', {
-        productId: productData.productId,
-        variantId: productData.id,
-        handle: productData.handle,
-        title: productData.title,
-        url: absoluteUrl(productData.url),
-        image: absoluteUrl(productData.image),
-        price: productData.price != null ? productData.price / 100 : null,
-        currency: (window.Shopify && Shopify.currency && Shopify.currency.active) || '',
-        available: productData.available,
-        language: document.documentElement.lang || '',
-        wishlistCount: readItems().length
-      });
+      if (window.Shopify && Shopify.analytics && typeof Shopify.analytics.publish === 'function') {
+        Shopify.analytics.publish('product_added_to_wishlist', {
+          productId: productData.productId,
+          variantId: productData.id,
+          handle: productData.handle,
+          title: productData.title,
+          url: absoluteUrl(productData.url),
+          image: absoluteUrl(productData.image),
+          price: price,
+          currency: (window.Shopify && Shopify.currency && Shopify.currency.active) || '',
+          available: productData.available,
+          language: document.documentElement.lang || '',
+          wishlistCount: readItems().length
+        });
+      }
+    } catch (e) {}
+
+    try {
+      var email = window.theme && theme.settings && theme.settings.customerEmail;
+      if (email) { klaviyoPush(['identify', { email: email }]); }
+      klaviyoPush(['track', 'Added to Wishlist', {
+        ProductName: productData.title,
+        ProductID: productData.productId,
+        VariantID: productData.id,
+        Handle: productData.handle,
+        URL: absoluteUrl(productData.url),
+        ImageURL: absoluteUrl(productData.image),
+        Price: price,
+        $value: price,
+        Available: productData.available,
+        Language: document.documentElement.lang || '',
+        WishlistCount: readItems().length
+      }]);
     } catch (e) {}
   }
 
