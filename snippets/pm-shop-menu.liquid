@@ -37,7 +37,7 @@
       <a href="{{ collections['aw27'].url | default: '/collections/aw27' }}" class="pm-shop-menu-links-item">New In</a>
       {%- for category in categories -%}
         {%- assign category_handle = category | handle -%}
-        <a href="{% render 'pm-category-url', handle: category_handle %}" class="pm-shop-menu-links-item{% if forloop.first %} pm-shop-menu-links-item--group-start{% endif %}">{{ category }}</a>
+        <a href="{% render 'pm-category-url', handle: category_handle %}" class="pm-shop-menu-links-item{% if forloop.first %} pm-shop-menu-links-item--group-start{% endif %}">{% if category == 'Gift Edit' and request.locale.iso_code == 'it' %}Idee regalo{% else %}{{ category }}{% endif %}</a>
       {%- endfor -%}
     </nav>
 
