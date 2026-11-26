@@ -43,18 +43,18 @@ if (!window.__pmKlaviyoSignupBound) {
         if (!message) return;
         message.hidden = false;
         if (res.ok) {
-          message.textContent = 'Thank you for subscribing';
+          message.textContent = form.getAttribute('data-msg-success') || 'Thank you for subscribing';
           message.classList.remove('pm-newsletter-message--error', 'pm-footer-newsletter-message--error');
           form.reset();
         } else {
-          message.textContent = 'Please enter a valid email';
+          message.textContent = form.getAttribute('data-msg-invalid') || 'Please enter a valid email';
           message.classList.add('pm-newsletter-message--error', 'pm-footer-newsletter-message--error');
         }
       })
       .catch(function () {
         if (!message) return;
         message.hidden = false;
-        message.textContent = 'Something went wrong — please try again';
+        message.textContent = form.getAttribute('data-msg-error') || 'Something went wrong — please try again';
         message.classList.add('pm-newsletter-message--error', 'pm-footer-newsletter-message--error');
       })
       .finally(function () {

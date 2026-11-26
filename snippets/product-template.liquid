@@ -273,6 +273,7 @@
                           {{ 1999 | money }}
                         {%- endunless -%}
                       </span>
+                      {%- render 'pm-bf-product-price', product: product, variant: current_variant -%}
 
                       {%- if settings.product_save_amount -%}
                         {%- if settings.product_save_type == 'dollar' -%}

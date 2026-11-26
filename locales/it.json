@@ -2671,6 +2671,37 @@
     }
   },
   "pm": {
+    "sale": "Saldi",
+    "bf_gate": {
+      "code_title": "Inserisci il tuo codice Black Friday",
+      "code_text": "Digita il codice di 6 cifre per vedere i pezzi Black Friday.",
+      "code_button": "Entra",
+      "code_error": "Il codice non è corretto. Riprova.",
+      "signup_title": "Non hai un codice?",
+      "signup_text": "Iscriviti per ricevere il tuo codice Black Friday.",
+      "email_placeholder": "Indirizzo email",
+      "signup_button": "Iscriviti",
+      "signup_success": "Grazie. Il tuo codice sta arrivando nella tua casella email.",
+      "signup_invalid": "Inserisci un indirizzo email valido",
+      "signup_error": "Si è verificato un errore, riprova"
+    },
+    "tiers": {
+      "current": "Hai il [percent]% di sconto sui pezzi Black Friday.",
+      "next": "Aggiungi altri [amount] in pezzi Black Friday per avere il [percent]% di sconto.",
+      "top": "Hai il [percent]% di sconto sui pezzi Black Friday, il nostro miglior sconto Black Friday.",
+      "product_note": "Black Friday: {{ t1 }}% di sconto, {{ t2 }}% quando i pezzi Black Friday superano €{{ t2_min }}, {{ t3 }}% oltre €{{ t3_min }}. Applicato nel carrello."
+    },
+    "sale_banner": {
+      "title": "Saldi Black Friday",
+      "dates": "27 – 30 novembre",
+      "note": "*A causa dell'alta stagione, la spedizione può richiedere 3 settimane o più",
+      "offer_1": "15% di sconto",
+      "offer_1_condition": "Su tutti gli ordini",
+      "offer_2": "20% di sconto",
+      "offer_2_condition": "Ordini oltre €400",
+      "offer_3": "30% di sconto",
+      "offer_3_condition": "Ordini oltre €750"
+    },
     "collection": {
       "view_more": "Mostra altri"
     },

@@ -1,0 +1,35 @@
+{%- comment -%}
+  Black Friday price on the product page: for products in the sale
+  collection, while "Black Friday discounts active" is on (Theme
+  settings > Sale), the normal price is struck through and the price
+  after the first-tier discount (15% by default) is shown next to it,
+  plus a line explaining the tiers. The discount itself is a Shopify
+  automatic discount applied in the cart. Kept in sync with the chosen
+  variant by assets/pm-bf-tiers.js.
+  Usage: {% render 'pm-bf-product-price', product: product, variant: current_variant %}
+{%- endcomment -%}
+{%- if settings.pm_sale_tiers -%}
+  {%- liquid
+    assign pm_sale_collection = settings.pm_sale_collection
+    if pm_sale_collection == blank
+      assign pm_sale_collection = collections['black-friday']
+    endif
+    assign pm_in_sale = false
+    for c in product.collections
+      if c.id == pm_sale_collection.id
+        assign pm_in_sale = true
+        break
+      endif
+    endfor
+  -%}
+  {%- if pm_in_sale -%}
+    {%- assign pm_pct = settings.pm_tier1_pct -%}
+    {%- assign pm_keep = 100 | minus: pm_pct -%}
+    <span class="pm-bf-price" data-pm-bf-price data-pct="{{ pm_pct }}">
+      <span class="pm-bf-price-new" data-pm-bf-price-new>{{ variant.price | times: pm_keep | divided_by: 100 | money }}</span>
+      <span class="pm-bf-price-tag">-{{ pm_pct }}%</span>
+    </span>
+    <p class="pm-bf-price-note">{{ 'pm.tiers.product_note' | t: t1: settings.pm_tier1_pct, t2: settings.pm_tier2_pct, t2_min: settings.pm_tier2_min, t3: settings.pm_tier3_pct, t3_min: settings.pm_tier3_min }}</p>
+    {%- render 'pm-bf-tiers-script' -%}
+  {%- endif -%}
+{%- endif -%}

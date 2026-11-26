@@ -55,6 +55,7 @@
     "button_style": "round",
     "icon_weight": "2px",
     "icon_linecaps": "miter",
+    "pm_sale_access_code": "273026",
     "pm_font_pairing": "playfair_jost",
     "product_save_amount": false,
     "vendor_enable": false,

@@ -1,0 +1,26 @@
+{%- comment -%}
+  Black Friday tier bar for the cart drawer and cart page: says how much
+  more to add for the next discount tier (15% any order / 20% over €400 /
+  30% over €750 by default; Theme settings > Sale). Only shows when
+  "Black Friday discounts active" is on. Filled in and kept up to date by
+  assets/pm-bf-tiers.js from /cart.js, using the cart total before
+  discounts, so it reacts to items added or removed without a reload.
+  The discounts themselves are Shopify automatic discounts set up in
+  Admin; this bar only explains them.
+{%- endcomment -%}
+{%- if settings.pm_sale_tiers -%}
+  <div class="pm-bf-tiers" data-pm-bf-tiers hidden
+    data-t1="{{ settings.pm_tier1_pct }}"
+    data-t2="{{ settings.pm_tier2_pct }}" data-t2-min="{{ settings.pm_tier2_min }}"
+    data-t3="{{ settings.pm_tier3_pct }}" data-t3-min="{{ settings.pm_tier3_min }}"
+    data-msg-next="{{ 'pm.tiers.next' | t | escape }}"
+    data-msg-current="{{ 'pm.tiers.current' | t | escape }}"
+    data-msg-top="{{ 'pm.tiers.top' | t | escape }}">
+    <p class="pm-bf-tiers-text" data-pm-bf-tiers-text></p>
+    <div class="pm-bf-tiers-track" aria-hidden="true">
+      <div class="pm-bf-tiers-fill" data-pm-bf-tiers-fill></div>
+      <span class="pm-bf-tiers-mark" data-pm-bf-tiers-mark></span>
+    </div>
+  </div>
+  {%- render 'pm-bf-tiers-script' -%}
+{%- endif -%}

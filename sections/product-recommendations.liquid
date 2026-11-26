@@ -180,7 +180,7 @@
                     <span class="pm-rec-tile-colors"><i></i>+{{ sibling_count }}</span>
                   {%- endif -%}
                 </div>
-                <span class="pm-rec-tile-price">{{ rec_tile_price_prefix }}{{ rec_tile_price | money }}</span>
+                <span class="pm-rec-tile-price">{%- render 'pm-bf-tile-price', product: rec_product, price: rec_tile_price, prefix: rec_tile_price_prefix -%}</span>
               </div>
             </a>
             {%- if rec_swatch_visible.size > 0 -%}

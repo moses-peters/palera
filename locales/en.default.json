@@ -390,6 +390,37 @@
     "month_day_year": "%b %d, %Y"
   },
   "pm": {
+    "sale": "Sale",
+    "bf_gate": {
+      "code_title": "Enter your Black Friday code",
+      "code_text": "Type your 6-digit code to see the Black Friday pieces.",
+      "code_button": "Enter",
+      "code_error": "That code isn't right. Please try again.",
+      "signup_title": "Don't have a code?",
+      "signup_text": "Sign up to receive your Black Friday code.",
+      "email_placeholder": "Email address",
+      "signup_button": "Sign up",
+      "signup_success": "Thank you. Your code is on its way to your inbox.",
+      "signup_invalid": "Please enter a valid email",
+      "signup_error": "Something went wrong, please try again"
+    },
+    "tiers": {
+      "current": "You get [percent]% off your Black Friday pieces.",
+      "next": "Add [amount] more in Black Friday pieces for [percent]% off.",
+      "top": "You get [percent]% off your Black Friday pieces, our best Black Friday discount.",
+      "product_note": "Black Friday: {{ t1 }}% off, {{ t2 }}% off when your Black Friday pieces total over €{{ t2_min }}, {{ t3 }}% over €{{ t3_min }}. Applied in the cart."
+    },
+    "sale_banner": {
+      "title": "Black Friday Sale",
+      "dates": "27 – 30 November",
+      "note": "*Due to peak season, shipping may take upwards of 3 weeks",
+      "offer_1": "15% off",
+      "offer_1_condition": "Any order",
+      "offer_2": "20% off",
+      "offer_2_condition": "Orders over €400",
+      "offer_3": "30% off",
+      "offer_3_condition": "Orders over €750"
+    },
     "collection": {
       "view_more": "View more"
     },

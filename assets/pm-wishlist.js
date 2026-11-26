@@ -313,6 +313,18 @@
       .replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  /* Black Friday: struck price + first-tier price for sale products
+     (window.pmBf, from snippets/pm-bf-config.liquid). */
+  function bfPrice(item) {
+    var bf = window.pmBf;
+    var inSale = bf && item.price != null &&
+      ((item.productId && bf.ids.indexOf(parseInt(item.productId, 10)) !== -1) ||
+       (item.handle && (bf.handles || []).indexOf(item.handle) !== -1));
+    if (!inSale) { return formatMoney(item.price); }
+    return '<span class="pm-bf-tile-was">' + formatMoney(item.price) + '</span> ' +
+      '<span class="pm-bf-tile-now">' + formatMoney(Math.floor(item.price * (100 - bf.pct) / 100)) + '</span>';
+  }
+
   function buildDrawerItem(item) {
     var el = document.createElement('div');
     el.className = 'pm-wishlist-item';
@@ -322,7 +334,7 @@
       '</a>' +
       '<div class="pm-wishlist-item-info">' +
         '<a href="' + item.url + '" class="pm-wishlist-item-name">' + (item.title || '') + '</a>' +
-        '<span class="pm-wishlist-item-price">' + formatMoney(item.price) + '</span>' +
+        '<span class="pm-wishlist-item-price">' + bfPrice(item) + '</span>' +
         (item.available === false ? '<span class="pm-wishlist-item-soldout">' + theme.strings.wishlistSoldOut + '</span>' : '') +
         // Saved items are stored by VARIANT id (see pm-wishlist-button.liquid),
         // so the exact color/hardware that was saved is what goes in the

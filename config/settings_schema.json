@@ -1094,5 +1094,87 @@
         "info": "Used by the newsletter signup form to subscribe visitors directly via Klaviyo."
       }
     ]
+  },
+  {
+    "name": "Sale",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Red \"Sale\" link (\"Saldi\" in Italian) in the main menu, mobile menu, Shop page and collection filter bar, plus the text banner on the sale collection page. Banner wording: Translate & Adapt / Edit default theme content, under \"pm > sale_banner\"."
+      },
+      {
+        "type": "checkbox",
+        "id": "pm_sale_show",
+        "label": "Show Sale link",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "pm_sale_collection",
+        "label": "Sale collection",
+        "info": "Where the Sale link goes, and the page that shows the banner. Empty = the \"Black Friday\" collection."
+      },
+      {
+        "type": "header",
+        "content": "Black Friday discount tiers"
+      },
+      {
+        "type": "paragraph",
+        "content": "Only shows the tiers on the site (struck price + discounted price on sale products, and a \"spend X more\" bar in the cart). The discounts themselves must be set up in Shopify Admin > Discounts, with the same numbers."
+      },
+      {
+        "type": "checkbox",
+        "id": "pm_sale_tiers",
+        "label": "Black Friday discounts active",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "pm_tier1_pct",
+        "label": "Tier 1: % off any order",
+        "default": 15
+      },
+      {
+        "type": "number",
+        "id": "pm_tier2_min",
+        "label": "Tier 2: from (€)",
+        "default": 400
+      },
+      {
+        "type": "number",
+        "id": "pm_tier2_pct",
+        "label": "Tier 2: % off",
+        "default": 20
+      },
+      {
+        "type": "number",
+        "id": "pm_tier3_min",
+        "label": "Tier 3: from (€)",
+        "default": 750
+      },
+      {
+        "type": "number",
+        "id": "pm_tier3_pct",
+        "label": "Tier 3: % off",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Black Friday code access"
+      },
+      {
+        "type": "text",
+        "id": "pm_sale_access_code",
+        "label": "Access code (6 digits)",
+        "info": "While set, the sale page shows a code box and an email sign-up instead of the products. The right code unlocks the products. Leave empty to open the page to everyone.",
+        "default": "273026"
+      },
+      {
+        "type": "text",
+        "id": "pm_sale_klaviyo_list",
+        "label": "Klaviyo list ID for the code sign-up",
+        "default": "R5iHE8"
+      }
+    ]
   }
 ]

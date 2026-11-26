@@ -169,6 +169,12 @@
           <a href="{{ pages['press'].url | default: section.settings.press_url | default: '/pages/press' }}" class="mobile-nav__link mobile-nav__link--top-level">Seen In</a>
         </li>
         {%- assign animation_row = 5 -%}
+        {%- if settings.pm_sale_show -%}
+          <li class="mobile-nav__item appear-animation appear-delay-6">
+            <a href="{% render 'pm-sale-url' %}" class="mobile-nav__link mobile-nav__link--top-level pm-sale-link">{{ 'pm.sale' | t }}</a>
+          </li>
+          {%- assign animation_row = 6 -%}
+        {%- endif -%}
 
         {%- assign have_secondary_list = false -%}
         {%- if section.settings.toolbar_menu != blank or shop.customer_accounts_enabled -%}
@@ -339,6 +345,9 @@
             {%- assign category_handle = category | handle -%}
             <a href="{% render 'pm-category-url', handle: category_handle %}">{% if category == 'Gift Edit' and request.locale.iso_code == 'it' %}Idee regalo{% else %}{{ category }}{% endif %}</a>
           {%- endfor -%}
+          {%- if settings.pm_sale_show -%}
+            <a href="{% render 'pm-sale-url' %}" class="pm-sale-link">{{ 'pm.sale' | t }}</a>
+          {%- endif -%}
         </div>
         <div class="pm-mobile-shop-families">
           {%- for family in pm_families -%}

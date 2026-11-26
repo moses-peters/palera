@@ -13623,3 +13623,189 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* ===== Sale (Black Friday) link + banner =====
+   "Sale" / "Saldi" link (Theme settings > Sale). In the header it is
+   white like the other menu items and turns red on hover; in the
+   mobile menu, Shop page sidebar and collection filter bar it is red. */
+.pm-sale-link,
+.pm-sale-link:hover,
+.pm-sale-link:focus,
+.pm-plp-subnav-item.pm-sale-link.is-active {
+  color: #c8102e !important;
+}
+.site-nav__link.pm-sale-link {
+  color: #fff !important;
+  transition: color 0.2s ease;
+}
+.site-nav__link.pm-sale-link:hover,
+.site-nav__link.pm-sale-link:focus-visible {
+  color: #c8102e !important;
+}
+.site-nav__link--underline.pm-sale-link:after,
+.is-light .site-nav__item:not(.site-nav--has-dropdown) .site-nav__link--underline.pm-sale-link:after {
+  border-bottom-color: #c8102e;
+}
+.pm-plp-subnav-item.pm-sale-link.is-active { border-color: #c8102e; }
+
+/* Thin text banner under the filter bar on the sale page:
+   120px tall on desktop, 80px on phones. Black text, site font. */
+.pm-sale-strip {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--pm-pad, 16px);
+  background: #fff;
+  color: #000;
+  font-family: Outfit, var(--pm-font-sans), sans-serif;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+.pm-sale-strip p { margin: 0; }
+/* No grey line between the filter bar and the banner on the sale page */
+.pm-plp-subnav:has(+ .pm-sale-strip) { border-bottom: 0; }
+.pm-sale-strip-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 2.6vw, 44px);
+  width: 100%;
+  max-width: 1400px;
+}
+.pm-sale-strip-head { display: flex; flex-direction: column; gap: 10px; }
+.pm-sale-strip-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 26px; line-height: 1.1; }
+.pm-sale-strip-name { font-size: 24px; letter-spacing: 0.14em; }
+.pm-sale-strip-dates { font-size: 20px; letter-spacing: 0.04em; }
+.pm-sale-strip-note { font-size: 10px; letter-spacing: 0.04em; }
+.pm-sale-strip-offers { display: flex; list-style: none; margin: 0; padding: 0; }
+.pm-sale-strip-offers li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px clamp(16px, 2.2vw, 36px);
+  border-left: 1px solid #000;
+  text-align: center;
+  white-space: nowrap;
+}
+.pm-sale-strip-off { font-size: 22px; letter-spacing: 0.03em; line-height: 1; }
+.pm-sale-strip-cond { font-size: 11px; letter-spacing: 0.04em; line-height: 1; }
+@media (max-width: 1100px) {
+  .pm-sale-strip-name { font-size: 18px; }
+  .pm-sale-strip-dates { font-size: 15px; }
+  .pm-sale-strip-off { font-size: 17px; }
+  .pm-sale-strip-cond { font-size: 9px; }
+}
+@media (max-width: 767px) {
+  .pm-sale-strip { height: 80px; padding: 0 8px; }
+  .pm-sale-strip-inner { flex-direction: column; gap: 5px; }
+  .pm-sale-strip-head { align-items: center; gap: 3px; }
+  .pm-sale-strip-title { gap: 10px; justify-content: center; }
+  .pm-sale-strip-name { font-size: 12px; }
+  .pm-sale-strip-dates { font-size: 11px; }
+  .pm-sale-strip-note { font-size: 7px; text-align: center; }
+  .pm-sale-strip-offers li { padding: 1px 10px; gap: 3px; }
+  .pm-sale-strip-offers li:first-child { border-left: 0; }
+  .pm-sale-strip-off { font-size: 12px; }
+  .pm-sale-strip-cond { font-size: 7px; }
+}
+
+/* ===== Black Friday tiers (Theme settings > Sale) ===== */
+.product-block--price:has([data-pm-bf-price]) [data-product-price] {
+  text-decoration: line-through;
+  opacity: 0.5;
+  margin-right: 8px;
+}
+.pm-bf-price { display: inline-flex; align-items: baseline; gap: 8px; }
+.pm-bf-price-new { color: #c8102e; }
+.pm-bf-price-tag {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: #c8102e;
+  padding: 2px 6px;
+  line-height: 1.3;
+}
+.pm-bf-price-note { margin: 8px 0 0; font-size: 12px; opacity: 0.75; }
+.pm-bf-tiers { margin: 0 0 14px; padding: 12px 0 2px; }
+.pm-bf-tiers[hidden] { display: none; }
+.pm-bf-tiers-text { margin: 0 0 10px; font-size: 13px; line-height: 1.4; }
+.pm-bf-tiers-track { position: relative; height: 4px; background: #e6e6e6; border-radius: 2px; }
+.pm-bf-tiers-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: #000; border-radius: 2px; transition: width 0.3s ease; }
+.pm-bf-tiers-mark { position: absolute; top: -3px; width: 1px; height: 10px; background: #000; }
+.pm-bf-tile-was { text-decoration: line-through; opacity: 0.5; margin-right: 4px; }
+.pm-bf-tile-now { color: #c8102e; }
+
+/* ===== Black Friday code access (sale page) ===== */
+.pm-bf-locked-grid { display: none; }
+.pm-bf-unlocked .pm-bf-locked-grid { display: block; }
+.pm-bf-unlocked .pm-bf-gate { display: none; }
+.pm-bf-gate {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: clamp(48px, 9vh, 110px) var(--pm-pad, 16px) clamp(64px, 12vh, 140px);
+  text-align: center;
+  font-family: Outfit, var(--pm-font-sans), sans-serif;
+  color: #000;
+}
+.pm-bf-gate-block + .pm-bf-gate-block {
+  margin-top: clamp(48px, 8vh, 88px);
+  padding-top: clamp(48px, 8vh, 88px);
+  border-top: 1px solid #e6e6e6;
+}
+.pm-bf-gate-title {
+  margin: 0 0 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.pm-bf-gate-text { margin: 0 0 26px; font-size: 13px; color: #555; }
+.pm-bf-gate-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.pm-bf-gate-input {
+  flex: 1 1 220px;
+  max-width: 320px;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+  font: inherit;
+  font-size: 14px;
+  color: #000;
+}
+.pm-bf-gate-input--code {
+  flex: none;
+  width: 240px;
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 0.5em;
+  padding-left: calc(16px + 0.5em);
+}
+.pm-bf-gate-input:focus { outline: none; border-width: 2px; }
+.pm-bf-gate-btn {
+  height: 48px;
+  padding: 0 28px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #000;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.pm-bf-gate-btn:hover { background: #fff; color: #000; }
+.pm-bf-gate-btn:disabled { opacity: 0.5; cursor: default; }
+.pm-bf-gate-msg { flex-basis: 100%; margin: 14px 0 0; font-size: 12px; }
+.pm-bf-gate-msg--error, .pm-bf-gate-msg.pm-newsletter-message--error { color: #c8102e; }
+@media (max-width: 480px) {
+  .pm-bf-gate-input, .pm-bf-gate-input--code { flex-basis: 100%; max-width: none; }
+  .pm-bf-gate-btn { flex-basis: 100%; }
+}
