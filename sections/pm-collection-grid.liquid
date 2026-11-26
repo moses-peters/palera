@@ -128,15 +128,12 @@
     Black Friday code access (Theme settings > Sale > "Access code").
     While a code is set, the sale page shows two sections instead of the
     products: a 6-digit code box, and an email sign-up (Klaviyo list) to
-    receive the code. The right code unlocks the products and is
-    remembered in this browser. Only a SHA-256 hash of the code is in the
+    receive the code. The right code unlocks the products for this
+    page view only; every refresh asks for the code again. Only a SHA-256 hash of the code is in the
     page, never the code itself. Empty code = page open as normal.
   {%- endcomment -%}
   {%- if pm_is_sale and settings.pm_sale_access_code != blank -%}
     {%- assign pm_code_hash = settings.pm_sale_access_code | strip | sha256 -%}
-    <script>
-      try { if (localStorage.getItem('pmBfAccess') === {{ pm_code_hash | json }}) document.documentElement.classList.add('pm-bf-unlocked'); } catch (e) {}
-    </script>
     <div class="pm-bf-gate" data-pm-bf-gate data-hash="{{ pm_code_hash }}">
       <section class="pm-bf-gate-block">
         <h2 class="pm-bf-gate-title">{{ 'pm.bf_gate.code_title' | t }}</h2>
@@ -177,7 +174,6 @@
           crypto.subtle.digest('SHA-256', new TextEncoder().encode(code)).then(function (buf) {
             var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
             if (hex === gate.dataset.hash) {
-              try { localStorage.setItem('pmBfAccess', hex); } catch (e2) {}
               document.documentElement.classList.add('pm-bf-unlocked');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
