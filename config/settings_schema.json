@@ -1166,7 +1166,8 @@
         "type": "text",
         "id": "pm_sale_access_code",
         "label": "Access code (6 digits)",
-        "info": "While set, the sale page shows a code box and an email sign-up instead of the products. The right code unlocks the products. Leave empty to open the page to everyone."
+        "info": "While set, the sale page shows a code box and an email sign-up instead of the products. The right code unlocks the products. Leave empty to open the page to everyone.",
+        "default": "273026"
       },
       {
         "type": "text",
