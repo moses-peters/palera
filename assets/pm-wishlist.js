@@ -107,20 +107,59 @@
     return url;
   }
 
-  /* Klaviyo "Added to Wishlist" -- sent through Klaviyo's onsite script
-     (Klaviyo app embed). Klaviyo only records it for visitors it can
-     identify: logged-in customers (identified by email below), people
-     who clicked through from a Klaviyo email, or anyone who signed up
-     via a Klaviyo form in this browser. If klaviyo.js hasn't loaded yet
-     the call is queued in _klOnsite, which klaviyo.js drains on load. */
-  function klaviyoPush(args) {
-    var kl = window.klaviyo;
-    if (kl && typeof kl.push === 'function') {
-      kl.push(args);
-    } else {
-      window._klOnsite = window._klOnsite || [];
-      window._klOnsite.push(args);
+  /* Klaviyo "Added to Wishlist" -- posted straight to Klaviyo's public
+     Client API (same pattern as the newsletter signup and the EU
+     withdrawal form), so it doesn't depend on klaviyo.js having loaded
+     or identified the visitor yet. The profile is taken from:
+       - the logged-in customer's email, or
+       - Klaviyo's own __kla_id cookie, which klaviyo.js sets when a
+         visitor arrives from a Klaviyo email ($exchange_id) or signs up
+         through a Klaviyo form ($email).
+     Anonymous visitors are skipped. */
+  function readKlaviyoCookie() {
+    try {
+      var match = document.cookie.match(/(?:^|;\s*)__kla_id=([^;]+)/);
+      if (!match) { return {}; }
+      return JSON.parse(atob(decodeURIComponent(match[1]))) || {};
+    } catch (e) {
+      return {};
     }
+  }
+
+  function klaviyoProfile() {
+    var profile = {};
+    var email = window.theme && theme.settings && theme.settings.customerEmail;
+    var kla = readKlaviyoCookie();
+    if (email) { profile.email = email; }
+    else if (kla.$email) { profile.email = kla.$email; }
+    if (kla.$exchange_id) { profile._kx = kla.$exchange_id; }
+    return (profile.email || profile._kx) ? profile : null;
+  }
+
+  function sendKlaviyoEvent(name, properties) {
+    var companyId = window.theme && theme.settings && theme.settings.klaviyoCompanyId;
+    var profile = klaviyoProfile();
+    if (!companyId || !profile || !window.fetch) { return; }
+    fetch('https://a.klaviyo.com/client/events/?company_id=' + encodeURIComponent(companyId), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.api+json',
+        'revision': '2024-10-15'
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'event',
+          attributes: {
+            properties: properties,
+            value: properties.Price,
+            metric: { data: { type: 'metric', attributes: { name: name } } },
+            profile: { data: { type: 'profile', attributes: profile } }
+          }
+        }
+      }),
+      keepalive: true
+    }).catch(function () {});
   }
 
   function trackAddedToWishlist(productData) {
@@ -145,9 +184,7 @@
     } catch (e) {}
 
     try {
-      var email = window.theme && theme.settings && theme.settings.customerEmail;
-      if (email) { klaviyoPush(['identify', { email: email }]); }
-      klaviyoPush(['track', 'Added to Wishlist', {
+      sendKlaviyoEvent('Added to Wishlist', {
         ProductName: productData.title,
         ProductID: productData.productId,
         VariantID: productData.id,
@@ -155,11 +192,10 @@
         URL: absoluteUrl(productData.url),
         ImageURL: absoluteUrl(productData.image),
         Price: price,
-        $value: price,
         Available: productData.available,
         Language: document.documentElement.lang || '',
         WishlistCount: readItems().length
-      }]);
+      });
     } catch (e) {}
   }
 
