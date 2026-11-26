@@ -109,30 +109,32 @@
 
   /* Klaviyo "Added to Wishlist" -- posted straight to Klaviyo's public
      Client API (same pattern as the newsletter signup and the EU
-     withdrawal form), so it doesn't depend on klaviyo.js having loaded
-     or identified the visitor yet. The profile is taken from:
-       - the logged-in customer's email, or
-       - Klaviyo's own __kla_id cookie, which klaviyo.js sets when a
-         visitor arrives from a Klaviyo email ($exchange_id) or signs up
-         through a Klaviyo form ($email).
+     withdrawal form). The profile is taken from, in order:
+       - the logged-in customer's email,
+       - the email typed into the footer newsletter form on this browser
+         (saved by pm-klaviyo-signup.js),
+       - the _kx token Klaviyo adds to links in its emails, saved here
+         the first time the visitor lands with it in the URL.
+     (klaviyo.js no longer keeps the email or _kx in its own cookie --
+     only an anonymous id -- so we remember them ourselves.)
      Anonymous visitors are skipped. */
-  function readKlaviyoCookie() {
-    try {
-      var match = document.cookie.match(/(?:^|;\s*)__kla_id=([^;]+)/);
-      if (!match) { return {}; }
-      return JSON.parse(atob(decodeURIComponent(match[1]))) || {};
-    } catch (e) {
-      return {};
-    }
+  function storageGet(key) {
+    try { return window.localStorage.getItem(key); } catch (e) { return null; }
   }
+
+  (function rememberKlaviyoToken() {
+    try {
+      var kx = new URLSearchParams(window.location.search).get('_kx');
+      if (kx) { window.localStorage.setItem('pm_kl_kx', kx); }
+    } catch (e) {}
+  })();
 
   function klaviyoProfile() {
     var profile = {};
-    var email = window.theme && theme.settings && theme.settings.customerEmail;
-    var kla = readKlaviyoCookie();
+    var email = (window.theme && theme.settings && theme.settings.customerEmail) || storageGet('pm_kl_email');
+    var kx = storageGet('pm_kl_kx');
     if (email) { profile.email = email; }
-    else if (kla.$email) { profile.email = kla.$email; }
-    if (kla.$exchange_id) { profile._kx = kla.$exchange_id; }
+    if (kx) { profile._kx = kx; }
     return (profile.email || profile._kx) ? profile : null;
   }
 

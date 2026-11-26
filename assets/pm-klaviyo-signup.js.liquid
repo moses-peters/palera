@@ -14,6 +14,8 @@ if (!window.__pmKlaviyoSignupBound) {
 
     var listId = form.getAttribute('data-klaviyo-list-id');
     var email = form.querySelector('input[type="email"]').value;
+    // Remembered so the wishlist's Klaviyo event can name this visitor (assets/pm-wishlist.js).
+    try { if (email) { window.localStorage.setItem('pm_kl_email', email); } } catch (err) {}
     var message = form.querySelector('[data-klaviyo-signup-message]');
     var button = form.querySelector('button[type="submit"]');
     if (button) button.disabled = true;
