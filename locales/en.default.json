@@ -391,6 +391,19 @@
   },
   "pm": {
     "sale": "Sale",
+    "bf_gate": {
+      "code_title": "Enter your Black Friday code",
+      "code_text": "Type your 6-digit code to see the Black Friday pieces.",
+      "code_button": "Enter",
+      "code_error": "That code isn't right. Please try again.",
+      "signup_title": "Don't have a code?",
+      "signup_text": "Sign up to receive your Black Friday code.",
+      "email_placeholder": "Email address",
+      "signup_button": "Sign up",
+      "signup_success": "Thank you. Your code is on its way to your inbox.",
+      "signup_invalid": "Please enter a valid email",
+      "signup_error": "Something went wrong, please try again"
+    },
     "tiers": {
       "current": "You get [percent]% off your Black Friday pieces.",
       "next": "Add [amount] more in Black Friday pieces for [percent]% off.",

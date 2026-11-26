@@ -2672,6 +2672,19 @@
   },
   "pm": {
     "sale": "Saldi",
+    "bf_gate": {
+      "code_title": "Inserisci il tuo codice Black Friday",
+      "code_text": "Digita il codice di 6 cifre per vedere i pezzi Black Friday.",
+      "code_button": "Entra",
+      "code_error": "Il codice non è corretto. Riprova.",
+      "signup_title": "Non hai un codice?",
+      "signup_text": "Iscriviti per ricevere il tuo codice Black Friday.",
+      "email_placeholder": "Indirizzo email",
+      "signup_button": "Iscriviti",
+      "signup_success": "Grazie. Il tuo codice sta arrivando nella tua casella email.",
+      "signup_invalid": "Inserisci un indirizzo email valido",
+      "signup_error": "Si è verificato un errore, riprova"
+    },
     "tiers": {
       "current": "Hai il [percent]% di sconto sui pezzi Black Friday.",
       "next": "Aggiungi altri [amount] in pezzi Black Friday per avere il [percent]% di sconto.",

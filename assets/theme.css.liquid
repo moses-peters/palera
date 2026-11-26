@@ -13737,3 +13737,75 @@ body .transcy-switcher-container.transcy-switcher-position__floating.transcy-swi
 .pm-bf-tiers-mark { position: absolute; top: -3px; width: 1px; height: 10px; background: #000; }
 .pm-bf-tile-was { text-decoration: line-through; opacity: 0.5; margin-right: 4px; }
 .pm-bf-tile-now { color: #c8102e; }
+
+/* ===== Black Friday code access (sale page) ===== */
+.pm-bf-locked-grid { display: none; }
+.pm-bf-unlocked .pm-bf-locked-grid { display: block; }
+.pm-bf-unlocked .pm-bf-gate { display: none; }
+.pm-bf-gate {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: clamp(48px, 9vh, 110px) var(--pm-pad, 16px) clamp(64px, 12vh, 140px);
+  text-align: center;
+  font-family: Outfit, var(--pm-font-sans), sans-serif;
+  color: #000;
+}
+.pm-bf-gate-block + .pm-bf-gate-block {
+  margin-top: clamp(48px, 8vh, 88px);
+  padding-top: clamp(48px, 8vh, 88px);
+  border-top: 1px solid #e6e6e6;
+}
+.pm-bf-gate-title {
+  margin: 0 0 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.pm-bf-gate-text { margin: 0 0 26px; font-size: 13px; color: #555; }
+.pm-bf-gate-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.pm-bf-gate-input {
+  flex: 1 1 220px;
+  max-width: 320px;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+  font: inherit;
+  font-size: 14px;
+  color: #000;
+}
+.pm-bf-gate-input--code {
+  flex: none;
+  width: 240px;
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 0.5em;
+  padding-left: calc(16px + 0.5em);
+}
+.pm-bf-gate-input:focus { outline: none; border-width: 2px; }
+.pm-bf-gate-btn {
+  height: 48px;
+  padding: 0 28px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #000;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.pm-bf-gate-btn:hover { background: #fff; color: #000; }
+.pm-bf-gate-btn:disabled { opacity: 0.5; cursor: default; }
+.pm-bf-gate-msg { flex-basis: 100%; margin: 14px 0 0; font-size: 12px; }
+.pm-bf-gate-msg--error, .pm-bf-gate-msg.pm-newsletter-message--error { color: #c8102e; }
+@media (max-width: 480px) {
+  .pm-bf-gate-input, .pm-bf-gate-input--code { flex-basis: 100%; max-width: none; }
+  .pm-bf-gate-btn { flex-basis: 100%; }
+}
