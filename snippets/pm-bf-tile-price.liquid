@@ -1,14 +1,15 @@
 {%- comment -%}
-  Price for a product tile (collection grid, related products, search,
-  home blocks). For products in the sale collection while "Black Friday
+  Price for a product tile. Only on the Black Friday page itself
+  (show_bf: true, passed by pm-collection-grid); everywhere else the
+  normal price. For products in the sale collection while "Black Friday
   discounts active" is on (Theme settings > Sale), shows the normal
   price struck through and the first-tier price (15% off by default) in
   red. Otherwise just the normal price.
-  Usage: {% render 'pm-bf-tile-price', product: product, price: tile_price, prefix: 'From ' %}
+  Usage: {% render 'pm-bf-tile-price', product: product, price: tile_price, prefix: 'From ', show_bf: pm_is_sale %}
 {%- endcomment -%}
 {%- liquid
   assign pm_in_sale = false
-  if settings.pm_sale_tiers
+  if settings.pm_sale_tiers and show_bf
     assign pm_sale_collection = settings.pm_sale_collection
     if pm_sale_collection == blank
       assign pm_sale_collection = collections['black-friday']

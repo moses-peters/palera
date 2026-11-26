@@ -334,7 +334,7 @@
       '</a>' +
       '<div class="pm-wishlist-item-info">' +
         '<a href="' + item.url + '" class="pm-wishlist-item-name">' + (item.title || '') + '</a>' +
-        '<span class="pm-wishlist-item-price">' + bfPrice(item) + '</span>' +
+        '<span class="pm-wishlist-item-price">' + formatMoney(item.price) + '</span>' +
         (item.available === false ? '<span class="pm-wishlist-item-soldout">' + theme.strings.wishlistSoldOut + '</span>' : '') +
         // Saved items are stored by VARIANT id (see pm-wishlist-button.liquid),
         // so the exact color/hardware that was saved is what goes in the
